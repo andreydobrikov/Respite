@@ -13,7 +13,8 @@ public class GeometryFactory : MonoBehaviour
 	
 	public GeometryType geometryType = GeometryType.Plane;
 	public bool ScaleUVs = false;
-	public float UVScale = 1.0f;
+	public float UVScale0 = 1.0f;
+	public float UVScale1 = 1.0f;
 	
 	// Use this for initialization
 	void Start () 

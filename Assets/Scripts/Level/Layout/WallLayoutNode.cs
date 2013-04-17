@@ -1,3 +1,10 @@
+/// <summary>
+/// Wall layout node.
+/// 
+/// A layout-node defining a wall point
+/// 
+/// </summary>
+
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -7,12 +14,8 @@ public class WallLayoutNode : LayoutNode
 {
 	public override List<GameObject> BuildObject()
 	{
+		m_connections.Sort();
 		List<GameObject> newObjects = new List<GameObject>();
-		
-		
-		
-		
-		
 		
 		foreach(var connection in m_connections)
 		{
@@ -23,18 +26,17 @@ public class WallLayoutNode : LayoutNode
 			newObject.tag = "Geometry";
 			newObject.layer = LayerMask.NameToLayer("WorldCollision");
 			
-			
 			newObject.AddComponent<MeshFilter>();
 			newObject.AddComponent<MeshRenderer>();
 			
 			Material wallMaterial = (Material)AssetDatabase.LoadAssetAtPath("Assets/Materials/Wall.mat", typeof(Material));
 			newObject.GetComponent<MeshRenderer>().sharedMaterial = wallMaterial;
 			
-			newObject.transform.position = new Vector3(m_position.x, m_position.y, 0.0f);
+			newObject.transform.position = new Vector3(LocalPosition.x, LocalPosition.y, 0.0f);
 			
 			LayoutNode other = connection.Source == this ? connection.Target : connection.Source;
 			
-			Vector2 directionToOther = other.m_position - m_position;
+			Vector2 directionToOther = other.LocalPosition - LocalPosition;
 			float distance = directionToOther.magnitude;
 			float rotation = Mathf.Atan2(directionToOther.x, directionToOther.y);
 			
@@ -48,11 +50,11 @@ public class WallLayoutNode : LayoutNode
 				Vector2 normalSource = connection.SourceTangent;
 				Vector2 normalTarget = connection.TargetTangent;
 				
-				Vector2 sourceHandlePos = connection.Source.m_position + normalSource;
-				Vector2 targetHandlePos = connection.Target.m_position + normalTarget;
+				Vector2 sourceHandlePos = connection.Source.LocalPosition + normalSource;
+				Vector2 targetHandlePos = connection.Target.LocalPosition + normalTarget;
 			
-				Vector3 sourcePos = new Vector3(connection.Source.m_position.x, connection.Source.m_position.y, 0.0f);
-				Vector3 targetPos = new Vector3(connection.Target.m_position.x, connection.Target.m_position.y, 0.0f);
+				Vector3 sourcePos = new Vector3(connection.Source.LocalPosition.x, connection.Source.LocalPosition.y, 0.0f);
+				Vector3 targetPos = new Vector3(connection.Target.LocalPosition.x, connection.Target.LocalPosition.y, 0.0f);
 				
 				Vector2 v0 = new Vector2(sourcePos.x, sourcePos.y);
 				Vector2 v1 = new Vector2(targetPos.x, targetPos.y);
@@ -66,35 +68,33 @@ public class WallLayoutNode : LayoutNode
 			}
 			else
 			{
-				Vector3[] 	vertices 	= new Vector3[4];
-				Vector2[] 	uvs 		= new Vector2[4];
-				int[] 		triangles 	= new int[6];
+				Vector3[] 	vertices 	= new Vector3[6];
+				Vector2[] 	uvs 		= new Vector2[6];
+				int[] 		triangles 	= new int[6 * 4];
 				
-				float wallSize = 0.2f;
-				
-				Vector3 sourcePos = new Vector3(connection.Source.m_position.x, connection.Source.m_position.y, 0.0f);
-				Vector3 targetPos = new Vector3(connection.Target.m_position.x, connection.Target.m_position.y, 0.0f);
+				Vector3 sourcePos = new Vector3(connection.Source.LocalPosition.x, connection.Source.LocalPosition.y, 0.0f);
+				Vector3 targetPos = new Vector3(connection.Target.LocalPosition.x, connection.Target.LocalPosition.y, 0.0f);
 				
 				Vector3 direction = sourcePos - targetPos;
 				direction.Normalize();
-				
-				float yChangeLeft = 0.0f;
-				float yChangeRight = 0.0f;
 				
 				Vector2 offsets = GetEndPoints(connection);
 				Vector2 targetOffsets = other.GetEndPoints(connection);
 				
 				
-				vertices[0] = new Vector3(-wallSize, offsets.y, 0.0f);
-				vertices[1] = new Vector3(-wallSize, distance + targetOffsets.y , 0.0f);
-				vertices[2] = new Vector3(wallSize,  offsets.x, 0.0f);
-				vertices[3] = new Vector3(wallSize, distance + targetOffsets.x, 0.0f);
+				vertices[0] = new Vector3(-m_wallWidth, offsets.y, 0.0f);
+				vertices[1] = new Vector3(-m_wallWidth, distance - targetOffsets.x , 0.0f);
+				vertices[2] = new Vector3(m_wallWidth,  offsets.x, 0.0f);
+				vertices[3] = new Vector3(m_wallWidth, distance - targetOffsets.y, 0.0f);
+				vertices[4] = new Vector3(0.0f, 0.0f, 0.0f);
+				vertices[5] = new Vector3(0.0f, distance, 0.0f);
 				
-				uvs[0] = new Vector2(0.0f, 0.0f);
-				uvs[1] = new Vector2(0.0f, distance);
-				uvs[2] = new Vector2(1.0f, 0.0f);
-				uvs[3] = new Vector2(1.0f, distance);
-				
+				uvs[0] = new Vector2(0.0f, offsets.y);
+				uvs[1] = new Vector2(0.0f, (distance - targetOffsets.y) / (2.0f * m_wallWidth));
+				uvs[2] = new Vector2(1.0f, offsets.y);
+				uvs[3] = new Vector2(1.0f, (distance - targetOffsets.y) / (2.0f * m_wallWidth));
+				uvs[4] = new Vector2(0.5f, offsets.y);
+				uvs[5] = new Vector2(0.5f, (distance - targetOffsets.y) / (2.0f * m_wallWidth));
 				
 				triangles[0] = 0;
 				triangles[1] = 1;
@@ -104,6 +104,13 @@ public class WallLayoutNode : LayoutNode
 				triangles[4] = 1;
 				triangles[5] = 3;
 				
+				triangles[6] = 1;
+				triangles[7] = 5;
+				triangles[8] = 3;
+				
+				triangles[9] = 0;
+				triangles[10] = 2;
+				triangles[11] = 4;
 				
 				nodeMesh.vertices 	= vertices;
 				nodeMesh.uv 			= uvs;
@@ -160,17 +167,17 @@ public class WallLayoutNode : LayoutNode
 		
 		if(SelectedConnection != null && SelectedConnection.ConnectionType == LayoutConnection.ConnectionTypes.Bezier && selectedNode)
 		{
-			Vector2 sourceHandlePos = SelectedConnection.Source.m_position + SelectedConnection.SourceTangent;
-			Vector2 targetHandlePos = SelectedConnection.Target.m_position + SelectedConnection.TargetTangent;
+			Vector2 sourceHandlePos = SelectedConnection.Source.m_worldPosition + SelectedConnection.SourceTangent;
+			Vector2 targetHandlePos = SelectedConnection.Target.m_worldPosition + SelectedConnection.TargetTangent;
 			
-			Vector3 sourcePos = new Vector3(SelectedConnection.Source.m_position.x, SelectedConnection.Source.m_position.y, 0.0f);
-			Vector3 targetPos = new Vector3(SelectedConnection.Target.m_position.x, SelectedConnection.Target.m_position.y, 0.0f);
+			Vector3 sourcePos = new Vector3(SelectedConnection.Source.m_worldPosition.x, SelectedConnection.Source.m_worldPosition.y, 0.0f);
+			Vector3 targetPos = new Vector3(SelectedConnection.Target.m_worldPosition.x, SelectedConnection.Target.m_worldPosition.y, 0.0f);
 			
 			Vector3 sourceHandle = new Vector3(sourceHandlePos.x, sourceHandlePos.y, 0.0f);
 			Vector3 targetHandle = new Vector3(targetHandlePos.x, targetHandlePos.y, 0.0f);
 			
-			Handles.DrawLine(SelectedConnection.Source.m_position, sourceHandlePos);
-			Handles.DrawLine(SelectedConnection.Target.m_position, targetHandlePos);
+			Handles.DrawLine(SelectedConnection.Source.m_worldPosition, sourceHandlePos);
+			Handles.DrawLine(SelectedConnection.Target.m_worldPosition, targetHandlePos);
 			
 			Vector3 newSourceHandle = Handles.Slider2D(sourceHandle, new Vector3(0.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f), 0.4f, Handles.CircleCap, new Vector2(0.5f, 0.5f)) - sourcePos;
 			Vector3 newTargetHandle = Handles.Slider2D(targetHandle, new Vector3(0.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f), 0.4f, Handles.CircleCap, new Vector2(0.5f, 0.5f)) - targetPos;

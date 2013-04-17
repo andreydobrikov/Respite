@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 [Serializable]
-public class LayoutConnection : ScriptableObject
+public class LayoutConnection : ScriptableObject, IComparable<LayoutConnection>
 {
 	public enum ConnectionTypes
 	{
@@ -74,6 +74,42 @@ public class LayoutConnection : ScriptableObject
 				m_bezierSections = 3;	
 			}
 		}
+	}
+	
+	public int CompareTo(LayoutConnection other)
+	{
+		if(other == this)
+		{
+			return 0;	
+		}
+		
+		LayoutNode commonNode = null;
+		
+		if(other.m_sourceNode == m_sourceNode || other.m_targetNode == m_sourceNode) commonNode = m_sourceNode;
+		if(other.m_sourceNode == m_targetNode || other.m_targetNode == m_targetNode) commonNode = m_targetNode;
+		
+		// No common layout node, so bail.
+		if(commonNode == null)
+		{
+			return 0;	
+		}
+		
+		Vector3 otherDirection = other.m_targetNode == commonNode 
+								? (other.m_sourceNode.LocalPosition - other.m_targetNode.LocalPosition) 
+								: (other.m_targetNode.LocalPosition - other.m_sourceNode.LocalPosition);
+		
+		Vector3 thisDirection =  m_targetNode == commonNode 
+								? (m_sourceNode.LocalPosition - m_targetNode.LocalPosition) 
+								: (m_targetNode.LocalPosition - m_sourceNode.LocalPosition);
+		
+		otherDirection.Normalize();
+		thisDirection.Normalize();
+		
+		float otherAngle = Mathf.Atan2(otherDirection.x, otherDirection.y);
+		float thisAngle = Mathf.Atan2(thisDirection.x, thisDirection.y);
+		
+		return otherAngle < thisAngle ? 1 : -1;
+		
 	}
 	
 	[SerializeField]

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<spritemap>
+	<animation name="walk">
+		<frame x="0.0" y="0.854" width="0.126" height="0.146"/>
+		<frame x="0.126" y="0.854" width="0.126" height="0.146"/>
+		<frame x="0.253" y="0.854" width="0.126" height="0.146"/>
+		<frame x="0.379" y="0.854" width="0.126" height="0.146"/>
+		<frame x="0.505" y="0.854" width="0.126" height="0.146"/>
+		<frame x="0.631" y="0.854" width="0.126" height="0.146"/>
+		<frame x="0.757" y="0.854" width="0.126" height="0.146"/>
+		<frame x="0.0" y="0.708" width="0.126" height="0.146"/>
+		<frame x="0.126" y="0.708" width="0.126" height="0.146"/>
+		<frame x="0.253" y="0.708" width="0.126" height="0.146"/>
+		<frame x="0.379" y="0.708" width="0.126" height="0.146"/>
+		<frame x="0.505" y="0.708" width="0.126" height="0.146"/>
+		<frame x="0.631" y="0.708" width="0.126" height="0.146"/>
+		<frame x="0.757" y="0.708" width="0.126" height="0.146"/>
+	</animation>
+</spritemap>

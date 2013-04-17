@@ -5,9 +5,8 @@ using System.IO;
 [CustomEditor(typeof(Level))]
 public class LevelEditor : Editor 
 {
-	/// <summary>
-	/// Listing of the different ways to edit the level.
-	/// </summary>
+
+#region Edit Modes
 	private enum EditModes
 	{
 		MoveNodes,
@@ -15,7 +14,9 @@ public class LevelEditor : Editor
 		
 		Max
 	}
-	
+#endregion
+
+#region Edit Labels
 	/// <summary>
 	/// Mode labels.
 	/// </summary>
@@ -24,23 +25,31 @@ public class LevelEditor : Editor
 		"Move Nodes",
 		"Connect Nodes"
 	};
+#endregion
+	
+#region Methods
 	
 	public override void OnInspectorGUI() 
 	{
-		
 		Level editorLevel = (Level)target;
 		
-		expandNodeSettings = EditorGUILayout.Foldout(expandNodeSettings, "Selected Node");
-		if(editorLevel != null &&  editorLevel.SelectedNode != null && expandNodeSettings)
+		GUILayout.Label("Level");
+		GUILayout.BeginScrollView(m_scrollPosition);
+		
+		GUILayout.EndScrollView();
+		
+		m_expandNodeSettings = EditorGUILayout.Foldout(m_expandNodeSettings, "Selected Node");
+		
+		if(editorLevel != null &&  editorLevel.SelectedNode != null && m_expandNodeSettings)
 		{
 			editorLevel.SelectedNode.OnInspectorGUI();
 		}
 		
 		GUILayout.Label("Level Options");
+		
 		if(GUILayout.Button("Rebuild Level"))
 		{
 			LayoutObjectBuilder builder = new LayoutObjectBuilder();
-			
 			builder.BuildObjects(editorLevel);
 		}
 	}
@@ -50,6 +59,7 @@ public class LevelEditor : Editor
 		Level editorLevel = (Level) target;
 		Event e = Event.current;
 		
+		// Delete the current node
 		if(e.type == EventType.KeyDown && e.keyCode == KeyCode.Delete)
 		{
 			if(editorLevel.SelectedNode != null)
@@ -69,19 +79,16 @@ public class LevelEditor : Editor
 		
 		if(m_dragStarted)
 		{
-			
-			Vector3 startPos = new Vector3(m_connectionStart.m_position.x, m_connectionStart.m_position.y, 0.0f);
-			
+			Vector3 startPos = new Vector3(m_connectionStart.LocalPosition.x, m_connectionStart.LocalPosition.y, 0.0f);
 			
 			Plane zeroPlane = new Plane(new Vector3(0.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, 0.0f));
 
 			Ray ray = HandleUtility.GUIPointToWorldRay(new Vector2(e.mousePosition.x, e.mousePosition.y));
 
-
 			float hit;
 			if(zeroPlane.Raycast(ray, out hit))
 			{
-					var hitLocation = ray.GetPoint(hit);
+				var hitLocation = ray.GetPoint(hit);
 				
 				Vector3 targetPos = new Vector3(hitLocation.x, hitLocation.y, 0.0f);
 				
@@ -119,8 +126,12 @@ public class LevelEditor : Editor
 			
 			Level editorLevel = (Level) target;
 			WallLayoutNode newNode = ScriptableObject.CreateInstance<WallLayoutNode>();
-			newNode.m_position.x = placePoint.x;
-			newNode.m_position.y = placePoint.y;
+			
+			Vector2 newPos;
+			newPos.x = placePoint.x - editorLevel.transform.position.x;
+			newPos.y = placePoint.y - editorLevel.transform.position.y;
+			
+			newNode.LocalPosition = newPos;
 				
 			editorLevel.AddNode(newNode);
 		}
@@ -137,9 +148,7 @@ public class LevelEditor : Editor
 		int idCounter = 1;
 		foreach(var node in editorLevel.Nodes)
 		{
-			Vector3 handlePos = new Vector3(node.m_position.x, node.m_position.y, 0.0f);
-			
-			//bool nodeSelected = 
+			Vector3 handlePos = new Vector3(node.LocalPosition.x, node.LocalPosition.y, 0.0f);
 			
 			if(m_mode == EditModes.MoveNodes)
 			{
@@ -180,7 +189,7 @@ public class LevelEditor : Editor
 			{
 				if(connection.Target != null && connection.Source != null)
 				{
-					Vector3 connectionPos = new Vector3(connection.Target.m_position.x, connection.Target.m_position.y, 0.0f);
+					Vector3 connectionPos = new Vector3(connection.Target.LocalPosition.x, connection.Target.LocalPosition.y, 0.0f);
 					
 					Handles.color = Color.white;	
 					if(connection == editorLevel.SelectedNode.SelectedConnection)
@@ -190,9 +199,9 @@ public class LevelEditor : Editor
 					
 					if(connection.ConnectionType == LayoutConnection.ConnectionTypes.Bezier)
 					{
-						Vector3 source = connection.Source.m_position;
+						Vector3 source = connection.Source.LocalPosition;
 						Color bezierColor = connection == editorLevel.SelectedNode.SelectedConnection ? Color.red : Color.white;
-						Handles.DrawBezier(connection.Source.m_position, connection.Target.m_position, connection.Source.m_position + connection.SourceTangent, connection.Target.m_position + connection.TargetTangent, bezierColor, null, 1.5f);
+						Handles.DrawBezier(connection.Source.LocalPosition, connection.Target.LocalPosition, connection.Source.LocalPosition + connection.SourceTangent, connection.Target.LocalPosition + connection.TargetTangent, bezierColor, null, 1.5f);
 					}
 					else
 					{
@@ -200,7 +209,6 @@ public class LevelEditor : Editor
 					}
 					
 					Handles.color = Color.white;	
-					
 				}
 			}
 			
@@ -208,11 +216,15 @@ public class LevelEditor : Editor
 		}
 	}
 	
-	private EditModes m_mode = EditModes.MoveNodes;
+#endregion Methods
 	
-	private LayoutNode m_connectionStart = null;
+#region Fields
 	
-	private bool m_dragStarted = false;
+	private EditModes m_mode 				= EditModes.MoveNodes;
+	private LayoutNode m_connectionStart 	= null;
+	private bool m_dragStarted 				= false;
+	private bool m_expandNodeSettings 		= true;
+	private Vector2 m_scrollPosition		= new Vector2();
 	
-	private bool expandNodeSettings = true;
+#endregion
 }

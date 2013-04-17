@@ -12,6 +12,11 @@ public class LayoutNode : ScriptableObject
 		Link
 	}
 	
+	public void SetOwner(Level owner)
+	{
+		m_owner = owner;	
+	}
+	
 	public void AddConnection(LayoutNode other)
 	{
 		if(m_connections.Count < m_maxConnections)
@@ -61,10 +66,7 @@ public class LayoutNode : ScriptableObject
 		}
 	}
 	
-	public List<LayoutConnection> ConnectedNodes
-	{
-		get { return m_connections; }	
-	}
+	
 	
 	public virtual List<GameObject> BuildObject()
 	{
@@ -78,11 +80,11 @@ public class LayoutNode : ScriptableObject
 		{
 			case EditType.Move: 
 			{
-				Vector3	newPos =  Handles.Slider2D(id, m_position, new Vector3(0.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f), 0.2f, Handles.CubeCap, new Vector2(0.5f, 0.5f));
+				Vector3	newPos =  Handles.Slider2D(id, LocalPosition, new Vector3(0.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f), 0.2f, Handles.CubeCap, new Vector2(0.5f, 0.5f));
 			
-				if(newPos.x != m_position.x || newPos.y != m_position.y)
+				if(newPos.x != LocalPosition.x || newPos.y != LocalPosition.y)
 				{
-					m_position = newPos;
+					LocalPosition = newPos;
 				}
 			
 				bool selected = GUIUtility.hotControl == id;
@@ -95,7 +97,7 @@ public class LayoutNode : ScriptableObject
 			}
 			case EditType.Link:
 			{
-				return Handles.Button(m_position, Quaternion.identity, 0.2f, 0.2f, Handles.CubeCap);
+				return Handles.Button(LocalPosition, Quaternion.identity, 0.2f, 0.2f, Handles.CubeCap);
 			}
 		}
 		
@@ -104,11 +106,13 @@ public class LayoutNode : ScriptableObject
 	
 	public virtual void OnInspectorGUI()
 	{
-			
 		GUILayout.Label("Position");
-		m_position.x = EditorGUILayout.FloatField("x", m_position.x);
-		m_position.y = EditorGUILayout.FloatField("y", m_position.y);
 		
+		Vector2 newPos;
+		newPos.x = EditorGUILayout.FloatField("x", LocalPosition.x);
+		newPos.y = EditorGUILayout.FloatField("y", LocalPosition.y);
+		
+		LocalPosition = newPos;
 	
 		EditorGUILayout.BeginVertical();
 		
@@ -171,44 +175,86 @@ public class LayoutNode : ScriptableObject
 			return endPoints;
 		}
 		
+		// Find the node at the other end of the connection
+		LayoutNode otherNode = connection.Source == this ? connection.Target : connection.Source;
+		
+		// Determine the direction of the connection from this node
+		Vector2 directionToTarget = otherNode.LocalPosition - LocalPosition;
+		
+		// And it's rotation relative to up
+		float rotation = Mathf.Atan2(directionToTarget.x, directionToTarget.y);
+		
+		// Let's sort these connections on their rotation
+		int index = m_connections.IndexOf(connection);
+		
+		int leftIndex = index - 1;
+		int rightIndex = index + 1;
+	
+		if(leftIndex < 0) leftIndex = (m_connections.Count) + leftIndex;
+		rightIndex = rightIndex % m_connections.Count;
+		
+		float leftAdjust = 0.0f;
+		float rightAdjust = 0.0f;
+		
+		// Left angle
+		{
+			LayoutConnection leftConnection = m_connections[rightIndex];
+			Vector3 otherSource = leftConnection.Source == this ? leftConnection.Source.LocalPosition : leftConnection.Target.LocalPosition;
+			Vector3 otherTarget = leftConnection.Source == this ? leftConnection.Target.LocalPosition : leftConnection.Source.LocalPosition;
+			Vector3 otherDirection = otherTarget - otherSource;
+			
+			float angle = Mathf.Atan2(otherDirection.x, otherDirection.y);
+			
+			float halfAngle = (angle + rotation) / 2.0f;
+			float localHalfAngle = halfAngle- rotation;
+			localHalfAngle = (Mathf.PI / 2.0f) - localHalfAngle;
+			
+			float yChangeLeft = Mathf.Sin(localHalfAngle);
+			
+			float hyp = m_wallWidth / Mathf.Cos(localHalfAngle );
+			yChangeLeft *= hyp;
+			leftAdjust = yChangeLeft;
+				
+		}
+		
+		// Right angle
+		{
+			LayoutConnection leftConnection = m_connections[leftIndex];
+			Vector3 otherSource = leftConnection.Source == this ? leftConnection.Source.LocalPosition : leftConnection.Target.LocalPosition;
+			Vector3 otherTarget = leftConnection.Source == this ? leftConnection.Target.LocalPosition : leftConnection.Source.LocalPosition;
+			Vector3 otherDirection = otherTarget - otherSource;
+			
+			float angle = Mathf.Atan2(otherDirection.x, otherDirection.y);
+			
+			float halfAngle = (angle + rotation) / 2.0f;
+			float localHalfAngle = halfAngle- rotation;
+			localHalfAngle = (Mathf.PI / 2.0f) - localHalfAngle;
+			
+			float yChangeLeft = Mathf.Sin(localHalfAngle);
+			
+			float hyp = m_wallWidth / Mathf.Cos(localHalfAngle );
+			yChangeLeft *= hyp;
+			rightAdjust = -yChangeLeft;
+				
+		}
+		
 		foreach(var other in m_connections)
 		{
 			if(other != connection)
 			{
-				LayoutNode otherNode = connection.Source == this ? connection.Target : connection.Source;
-			
-				Vector2 directionToOther = otherNode.m_position - m_position;
-				float rotation = Mathf.Atan2(directionToOther.x, directionToOther.y);
-				
-				
-				Vector3 otherSource = other.Source == this ? other.Source.m_position : other.Target.m_position;
-				Vector3 otherTarget = other.Source == this ? other.Target.m_position : other.Source.m_position;
-				Vector3 otherDirection = otherTarget - otherSource;
-				
-				float angle = Mathf.Atan2(otherDirection.x, otherDirection.y);
-				
-				float wallSize = 0.2f;
-				
-				float halfAngle = (angle + rotation) / 2.0f;
-				float localHalfAngle = halfAngle- rotation;
-				localHalfAngle = (Mathf.PI / 2.0f) - localHalfAngle;
-				
-				
-									
-				float yChangeLeft = Mathf.Sin(localHalfAngle);
-				
-				float hyp = wallSize / Mathf.Cos(localHalfAngle );
-				Debug.Log("Arc length: " + hyp + " | " + wallSize);
-				yChangeLeft *= hyp;
-				
-				float yChangeRight = -yChangeLeft;
-				endPoints.x = yChangeLeft;
-				endPoints.y = yChangeRight;
-
+				endPoints.x = leftAdjust;
+				endPoints.y = rightAdjust;
 			}
 		}
 		
 		return endPoints;
+	}
+	
+	#region Properties
+	
+	public List<LayoutConnection> ConnectedNodes
+	{
+		get { return m_connections; }	
 	}
 	
 	public LayoutConnection SelectedConnection
@@ -216,8 +262,33 @@ public class LayoutNode : ScriptableObject
 		get; set;	
 	}
 	
+	public Vector2 LocalPosition
+	{
+		get 
+		{ 
+			Vector2 ownerPos = m_owner.transform.position;
+			return m_worldPosition + ownerPos;
+		}
+		
+		set
+		{
+			Vector2 ownerPos = m_owner.transform.position;	
+			m_worldPosition = value - ownerPos;
+		}
+	}
+	
+	#endregion
+	
+	#region Fields
+	
 	[SerializeField]
-	public Vector2 m_position;
+	public Level m_owner;
+	
+	[SerializeField]
+	public Vector2 m_worldPosition;
+	
+	[SerializeField]
+	public float m_wallWidth = 0.2f;
 	
 	[SerializeField]
 	protected int m_maxConnections = 10;
@@ -227,4 +298,6 @@ public class LayoutNode : ScriptableObject
 	
 	[SerializeField]
 	private bool m_showConnections = true;
+	
+	#endregion
 }

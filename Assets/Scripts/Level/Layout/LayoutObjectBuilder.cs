@@ -16,6 +16,7 @@ public class LayoutObjectBuilder
 		// Mark all connections as dirty
 		foreach(var node in level.Nodes)
 		{
+			node.SetOwner(level); // Remove
 			foreach(var connection in node.ConnectedNodes)
 			{
 				connection.Built = false;
@@ -24,6 +25,7 @@ public class LayoutObjectBuilder
 		
 		foreach(var node in level.Nodes)
 		{
+			
 			List<GameObject> newObjects = node.BuildObject();	
 			
 			foreach(var newObject in newObjects)
