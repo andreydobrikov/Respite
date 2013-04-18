@@ -64,7 +64,7 @@ Shader "Custom/GrassShader"
 				
 				val = (val * _ShadowFactor) + ((1.0f - _ShadowFactor) * otherval);
 				
-				val *= _TOD;
+				//val *= _TOD;
 				return val;
 			}
 			
