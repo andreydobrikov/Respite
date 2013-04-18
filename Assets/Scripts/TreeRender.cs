@@ -43,7 +43,7 @@ public class TreeRender : MonoBehaviour
 			}
 		}
 		
-		float change = Mathf.Sin(progress);
+		float change = progress;//Mathf.Sin(progress);
 		
 		
 		m_progress = new Vector4(change, 1.0f - change, change * 0.5f, 1.0f);
