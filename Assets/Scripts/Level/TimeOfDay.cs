@@ -29,8 +29,8 @@ public class TimeOfDay : MonoBehaviour
 		{
 			m_lightMapCamera = cameraObject.GetComponent<Camera>();
 			
-			int pixelWidth = (int)m_lightMapCamera.pixelWidth;
-			int pixelHeight = (int)m_lightMapCamera.pixelHeight;
+			int pixelWidth = (int)m_lightMapCamera.pixelWidth / 4;
+			int pixelHeight = (int)m_lightMapCamera.pixelHeight / 4;
 			
 			Debug.Log("Width: " + pixelWidth);
 			

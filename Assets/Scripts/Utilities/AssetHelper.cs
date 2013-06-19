@@ -20,7 +20,7 @@ public class AssetHelper
 		
 		if(asset == null)
 		{
-//			Debug.LogError("Failed to load asset: " + assetPath);	
+			Debug.LogError("Failed to load asset: " + assetPath);	
 		}
 		
 		return asset;
