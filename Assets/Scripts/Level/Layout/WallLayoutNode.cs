@@ -6,7 +6,9 @@
 /// </summary>
 
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,9 +16,10 @@ public class WallLayoutNode : LayoutNode
 {
 	public override List<GameObject> BuildObject()
 	{
+		
 		m_connections.Sort();
 		List<GameObject> newObjects = new List<GameObject>();
-		
+		#if UNITY_EDITOR
 		foreach(var connection in m_connections)
 		{
 			if(connection.Built)
@@ -136,7 +139,7 @@ public class WallLayoutNode : LayoutNode
 			connection.Built = true;
 			
 		}
-		
+#endif
 		return newObjects;
 	}
 	
@@ -160,7 +163,7 @@ public class WallLayoutNode : LayoutNode
 			newObject.AddComponent<BoxCollider>();
 		}
 	}
-	
+	#if UNITY_EDITOR
 	public override bool OnGUIInternal(EditType editType, int id, bool selectedNode)
 	{
 		bool selected = base.OnGUIInternal(editType, id, selectedNode);
@@ -187,4 +190,5 @@ public class WallLayoutNode : LayoutNode
 		}
 		return selected;
 	}
+#endif
 }

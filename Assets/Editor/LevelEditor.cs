@@ -219,9 +219,8 @@ public class LevelEditor : Editor
 #endregion Methods
 	
 #region Fields
-	
+	private LayoutNode m_connectionStart = null;
 	private EditModes m_mode 				= EditModes.MoveNodes;
-	private LayoutNode m_connectionStart 	= null;
 	private bool m_dragStarted 				= false;
 	private bool m_expandNodeSettings 		= true;
 	private Vector2 m_scrollPosition		= new Vector2();

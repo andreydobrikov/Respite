@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FollowPlayer : MonoBehaviour {
 	
-	
+	public Vector3 offset = Vector3.zero;
 	private GameObject m_player = null;
 	
 	// Use this for initialization
@@ -21,7 +21,7 @@ public class FollowPlayer : MonoBehaviour {
 		}
 		else
 		{
-			transform.position = new Vector3(m_player.transform.position.x, m_player.transform.position.y, m_player.transform.position.z - 3.0f);
+			transform.position =  new Vector3(m_player.transform.position.x, m_player.transform.position.y, m_player.transform.position.z - 3.0f);
 		}
 	}
 }

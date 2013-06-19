@@ -1,6 +1,11 @@
 using System;
+
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using System.Collections.Generic;
 
 [Serializable]
@@ -74,6 +79,7 @@ public class LayoutNode : ScriptableObject
 		return null;
 	}
 	
+	#if UNITY_EDITOR
 	public virtual bool OnGUIInternal(EditType editType, int id, bool selectedNode)
 	{
 		switch(editType)
@@ -164,6 +170,7 @@ public class LayoutNode : ScriptableObject
 	
 		EditorGUILayout.EndVertical();
 	}
+#endif
 	
 	public Vector2 GetEndPoints(LayoutConnection connection)
 	{

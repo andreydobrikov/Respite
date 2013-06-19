@@ -3,15 +3,43 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class TimeOfDay : MonoBehaviour 
 {
 	public float CycleTime = 1000.0f;
 	public float ActiveTime = 0.0f;
+	public float StartTime = 0.0f;
+	public bool PauseUpdate = false;
+	public float CloudCoverPercentage = 0.0f;
 	
 	void OnEnable()
 	{
-		ActiveTime 			= 0.0f;
+		Reset ();
+	}
+	
+	void Start()
+	{
+		Reset ();
+	}
+	
+	private void Reset()
+	{
+		GameObject cameraObject = GameObject.FindGameObjectWithTag("LightMapCamera");
+		if(cameraObject != null)
+		{
+			m_lightMapCamera = cameraObject.GetComponent<Camera>();
+			
+			int pixelWidth = (int)m_lightMapCamera.pixelWidth;
+			int pixelHeight = (int)m_lightMapCamera.pixelHeight;
+			
+			Debug.Log("Width: " + pixelWidth);
+			
+			m_lightMapCamera.targetTexture = new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default);
+			m_lightMapCamera.targetTexture.isPowerOfTwo = false;
+			Camera.mainCamera.GetComponent<LightMapEffect>().lightMapTexture = m_lightMapCamera.targetTexture;
+			
+		}
+		ActiveTime 			= StartTime;
 		m_currentFrameIndex = 0;
 		
 		TODKeyFrame frame1 = new TODKeyFrame();
@@ -45,6 +73,7 @@ public class TimeOfDay : MonoBehaviour
 		m_frames.Sort();
 		
 		AdvanceFrame();
+		UpdateTime(true);
 	}
 	
 	// Update is called once per frame
@@ -52,7 +81,10 @@ public class TimeOfDay : MonoBehaviour
 	
 	void FixedUpdate () 
 	{
-		ActiveTime += Time.deltaTime;
+		if(!PauseUpdate)
+		{
+			ActiveTime += Time.deltaTime;
+		}
 		
 		UpdateTime(false);
 	}
@@ -91,7 +123,7 @@ public class TimeOfDay : MonoBehaviour
 		float timeSeparation 	= m_nextFrame.FrameTime - m_currentFrame.FrameTime;
 		float progress 			= (adjustedTime - m_currentFrame.FrameTime) / timeSeparation;
 		Vector4 lerpedValue 	= Vector4.Lerp(m_currentFrame.FrameColor, m_nextFrame.FrameColor, progress);
-		
+				
 		// This is required for looping to work
 		if(m_nextFrame.FrameTime < m_currentFrame.FrameTime)
 		{
@@ -110,6 +142,19 @@ public class TimeOfDay : MonoBehaviour
 			// As a cheat, LERP backwards with 1.0f - progress
 			lerpedValue = Vector4.Lerp(m_nextFrame.FrameColor, m_currentFrame.FrameColor, 1.0f - progress);
 		}
+		
+		lerpedValue *= (1.0f - (CloudCoverPercentage  / 3.0f));
+
+		if(m_lightMapCamera != null)
+		{
+			lerpedValue.w = 1.0f;
+			m_lightMapCamera.backgroundColor = lerpedValue;
+		}
+		else
+		{
+			Debug.Log("Camera not found");	
+		}
+		//Shader.SetGlobalVector("_TOD", lerpedValue);
 		
 	}
 	
@@ -137,17 +182,18 @@ public class TimeOfDay : MonoBehaviour
 		get { return ActiveTime / CycleTime; }
 	}
 	
-	private int			m_currentFrameIndex;
-	private TODKeyFrame m_currentFrame;
-	private TODKeyFrame m_nextFrame;
-	private List<TODKeyFrame> m_frames = new List<TODKeyFrame>();
-	
+	private int					m_currentFrameIndex;
+	private TODKeyFrame 		m_currentFrame;
+	private TODKeyFrame 		m_nextFrame;
+	private List<TODKeyFrame> 	m_frames = new List<TODKeyFrame>();
+	private Camera 				m_lightMapCamera = null;
 }
 
 public class TODKeyFrame : IComparable<TODKeyFrame>
 {
 	public float FrameTime;
 	public Vector4 FrameColor;
+	public float CloudCoverMultiplier;
 	
 	public int CompareTo(TODKeyFrame other)
 	{

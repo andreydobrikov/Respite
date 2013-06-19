@@ -13,7 +13,7 @@ public class TreeRender : MonoBehaviour
 	void Start () 
 	{
 		m_renderer = GetComponent<MeshRenderer>();
-		m_renderer.material.SetVector("_BaseColour", baseColour);
+		m_renderer.sharedMaterial.SetVector("_BaseColour", baseColour);
 	}
 	
 	private Vector4 m_progress = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -43,10 +43,10 @@ public class TreeRender : MonoBehaviour
 			}
 		}
 		
-		float change = progress;//Mathf.Sin(progress);
+		float change = Mathf.Sin(progress);
 		
 		
-		m_progress = new Vector4(change, 1.0f - change, change * 0.5f, 1.0f);
+		m_progress = new Vector4(change, 1.0f - change,1.0f, 0.0f);
 		
 		m_renderer.material.SetVector("_ShadeProgress", m_progress);
 	}
