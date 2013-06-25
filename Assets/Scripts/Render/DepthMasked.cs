@@ -18,7 +18,7 @@ public class DepthMasked : MonoBehaviour {
 	protected void Awake() {
 		Material[] materials = renderer.materials;
 		for (int i = 0; i < materials.Length && i < m_queues.Length; ++i) {
-			materials[i].renderQueue = m_queues[i];
+		//	materials[i].renderQueue = m_queues[i];
 		}
 	}
 }

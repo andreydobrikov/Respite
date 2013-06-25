@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class TimeOfDay : MonoBehaviour 
 {
 	public float CycleTime = 1000.0f;
@@ -11,6 +11,7 @@ public class TimeOfDay : MonoBehaviour
 	public float StartTime = 0.0f;
 	public bool PauseUpdate = false;
 	public float CloudCoverPercentage = 0.0f;
+	public Vector4 TODColor = Vector4.one;
 	
 	void OnEnable()
 	{
@@ -25,65 +26,41 @@ public class TimeOfDay : MonoBehaviour
 	private void Reset()
 	{
 		GameObject cameraObject = GameObject.FindGameObjectWithTag("LightMapCamera");
-		if(cameraObject != null)
+		GameObject targetCamera = GameObject.FindGameObjectWithTag("WeatherCamera");
+		if(cameraObject != null && targetCamera != null)
 		{
 			m_lightMapCamera = cameraObject.GetComponent<Camera>();
 			
-			int pixelWidth = (int)m_lightMapCamera.pixelWidth / 4;
-			int pixelHeight = (int)m_lightMapCamera.pixelHeight / 4;
+			int pixelWidth = (int)Camera.mainCamera.pixelWidth;
+			int pixelHeight = (int)Camera.mainCamera.pixelHeight;
 			
 			Debug.Log("Width: " + pixelWidth);
 			
-			m_lightMapCamera.targetTexture = new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default);
+			m_lightMapCamera.targetTexture = new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 			m_lightMapCamera.targetTexture.isPowerOfTwo = false;
-			Camera.mainCamera.GetComponent<LightMapEffect>().lightMapTexture = m_lightMapCamera.targetTexture;
+			targetCamera.GetComponent<LightMapEffect>().lightMapTexture = m_lightMapCamera.targetTexture;
 			
 		}
 		ActiveTime 			= StartTime;
 		m_currentFrameIndex = 0;
 		
 		TODKeyFrame frame1 = new TODKeyFrame();
-		TODKeyFrame frame2 = new TODKeyFrame();
-		TODKeyFrame frame3 = new TODKeyFrame();
-		TODKeyFrame frame4 = new TODKeyFrame();
-		TODKeyFrame frame5 = new TODKeyFrame();
 		
-		frame1.FrameColor = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-		frame1.FrameTime = 0.2f;
-		
-		frame2.FrameColor = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-		frame2.FrameTime = 0.7f;
-		
-		frame3.FrameColor = new Vector4(0.1f, 0.1f, 0.2f, 1.0f);
-		frame3.FrameTime = 0.1f;
-		
-		frame4.FrameColor = new Vector4(0.1f, 0.1f, 0.2f, 1.0f);
-		frame4.FrameTime = 0.85f;
-		
-		frame5.FrameColor = new Vector4(0.95f, 0.75f, 0.5f, 1.0f);
-		frame5.FrameTime = 0.78f;
-		
-		m_frames.Clear();
-		
-		m_frames.Add(frame1);
-		m_frames.Add(frame2);
-		m_frames.Add(frame3);
-		m_frames.Add(frame4);
-		m_frames.Add(frame5);
-		m_frames.Sort();
+		if(m_frames == null || m_frames.Count == 0)
+		{
+			m_frames = new List<TODKeyFrame>();
+			m_frames.Add(frame1);	 
+		}
 		
 		AdvanceFrame();
 		UpdateTime(true);
 	}
 	
-	// Update is called once per frame
-	Vector4 SunColor = new Vector4();
-	
 	void FixedUpdate () 
 	{
 		if(!PauseUpdate)
 		{
-			ActiveTime += Time.deltaTime;
+			ActiveTime += Time.deltaTime; 
 		}
 		
 		UpdateTime(false);
@@ -143,11 +120,15 @@ public class TimeOfDay : MonoBehaviour
 			lerpedValue = Vector4.Lerp(m_nextFrame.FrameColor, m_currentFrame.FrameColor, 1.0f - progress);
 		}
 		
-		lerpedValue *= (1.0f - (CloudCoverPercentage  / 3.0f));
+		lerpedValue *= (1.0f - (CloudCoverPercentage  / 2.0f));
+		lerpedValue.w = 1.0f;
+		TODColor = lerpedValue;
+		TODColor.w = 1.0f -CloudCoverPercentage;
+		
 
 		if(m_lightMapCamera != null)
 		{
-			lerpedValue.w = 1.0f;
+			
 			m_lightMapCamera.backgroundColor = lerpedValue;
 		}
 		else
@@ -180,19 +161,28 @@ public class TimeOfDay : MonoBehaviour
 	public float AdjustedTime
 	{
 		get { return ActiveTime / CycleTime; }
+		set { ActiveTime = (value * CycleTime); }
 	}
 	
 	private int					m_currentFrameIndex;
 	private TODKeyFrame 		m_currentFrame;
 	private TODKeyFrame 		m_nextFrame;
-	private List<TODKeyFrame> 	m_frames = new List<TODKeyFrame>();
+	
+	[SerializeField]
+	private List<TODKeyFrame> 	m_frames;
 	private Camera 				m_lightMapCamera = null;
 }
 
+[Serializable]
 public class TODKeyFrame : IComparable<TODKeyFrame>
 {
+	[SerializeField]
 	public float FrameTime;
+	
+	[SerializeField]
 	public Vector4 FrameColor;
+	
+	[SerializeField] 
 	public float CloudCoverMultiplier;
 	
 	public int CompareTo(TODKeyFrame other)

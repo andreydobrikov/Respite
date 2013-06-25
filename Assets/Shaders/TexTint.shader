@@ -9,6 +9,7 @@ Shader "Custom/TexTint"
 	SubShader 
 	{
 		LOD 200
+		Cull off
 		
 		Pass
 		{
@@ -29,11 +30,11 @@ Shader "Custom/TexTint"
 		      float2  uv : TEXCOORD0;
 	        };
 	
-			v2f vert (appdata_base v) 
+			v2f vert (appdata_full v) 
 			{
 				v2f o;
 		        o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
-		        o.color = _Color;
+		        o.color = v.color;
 		        
 		        
 		        o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
@@ -51,6 +52,8 @@ Shader "Custom/TexTint"
 				//val.rgb = float3(1.0f, 0.0f, 0.0f);
 				
 				float4 val = tex2D (_MainTex, i.uv) * _Color;
+				val *= i.color;
+				//val = i.color.a;
 				return val;
 			}
 			

@@ -11,6 +11,7 @@ Shader "Custom/TexTransparentTint"
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
 		LOD 200
 		Blend SrcAlpha OneMinusSrcAlpha
+		Cull Off
 		
 		Pass
 		{
@@ -31,11 +32,11 @@ Shader "Custom/TexTransparentTint"
 		      float2  uv : TEXCOORD0;
 	        };
 	
-			v2f vert (appdata_base v) 
+			v2f vert (appdata_full v) 
 			{
 				v2f o;
 		        o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
-		        o.color = _Color;
+		        o.color = v.color;
 		        
 		        
 		        o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
@@ -53,6 +54,7 @@ Shader "Custom/TexTransparentTint"
 				//val.rgb = float3(1.0f, 0.0f, 0.0f);
 				
 				float4 val = tex2D (_MainTex, i.uv) * _Color;
+				val *= i.color;
 				return val;
 			}
 			

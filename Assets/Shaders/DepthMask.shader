@@ -7,7 +7,7 @@ Shader "Custom/DepthMask"
 		Tags {"Queue" = "Geometry+10" }
  
 		// Don't draw in the RGBA channels; just the depth buffer
- 
+ 		cull off
 		ColorMask 0
 		ZWrite On
  
