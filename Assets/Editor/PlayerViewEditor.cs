@@ -9,7 +9,10 @@ public class PlayerViewEditor : Editor
 	{
 		PlayerView view = (PlayerView)target;
 		
+		GUILayout.BeginVertical((GUIStyle)("Box"));
 		view.Dynamic = GUILayout.Toggle(view.Dynamic, "Dynamic");
+		view.DisplayStats = GUILayout.Toggle(view.DisplayStats, "Display Stats");
+		GUILayout.EndVertical();
 		
 		GUILayout.BeginVertical((GUIStyle)("Box"));
 		view.ShowCandidateRays = GUILayout.Toggle(view.ShowCandidateRays, "Candidate Rays");
@@ -32,5 +35,10 @@ public class PlayerViewEditor : Editor
 		view.m_centreNudge = GUILayout.HorizontalSlider(view.m_centreNudge, 0.001f, 0.999f);
 		GUILayout.EndHorizontal();
 		
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("Vertex Cast", GUILayout.Width(100));
+		GUILayout.Label(view.m_vertexCast.ToString("0.00"), GUILayout.Width(40));
+		view.m_vertexCast = GUILayout.HorizontalSlider(view.m_vertexCast, 0.001f, 0.999f);
+		GUILayout.EndHorizontal();
 	}
 }

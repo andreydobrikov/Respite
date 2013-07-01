@@ -2,52 +2,30 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [AddComponentMenu("Custom/Rendering/AmbientLightZone")]
-
 public class AmbientLightZone : MonoBehaviour 
 {
-	public List<AmbientContributor> m_contributors = new List<AmbientContributor>();
+	public Color TODMinColor = Color.white;
+	public Color TODMaxColor = Color.white;
 		
 	// Use this for initialization
 	void Start () 
 	{
-		m_color = renderer.material.color;
+		m_timeOfDay = FindObjectOfType(typeof(TimeOfDay)) as TimeOfDay;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		Vector4 ambient = Vector4.zero;
+		Vector4 ambient = m_timeOfDay.TODColor;
 		
-		foreach(var contributor in m_contributors)
-		{
-			ambient += contributor.GetAmbientContribution();		
-		}
+		ambient = Vector4.Max(ambient, TODMinColor);
+		ambient = Vector4.Min(ambient, TODMaxColor);
+		
 		
 		//ambient.Normalize();
 		ambient.w = 1.0f;
 		
 		renderer.material.SetColor("_Color", ambient);
 	}
-	
-	void OnTriggerEnter(Collider other)
-	{
-	Debug.Log("Trigger");
-		AmbientContributor contributor = other.GetComponent<AmbientContributor>();
-		if(contributor != null)
-		{
-			m_contributors.Add(contributor);	
-		}
-	}
-	
-	void OnTriggerExit(Collider other)
-	{
-		AmbientContributor contributor = other.GetComponent<AmbientContributor>();
-		if(contributor != null)
-		{
-			m_contributors.Remove(contributor);	
-		}
-	}
-	
-	
-	private Vector4 m_color = Vector4.one;
+	private TimeOfDay m_timeOfDay = null;
 }

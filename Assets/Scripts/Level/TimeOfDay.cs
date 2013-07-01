@@ -13,11 +13,6 @@ public class TimeOfDay : MonoBehaviour
 	public float CloudCoverPercentage = 0.0f;
 	public Vector4 TODColor = Vector4.one;
 	
-	void OnEnable()
-	{
-		Reset ();
-	}
-	
 	void Start()
 	{
 		Reset ();
@@ -89,7 +84,6 @@ public class TimeOfDay : MonoBehaviour
 			(m_nextFrame.FrameTime < m_currentFrame.FrameTime && (adjustedTime > m_nextFrame.FrameTime && adjustedTime < m_currentFrame.FrameTime)))
 		{
 			AdvanceFrame();	
-			Debug.Log("Advance...");
 		}
 		
 		if(ActiveTime > CycleTime)

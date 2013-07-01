@@ -61,10 +61,6 @@ public class WallLayoutNode : LayoutNode
 				
 				Vector2 v0 = new Vector2(sourcePos.x, sourcePos.y);
 				Vector2 v1 = new Vector2(targetPos.x, targetPos.y);
-				Vector2 t0 = sourceHandlePos;
-				Vector2 t1 = targetHandlePos;
-				
-				Mesh newMesh = Bezier.GetBezierMesh(v0, t0, v1, t1, 10, false);
 				
 				newObject.transform.localRotation = Quaternion.identity;
 				newObject.transform.position = Vector3.zero;
