@@ -143,7 +143,7 @@ public class TimeOfDay : MonoBehaviour
 	
 	private void OnGUI()
 	{
-		GUI.Label(new Rect(200, 200, 200, 200), (ActiveTime / CycleTime).ToString());
+		GUI.Label(new Rect(20, 200, 200, 200), (ActiveTime / CycleTime).ToString());
 	}
 	
 	public List<TODKeyFrame> Frames

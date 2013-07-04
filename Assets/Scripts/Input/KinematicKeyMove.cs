@@ -18,26 +18,24 @@ public class KinematicKeyMove : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		m_controller.velocity = new Vector3(0.0f, 0.0f, 0.0f);
-		if(Input.GetKey(KeyCode.UpArrow) )
+		m_controller.velocity = Vector3.zero;
 		{
-			
-			m_controller.AddForce(transform.rotation * (Vector3.up * MoveSpeed));
+			m_controller.AddForce(transform.rotation * (Vector3.up * (Input.GetAxis("Vertical") * MoveSpeed)));
 		}
-		
+		/*
 		if(Input.GetKey(KeyCode.DownArrow))
 		{
 			m_controller.AddForce(transform.rotation * (Vector3.up * -MoveSpeed));
 		}
+		*/
 		
-		if(Input.GetKey(KeyCode.LeftArrow))
-		{
-			transform.Rotate(0.0f, 0.0f, TurnSpeed);
-		}
+		transform.Rotate(0.0f, 0.0f, (TurnSpeed * -Input.GetAxis("Horizontal")));
 		
+		/*
 		if(Input.GetKey(KeyCode.RightArrow))
 		{
 			transform.Rotate(0.0f, 0.0f, -TurnSpeed);
 		}
+		*/
 	}
 }

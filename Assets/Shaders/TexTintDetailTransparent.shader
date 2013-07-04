@@ -58,7 +58,7 @@ Shader "Custom/TexTintDetail"
 				float4 val = tex2D(_MainTex, i.uv0) * detail;
 				
 				val *= i.color;
-			//	val *= _Color;
+				val *= _Color;
 				return val;
 			}
 			

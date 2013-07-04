@@ -19,9 +19,9 @@ public class KeyMove : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		if(Input.GetKey(KeyCode.UpArrow) )
+		Debug.Log(Input.GetAxis("Horizontal"));
 		{
-			m_controller.AddVelocity(new Vector3(0.0f, MoveSpeed, 0.0f));
+			m_controller.AddVelocity(new Vector3(0.0f, Input.GetAxis("Horizontal"), 0.0f));
 		}
 		
 		if(Input.GetKey(KeyCode.DownArrow))

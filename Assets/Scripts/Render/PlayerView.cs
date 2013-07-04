@@ -9,9 +9,10 @@ using System.Collections.Generic;
 /// This thing is Dr Wright's fetish material. 
 /// 
 /// The following list details all the idiotic quirks of this class.
-/// 
-/// 
-/// 
+/// - Heavy on the allocations
+/// - Lots of raycasting that can probably be trimmed down.
+/// - Remove redundant verts for static light-meshes
+/// - Think of a better way to deal with co-linear rays. They cause flickering at the moment
 /// </summary>
 
 [RequireComponent(typeof(MeshFilter))]
