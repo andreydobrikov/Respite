@@ -42,6 +42,10 @@ public class InteractionMenu : MonoBehaviour
 	
 	void OnGUI()
 	{
+		
+		
+	
+		
 		if(Event.current.type == EventType.KeyDown)
 		{
 			if(Input.GetKeyDown(KeyCode.Tab))
@@ -53,10 +57,7 @@ public class InteractionMenu : MonoBehaviour
 		
 		if(m_objectsInRange.Count > 0)
 		{
-			if(m_currentTab >= m_objectsInRange.Count)
-			{
-				m_currentTab = m_objectsInRange.Count - 1;	
-			}
+			
 			
 			GUI.skin = skin;
 			
@@ -67,8 +68,6 @@ public class InteractionMenu : MonoBehaviour
 			{
 				for(int i = 0; i < m_objectsInRange.Count; i++)
 				{
-					const float dotWidth = 10.0f;
-					
 					if(m_currentTab == i)
 					{
 						GUI.Label(new Rect(centrePoint.x - 50.0f + (i * 10.0f), centrePoint.y - 50.0f, 150.0f, 50.0f), ".", (GUIStyle)("Tab"));
@@ -81,6 +80,8 @@ public class InteractionMenu : MonoBehaviour
 				}
 			}
 			
+			
+			
 			List<Interaction> interactions = m_objectsInRange[m_currentTab].GetInteractions();
 			if(interactions.Count > 3)
 			{
@@ -92,6 +93,8 @@ public class InteractionMenu : MonoBehaviour
 			{
 				interactions[0].Callback(interactions[0]);	
 			}
+				
+			
 			
 			if(interactions.Count > 1)
 			{
@@ -107,6 +110,40 @@ public class InteractionMenu : MonoBehaviour
 			
 			//GUILayout.EndArea();
 		}
+	}
+	
+	void Update()
+	{
+		
+		if(m_objectsInRange.Count > 0)
+		{
+			if(m_currentTab >= m_objectsInRange.Count)
+			{
+				m_currentTab = m_objectsInRange.Count - 1;	
+			}
+			
+			if(m_currentTab >= m_objectsInRange.Count)
+			{
+				m_currentTab = m_objectsInRange.Count - 1;	
+			}
+		
+			List<Interaction> interactions = m_objectsInRange[m_currentTab].GetInteractions();	
+		
+			if(Input.GetButtonUp("option_0"))
+			{
+				interactions[0].Callback(interactions[0]);	
+			}
+			
+			if(interactions.Count > 1)
+			{
+				if(Input.GetButtonUp("option_1"))
+				{
+					interactions[1].Callback(interactions[1]);	
+				}	
+			}
+		}
+		
+		
 	}
 	
 	List<InteractiveObject> m_objectsInRange = new List<InteractiveObject>();

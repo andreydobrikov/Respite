@@ -250,8 +250,6 @@ public class PlayerView : MonoBehaviour
 			newOccluder.vec.z = transform.position.z;
 			Vector3 normalDirection = Vector3.Normalize(directionToVert);
 			
-			float dot = Vector3.Dot(Vector3.up, normalDirection);
-			
 			double angle = Math.Atan2((double)normalDirection.x, (double)normalDirection.y);
 					
 			newOccluder.angle = angle;

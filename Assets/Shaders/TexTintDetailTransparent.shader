@@ -1,4 +1,4 @@
-Shader "Custom/TexTintDetail" 
+Shader "Custom/TexTintDetailTransparent" 
 {
 	Properties 
 	{

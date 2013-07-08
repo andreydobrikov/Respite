@@ -19,9 +19,9 @@ public class KinematicKeyMove : MonoBehaviour
 	void FixedUpdate () 
 	{
 		m_controller.velocity = Vector3.zero;
-		{
-			m_controller.AddForce(transform.rotation * (Vector3.up * (Input.GetAxis("Vertical") * MoveSpeed)));
-		}
+			m_controller.AddForce( (Vector3.up * (Input.GetAxis("Vertical") * MoveSpeed)));
+			m_controller.AddForce( (Vector3.right * (Input.GetAxis("Horizontal") * MoveSpeed)));
+	
 		/*
 		if(Input.GetKey(KeyCode.DownArrow))
 		{
@@ -29,7 +29,7 @@ public class KinematicKeyMove : MonoBehaviour
 		}
 		*/
 		
-		transform.Rotate(0.0f, 0.0f, (TurnSpeed * -Input.GetAxis("Horizontal")));
+		//transform.Rotate(0.0f, 0.0f, (TurnSpeed * -Input.GetAxis("Horizontal")));
 		
 		/*
 		if(Input.GetKey(KeyCode.RightArrow))

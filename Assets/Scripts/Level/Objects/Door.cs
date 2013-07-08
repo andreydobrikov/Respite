@@ -54,7 +54,6 @@ public class Door : InteractiveObject
 	
 	private Interaction m_openInteraction 	= null;
 	private Interaction m_closeInteraction 	= null;
-	private float m_closedRotation = 0.0f;
 	private float m_openRotation = -65.0f;
 	private float m_currentRotation = 0.0f;
 	private float m_lerpProgress = 0.0f;

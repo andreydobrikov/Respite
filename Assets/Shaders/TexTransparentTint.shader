@@ -15,7 +15,6 @@ Shader "Custom/TexTransparentTint"
 		
 		Pass
 		{
-		
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag

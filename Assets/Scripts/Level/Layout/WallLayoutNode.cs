@@ -45,29 +45,16 @@ public class WallLayoutNode : LayoutNode
 			
 			newObject.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, (-rotation * Mathf.Rad2Deg));
 			
-			int samplePoints = connection.BezierSections;
 			Mesh nodeMesh = new Mesh();
 			
 			if(connection.ConnectionType == LayoutConnection.ConnectionTypes.Bezier)
 			{
-				Vector2 normalSource = connection.SourceTangent;
-				Vector2 normalTarget = connection.TargetTangent;
-				
-				Vector2 sourceHandlePos = connection.Source.LocalPosition + normalSource;
-				Vector2 targetHandlePos = connection.Target.LocalPosition + normalTarget;
-			
-				Vector3 sourcePos = new Vector3(connection.Source.LocalPosition.x, connection.Source.LocalPosition.y, 0.0f);
-				Vector3 targetPos = new Vector3(connection.Target.LocalPosition.x, connection.Target.LocalPosition.y, 0.0f);
-				
-				Vector2 v0 = new Vector2(sourcePos.x, sourcePos.y);
-				Vector2 v1 = new Vector2(targetPos.x, targetPos.y);
-				
 				newObject.transform.localRotation = Quaternion.identity;
 				newObject.transform.position = Vector3.zero;
 			}
 			else
 			{
-				Vector3[] 	vertices 	= new Vector3[6];
+				Vector3[] 	vertices 	= new Vector3[6]; 
 				Vector2[] 	uvs 		= new Vector2[6];
 				int[] 		triangles 	= new int[6 * 4];
 				

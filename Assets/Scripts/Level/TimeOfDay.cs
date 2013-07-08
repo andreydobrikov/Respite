@@ -6,12 +6,12 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class TimeOfDay : MonoBehaviour 
 {
-	public float CycleTime = 1000.0f;
-	public float ActiveTime = 0.0f;
-	public float StartTime = 0.0f;
-	public bool PauseUpdate = false;
-	public float CloudCoverPercentage = 0.0f;
-	public Vector4 TODColor = Vector4.one;
+	public float CycleTime 				= 1000.0f;
+	public float ActiveTime 			= 0.0f;
+	public float StartTime 				= 0.0f;
+	public bool PauseUpdate 			= false;
+	public float CloudCoverPercentage 	= 0.0f;
+	public Vector4 TODColor 			= Vector4.one;
 	
 	void Start()
 	{
@@ -22,20 +22,29 @@ public class TimeOfDay : MonoBehaviour
 	{
 		GameObject cameraObject = GameObject.FindGameObjectWithTag("LightMapCamera");
 		GameObject targetCamera = GameObject.FindGameObjectWithTag("WeatherCamera");
+		
 		if(cameraObject != null && targetCamera != null)
 		{
 			m_lightMapCamera = cameraObject.GetComponent<Camera>();
 			
-			int pixelWidth = (int)Camera.mainCamera.pixelWidth;
+			// Fiddle with these to use a smaller render-texture for the light-pass.
+			// Note: Too small a target can cause light bleeding when the overlay is interpolated.
+			int pixelWidth 	= (int)Camera.mainCamera.pixelWidth;
 			int pixelHeight = (int)Camera.mainCamera.pixelHeight;
 			
-			Debug.Log("Width: " + pixelWidth);
-			
-			m_lightMapCamera.targetTexture = new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
-			m_lightMapCamera.targetTexture.isPowerOfTwo = false;
-			targetCamera.GetComponent<LightMapEffect>().lightMapTexture = m_lightMapCamera.targetTexture;
-			
+			if(true)
+			{
+				// If this is run-in-editor, the camera's aspect ratio will not yet have been updated.
+				// This in turn will crap up the aspect ratio of the attached RenderTexture, so manually set the aspect
+				// - ratio before creating the texture.
+				m_lightMapCamera.aspect = (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+				
+				m_lightMapCamera.targetTexture = new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
+				m_lightMapCamera.targetTexture.isPowerOfTwo = false;
+				targetCamera.GetComponent<LightMapEffect>().lightMapTexture = m_lightMapCamera.targetTexture;
+			}
 		}
+		 
 		ActiveTime 			= StartTime;
 		m_currentFrameIndex = 0;
 		
@@ -57,6 +66,9 @@ public class TimeOfDay : MonoBehaviour
 		{
 			ActiveTime += Time.deltaTime; 
 		}
+		
+		//Debug.Log("Width: " + (int)Camera.mainCamera.pixelWidth);	
+		//Debug.Log("Height: " + (int)Camera.mainCamera.pixelHeight);	
 		
 		UpdateTime(false);
 	}

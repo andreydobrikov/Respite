@@ -83,7 +83,6 @@ public class Bezier
 				
 				float wallSize = 0.2f;
 				float stepSize = 1.0f / (float)(iterations - 1);
-				float length = Bezier.GetBezierLength(v0, t0, v1, t1);
 				Vector2 lastPoint = Bezier.GetBezierPoint(0.0f, v0, t0, v1, t1);
 				float accumulatedDistance = 0.0f;
 				for(int i = 0; i < iterations; i++)
@@ -103,6 +102,8 @@ public class Bezier
 					vertices[i * 4 + 3] = new Vector3(bezierPoint.x, bezierPoint.y, 1.0f);
 					vertices[i * 4 + 3] += new Vector3(-tangent.x, -tangent.y) * wallSize;
 					
+			
+					/* Removing this to hush warnings. It necessarily can't have been doing anything anyway.
 					if(lastPoint == null)
 					{
 						uvs[i * 4] = new Vector2( 0.0f, 0.0f);
@@ -110,7 +111,7 @@ public class Bezier
 						uvs[i * 4 + 2] = new Vector2( 0.0f, 0.0f);
 						uvs[i * 4 + 3] = new Vector2( 0.0f, 1.0f);	
 					}
-					else
+					else*/
 					{
 						Vector2 toLastPoint = bezierPoint - lastPoint;
 						float distanceToLastPoint = toLastPoint.magnitude;
