@@ -50,6 +50,28 @@ public class Door : InteractiveObject
 		m_openInteraction.Enabled 	= true;
 	}
 	
+	private void SaveSerialise(List<SavePair> pairs)
+	{
+		pairs.Add(new SavePair("current_rotation", 	m_currentRotation.ToString()));
+		pairs.Add(new SavePair("lerp_direction", 	m_lerpDirection.ToString()));
+		pairs.Add(new SavePair("lerp_progress", 	m_lerpProgress.ToString()));
+	}
+	
+	private void SaveDeserialise(List<SavePair> pairs)
+	{
+		foreach(var pair in pairs)
+		{
+			if(pair.id == "current_rotation") {	float.TryParse(pair.value, out m_currentRotation); }
+			if(pair.id == "lerp_direction") {	float.TryParse(pair.value, out m_lerpDirection); }
+			if(pair.id == "lerp_progress") {	float.TryParse(pair.value, out m_lerpProgress); }
+			
+			Debug.Log("Door deserialising value " + pair.value);	
+		}
+		
+		m_openInteraction.Enabled 	= m_lerpDirection <= 0.0f;
+		m_closeInteraction.Enabled 	= m_lerpDirection > 0.0f;
+	}
+	
 	private List<Interaction> m_interactions = new List<Interaction>();
 	
 	private Interaction m_openInteraction 	= null;

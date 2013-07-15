@@ -11,10 +11,10 @@ FBXHeaderExtension:  {
         Year: 2013
         Month: 7
         Day: 8
-        Hour: 16
-        Minute: 38
-        Second: 52
-        Millisecond: 909
+        Hour: 22
+        Minute: 57
+        Second: 53
+        Millisecond: 543
     }
     Creator: "FBX SDK/FBX Plugins version 2012.0"
     SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -36,13 +36,13 @@ FBXHeaderExtension:  {
             P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
             P: "Original|ApplicationName", "KString", "", "", "3ds Max"
             P: "Original|ApplicationVersion", "KString", "", "", "2012"
-            P: "Original|DateTime_GMT", "DateTime", "", "", "08/07/2013 15:38:52.907"
+            P: "Original|DateTime_GMT", "DateTime", "", "", "08/07/2013 21:57:53.487"
             P: "Original|FileName", "KString", "", "", "C:\Unity\Respite\Assets\Meshes\hut.FBX"
             P: "LastSaved", "Compound", "", ""
             P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
             P: "LastSaved|ApplicationName", "KString", "", "", "3ds Max"
             P: "LastSaved|ApplicationVersion", "KString", "", "", "2012"
-            P: "LastSaved|DateTime_GMT", "DateTime", "", "", "08/07/2013 15:38:52.907"
+            P: "LastSaved|DateTime_GMT", "DateTime", "", "", "08/07/2013 21:57:53.487"
         }
     }
 }
@@ -72,7 +72,7 @@ GlobalSettings:  {
 
 Documents:  {
     Count: 1
-    Document: 1357298432, "", "Scene" {
+    Document: 1362298560, "", "Scene" {
         Properties70:  {
             P: "SourceObject", "object", "", ""
             P: "ActiveAnimStackName", "KString", "", "", ""
@@ -293,7 +293,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-    Geometry: 1357550864, "Geometry::", "Mesh" {
+    Geometry: 1357551296, "Geometry::", "Mesh" {
         Properties70:  {
             P: "Color", "ColorRGB", "Color", "",0.529411764705882,0.0235294117647059,0.0235294117647059
         }
@@ -322,7 +322,7 @@ a: 0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,
             MappingInformationType: "ByPolygonVertex"
             ReferenceInformationType: "Direct"
             Binormals: *117 {
-a: 0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,-2.48784609437699e-007,-0.999999999999969,-0,-2.48784609437699e-007,-0.999999999999969,-0,-2.48784609437699e-007,-0.999999999999969,-0,0,-1,-0,0,-1,-0,0,-1,-0,1.02887129797788e-006,-0.999999999999471,0,1.02887129797788e-006,-0.999999999999471,0,1.02887129797788e-006,-0.999999999999471,0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,-0
+a: 0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,0,0,-1,0,0,-1,0,0,-1,-0,0,-1,-0,0,-1,-0,4.66471142695649e-007,-0.999999999999891,0,4.66471142695649e-007,-0.999999999999891,0,4.66471142695649e-007,-0.999999999999891,0,0,-1,0,0,-1,0,0,-1,0,-1.92913644335645e-006,-0.999999999998139,-0,-1.92913644335645e-006,-0.999999999998139,-0,-1.92913644335645e-006,-0.999999999998139,-0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,0,0,-1,0,0,-1,0,0,-1,-0,0,-1,-0,0,-1,-0,0,-1,0,0,-1,0,0,-1,0,0,-1,-0,0,-1,-0,0,-1,-0
 } 
         }
         LayerElementBinormal: 1 {
@@ -340,7 +340,7 @@ a: -0.999999999999999,3.60977698566757e-008,0,-0.999999999999999,3.6097769856675
             MappingInformationType: "ByPolygonVertex"
             ReferenceInformationType: "Direct"
             Tangents: *117 {
-a: 1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,0.999999999999969,-2.48784609437699e-007,0,0.999999999999969,-2.48784609437699e-007,0,0.999999999999969,-2.48784609437699e-007,0,1,-0,0,1,-0,0,1,-0,0,0.999999999999471,1.02887129797788e-006,0,0.999999999999471,1.02887129797788e-006,0,0.999999999999471,1.02887129797788e-006,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0,1,-0,0
+a: 1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,-0,0,1,-0,0,1,-0,0,1,0,0,1,0,0,1,0,0,1,-0,0,1,-0,0,1,-0,0,0.999999999999891,4.66471142695649e-007,0,0.999999999999891,4.66471142695649e-007,0,0.999999999999891,4.66471142695649e-007,0,1,0,0,1,0,0,1,0,0,0.999999999998139,-1.92913644335645e-006,0,0.999999999998139,-1.92913644335645e-006,0,0.999999999998139,-1.92913644335645e-006,0,1,-0,0,1,-0,0,1,-0,0,1,0,0,1,0,0,1,0,0,1,-0,0,1,-0,0,1,-0,0,1,0,0,1,0,0,1,0,0,1,-0,0,1,-0,0,1,-0,0
 } 
         }
         LayerElementTangent: 1 {
@@ -369,11 +369,11 @@ a: 0,2,7,3,1,4,3,8,5,5,10,9,5,9,7,7,9,0,8,4,11,3,4,8,10,6,9,9,6,0,11,6,10,5,8,10
             Name: "UVChannel_1"
             MappingInformationType: "ByPolygonVertex"
             ReferenceInformationType: "IndexToDirect"
-            UV: *32 {
-a: 0,0,1,0,0,0,1,0,0,0,1,0,0,1,1,1,0.350000023841858,0,0.350000023841858,1,0.100000001490116,0,0.100000001490116,1,0.350000023841858,0.0416666865348816,0.100000001490116,0.0416666865348816,0.229008346796036,0.0416666865348816,0.231075167655945,0
+            UV: *24 {
+a: 0,0.999999940395355,0,0,0.100000023841858,0,1,0,1,0.999999940395355,0.44385239481926,0.999999940395355,0.44385239481926,0.958333313465118,0.350000023841858,0,0.350000023841858,0.958333313465118,0.100000023841858,0.958333313465118,0.350000023841858,0.999999940395355,0.100000023841858,0.999999940395355
 } 
             UVIndex: *39 {
-a: 4,6,11,7,5,8,7,12,9,9,14,13,9,13,11,11,13,4,12,8,15,7,8,12,14,10,13,13,10,4,15,10,14,9,12,14,12,15,14
+a: 0,1,2,3,4,5,3,6,7,7,8,9,7,9,2,2,9,0,6,5,10,3,5,6,8,11,9,9,11,0,10,11,8,7,6,8,6,10,8
 } 
         }
         LayerElementUV: 1 {
@@ -453,7 +453,7 @@ a: 0
             }
         }
     }
-    Geometry: 1357551296, "Geometry::", "Mesh" {
+    Geometry: 1357551728, "Geometry::", "Mesh" {
         Properties70:  {
             P: "Color", "ColorRGB", "Color", "",0.0313725490196078,0.0313725490196078,0.533333333333333
         }
@@ -539,7 +539,7 @@ a: 1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1
             }
         }
     }
-    Geometry: 1357551728, "Geometry::", "Mesh" {
+    Geometry: 1357552160, "Geometry::", "Mesh" {
         Properties70:  {
             P: "Color", "ColorRGB", "Color", "",0.83921568627451,0.898039215686275,0.650980392156863
         }
@@ -641,7 +641,7 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
             }
         }
     }
-    Model: 1357746208, "Model::hut_floor", "Mesh" {
+    Model: 1353728960, "Model::hut_floor", "Mesh" {
         Version: 232
         Properties70:  {
             P: "PreRotation", "Vector3D", "Vector", "",-90,0,0
@@ -657,7 +657,7 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
         Shading: T
         Culling: "CullingOff"
     }
-    Model: 1357747632, "Model::hut_walls", "Mesh" {
+    Model: 1353730384, "Model::hut_walls", "Mesh" {
         Version: 232
         Properties70:  {
             P: "PreRotation", "Vector3D", "Vector", "",-90,0,0
@@ -674,7 +674,7 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
         Shading: T
         Culling: "CullingOff"
     }
-    Model: 1357749056, "Model::drifts", "Mesh" {
+    Model: 1353731808, "Model::drifts", "Mesh" {
         Version: 232
         Properties70:  {
             P: "PreRotation", "Vector3D", "Vector", "",-90,0,0
@@ -691,7 +691,7 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
         Shading: T
         Culling: "CullingOff"
     }
-    Material: 1360205184, "Material::Material #27", "" {
+    Material: 1359262976, "Material::Material #27", "" {
         Version: 102
         ShadingModel: "phong"
         MultiLayer: 0
@@ -713,7 +713,7 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
             P: "Reflectivity", "double", "Number", "",0
         }
     }
-    Video: 1353323760, "Video::Map #4", "Clip" {
+    Video: 1353009920, "Video::Map #4", "Clip" {
         Type: "Clip"
         Properties70:  {
             P: "Path", "KString", "XRefUrl", "", "C:\Unity\Respite\Assets\Resources\Textures\cracks.png"
@@ -722,7 +722,7 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
         Filename: "C:\Unity\Respite\Assets\Resources\Textures\cracks.png"
         RelativeFilename: "..\Resources\Textures\cracks.png"
     }
-    Texture: 766607824, "Texture::Map #4", "" {
+    Texture: 766599904, "Texture::Map #4", "" {
         Type: "TextureVideoClip"
         Version: 202
         TextureName: "Texture::Map #4"
@@ -738,30 +738,30 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
         Texture_Alpha_Source: "Alpha_Black"
         Cropping: 0,0,0,0
     }
-    Collection: 1357544336, "SelectionSet::Walls", "SelectionSet" {
+    Collection: 1355931136, "SelectionSet::Walls", "SelectionSet" {
         Version: 100
         Properties70:  {
             P: "SelectionSetAnnotation", "KString", "", "", ""
         }
         NbMembers: 0
     }
-    Collection: 1357547024, "SelectionSet::Floor", "SelectionSet" {
+    Collection: 1355932608, "SelectionSet::Floor", "SelectionSet" {
         Version: 100
         Properties70:  {
             P: "SelectionSetAnnotation", "KString", "", "", ""
         }
         NbMembers: 0
     }
-    Collection: 1357542288, "SelectionSet::Mask", "SelectionSet" {
+    Collection: 1355926656, "SelectionSet::Mask", "SelectionSet" {
         Version: 100
         Properties70:  {
             P: "SelectionSetAnnotation", "KString", "", "", ""
         }
         NbMembers: 0
     }
-    AnimationStack: 1357704112, "AnimStack::Take 001", "" {
+    AnimationStack: 1359807840, "AnimStack::Take 001", "" {
     }
-    AnimationLayer: 766536224, "AnimLayer::BaseLayer", "" {
+    AnimationLayer: 766555568, "AnimLayer::BaseLayer", "" {
     }
 }
 
@@ -771,34 +771,34 @@ a: 1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
 Connections:  {
     
     ;Model::hut_floor, Model::RootNode
-    C: "OO",1357746208,0
+    C: "OO",1353728960,0
     
     ;Model::hut_walls, Model::RootNode
-    C: "OO",1357747632,0
+    C: "OO",1353730384,0
     
     ;Model::drifts, Model::RootNode
-    C: "OO",1357749056,0
+    C: "OO",1353731808,0
     
     ;AnimLayer::BaseLayer, AnimStack::Take 001
-    C: "OO",766536224,1357704112
+    C: "OO",766555568,1359807840
     
     ;Geometry::, Model::hut_floor
-    C: "OO",1357550864,1357746208
+    C: "OO",1357551296,1353728960
     
     ;Material::Material #27, Model::hut_floor
-    C: "OO",1360205184,1357746208
+    C: "OO",1359262976,1353728960
     
     ;Geometry::, Model::hut_walls
-    C: "OO",1357551296,1357747632
+    C: "OO",1357551728,1353730384
     
     ;Geometry::, Model::drifts
-    C: "OO",1357551728,1357749056
+    C: "OO",1357552160,1353731808
     
     ;Texture::Map #4, Material::Material #27
-    C: "OP",766607824,1360205184, "DiffuseColor"
+    C: "OP",766599904,1359262976, "DiffuseColor"
     
     ;Video::Map #4, Texture::Map #4
-    C: "OO",1353323760,766607824
+    C: "OO",1353009920,766599904
 }
 ;Takes section
 ;----------------------------------------------------

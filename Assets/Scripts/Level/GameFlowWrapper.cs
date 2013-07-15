@@ -9,11 +9,6 @@ public class GameFlowWrapper : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		GameFlow.Instance.AgentStartupItems = AgentStartupItems;
-		GameFlow.Instance.AdminStartupItems = AdminStartupItems;
-		
-		GameFlow.Instance.LevelObject = LevelObject;
-		GameFlow.Instance.Begin();
 	}
 	
 	// Update is called once per frame
@@ -37,6 +32,31 @@ public class GameFlowWrapper : MonoBehaviour
 	{
 		get { return m_adminStartupObjects; }
 		set { m_adminStartupObjects = value; }
+	}
+	
+	void OnGUI()
+	{
+		GUILayout.BeginArea(new Rect(10.0f, Screen.height - 70.0f, 300.0f, 60.0f));
+		GUILayout.BeginVertical();
+		GUILayout.BeginHorizontal();
+		
+		if(GUILayout.Button("Save"))
+		{
+			Serialiser.Instance.Serialise();	
+		}
+		
+		if(GUILayout.Button("Load"))
+		{
+			Serialiser.Instance.Deserialise();	
+		}
+		
+		GUILayout.EndHorizontal();
+		
+		
+		Serialiser.Instance.OutputDebugInfo = GUILayout.Toggle(Serialiser.Instance.OutputDebugInfo, "Debug Info");
+		
+		GUILayout.EndVertical();
+		GUILayout.EndArea();
 	}
 	
 	[SerializeField]

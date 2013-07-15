@@ -8,8 +8,9 @@ public class GameFlowEditor : EditorWindow
 	[MenuItem("Optimism/Startup", true)]
 	public static bool ShowWindowValidate()
 	{
-		GameFlowWrapper wrapperObject = GameObject.FindObjectOfType(typeof(GameFlowWrapper)) as GameFlowWrapper;
-		return wrapperObject != null;
+		//GameFlowWrapper wrapperObject = GameObject.FindObjectOfType(typeof(GameFlowWrapper)) as GameFlowWrapper;
+		//return wrapperObject != null;
+		return false;
 	}
 	
 	[MenuItem("Optimism/Startup", false)]
@@ -21,7 +22,7 @@ public class GameFlowEditor : EditorWindow
 
 	void OnGUI()
 	{
-		GameFlowWrapper wrapperObject = GameObject.FindObjectOfType(typeof(GameFlowWrapper)) as GameFlowWrapper;
+		/*GameFlowWrapper wrapperObject = GameObject.FindObjectOfType(typeof(GameFlowWrapper)) as GameFlowWrapper;
 		
 		GUILayout.Label ("Agent Instantiation Objects", EditorStyles.boldLabel);
 		
@@ -85,7 +86,7 @@ public class GameFlowEditor : EditorWindow
 		EditorGUILayout.EndVertical();
 		
 		GUILayout.Button("Add type");
-		
+		*/
 		
 	}
 }

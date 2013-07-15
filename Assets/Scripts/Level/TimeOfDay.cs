@@ -22,10 +22,13 @@ public class TimeOfDay : MonoBehaviour
 	{
 		GameObject cameraObject = GameObject.FindGameObjectWithTag("LightMapCamera");
 		GameObject targetCamera = GameObject.FindGameObjectWithTag("WeatherCamera");
+		GameObject postCamera	= GameObject.FindGameObjectWithTag("PostCamera");
+		GameObject viewCamera 	= GameObject.FindGameObjectWithTag("ViewRegionCamera");
 		
-		if(cameraObject != null && targetCamera != null)
+		if(cameraObject != null && targetCamera != null && viewCamera != null)
 		{
-			m_lightMapCamera = cameraObject.GetComponent<Camera>();
+			m_lightMapCamera 	= cameraObject.GetComponent<Camera>();
+			Camera viewRegionCamera 	= viewCamera.GetComponent<Camera>();
 			
 			// Fiddle with these to use a smaller render-texture for the light-pass.
 			// Note: Too small a target can cause light bleeding when the overlay is interpolated.
@@ -43,6 +46,14 @@ public class TimeOfDay : MonoBehaviour
 				m_lightMapCamera.targetTexture.isPowerOfTwo = false;
 				targetCamera.GetComponent<LightMapEffect>().lightMapTexture = m_lightMapCamera.targetTexture;
 			}
+			
+			int viewWidth 	= pixelWidth;
+			int viewHeight 	= pixelHeight;
+			viewRegionCamera.aspect = (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+			viewRegionCamera.targetTexture = new RenderTexture(viewWidth, viewHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
+			viewRegionCamera.targetTexture.isPowerOfTwo = false;
+			postCamera.GetComponent<ViewRegionEffect>().viewRegionTexture = viewRegionCamera.targetTexture;
+			
 		}
 		 
 		ActiveTime 			= StartTime;

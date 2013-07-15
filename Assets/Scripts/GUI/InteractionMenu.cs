@@ -52,7 +52,6 @@ public class InteractionMenu : MonoBehaviour
 			{
 				m_currentTab = ++m_currentTab % m_objectsInRange.Count;
 			}
-			
 		}
 		
 		if(m_objectsInRange.Count > 0)
@@ -114,6 +113,21 @@ public class InteractionMenu : MonoBehaviour
 	
 	void Update()
 	{
+		if(Input.GetButtonUp("tab_right"))
+		{
+			m_currentTab = ++m_currentTab % m_objectsInRange.Count;
+		}
+		
+		if(Input.GetButtonUp("tab_left"))
+		{
+			m_currentTab--;
+			if(m_currentTab < 0)
+			{
+				m_currentTab = m_objectsInRange.Count - 1;
+			}
+			
+			m_currentTab = m_currentTab % m_objectsInRange.Count;
+		}
 		
 		if(m_objectsInRange.Count > 0)
 		{
