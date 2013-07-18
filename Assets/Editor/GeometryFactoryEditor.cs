@@ -10,6 +10,12 @@ public class GeometryFactoryEditor : Editor
 		GeometryFactory myTarget = (GeometryFactory)target;
 		
 		GeometryFactory.GeometryType newType  = (GeometryFactory.GeometryType)EditorGUILayout.EnumPopup("Geometry type", myTarget.geometryType);
+		
+		if(newType == GeometryFactory.GeometryType.ScreenPlane)
+		{
+			myTarget.ScreenPlaneTargetCamera = EditorGUILayout.ObjectField(myTarget.ScreenPlaneTargetCamera, typeof(Camera), true) as Camera;	
+		}
+		
 		bool newScaleValue = EditorGUILayout.Toggle("Scaled World-Space UVs 0", myTarget.ScaleUVs);
 		
 		float NewUVScale0 = myTarget.UVScale0;

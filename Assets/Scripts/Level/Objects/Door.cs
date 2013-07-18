@@ -23,6 +23,11 @@ public class Door : InteractiveObject
 		return m_interactions;
 	}
 	
+	public void Start()
+	{
+		m_initialRotation = transform.rotation;	
+	}
+	
 	public void FixedUpdate()
 	{
 		m_lerpProgress += (m_lerpDirection * openRate);
@@ -31,7 +36,7 @@ public class Door : InteractiveObject
 		
 		m_currentRotation = (m_openRotation * Mathf.Sin(m_lerpProgress * Mathf.PI / 2.0f)) ;
 		
-		m_targetObject.GetComponent<Rigidbody>().MoveRotation(Quaternion.Euler(new Vector3(0.0f, 0.0f, m_currentRotation)));	
+		m_targetObject.GetComponent<Rigidbody>().MoveRotation(m_initialRotation * Quaternion.Euler(new Vector3(0.0f, 0.0f,m_currentRotation)));	
 	}
 		
 	private void HandleOpen(Interaction interaction)
@@ -80,4 +85,5 @@ public class Door : InteractiveObject
 	private float m_currentRotation = 0.0f;
 	private float m_lerpProgress = 0.0f;
 	private float m_lerpDirection = -1.0f;
+	private Quaternion m_initialRotation = Quaternion.identity;
 }

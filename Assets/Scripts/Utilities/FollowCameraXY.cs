@@ -23,8 +23,7 @@ public class FollowCameraXY : MonoBehaviour
 		m_camera = Camera.mainCamera;
 	}
 	
-	// Update is called once per frame
-	void Update () 
+	void LateUpdate () 
 	{
 		transform.position = new Vector3(m_camera.transform.position.x, m_camera.transform.position.y, transform.position.z);
 	}

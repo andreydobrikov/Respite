@@ -13,6 +13,11 @@ public class TimeOfDay : MonoBehaviour
 	public float CloudCoverPercentage 	= 0.0f;
 	public Vector4 TODColor 			= Vector4.one;
 	
+	void OnEnable()
+	{
+		Reset ();
+	}
+	
 	void Start()
 	{
 		Reset ();
@@ -27,7 +32,7 @@ public class TimeOfDay : MonoBehaviour
 		
 		if(cameraObject != null && targetCamera != null && viewCamera != null)
 		{
-			m_lightMapCamera 	= cameraObject.GetComponent<Camera>();
+			m_lightMapCamera 			= cameraObject.GetComponent<Camera>();
 			Camera viewRegionCamera 	= viewCamera.GetComponent<Camera>();
 			
 			// Fiddle with these to use a smaller render-texture for the light-pass.
