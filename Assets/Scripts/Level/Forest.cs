@@ -22,6 +22,8 @@ public class Forest : MonoBehaviour
 	/// </summary>
 	void Start()
 	{	
+		
+		
 		if(m_sections == null)
 		{
 			Debug.LogError("Forest sections not built! No trees will be present");
@@ -36,6 +38,7 @@ public class Forest : MonoBehaviour
 			for(int treeCount = 0; treeCount < m_activeInstanceCount; ++treeCount)
 			{
 				GameObject newTree = GameObject.Instantiate(m_treePrefab) as GameObject;
+				newTree.transform.parent = transform;
 				
 				m_idleInstances.Add(newTree);
 			}
@@ -43,6 +46,25 @@ public class Forest : MonoBehaviour
 		else
 		{
 			Debug.LogWarning("No tree-prefab set. No tree instances will be created");
+		}
+	}
+	
+	void LateUpdate()
+	{
+		Vector2 extents = Camera.main.ScreenToWorldPoint(new Vector3(1.0f, 1.0f, 0.0f));
+		Vector2 centre = Camera.main.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
+		Vector2 diff	= extents - centre;
+		
+		for(int x = -1; x < 2; ++x)
+		{
+			for(int y = -1; y < 2; ++y)
+			{
+				Vector2 newPosition = centre + new Vector2((x * extents.x), y * (extents.y));
+				
+				
+				
+				m_newSections[x + 1, y + 1] = (int)newPosition.x;
+			}
 		}
 	}
 	
@@ -163,6 +185,8 @@ public class Forest : MonoBehaviour
 	public GameObject m_treePrefab 				= null;
 	public ForestSection[] m_sections			= null;
 	
+	private int[,] m_newSections				= new int[3,3];
+	private int[,] m_activeSections				= new int[3,3];
 	private List<GameObject> m_idleInstances 	= new List<GameObject>();
 	private List<GameObject> m_activeInstances 	= new List<GameObject>();
 }
