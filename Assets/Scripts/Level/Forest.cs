@@ -22,12 +22,15 @@ public class Forest : MonoBehaviour
 	/// </summary>
 	void Start()
 	{	
-		
-		
 		if(m_sections == null)
 		{
 			Debug.LogError("Forest sections not built! No trees will be present");
 			RebuildSections();
+		}
+		
+		foreach(var section in m_sections)
+		{
+			section.Start(this);	
 		}
 		
 		if(m_treePrefab != null)
@@ -51,19 +54,55 @@ public class Forest : MonoBehaviour
 	
 	void LateUpdate()
 	{
-		Vector2 extents = Camera.main.ScreenToWorldPoint(new Vector3(1.0f, 1.0f, 0.0f));
-		Vector2 centre = Camera.main.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
-		Vector2 diff	= extents - centre;
+		Vector2 worldCentre = (Vector2)Camera.main.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
+		Vector2 localCentre = worldCentre- new Vector2(m_startX, m_startY);
 		
-		for(int x = -1; x < 2; ++x)
+		float sectionWidth 	= (m_endX - m_startX) / (float)m_sectionsX;
+		float sectionHeight = (m_endY - m_startY) / (float)m_sectionsY;
+		
+		int currentX = (int)((localCentre.x / sectionWidth) );
+		int currentY = (int)((localCentre.y / sectionHeight) );
+		
+		if(GetSectionIndex(currentX, currentY) != m_activeSections[4])
 		{
-			for(int y = -1; y < 2; ++y)
+			m_newSections[0] = GetSectionIndex(currentX - 1, currentY - 1);
+			m_newSections[1] = GetSectionIndex(currentX, currentY - 1);
+			m_newSections[2] = GetSectionIndex(currentX + 1, currentY - 1);
+			
+			m_newSections[3] = GetSectionIndex(currentX - 1, currentY);
+			m_newSections[4] = GetSectionIndex(currentX, currentY);
+			m_newSections[5] = GetSectionIndex(currentX + 1, currentY);
+			
+			m_newSections[6] = GetSectionIndex(currentX - 1, currentY + 1);
+			m_newSections[7] = GetSectionIndex(currentX, currentY + 1);
+			m_newSections[8] = GetSectionIndex(currentX + 1, currentY + 1);
+			
+			// Deactivate the old sections 
+			for(int i = 0; i < 9; ++i)
 			{
-				Vector2 newPosition = centre + new Vector2((x * extents.x), y * (extents.y));
+				bool keepActive = false;
 				
+				for(int other = 0; other < 9 && !keepActive; ++other)
+				{
+					if(m_activeSections[i] == m_newSections[other])
+					{
+						keepActive = true;	
+					}
+				}
 				
+				if(!keepActive)
+				{
+					m_sections[m_activeSections[i]].Deactivate();
+				}
+			}
+			
+			// Copy the new values over the old and activate the sections
+			for(int i = 0; i < 9; ++i)
+			{
+				m_activeSections[i] = m_newSections[i];
+				m_newSections[i] 	= m_activeSections[i];
 				
-				m_newSections[x + 1, y + 1] = (int)newPosition.x;
+				m_sections[m_activeSections[i]].Activate();
 			}
 		}
 	}
@@ -98,8 +137,12 @@ public class Forest : MonoBehaviour
 	/// </param>
 	public void RequestDeactivation(GameObject treeObject)
 	{
-		m_activeInstances.Remove(treeObject);
-		m_idleInstances.Add(treeObject);
+		if(treeObject != null)
+		{
+			m_activeInstances.Remove(treeObject);
+			m_idleInstances.Add(treeObject);
+		}
+		
 	}
 	
 	public void RebuildSections()
@@ -114,23 +157,14 @@ public class Forest : MonoBehaviour
 		{
 			for(int y = 0; y < m_sectionsY; ++y)
 			{
-				GameObject newObject = new GameObject("Forest Section (" + x + ", " + y + ")");
-				ForestSection newSection = newObject.AddComponent<ForestSection>();
-				BoxCollider collider = newObject.AddComponent<BoxCollider>();
-				collider.isTrigger = true;
-				newObject.layer = LayerMask.NameToLayer("TreeLayer");
+				ForestSection newSection = new ForestSection();
+				newSection.Reset();
 				newSection.SetTreeRadius(m_treeRadius);
 				
 				m_sections[x * m_sectionsY + y] = newSection;
 				
 				newSection.m_origin 	= new Vector2(m_startX, m_startY) + new Vector2(x * sectionWidth, y * sectionHeight);
 				newSection.m_dimensions = new Vector2(sectionWidth, sectionHeight);
-				
-				collider.size = new Vector3(sectionWidth + (sectionWidth * m_colliderExpansionFactor), sectionHeight + (sectionHeight * m_colliderExpansionFactor) , 10.0f);
-				collider.center = new Vector3(sectionWidth / 2.0f, sectionHeight / 2.0f, 0.0f);
-				
-				newObject.transform.parent = transform;
-				newObject.transform.position = newSection.m_origin;
 			}
 		}
 		Debug.Log("Complete");
@@ -168,6 +202,21 @@ public class Forest : MonoBehaviour
 		}
 	}
 	
+	void OnDrawGizmos()
+	{
+		if(m_enabledDebugRendering)
+		{
+			foreach(var sectionIndex in m_activeSections)
+			{
+				m_sections[sectionIndex].Draw();	
+			}
+		}
+	}
+	
+	private int GetSectionIndex(int x, int y)
+	{
+		return x * m_sectionsY + y;	
+	}
 	
 	public List<int> m_ignoreLayers				= new List<int>();
 	public bool m_showLayers					= false;
@@ -185,8 +234,8 @@ public class Forest : MonoBehaviour
 	public GameObject m_treePrefab 				= null;
 	public ForestSection[] m_sections			= null;
 	
-	private int[,] m_newSections				= new int[3,3];
-	private int[,] m_activeSections				= new int[3,3];
+	private int[] m_newSections					= new int[9];
+	private int[] m_activeSections				= new int[9];
 	private List<GameObject> m_idleInstances 	= new List<GameObject>();
 	private List<GameObject> m_activeInstances 	= new List<GameObject>();
 }

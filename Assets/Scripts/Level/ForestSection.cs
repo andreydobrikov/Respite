@@ -1,9 +1,17 @@
+/// <summary>
+/// Forest section.
+/// 
+/// Contains the data for a small grid-section of trees and is responsible for requesting
+/// activation and deactivation of actual tree instances from the forest.
+/// 
+/// </summary>
+
 using UnityEngine;
 using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class ForestSection : MonoBehaviour 
+public class ForestSection 
 {
 	public bool m_debugRenderEnabled 	= false;
 	
@@ -13,34 +21,47 @@ public class ForestSection : MonoBehaviour
 	[SerializeField]
 	public Vector2 m_dimensions 		= Vector2.one;
 	
-	[SerializeField]
-	public List<TreeInstance> m_instances = new List<TreeInstance>();
+	
+	
 	
 	public void SetTreeRadius(float treeRadius)
 	{
 		m_treeRadius = treeRadius;
 	}
 	
-	void Start()
+	public void Start(Forest forest)
 	{
-		m_forest = FindObjectOfType(typeof(Forest)) as Forest;	
+		m_forest = forest;
+		
+		for(int i = 0; i < m_instancePositions.Count; ++i)
+		{
+			TreeInstance instance = new TreeInstance();
+			instance.position = m_instancePositions[i];
+			
+			m_instances.Add(instance);
+		}
+	}
+	
+	public void Reset()
+	{
+		m_instancePositions.Clear();
 	}
 	
 	public bool AddInstance(TreeInstance instance)
 	{
-		foreach(var other in m_instances)
+		foreach(var other in m_instancePositions)
 		{
-			if(Mathf.Abs((instance.position - other.position).magnitude) < (2.0f * m_treeRadius))
+			if(Mathf.Abs((instance.position - other).magnitude) < (2.0f * m_treeRadius))
 			{
 				return false;	
 			}
 		}
 		
-		m_instances.Add(instance);	
+		m_instancePositions.Add(instance.position);
 		return true;
 	}
 	
-	void OnDrawGizmosSelected()
+	public void Draw()
 	{
 		if(m_debugRenderEnabled)
 		{
@@ -51,48 +72,52 @@ public class ForestSection : MonoBehaviour
 			Gizmos.DrawLine(m_origin + m_dimensions, new Vector2(m_origin.x + m_dimensions.x, m_origin.y));
 			
 			Gizmos.color = Color.red;
-			foreach(var instance in m_instances)
+			foreach(var instance in m_instancePositions)
 			{
-				Gizmos.DrawSphere((Vector3)instance.position + new Vector3(0.0f, 0.0f, -1.0f),  2.0f);	
+				Gizmos.DrawSphere((Vector3)instance + new Vector3(0.0f, 0.0f, -1.0f),  2.0f);	
 			}
 		}
 	}
 	
-	void OnTriggerEnter(Collider other)
+	public void Activate()
 	{
-		if(other.tag == "MainCamera")
+		if(m_active)
 		{
-			Debug.Log("Activating " + name);	
+			return;
+		}
+		
+		m_active = true;
 			
-			for(int instanceID = 0; instanceID < m_instances.Count; ++instanceID)
+		for(int instanceID = 0; instanceID < m_instances.Count; ++instanceID)
+		{
+			TreeInstance instance = m_instances[instanceID];
+			instance.activeObject = m_forest.RequestActivation();
+			
+			if(instance.activeObject != null)
 			{
-				TreeInstance instance = m_instances[instanceID];
-				instance.activeObject = m_forest.RequestActivation();
-				
-				if(instance.activeObject != null)
-				{
-					float z = instance.activeObject.transform.position.z;
-					instance.activeObject.transform.position = (Vector3)instance.position + new Vector3(0.0f, 0.0f, z);
-				}
+				float z = instance.activeObject.transform.position.z;
+				instance.activeObject.transform.position = (Vector3)instance.position + new Vector3(0.0f, 0.0f, z);
 			}
 		}
 	}
 	
-	void OnTriggerExit(Collider other)
+	public void Deactivate()
 	{
-		if(other.tag == "MainCamera")
-		{
-			Debug.Log("Deactivating " + name);
+		m_active = false;
 			
-			for(int instanceID = 0; instanceID < m_instances.Count; ++instanceID)
-			{
-				TreeInstance instance = m_instances[instanceID];
-				m_forest.RequestDeactivation(instance.activeObject);
-			}
+		for(int instanceID = 0; instanceID < m_instances.Count; ++instanceID)
+		{
+			TreeInstance instance = m_instances[instanceID];
+			m_forest.RequestDeactivation(instance.activeObject);
 		}
 	}
 	
-	private float m_treeRadius = 0.0f;
-	private Forest m_forest = null;
+	[SerializeField]
+	private List<Vector2> m_instancePositions	= new List<Vector2>();
+	
+	private List<TreeInstance> m_instances 		= new List<TreeInstance>();
+	private float m_treeRadius 					= 0.0f;
+	private Forest m_forest 					= null;
+	private bool m_active 						= false;
 }
 
