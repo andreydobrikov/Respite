@@ -9,8 +9,6 @@ public class ForestEditor : Editor
 	{
 		Forest forest = (Forest)target;
 		
-	
-		
 		GUILayout.BeginVertical((GUIStyle)("Box"));
 		
 		forest.m_activeInstanceCount	= EditorGUILayout.IntField("Active Instance Count", forest.m_activeInstanceCount);
@@ -94,44 +92,43 @@ public class ForestEditor : Editor
 			forest.RebuildSections();
 			bool cancel = false;
 			
+			// TODO: This won't ever reach the target tree count as it gives up following a collision.
 			for(int treeCount = 0; treeCount < forest.m_instanceCount && !cancel; ++treeCount)
 			{
 				bool succeeded = false;
 				int counter = 0;
 				
-				//while(!succeeded && counter < 100)
+				float x = Random.Range(forest.m_startX, forest.m_endX);
+				float y = Random.Range(forest.m_startY, forest.m_endY);
+			
+				Vector3 position = new Vector3(x, y, 0.0f);
+				
+				
+				bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, 0.0f, -50.0f), (Vector3)position + new Vector3(0.0f, 0.0f, 50.0f), forest.m_treeRadius, layerMask);
+				if(!overlap)
 				{
-					float x = Random.Range(forest.m_startX, forest.m_endX);
-					float y = Random.Range(forest.m_startY, forest.m_endY);
-				
-					Vector3 position = new Vector3(x, y, 0.0f);
-					
-					
-					bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, 0.0f, -50.0f), (Vector3)position + new Vector3(0.0f, 0.0f, 50.0f), forest.m_treeRadius, layerMask);
-					if(!overlap)
+					try
 					{
-						try
-						{
-							TreeInstance instance = new TreeInstance();
-							instance.position = position;
-							
-							succeeded = !forest.AddInstance(instance);
-						}
-						catch(System.Exception e)
-						{
-							Debug.Log("Instance out of bound at " + position.x + ", " + position.y);
-							Debug.Log(e);	
-						}
+						TreeInstance instance = new TreeInstance();
+						instance.position = position;
 						
-						if(treeCount % progressUpdateRate == 0)
-						{
-							cancel = EditorUtility.DisplayCancelableProgressBar("Generating Forest", "Creating trees (" + treeCount + ", " + forest.m_instanceCount + ")", (float)treeCount / (float)forest.m_instanceCount);
-						}
+						succeeded = !forest.AddInstance(instance);
 					}
-				
-					counter++;
+					catch(System.Exception e)
+					{
+						Debug.Log("Instance out of bound at " + position.x + ", " + position.y);
+						Debug.Log(e);	
+						Debug.Break();
+					}
 					
+					if(treeCount % progressUpdateRate == 0)
+					{
+						cancel = EditorUtility.DisplayCancelableProgressBar("Generating Forest", "Creating trees (" + treeCount + ", " + forest.m_instanceCount + ")", (float)treeCount / (float)forest.m_instanceCount);
+					}
 				}
+			
+				counter++;
+					
 			}
 			
 			EditorUtility.ClearProgressBar();
