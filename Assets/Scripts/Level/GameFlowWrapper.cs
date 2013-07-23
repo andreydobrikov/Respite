@@ -4,34 +4,24 @@ using System.Collections.Generic;
 
 public class GameFlowWrapper : MonoBehaviour 
 {
+	
 	public GameObject LevelObject;
-		
-	// Use this for initialization
-	void Start () 
+	
+#if UNITY_EDITOR
+	public bool ShowFoldout = false;
+#endif
+	
+	void Start()
 	{
+		GameFlow instance = GameFlow.Instance;
+		
+		instance.SaveFadeDuration = m_saveFadeDuration;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		GameFlow.Instance.Update();
-	}
-	
-	void OnLevelWasLoaded(int levelID)
-	{
-		
-	}
-	
-	public List<GameObject> AgentStartupItems
-	{
-		get { return m_agentStartupObjects; }
-		set { m_agentStartupObjects = value; }
-	}
-	
-	public List<GameObject> AdminStartupItems
-	{
-		get { return m_adminStartupObjects; }
-		set { m_adminStartupObjects = value; }
 	}
 	
 	void OnGUI()
@@ -59,9 +49,15 @@ public class GameFlowWrapper : MonoBehaviour
 		GUILayout.EndArea();
 	}
 	
-	[SerializeField]
-	private List<GameObject> m_agentStartupObjects = new List<GameObject>();
+	public float SaveFadeDuration
+	{
+		get { return GameFlow.Instance.SaveFadeDuration; }
+		set 
+		{
+			GameFlow.Instance.SaveFadeDuration = value;
+			m_saveFadeDuration = value;
+		}
+	}
 	
-	[SerializeField]
-	private List<GameObject> m_adminStartupObjects = new List<GameObject>();
+	private float m_saveFadeDuration = 3.0f;
 }

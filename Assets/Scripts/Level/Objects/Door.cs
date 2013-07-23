@@ -17,11 +17,7 @@ public class Door : InteractiveObject
 		m_interactions.Add(m_openInteraction);
 		m_interactions.Add(m_closeInteraction);
 	}
-	
-	public override List<Interaction> GetInteractions()
-	{
-		return m_interactions;
-	}
+
 	
 	public void Start()
 	{
@@ -76,8 +72,6 @@ public class Door : InteractiveObject
 		m_openInteraction.Enabled 	= m_lerpDirection <= 0.0f;
 		m_closeInteraction.Enabled 	= m_lerpDirection > 0.0f;
 	}
-	
-	private List<Interaction> m_interactions = new List<Interaction>();
 	
 	private Interaction m_openInteraction 	= null;
 	private Interaction m_closeInteraction 	= null;

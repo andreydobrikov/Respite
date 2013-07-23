@@ -4,14 +4,11 @@ using System.Collections.Generic;
 [AddComponentMenu("Custom/Interactive Objects/WoodBurner")]
 public class WoodBurner : InteractiveObject
 {
-	public override List<Interaction> GetInteractions()
+	void Start()
 	{
-		List<Interaction> interactions = new List<Interaction>();
-		interactions.Add(new Interaction("Stoke", new Interaction.InteractionHandler(HandleStoke)));
-		
-		return interactions;
+		m_interactions.Add(new Interaction("Stoke", new Interaction.InteractionHandler(HandleStoke)));
 	}
-			
+	
 	private void HandleStoke(Interaction interaction)
 	{
 		
