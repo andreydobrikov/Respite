@@ -70,6 +70,23 @@ public class ForestEditor : Editor
 			forest.SetDebugRenderingEnabled(debugRender);	
 		}
 		
+		if(forest.m_enabledDebugRendering)
+		{
+			GUILayout.BeginVertical((GUIStyle)("Box"));
+			
+			int newX = EditorGUILayout.IntSlider("X", forest.m_editorSectionX, 0, forest.m_sectionsX - 1);
+			int newY = EditorGUILayout.IntSlider("Y", forest.m_editorSectionY, 0, forest.m_sectionsY - 1);
+			
+			if(newX != forest.m_editorSectionX || newY != forest.m_editorSectionY)
+			{
+				forest.m_editorSectionX = newX;
+				forest.m_editorSectionY = newY;
+				EditorUtility.SetDirty(forest);	
+			}
+			
+			GUILayout.EndVertical();
+		}
+			
 		
 		GUILayout.EndVertical();
 		
@@ -139,15 +156,15 @@ public class ForestEditor : Editor
 	{
 		Forest forest = (Forest)target;
 	
-			float handleSize = HandleUtility.GetHandleSize(new Vector2(forest.m_startX, forest.m_startY)) / 10.0f;
-			
-			Vector2 newMin = Handles.Slider2D(new Vector2(forest.m_startX, forest.m_startY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
-			Vector2 newMax = Handles.Slider2D(new Vector2(forest.m_endX, forest.m_endY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
-			
-			forest.m_startX = Mathf.Min(newMin.x, newMax.x);
-			forest.m_startY = Mathf.Min(newMin.y, newMax.y);
-			
-			forest.m_endX = Mathf.Max(newMin.x, newMax.x);
-			forest.m_endY = Mathf.Max(newMin.y, newMax.y);
+		float handleSize = HandleUtility.GetHandleSize(new Vector2(forest.m_startX, forest.m_startY)) / 10.0f;
+		
+		Vector2 newMin = Handles.Slider2D(new Vector2(forest.m_startX, forest.m_startY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
+		Vector2 newMax = Handles.Slider2D(new Vector2(forest.m_endX, forest.m_endY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
+		
+		forest.m_startX = Mathf.Min(newMin.x, newMax.x);
+		forest.m_startY = Mathf.Min(newMin.y, newMax.y);
+		
+		forest.m_endX = Mathf.Max(newMin.x, newMax.x);
+		forest.m_endY = Mathf.Max(newMin.y, newMax.y);
 	}
 }

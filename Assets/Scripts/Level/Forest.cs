@@ -42,6 +42,9 @@ public class Forest : MonoBehaviour
 			{
 				GameObject newTree = GameObject.Instantiate(m_treePrefab) as GameObject;
 				newTree.transform.parent = transform;
+	
+				float z = newTree.transform.position.z;
+				newTree.transform.position = new Vector3(-1000.0f, -1000.0f, z);
 				
 				m_idleInstances.Add(newTree);
 			}
@@ -182,10 +185,28 @@ public class Forest : MonoBehaviour
 		x /= sectionWidth;
 		y /= sectionHeight;
 		
-		return m_sections[(int)x * m_sectionsY + (int)y].AddInstance(instance);
+		return m_sections[(int)x * m_sectionsY + (int)y].AddInstance(this, instance);
 		
 	}
-	
+	/*
+	public bool WillCollide(TreeInstance instance)
+	{
+		float sectionWidth 	= (m_endX - m_startX) / (float)m_sectionsX;
+		float sectionHeight = (m_endY - m_startY) / (float)m_sectionsY;
+		
+		// Determine the target section.
+		float x = instance.position.x - m_startX;
+		float y = instance.position.y - m_startY;
+		
+		x /= sectionWidth;
+		y /= sectionHeight;
+		
+		
+		 m_sections[(int)x * m_sectionsY + (int)y];
+		
+		
+	}
+	*/
 	// TODO: Remove public fields
 	public void SetSectionCounts(int sectionsX, int sectionsY)
 	{
@@ -202,15 +223,28 @@ public class Forest : MonoBehaviour
 		}
 	}
 	
-	void OnDrawGizmos()
+	void OnDrawGizmosSelected()
 	{
 		if(m_enabledDebugRendering)
 		{
-			foreach(var sectionIndex in m_activeSections)
-			{
-				m_sections[sectionIndex].Draw();	
-			}
+			int targetIndex = m_editorSectionX * m_sectionsY + m_editorSectionY;
+			m_sections[targetIndex].Draw();	
 		}
+		
+		float sectionWidth 	= (m_endX - m_startX) / (float)m_sectionsX;
+		float sectionHeight = (m_endY - m_startY) / (float)m_sectionsY;
+		
+		Gizmos.color = Color.red;
+		for(int x = 0; x < m_sectionsX; ++x)
+		{
+			Gizmos.DrawLine(new Vector3(m_startX + (x * sectionWidth), m_startY, -1.0f), new Vector3(m_startX + (x * sectionWidth), m_endY, -1.0f));	
+		}
+		
+		for(int y = 0; y < m_sectionsY; ++y)
+		{
+			Gizmos.DrawLine(new Vector3(m_startX, m_startY + (y * sectionHeight), -1.0f), new Vector3(m_endX, m_startY + (y * sectionHeight), -1.0f));	
+		}
+		
 	}
 	
 	private int GetSectionIndex(int x, int y)
@@ -231,6 +265,8 @@ public class Forest : MonoBehaviour
 	public int m_sectionsY						= 30;
 	public int m_instanceCount					= 200;
 	public int m_activeInstanceCount			= 200;
+	public int m_editorSectionX					= 0;
+	public int m_editorSectionY					= 0;
 	public GameObject m_treePrefab 				= null;
 	public ForestSection[] m_sections			= null;
 	

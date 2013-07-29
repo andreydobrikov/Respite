@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <entries>
   <entry id="3f7259bc-11d4-4b42-9eef-cf186975ac4d">
-    <pair id="position_x" value="-21.72442" />
-    <pair id="position_y" value="5.102208" />
+    <pair id="position_x" value="-20.60924" />
+    <pair id="position_y" value="4.240004" />
     <pair id="position_z" value="-0.5" />
   </entry>
   <entry id="cb5bf262-d645-42c8-9ae7-cd831c9391de">
-    <pair id="current_rotation" value="-65" />
-    <pair id="lerp_direction" value="1" />
-    <pair id="lerp_progress" value="1" />
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
   </entry>
 </entries>

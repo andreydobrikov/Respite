@@ -22,8 +22,6 @@ public class ForestSection
 	public Vector2 m_dimensions 		= Vector2.one;
 	
 	
-	
-	
 	public void SetTreeRadius(float treeRadius)
 	{
 		m_treeRadius = treeRadius;
@@ -47,7 +45,7 @@ public class ForestSection
 		m_instancePositions.Clear();
 	}
 	
-	public bool AddInstance(TreeInstance instance)
+	public bool AddInstance(Forest forest, TreeInstance instance)
 	{
 		foreach(var other in m_instancePositions)
 		{
@@ -63,7 +61,6 @@ public class ForestSection
 	
 	public void Draw()
 	{
-		if(m_debugRenderEnabled)
 		{
 			Gizmos.color = new Color(0.0f, 0.0f, 0.5f, 1.0f);
 			Gizmos.DrawLine(m_origin, new Vector2(m_origin.x + m_dimensions.x, m_origin.y));
@@ -108,8 +105,20 @@ public class ForestSection
 		for(int instanceID = 0; instanceID < m_instances.Count; ++instanceID)
 		{
 			TreeInstance instance = m_instances[instanceID];
+			
+			if(instance.activeObject != null)
+			{
+				float z = instance.activeObject.transform.position.z;
+				instance.activeObject.transform.position = new Vector3(-1000.0f, -1000.0f, z);
+			}
+			
 			m_forest.RequestDeactivation(instance.activeObject);
 		}
+	}
+	
+	public bool WillCollide(TreeInstance instance)
+	{
+		return true;
 	}
 	
 	[SerializeField]

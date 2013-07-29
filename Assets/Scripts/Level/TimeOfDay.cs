@@ -1,3 +1,7 @@
+#if UNITY_EDITOR
+	using UnityEditor;
+#endif
+
 using UnityEngine;
 using System;
 using System.Collections;
@@ -28,12 +32,11 @@ public class TimeOfDay : MonoBehaviour
 		GameObject cameraObject = GameObject.FindGameObjectWithTag("LightMapCamera");
 		GameObject targetCamera = GameObject.FindGameObjectWithTag("WeatherCamera");
 		GameObject postCamera	= GameObject.FindGameObjectWithTag("PostCamera");
-		GameObject viewCamera 	= GameObject.FindGameObjectWithTag("ViewRegionCamera");
+		GameObject overlayCamera	= GameObject.FindGameObjectWithTag("OverlayCamera");
 		
-		if(cameraObject != null && targetCamera != null && viewCamera != null)
+		if(cameraObject != null && targetCamera != null )
 		{
 			m_lightMapCamera 			= cameraObject.GetComponent<Camera>();
-			Camera viewRegionCamera 	= viewCamera.GetComponent<Camera>();
 			
 			// Fiddle with these to use a smaller render-texture for the light-pass.
 			// Note: Too small a target can cause light bleeding when the overlay is interpolated.
@@ -54,10 +57,11 @@ public class TimeOfDay : MonoBehaviour
 			
 			int viewWidth 	= pixelWidth;
 			int viewHeight 	= pixelHeight;
-			viewRegionCamera.aspect = (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
-			viewRegionCamera.targetTexture = new RenderTexture(viewWidth, viewHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
-			viewRegionCamera.targetTexture.isPowerOfTwo = false;
-			postCamera.GetComponent<ViewRegionEffect>().viewRegionTexture = viewRegionCamera.targetTexture;
+			postCamera.GetComponent<Camera>().aspect = (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+			postCamera.GetComponent<Camera>().targetTexture = new RenderTexture(viewWidth, viewHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
+			postCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo = false;
+			overlayCamera.GetComponent<OverlayEffect>().OverlayTexture = postCamera.GetComponent<Camera>().targetTexture;
+			
 			
 		}
 		 
@@ -157,7 +161,7 @@ public class TimeOfDay : MonoBehaviour
 		{
 			Debug.Log("Camera not found");	
 		}
-		//Shader.SetGlobalVector("_TOD", lerpedValue);
+		Shader.SetGlobalVector("_TOD", lerpedValue);
 		
 	}
 	
@@ -171,7 +175,37 @@ public class TimeOfDay : MonoBehaviour
 	
 	private void OnGUI()
 	{
-		GUI.Label(new Rect(20, 200, 200, 200), (ActiveTime / CycleTime).ToString());
+		
+#if UNITY_EDITOR
+		if(Application.isPlaying)
+		{
+			GUILayout.BeginArea(new Rect(20, 10, 200, m_showFoldout ? 300 : 30));
+			GUILayout.BeginVertical((GUIStyle)("Box"));
+			
+			m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Time Of Day " + (m_showFoldout ? "" : AdjustedTime.ToString("0.000")));
+			
+			
+			if(m_showFoldout)
+			{
+				GUILayout.BeginVertical((GUIStyle)("Box"));
+				PauseUpdate = GUILayout.Toggle(PauseUpdate, "Pause");
+				
+				GUILayout.BeginHorizontal();
+				
+				GUILayout.Label("Time", GUILayout.Width(30));
+				AdjustedTime = GUILayout.HorizontalSlider(AdjustedTime, 0.0f, 1.0f);
+				GUILayout.Label(AdjustedTime.ToString("0.000"), GUILayout.Width(40));
+				
+				GUILayout.EndHorizontal();
+				GUILayout.EndVertical();
+			}
+			
+			GUILayout.EndVertical();
+			
+			GUILayout.EndArea();
+		}
+		
+#endif
 	}
 	
 	public List<TODKeyFrame> Frames
@@ -189,10 +223,14 @@ public class TimeOfDay : MonoBehaviour
 	private int					m_currentFrameIndex;
 	private TODKeyFrame 		m_currentFrame;
 	private TODKeyFrame 		m_nextFrame;
-	
+
 	[SerializeField]
 	private List<TODKeyFrame> 	m_frames;
 	private Camera 				m_lightMapCamera = null;
+	
+#if UNITY_EDITOR
+	private bool m_showFoldout = false;
+#endif
 }
 
 [Serializable]

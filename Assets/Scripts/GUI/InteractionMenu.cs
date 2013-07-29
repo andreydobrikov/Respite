@@ -87,14 +87,17 @@ public class InteractionMenu : MonoBehaviour
 				Debug.Log("Too many interactions");	
 			}
 			
-			GUI.enabled = interactions[0].Enabled;
-			if(GUI.Button(new Rect(centrePoint.x + 20.0f, centrePoint.y - 15.0f, 100.0f, 30.0f), interactions[0].Name))
+			// No object should ever have zero interactions, but better to handle it as the editor can sometimes cause trouble
+			// When reloading scripts.
+			if(interactions.Count > 0)
 			{
-				interactions[0].Callback(interactions[0]);	
+				GUI.enabled = interactions[0].Enabled;
+				if(GUI.Button(new Rect(centrePoint.x + 20.0f, centrePoint.y - 15.0f, 100.0f, 30.0f), interactions[0].Name))
+				{
+					interactions[0].Callback(interactions[0]);	
+				}
 			}
 				
-			
-			
 			if(interactions.Count > 1)
 			{
 				GUI.enabled = interactions[1].Enabled;
@@ -113,6 +116,11 @@ public class InteractionMenu : MonoBehaviour
 	
 	void Update()
 	{
+		if(m_objectsInRange.Count == 0)
+		{
+			return;	
+		}
+		
 		if(Input.GetButtonUp("tab_right"))
 		{
 			m_currentTab = ++m_currentTab % m_objectsInRange.Count;

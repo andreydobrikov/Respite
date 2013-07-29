@@ -22,7 +22,7 @@ public class TreeRender : MonoBehaviour
 	private bool m_increasing = true;
 	
 	// Update is called once per frame
-	void FixedUpdate () 
+	void Update () 
 	{
 		if(m_increasing) 
 		{

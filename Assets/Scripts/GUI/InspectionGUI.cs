@@ -9,8 +9,14 @@ public class InspectionGUI : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void FixedUpdate () 
+	{
+		Vector3 targetDirection = (Vector3.up * (Input.GetAxis("vertical_2"))) + (Vector3.right * (Input.GetAxis("horizontal_2")));
+		//targetDirection.y = -targetDirection.y;
+		
+		Vector3 origin = transform.position + new Vector3(0.0f, 0.0f, -1.0f);
+		
+		Debug.DrawLine(origin, origin + targetDirection, Color.magenta);
 	}
 	
 	void OnGUI()
