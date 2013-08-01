@@ -5,6 +5,7 @@ using System.Collections;
 public class CharacterController2D : MonoBehaviour 
 {
 	public float MoveSpeed = 200f;
+	public float SprintIncrease = 100.0f;
 	public float TurnSpeed = 10.0f;
 	public float MoveAngle = 50.0f;	// The proximity of the player's direction to their target direction required before they can move. (degrees)
 	
@@ -25,6 +26,9 @@ public class CharacterController2D : MonoBehaviour
 		m_controller.velocity = Vector3.zero;
 		
 		Vector2 targetDirection = (Vector3.up * (Input.GetAxis("Vertical"))) + (Vector3.right * (Input.GetAxis("Horizontal")));
+		float sprintMultiplier = Input.GetAxis("sprint_analogue");
+		
+		float currentMoveSpeed = MoveSpeed + (Mathf.Sin(sprintMultiplier * Mathf.PI / 2.0f) * SprintIncrease);
 		
 		if(targetDirection.magnitude > 0.01f)
 		{
@@ -49,8 +53,8 @@ public class CharacterController2D : MonoBehaviour
 			
 			if(diffAngle < MoveAngle)
 			{
-				m_controller.AddForce( (Vector3.up * (Input.GetAxis("Vertical") * MoveSpeed)));
-				m_controller.AddForce( (Vector3.right * (Input.GetAxis("Horizontal") * MoveSpeed)));
+				m_controller.AddForce( (Vector3.up * (Input.GetAxis("Vertical") * currentMoveSpeed)));
+				m_controller.AddForce( (Vector3.right * (Input.GetAxis("Horizontal") * currentMoveSpeed)));
 			}
 		}
 	

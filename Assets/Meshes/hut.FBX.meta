@@ -9,27 +9,42 @@ ModelImporter:
     100006: hut_floor
     100008: hut_walls
     100010: drifts
+    100012: Plane001
+    100014: hut_mask
+    100016: shed_floor
     400000: floor
     400002: //RootNode
     400004: walls
     400006: hut_floor
     400008: hut_walls
     400010: drifts
+    400012: Plane001
+    400014: hut_mask
+    400016: shed_floor
     2300000: floor
     2300002: walls
     2300004: hut_floor
     2300006: hut_walls
     2300008: drifts
+    2300010: Plane001
+    2300012: hut_mask
+    2300014: shed_floor
     3300000: floor
     3300002: walls
     3300004: hut_floor
     3300006: hut_walls
     3300008: drifts
+    3300010: Plane001
+    3300012: hut_mask
+    3300014: shed_floor
     4300000: floor
     4300002: walls
     4300004: hut_floor
     4300006: hut_walls
     4300008: drifts
+    4300010: Plane001
+    4300012: hut_mask
+    4300014: shed_floor
     9500000: //RootNode
   materials:
     importMaterials: 1

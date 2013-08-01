@@ -30,39 +30,10 @@ public class TimeOfDay : MonoBehaviour
 	private void Reset()
 	{
 		GameObject cameraObject = GameObject.FindGameObjectWithTag("LightMapCamera");
-		GameObject targetCamera = GameObject.FindGameObjectWithTag("WeatherCamera");
-		GameObject postCamera	= GameObject.FindGameObjectWithTag("PostCamera");
-		GameObject overlayCamera	= GameObject.FindGameObjectWithTag("OverlayCamera");
 		
-		if(cameraObject != null && targetCamera != null )
+		if(cameraObject != null)
 		{
-			m_lightMapCamera 			= cameraObject.GetComponent<Camera>();
-			
-			// Fiddle with these to use a smaller render-texture for the light-pass.
-			// Note: Too small a target can cause light bleeding when the overlay is interpolated.
-			int pixelWidth 	= (int)Camera.mainCamera.pixelWidth;
-			int pixelHeight = (int)Camera.mainCamera.pixelHeight;
-			
-			if(true)
-			{
-				// If this is run-in-editor, the camera's aspect ratio will not yet have been updated.
-				// This in turn will crap up the aspect ratio of the attached RenderTexture, so manually set the aspect
-				// - ratio before creating the texture.
-				m_lightMapCamera.aspect = (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
-				
-				m_lightMapCamera.targetTexture = new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
-				m_lightMapCamera.targetTexture.isPowerOfTwo = false;
-				targetCamera.GetComponent<LightMapEffect>().lightMapTexture = m_lightMapCamera.targetTexture;
-			}
-			
-			int viewWidth 	= pixelWidth;
-			int viewHeight 	= pixelHeight;
-			postCamera.GetComponent<Camera>().aspect = (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
-			postCamera.GetComponent<Camera>().targetTexture = new RenderTexture(viewWidth, viewHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
-			postCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo = false;
-			overlayCamera.GetComponent<OverlayEffect>().OverlayTexture = postCamera.GetComponent<Camera>().targetTexture;
-			
-			
+			m_lightMapCamera = cameraObject.GetComponent<Camera>();
 		}
 		 
 		ActiveTime 			= StartTime;
@@ -182,7 +153,10 @@ public class TimeOfDay : MonoBehaviour
 			GUILayout.BeginArea(new Rect(20, 10, 200, m_showFoldout ? 300 : 30));
 			GUILayout.BeginVertical((GUIStyle)("Box"));
 			
-			m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Time Of Day " + (m_showFoldout ? "" : AdjustedTime.ToString("0.000")));
+			float minutes = 1440.0f * AdjustedTime;
+			TimeSpan time = TimeSpan.FromMinutes(minutes);
+			
+			m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Time Of Day " + (m_showFoldout ? "" : (time.Hours.ToString("00") + ":" + time.Minutes.ToString("00"))));
 			
 			
 			if(m_showFoldout)
@@ -194,7 +168,7 @@ public class TimeOfDay : MonoBehaviour
 				
 				GUILayout.Label("Time", GUILayout.Width(30));
 				AdjustedTime = GUILayout.HorizontalSlider(AdjustedTime, 0.0f, 1.0f);
-				GUILayout.Label(AdjustedTime.ToString("0.000"), GUILayout.Width(40));
+				GUILayout.Label((time.Hours.ToString("00") + ":" + time.Minutes.ToString("00")), GUILayout.Width(40));
 				
 				GUILayout.EndHorizontal();
 				GUILayout.EndVertical();

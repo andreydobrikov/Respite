@@ -1,16 +1,11 @@
 Shader "Custom/ViewWrite" 
 {
-	SubShader {
-		// Render the mask after regular geometry, but before masked geometry and
-		// transparent things.
- 
+	SubShader 
+	{
 		Tags {"Queue" = "Transparent+10" }
  
-		// Don't draw in the RGBA channels; just the depth buffer
  		cull off
 		ZWrite Off
- 
-		// Do nothing specific in the pass:
  
 		Pass 
 		{
@@ -20,10 +15,8 @@ Shader "Custom/ViewWrite"
 			
 			#include "UnityCG.cginc"
 			
-			float4 _Color;
-			
-			
-			struct v2f {
+			struct v2f 
+			{
 			    float4  pos : SV_POSITION;
 			};
 			

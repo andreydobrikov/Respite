@@ -5,6 +5,8 @@ using System.Collections;
 [AddComponentMenu("Image Effects/Blur")]
 public class BlurEffect : MonoBehaviour
 {	
+	public RenderTexture OverlayTexture;
+	
 	/// Blur iterations - larger number means more blur.
 	public int iterations = 3;
 	
@@ -88,6 +90,8 @@ public class BlurEffect : MonoBehaviour
 		
 		// Copy source to the 4x4 smaller texture.
 		DownSample4x (source, buffer);
+		
+		material.SetTexture("_Overlay", OverlayTexture);
 		
 		// Blur the small texture
 		bool oddEven = true;

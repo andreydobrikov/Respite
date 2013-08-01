@@ -12,10 +12,13 @@ public class Weather : MonoBehaviour
 	
 	public void Start()
 	{
+		m_lerpStart 	= Random.value;
+		m_lerpEnd 		= Random.value;
+		m_randomUpdate 	= true;
+		
 		m_timeOfDay = GameObject.FindObjectOfType(typeof(TimeOfDay)) as TimeOfDay;
 		
 		m_timeOfDay.CloudCoverPercentage = m_cloudCover;
-		
 		
 		if(OverlayObject != null)
 		{
@@ -30,6 +33,25 @@ public class Weather : MonoBehaviour
 		if(ParticleObject != null)
 		{
 			m_snowParticles = ParticleObject.GetComponent<ParticleSystem>();
+		}
+	}
+	
+	public void Update()
+	{
+		if(m_randomUpdate)
+		{
+			const float changeRate = 0.01f;
+			
+			m_lerpProgress += Time.deltaTime * changeRate;
+			
+			SetStormIntensity(Mathf.Lerp(m_lerpStart, m_lerpEnd, Mathf.Sin(Mathf.PI / 2.0f * m_lerpProgress)));
+			
+			if(m_lerpProgress >= 1.0f)
+			{
+				m_lerpProgress = 0.0f;
+				m_lerpStart = m_lerpEnd;
+				m_lerpEnd = Random.value;
+			}
 		}
 	}
 
@@ -50,6 +72,16 @@ public class Weather : MonoBehaviour
 				
 				GUILayout.BeginVertical((GUIStyle)("Box"));
 				
+				GUILayout.BeginVertical((GUIStyle)("Box"));
+				
+				m_randomUpdate = GUILayout.Toggle(m_randomUpdate, "Random Intensity");
+				
+				GUI.enabled = m_randomUpdate;
+				GUILayout.Label("Lerp Values : " + m_lerpStart.ToString("0.00") + ", " + m_lerpEnd.ToString("0.00") + " (" + m_lerpProgress.ToString("0.00") + ")");
+				GUI.enabled = !m_randomUpdate;
+				
+				GUILayout.EndVertical();
+				
 				GUILayout.BeginHorizontal();
 				
 				GUILayout.Label("Storm Intensity", GUILayout.Width(120));
@@ -58,11 +90,7 @@ public class Weather : MonoBehaviour
 				
 				if(stormIntensity != m_stormIntensity)
 				{
-					CloudCover = stormIntensity;
-					SetOverlayAlpha(stormIntensity);
-					SetParticleIntensity(stormIntensity);
-					
-					m_stormIntensity = stormIntensity;	
+					SetStormIntensity(stormIntensity);	
 				}
 				
 				GUILayout.Label(m_stormIntensity.ToString("0.0"));
@@ -110,6 +138,7 @@ public class Weather : MonoBehaviour
 				m_showParticlesFoldout = EditorGUILayout.Foldout(m_showParticlesFoldout, "Particle Settings");
 				
 				GUILayout.EndVertical();
+				GUI.enabled = true;
 				
 			}
 			
@@ -129,6 +158,12 @@ public class Weather : MonoBehaviour
 			m_cloudCover = value;
 			m_timeOfDay.CloudCoverPercentage = m_cloudCover;
 		}
+	}
+	
+	public float StormIntensity
+	{
+		get { return m_stormIntensity; }
+		set { SetStormIntensity(value); }
 	}
 	
 	private void SetOverlayAlpha(float alpha)
@@ -153,6 +188,15 @@ public class Weather : MonoBehaviour
 		}
 		m_particleIntensity = intensity;
 	}
+		
+	private void SetStormIntensity(float intensity)
+	{
+		m_stormIntensity = intensity;
+		
+		CloudCover = m_stormIntensity;
+		SetOverlayAlpha(m_stormIntensity);
+		SetParticleIntensity(m_stormIntensity);
+	}
 	
 	private TimeOfDay m_timeOfDay = null;
 	
@@ -164,6 +208,7 @@ public class Weather : MonoBehaviour
 	private float m_cloudCover				= 0.0f;
 	private bool m_showFoldout 				= false;
 	private bool m_showParticlesFoldout 	= false;
+	private bool m_randomUpdate				= false;
 	
 	private const int m_particlesMax 				= 1500;
 	private const float m_particlesMaxStartSpeed 	= 10.0f;
@@ -171,4 +216,8 @@ public class Weather : MonoBehaviour
 	private const float m_particlesMinLifetime		= 1.0f;
 	private const float m_particlesMaxStartSize		= 0.15f;
 	private const float m_particlesMinStartSize		= 0.01f;
+	
+	private float m_lerpStart  		= 0.0f;
+	private float m_lerpEnd			= 1.0f;
+	private float m_lerpProgress	= 0.0f;
 }

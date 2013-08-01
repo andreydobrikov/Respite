@@ -4,10 +4,28 @@
 /// Not optimised in any form. Bugger off. Git.
 /// </summary>
 
+using System;
 using UnityEngine;
 
+[Serializable]
 public class Bezier
 {
+	public Bezier()
+	{
+		m_v0 = new Vector2(0.0f, 0.0f);	
+		m_v1 = new Vector2(1.0f, 0.0f);
+		m_t0 = new Vector2(0.0f, 0.0f);
+		m_t1 = new Vector2(0.0f, 0.0f);
+	}
+	
+	public Bezier(Vector2 v0, Vector2 v1, Vector2 t0, Vector2 t1)
+	{
+		m_v0 = v0;
+		m_v1 = v1;
+		m_t0 = v0;
+		m_t1 = v1;
+	}
+	
 	/// <summary>
 	/// Gets a point on the specified bezier.
 	/// </summary>
@@ -189,4 +207,16 @@ public class Bezier
 		
 		return nodeMesh;
 	}
+	
+	[SerializeField]
+	public Vector2 m_v0;
+	
+	[SerializeField]
+	public Vector2 m_v1;
+	
+	[SerializeField]
+	public Vector2 m_t0;
+	
+	[SerializeField]
+	public Vector2 m_t1;
 }

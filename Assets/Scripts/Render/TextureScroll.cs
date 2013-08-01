@@ -7,6 +7,9 @@ public class TextureScroll : MonoBehaviour
 	public float UScrollRate = 0.01f;
 	public float VScrollRate = 0.01f;
 	
+	[ShaderPropertyNameAttribute(ShaderPropertyNameAttribute.PropertyType.TexEnv)]
+	public string TargetTexture = null;
+	
 	private MeshRenderer m_renderer = null;
 	private Vector2 m_uvScroll = new Vector2();
 	
@@ -19,6 +22,6 @@ public class TextureScroll : MonoBehaviour
 	void FixedUpdate () 
 	{
 		m_uvScroll += new Vector2(UScrollRate, VScrollRate);
-		m_renderer.sharedMaterial.SetTextureOffset("_MainTex", m_uvScroll);
+		m_renderer.sharedMaterial.SetTextureOffset(string.IsNullOrEmpty(TargetTexture) ? "_MainTex" : TargetTexture, m_uvScroll);
 	}
 }

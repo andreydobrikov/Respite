@@ -16,7 +16,7 @@ public class ForestEditor : Editor
 		
 		GUILayout.EndVertical();
 		
-		GUILayout.BeginVertical("Test", (GUIStyle)("Box"));
+		GUILayout.BeginVertical((GUIStyle)("Box"));
 		
 		
 		int newSectionsX = EditorGUILayout.IntField("Sections X", forest.m_sectionsX);
