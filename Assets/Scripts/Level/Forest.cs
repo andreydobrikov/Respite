@@ -57,7 +57,7 @@ public class Forest : MonoBehaviour
 	
 	void LateUpdate()
 	{
-		Vector2 worldCentre = (Vector2)Camera.main.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
+		Vector2 worldCentre = (Vector2)Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 1.0f));
 		Vector2 localCentre = worldCentre- new Vector2(m_startX, m_startY);
 		
 		float sectionWidth 	= (m_endX - m_startX) / (float)m_sectionsX;
@@ -65,6 +65,10 @@ public class Forest : MonoBehaviour
 		
 		int currentX = (int)((localCentre.x / sectionWidth) );
 		int currentY = (int)((localCentre.y / sectionHeight) );
+		
+		Vector3 start = new Vector3(m_startX, m_startY, 0.0f);
+		Debug.DrawLine(start + new Vector3(0.0f, 0.0f, -1.0f), start + new Vector3(currentX * sectionWidth, currentY * sectionHeight, -1.0f), Color.magenta);
+		Debug.DrawLine(start + new Vector3(0.0f, 0.0f, -1.0f), (Vector3)worldCentre + new Vector3(0.0f, 0.0f, -1.0f), Color.blue);
 		
 		if(GetSectionIndex(currentX, currentY) != m_activeSections[4])
 		{
@@ -185,28 +189,50 @@ public class Forest : MonoBehaviour
 		x /= sectionWidth;
 		y /= sectionHeight;
 		
-		return m_sections[(int)x * m_sectionsY + (int)y].AddInstance(this, instance);
+		bool willCollide = WillCollide(instance);
+		
+		if(!willCollide)
+		{
+			m_sections[(int)x * m_sectionsY + (int)y].AddInstance(this, instance);	
+		}
+		
+		return willCollide;
 		
 	}
-	/*
+	
 	public bool WillCollide(TreeInstance instance)
 	{
 		float sectionWidth 	= (m_endX - m_startX) / (float)m_sectionsX;
 		float sectionHeight = (m_endY - m_startY) / (float)m_sectionsY;
 		
 		// Determine the target section.
-		float x = instance.position.x - m_startX;
-		float y = instance.position.y - m_startY;
+		float currentX = instance.position.x - m_startX;
+		float currentY = instance.position.y - m_startY;
 		
-		x /= sectionWidth;
-		y /= sectionHeight;
+		currentX /= sectionWidth;
+		currentY /= sectionHeight;
 		
+		bool collided = false;
 		
-		 m_sections[(int)x * m_sectionsY + (int)y];
+		for(int x = -1; x < 2 && !collided; ++x)
+		{
+			for(int y = -1; y < 2 && !collided; ++y)
+			{		
+				int newX = (int)currentX + x;
+				int newY = (int)currentY + y;
+				
+				if(newX < 0 || newY < 0 || newX >= m_sectionsX || newY >= m_sectionsY)
+				{
+					continue;
+				}
+				
+				collided = m_sections[newX * m_sectionsY + newY].WillCollide(instance);
+			}
+		}
 		
-		
+		return collided;
 	}
-	*/
+	
 	// TODO: Remove public fields
 	public void SetSectionCounts(int sectionsX, int sectionsY)
 	{
@@ -229,22 +255,22 @@ public class Forest : MonoBehaviour
 		{
 			int targetIndex = m_editorSectionX * m_sectionsY + m_editorSectionY;
 			m_sections[targetIndex].Draw();	
+		
+		
+			float sectionWidth 	= (m_endX - m_startX) / (float)m_sectionsX;
+			float sectionHeight = (m_endY - m_startY) / (float)m_sectionsY;
+			
+			Gizmos.color = Color.red;
+			for(int x = 0; x < m_sectionsX; ++x)
+			{
+				Gizmos.DrawLine(new Vector3(m_startX + (x * sectionWidth), m_startY, -1.0f), new Vector3(m_startX + (x * sectionWidth), m_endY, -1.0f));	
+			}
+			
+			for(int y = 0; y < m_sectionsY; ++y)
+			{
+				Gizmos.DrawLine(new Vector3(m_startX, m_startY + (y * sectionHeight), -1.0f), new Vector3(m_endX, m_startY + (y * sectionHeight), -1.0f));	
+			}
 		}
-		
-		float sectionWidth 	= (m_endX - m_startX) / (float)m_sectionsX;
-		float sectionHeight = (m_endY - m_startY) / (float)m_sectionsY;
-		
-		Gizmos.color = Color.red;
-		for(int x = 0; x < m_sectionsX; ++x)
-		{
-			Gizmos.DrawLine(new Vector3(m_startX + (x * sectionWidth), m_startY, -1.0f), new Vector3(m_startX + (x * sectionWidth), m_endY, -1.0f));	
-		}
-		
-		for(int y = 0; y < m_sectionsY; ++y)
-		{
-			Gizmos.DrawLine(new Vector3(m_startX, m_startY + (y * sectionHeight), -1.0f), new Vector3(m_endX, m_startY + (y * sectionHeight), -1.0f));	
-		}
-		
 	}
 	
 	private int GetSectionIndex(int x, int y)
@@ -267,6 +293,7 @@ public class Forest : MonoBehaviour
 	public int m_activeInstanceCount			= 200;
 	public int m_editorSectionX					= 0;
 	public int m_editorSectionY					= 0;
+	public int m_retryBailout					= 50;
 	public GameObject m_treePrefab 				= null;
 	public ForestSection[] m_sections			= null;
 	

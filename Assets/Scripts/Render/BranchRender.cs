@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode]
 public class BranchRender : MonoBehaviour 
 {
 	public float animDuration = 1.0f;
@@ -20,7 +19,7 @@ public class BranchRender : MonoBehaviour
 	private float m_progress = 0.0f;
 	
 	// Update is called once per frame
-	void FixedUpdate () 
+	void Update () 
 	{
 		if(m_increasing) 
 		{

@@ -64,7 +64,7 @@ public class Weather : MonoBehaviour
 			GUILayout.BeginArea(new Rect(240, 10, 300, m_showFoldout ? 300 : 30));
 			GUILayout.BeginVertical((GUIStyle)("Box"));
 			
-			m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Weather");
+			m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Weather (" + m_stormIntensity.ToString("0.0") + ")");
 			
 			
 			if(m_showFoldout)

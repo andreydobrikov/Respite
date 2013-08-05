@@ -121,16 +121,17 @@ public class GeometryFactory : MonoBehaviour
 		newMesh.name = "GeometryFactory:ScreenPlane";
 		
 		float width = targetCamera.orthographicSize / 2.0f;
+		float height = (targetCamera.orthographicSize) / 2.0f;
 		
 		Vector3[] 	vertices 	= new Vector3[4];
 		Vector2[] 	uvs0 		= new Vector2[4];
 		Vector2[] 	uvs1 		= new Vector2[4];
 		int[] 		triangles 	= new int[6];
 		
-		vertices[0] = new Vector3(-width, -0.5f, 0.0f);
-		vertices[1] = new Vector3(width, -0.5f, 0.0f);
-		vertices[2] = new Vector3(-width, 0.5f, 0.0f);
-		vertices[3] = new Vector3(width, 0.5f, 0.0f);
+		vertices[0] = new Vector3(-width, -height, 0.0f);
+		vertices[1] = new Vector3(width, -height, 0.0f);
+		vertices[2] = new Vector3(-width, height, 0.0f);
+		vertices[3] = new Vector3(width, height, 0.0f);
 		
 		uvs0[0] = new Vector2(0.0f, 0.0f);
 		uvs0[1] = new Vector2(UVXScale0, 0.0f);

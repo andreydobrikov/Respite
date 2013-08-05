@@ -26,6 +26,25 @@ public class Bezier
 		m_t1 = v1;
 	}
 	
+	public float GetLength()
+	{
+		return Bezier.GetBezierLength(m_v0, m_t0, m_v1, m_t1);
+	}
+	
+	public Vector2 GetBezierPoint(float progress)
+	{
+		Vector2 p0 = ((1.0f - progress) * m_v0) + (progress * m_t0);
+		Vector2 p1 = ((1.0f - progress) * m_t0) + (progress * m_t1);
+		Vector2 p2 = ((1.0f - progress) * m_t1) + (progress * m_v1);
+		
+		Vector2 s0 = ((1.0f - progress) * p0) + (progress * p1);
+		Vector2 s1 = ((1.0f - progress) * p1) + (progress * p2);
+		
+		Vector2 result = ((1.0f - progress) * s0) + (progress * s1);
+		
+		return result;
+	}
+	
 	/// <summary>
 	/// Gets a point on the specified bezier.
 	/// </summary>
@@ -92,19 +111,34 @@ public class Bezier
 		return (progress / (float)(approximationDetail-1)) ;
 	}
 	
-	public static Mesh GetBezierMesh(Vector2 v0, Vector2 t0, Vector2 v1, Vector2 t1, int iterations, bool hasDepth)
+	public static Mesh GetBezierMesh(	Vector2 v0, 
+										Vector2 t0, 
+										Vector2 v1, 
+										Vector2 t1, 
+										int iterations, 
+										bool hasDepth, 
+										float segmentRadius,
+										float startWidthFactor, 
+										float endWidthFactor,
+										float uv0Multiplier,
+										float uv1Multiplier)
 	{
 		Mesh nodeMesh = new Mesh();
 		Vector3[] 	vertices 	= new Vector3[(iterations * 2) * 2]; // +12 for the end caps
-		Vector2[] 	uvs 		= new Vector2[(iterations * 2) * 2];
+		Vector2[] 	uvs0 		= new Vector2[(iterations * 2) * 2];
+		Vector2[] 	uvs1 		= new Vector2[(iterations * 2) * 2];
 		int[] 		triangles 	= new int[(iterations - 1) * 24 + 24];
 				
-				float wallSize = 0.2f;
+				
 				float stepSize = 1.0f / (float)(iterations - 1);
 				Vector2 lastPoint = Bezier.GetBezierPoint(0.0f, v0, t0, v1, t1);
-				float accumulatedDistance = 0.0f;
+				float accumulatedDistance0 = 0.0f;
+				float accumulatedDistance1 = 0.0f;
 				for(int i = 0; i < iterations; i++)
 				{
+					float wallSize = segmentRadius;
+					wallSize = Mathf.Lerp(wallSize * startWidthFactor, wallSize * endWidthFactor, stepSize * (float)i);
+					
 					Vector2 bezierPoint = Bezier.GetBezierPoint(stepSize * (float)i, v0, t0, v1, t1);
 					Vector2 tangent = Bezier.GetBezierNormal(stepSize * (float)i, v0, t0, v1, t1);
 					
@@ -134,12 +168,18 @@ public class Bezier
 						Vector2 toLastPoint = bezierPoint - lastPoint;
 						float distanceToLastPoint = toLastPoint.magnitude;
 						
-						accumulatedDistance += distanceToLastPoint;
+						accumulatedDistance0 += (stepSize * uv0Multiplier);
+						accumulatedDistance1 += (stepSize * uv1Multiplier);
 						
-						uvs[i * 4] = new Vector2( accumulatedDistance, 0.0f) ;
-						uvs[i * 4 + 1] = new Vector2( accumulatedDistance, 1.0f);	
-						uvs[i * 4 + 2] = new Vector2( accumulatedDistance, 0.0f) ;
-						uvs[i * 4 + 3] = new Vector2( accumulatedDistance, 1.0f);	
+						uvs0[i * 4] = new Vector2( accumulatedDistance0, 0.0f) ;
+						uvs0[i * 4 + 1] = new Vector2( accumulatedDistance0, 1.0f);	
+						uvs0[i * 4 + 2] = new Vector2( accumulatedDistance0, 0.0f) ;
+						uvs0[i * 4 + 3] = new Vector2( accumulatedDistance0, 1.0f);	
+				
+						uvs1[i * 4] = new Vector2( accumulatedDistance1, 0.0f) ;
+						uvs1[i * 4 + 1] = new Vector2( accumulatedDistance1, 1.0f);	
+						uvs1[i * 4 + 2] = new Vector2( accumulatedDistance1, 0.0f) ;
+						uvs1[i * 4 + 3] = new Vector2( accumulatedDistance1, 1.0f);	
 					}
 					lastPoint = bezierPoint;
 					
@@ -202,7 +242,8 @@ public class Bezier
 				triangles[capStart + 11] = offset + 3;
 				
 				nodeMesh.vertices 	= vertices;
-				nodeMesh.uv 			= uvs;
+				nodeMesh.uv 		= uvs0;
+				nodeMesh.uv1 		= uvs1;
 				nodeMesh.triangles 	= triangles;	
 		
 		return nodeMesh;

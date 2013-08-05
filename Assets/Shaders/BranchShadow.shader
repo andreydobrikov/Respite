@@ -11,7 +11,7 @@ Shader "Custom/BranchShadow"
 	{
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
 		LOD 200
-		Blend SrcAlpha OneMinusSrcAlpha
+		Blend  SrcAlpha OneMinusSrcAlpha
 		Cull Off
 		
 		Pass
@@ -48,19 +48,11 @@ Shader "Custom/BranchShadow"
 			
 			fixed4 frag (v2f i) : COLOR0 
 			{ 
-				//float4 val = i.color + (1.0f - (tex2D (_ShadowTex, i.uv).r *_ShadowFactor));
-				//half rim = 1.0 - saturate(dot (normalize(i.viewDir), i.norm));
-				//rim = smoothstep(0.4, 1.0f, rim);
-				
-				//val.rgb += rim * _FresnelIntensity;//i.norm;
-				//val.rgb = float3(1.0f, 0.0f, 0.0f);
-				
 				float4 blendVal = lerp(tex2D (_MainTex, i.uv), tex2D(_Target, i.uv), _Progress);
-				
-				//blendVal = tex2D(_Target, i.uv);
 				
 				float4 val = blendVal * _Color;
 				val *= i.color;
+				
 				return val;
 			}
 			

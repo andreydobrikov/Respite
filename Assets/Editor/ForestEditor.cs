@@ -30,6 +30,7 @@ public class ForestEditor : Editor
 		forest.m_treeRadius					= EditorGUILayout.FloatField("Tree Radius(fix)", forest.m_treeRadius);
 		forest.m_colliderExpansionFactor 	= EditorGUILayout.FloatField("Collider Expansion Factor", forest.m_colliderExpansionFactor);
 		forest.m_instanceCount 				= EditorGUILayout.IntField("World Tree Count", forest.m_instanceCount);
+		forest.m_retryBailout				= EditorGUILayout.IntField("Generator Bailout Count", forest.m_retryBailout);
 		
 		GUILayout.BeginVertical((GUIStyle)("Box"));
 		forest.m_showLayers = EditorGUILayout.Foldout(forest.m_showLayers, "Ignore Layers");
@@ -108,6 +109,7 @@ public class ForestEditor : Editor
 			
 			forest.RebuildSections();
 			bool cancel = false;
+			int treesPlanted = 0;
 			
 			// TODO: This won't ever reach the target tree count as it gives up following a collision.
 			for(int treeCount = 0; treeCount < forest.m_instanceCount && !cancel; ++treeCount)
@@ -115,38 +117,52 @@ public class ForestEditor : Editor
 				bool succeeded = false;
 				int counter = 0;
 				
-				float x = Random.Range(forest.m_startX, forest.m_endX);
-				float y = Random.Range(forest.m_startY, forest.m_endY);
-			
-				Vector3 position = new Vector3(x, y, 0.0f);
 				
 				
-				bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, 0.0f, -50.0f), (Vector3)position + new Vector3(0.0f, 0.0f, 50.0f), forest.m_treeRadius, layerMask);
-				if(!overlap)
+				while(!succeeded && counter < forest.m_retryBailout)
 				{
-					try
-					{
-						TreeInstance instance = new TreeInstance();
-						instance.position = position;
-						
-						succeeded = !forest.AddInstance(instance);
-					}
-					catch(System.Exception e)
-					{
-						Debug.Log("Instance out of bound at " + position.x + ", " + position.y);
-						Debug.Log(e);	
-						Debug.Break();
-					}
+					float x = Random.Range(forest.m_startX, forest.m_endX);
+					float y = Random.Range(forest.m_startY, forest.m_endY);
+				
+					Vector3 position = new Vector3(x, y, 0.0f);
 					
-					if(treeCount % progressUpdateRate == 0)
+					bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, 0.0f, -50.0f), (Vector3)position + new Vector3(0.0f, 0.0f, 50.0f), forest.m_treeRadius, layerMask);
+					if(!overlap)
 					{
-						cancel = EditorUtility.DisplayCancelableProgressBar("Generating Forest", "Creating trees (" + treeCount + ", " + forest.m_instanceCount + ")", (float)treeCount / (float)forest.m_instanceCount);
+						
+							try
+							{
+								TreeInstance instance = new TreeInstance();
+								instance.position = position;
+								
+								succeeded = !forest.AddInstance(instance);
+								
+								if(succeeded)
+								{
+									treesPlanted++;	
+								}
+							}
+							catch(System.Exception e)
+							{
+								Debug.Log("Instance out of bound at " + position.x + ", " + position.y);
+								Debug.Log(e);	
+								Debug.Break();
+							}
+							
+							counter++;
+						
+						
+						if(treeCount % progressUpdateRate == 0)
+						{
+							cancel = EditorUtility.DisplayCancelableProgressBar("Generating Forest", "Creating trees (" + treeCount + ", " + forest.m_instanceCount + ")", (float)treeCount / (float)forest.m_instanceCount);
+						}
 					}
 				}
 			
-				counter++;
+				
 					
 			}
+			Debug.Log("Planted " + treesPlanted + " trees");
 			
 			EditorUtility.ClearProgressBar();
 		}

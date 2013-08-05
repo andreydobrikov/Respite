@@ -11,7 +11,7 @@ Shader "Custom/TexTintDetail"
 	SubShader 
 	{
 		Cull off
-		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
+		Tags {"Queue"="Geometry"}
 		LOD 200
 		Blend SrcAlpha OneMinusSrcAlpha
 		

@@ -12,7 +12,6 @@ public class Path : MonoBehaviour
 	
 	void OnEnable()
 	{
-		
 		if(!m_initialised)
 		{
 			m_spline.Start();
@@ -21,14 +20,32 @@ public class Path : MonoBehaviour
 			
 			m_initialised = true;
 		}
-		
 	}
 	
 #if UNITY_EDITOR
-	public bool m_drawPathOnly = false;
+	
+	public float m_uv0Multiplier			= 1.0f;
+	public float m_uv1Multiplier			= 1.0f;
+	public float m_meshWidth				= 0.2f;
+	public float m_meshDepth				= -1.0f;
+	public Material m_meshMaterial			= null;
+	public int m_meshSegmentCount			= 30;
+	public int m_meshLayer					= 0;
+	
+	public int m_colliderSectionCount 		= 1;
+	public float m_colliderWidthMultiplier 	= 1.0f;
+	
+	public bool m_showCollidersFoldout		= false;
+	public bool m_showMeshesFoldout			= false;
+	public bool m_showGeneratorFoldout 		= false;
+	public bool m_colliders					= true;
+	public bool m_meshes					= true;
+	public bool m_drawPathOnly 				= false;
 #endif
 	
 	
 	public Spline m_spline;
+	
+	[SerializeField]
 	private bool m_initialised;
 }

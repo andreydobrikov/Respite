@@ -94,6 +94,11 @@ public class ForestSection
 			{
 				float z = instance.activeObject.transform.position.z;
 				instance.activeObject.transform.position = (Vector3)instance.position + new Vector3(0.0f, 0.0f, z);
+				instance.activeObject.transform.rotation = Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.Range(0.0f, 360.0f));
+				
+				// TODO: Placeholder shit
+				float scale  = UnityEngine.Random.Range(1.0f, 3.5f);
+				instance.activeObject.transform.localScale = new Vector3(scale, scale, 1.0f);
 			}
 		}
 	}
@@ -118,7 +123,15 @@ public class ForestSection
 	
 	public bool WillCollide(TreeInstance instance)
 	{
-		return true;
+		foreach(var other in m_instancePositions)
+		{
+			if(Mathf.Abs((instance.position - other).magnitude) < (2.0f * m_treeRadius))
+			{
+				return true;	
+			}
+		}
+		
+		return false;
 	}
 	
 	[SerializeField]
