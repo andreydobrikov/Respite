@@ -39,4 +39,44 @@ public class GameObjectHelper
 		
 		return child;
 	}
+	
+	// Searches up :{
+	public static GameObject SearchForComponent(GameObject searchFocus, System.Type targetType)
+	{
+		GameObject current = searchFocus.transform.parent.gameObject;
+		
+		while(current != null)
+		{
+			// Search breadth then go up.
+			int childCount = current.transform.GetChildCount();
+			Component searchComponent = null;
+			
+			for(int i = 0; i < childCount; ++i)
+			{
+				GameObject child = current.transform.GetChild(i).gameObject;
+				
+				if(child == searchFocus)
+				{
+					continue;	
+				}
+				
+				searchComponent = child.GetComponent(targetType);
+				if(searchComponent != null)
+				{
+					return searchComponent.gameObject;		
+				}
+			}
+			
+			// Search the node itself. This is needed for the root node. TODO: Only do it then, duh.
+			searchComponent = current.gameObject.GetComponent(targetType);
+			if(searchComponent != null)
+			{
+				return searchComponent.gameObject;		
+			}
+			
+			current = current.transform.parent.gameObject;	
+		}
+		
+		return null;
+	}
 }

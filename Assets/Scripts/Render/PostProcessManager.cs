@@ -7,12 +7,14 @@ public class PostProcessManager : MonoBehaviour
 	
 	void Start () 
 	{
+		GameObject mainCamera	 	= GameObject.FindGameObjectWithTag("MainCamera");
 		GameObject lightmapCamera 	= GameObject.FindGameObjectWithTag("LightMapCamera");
 		GameObject targetCamera 	= GameObject.FindGameObjectWithTag("WeatherCamera");
 		GameObject postCamera		= GameObject.FindGameObjectWithTag("PostCamera");
-		GameObject postPostCamera		= GameObject.FindGameObjectWithTag("PostPostCamera");
+		GameObject postPostCamera	= GameObject.FindGameObjectWithTag("PostPostCamera");
 		GameObject overlayCamera	= GameObject.FindGameObjectWithTag("OverlayCamera");
 		GameObject viewCamera		= GameObject.FindGameObjectWithTag("ViewRegionCamera");
+		GameObject altWorldCamera	= GameObject.FindGameObjectWithTag("AltWorldCamera");
 		
 		if(lightmapCamera != null && targetCamera != null )
 		{
@@ -34,19 +36,35 @@ public class PostProcessManager : MonoBehaviour
 				targetCamera.GetComponent<LightMapEffect>().lightMapTexture 		= lightmapCamera.GetComponent<Camera>().targetTexture;
 			}
 			
+			int viewWidth 	= pixelWidth;
+			int viewHeight 	= pixelHeight;
+			
+			if(altWorldCamera != null)
+			{
+				altWorldCamera.GetComponent<Camera>().aspect 						= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+				altWorldCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(viewWidth, viewHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
+				altWorldCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
+			}
+			
 			if(ViewRegionEnabled)
 			{
 				if(viewCamera != null && postCamera != null)
 				{
-					int viewWidth 													= pixelWidth;
-					int viewHeight 													= pixelHeight;
+					
 					viewCamera.GetComponent<Camera>().aspect 						= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
 					viewCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(viewWidth, viewHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 					viewCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 					
 					postCamera.GetComponent<ViewRegionEffect>().viewRegionTexture 	= viewCamera.GetComponent<Camera>().targetTexture;
 					
-					postPostCamera.GetComponent<BlurEffect>().OverlayTexture			= viewCamera.GetComponent<Camera>().targetTexture;
+//					postPostCamera.GetComponent<BlurEffect>().OverlayTexture			= viewCamera.GetComponent<Camera>().targetTexture;
+					
+					if(altWorldCamera != null)
+					{
+						mainCamera.GetComponent<AltWorldEffect>().altWorldTexture 	= altWorldCamera.GetComponent<Camera>().targetTexture;
+						mainCamera.GetComponent<AltWorldEffect>().viewTexture		= viewCamera.GetComponent<Camera>().targetTexture;
+					}
+					
 				}
 				else
 				{

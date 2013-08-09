@@ -41,7 +41,7 @@ Shader "Hidden/LightMap" {
 		//return half4(1.0f, 0.0f, 0.0f, 1.0f);
 		//half4 test = tex2D(_MainTex, i.uv[1]);
 		//test.r = 0.0f;
-		return  tex2D(_MainTex, i.uv[1]) * toBlend;
+		return tex2D(_MainTex, i.uv[1]) * toBlend;
 	}	
 
 	ENDCG 

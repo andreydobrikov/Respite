@@ -40,6 +40,11 @@ public class PlayerView : MonoBehaviour
 	{
 		m_filter 		= GetComponent<MeshFilter>();
 		m_viewCollider 	= GetComponent<SphereCollider>();
+		
+		if(m_filter.mesh == null)
+		{
+			m_filter.mesh = new Mesh();	
+		}
 	}
 	
 	void OnBecameVisible()

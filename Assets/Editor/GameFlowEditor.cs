@@ -10,7 +10,7 @@ public class GameFlowEditor : EditorWindow
 	{
 		//GameFlowWrapper wrapperObject = GameObject.FindObjectOfType(typeof(GameFlowWrapper)) as GameFlowWrapper;
 		//return wrapperObject != null;
-		return false;
+		return true;
 	}
 	
 	[MenuItem("Optimism/Startup", false)]
@@ -22,6 +22,9 @@ public class GameFlowEditor : EditorWindow
 
 	void OnGUI()
 	{
+		EditorGUILayout.LabelField("FOR FUCK'S SAKE, CHANGE THIS TO RESPITE");
+		
+		
 		/*GameFlowWrapper wrapperObject = GameObject.FindObjectOfType(typeof(GameFlowWrapper)) as GameFlowWrapper;
 		
 		GUILayout.Label ("Agent Instantiation Objects", EditorStyles.boldLabel);

@@ -46,6 +46,8 @@ public class Spline
 		
 		for(int i = end; i < newBeziers.Length; ++i)
 		{
+			newModifiers[i] = 1.0f;
+			
 			Vector2 t0Diff = newBeziers[i - 1].m_t1 - newBeziers[i - 1].m_v1;
 			
 			newBeziers[i] = new Bezier();

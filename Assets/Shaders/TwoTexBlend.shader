@@ -6,6 +6,7 @@ Shader "Custom/TwoTexBlendTransparent"
 		_SourceDetail ("Source Detail Tex", 2D) = "white" {}
 		_Target ("Target Tex", 2D) = "white" {}
 		_Blend ("Blend Tex", 2D) = "white" {}
+		_DetailIntensity("Detail Intensity", Range(0.0, 1.0)) = 0.5
 	}
 	
 	SubShader 
@@ -29,6 +30,7 @@ Shader "Custom/TwoTexBlendTransparent"
 			float4 _Source_ST;
 			float4 _Target_ST;
 			float4 _Blend_ST;
+			float _DetailIntensity;
 						 
 			struct v2f 
 			{
@@ -53,9 +55,11 @@ Shader "Custom/TwoTexBlendTransparent"
 			
 			fixed4 frag (v2f i) : COLOR0 
 			{ 
+				const half4 white = half4(1.0, 1.0, 1.0, 1.0);
+			
 				float4 source = tex2D(_Source, i.uv0);
 				float4 target = tex2D(_Target, i.uv1);
-				float4 sourceDetail = tex2D(_SourceDetail, i.uv2);
+				float4 sourceDetail = lerp(tex2D(_SourceDetail, i.uv2), white, _DetailIntensity);
 				
 				source = source * sourceDetail;
 				

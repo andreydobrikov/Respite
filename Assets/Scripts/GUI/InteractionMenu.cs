@@ -148,7 +148,10 @@ public class InteractionMenu : MonoBehaviour
 		Vector3 playerDirection = transform.localRotation * Vector3.up;
 		float diff = Mathf.Acos(Vector3.Dot(playerDirection, m_lastDirection)) * Mathf.Rad2Deg;
 		
-
+		foreach(var currentObject in m_objectsInView)
+		{
+			currentObject.SetHighlightActive(false);
+		}
 		
 		m_objectsInView.Clear();
 		
@@ -188,6 +191,7 @@ public class InteractionMenu : MonoBehaviour
 					if(interactiveObject != null && !m_objectsInView.Contains(interactiveObject))
 					{
 						m_objectsInView.Add(interactiveObject);
+						interactiveObject.SetHighlightActive(true);
 					}
 				}
 			}

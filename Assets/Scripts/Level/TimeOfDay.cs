@@ -171,6 +171,19 @@ public class TimeOfDay : MonoBehaviour
 				GUILayout.Label((time.Hours.ToString("00") + ":" + time.Minutes.ToString("00")), GUILayout.Width(40));
 				
 				GUILayout.EndHorizontal();
+				
+				GUILayout.BeginHorizontal();
+				
+				GUILayout.Label("Cycle Time", GUILayout.Width(40));
+				string newCycleTimeString = GUILayout.TextField(CycleTime.ToString("0.00"));
+				
+				float newCycleTime = CycleTime;
+				if(float.TryParse(newCycleTimeString, out newCycleTime) && newCycleTime > 0.0f)
+				{
+					CycleTime = newCycleTime;
+				}
+				GUILayout.EndHorizontal();
+				
 				GUILayout.EndVertical();
 			}
 			
