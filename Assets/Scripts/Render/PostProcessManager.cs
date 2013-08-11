@@ -1,9 +1,15 @@
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 using System.Collections;
 
 public class PostProcessManager : MonoBehaviour 
 {
 	public bool ViewRegionEnabled = false;
+	
+	public Shader ShowLightmapShader = null;
 	
 	void Start () 
 	{
@@ -15,6 +21,13 @@ public class PostProcessManager : MonoBehaviour
 		GameObject overlayCamera	= GameObject.FindGameObjectWithTag("OverlayCamera");
 		GameObject viewCamera		= GameObject.FindGameObjectWithTag("ViewRegionCamera");
 		GameObject altWorldCamera	= GameObject.FindGameObjectWithTag("AltWorldCamera");
+		
+		if(postCamera != null)
+		{
+			m_postBlur = postCamera.GetComponent<BlurEffect>() as BlurEffect;	
+		}
+		
+		m_lightMapEffect = FindObjectOfType(typeof(LightMapEffect)) as LightMapEffect;
 		
 		if(lightmapCamera != null && targetCamera != null )
 		{
@@ -73,4 +86,99 @@ public class PostProcessManager : MonoBehaviour
 			}
 		}
 	}
+	
+	void Update()
+	{
+		if(m_blurUp)
+		{
+			m_blurLerpProgress += Time.deltaTime;	
+		}
+		else
+		{
+			m_blurLerpProgress -= Time.deltaTime;	
+		}
+		
+		m_blurLerpProgress = Mathf.Clamp(m_blurLerpProgress, 0.0f, 0.6f);
+		
+		if(m_postBlur != null)
+		{
+			m_postBlur.blurSpread = m_blurLerpProgress;	
+		}
+	}	
+	
+	public void ActivateBlur()
+	{
+		m_blurRequests++;
+		
+		if(m_postBlur != null )
+		{
+			m_postBlur.enabled = true;
+		}
+	}
+	
+	public void DeactivateBlur()
+	{
+		m_blurRequests--;
+		
+		if(m_blurRequests == 0)
+		{
+			if(m_postBlur != null)
+			{
+				m_postBlur.enabled = false;
+			}
+		}
+			
+		if(m_blurRequests < 0)
+		{
+			Debug.LogError("Invalid number of blur-requests");	
+		}
+	}
+	
+#if UNITY_EDITOR
+	void OnGUI()
+	{
+		GUILayout.BeginArea(new Rect(600, 10, 180, 100));
+		GUILayout.BeginVertical((GUIStyle)("Box"));
+		
+		m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Post Process");
+		
+		if(m_showFoldout)
+		{
+			GUI.enabled = m_lightMapEffect != null;
+			
+			bool showLightmap = GUILayout.Toggle(m_showLightmap, "Show Light-Map");
+			
+			if(showLightmap != m_showLightmap && m_lightMapEffect != null)
+			{
+				if(showLightmap)
+				{
+					m_defaultLightMapTexture = m_lightMapEffect.shader;	
+					m_lightMapEffect.shader = ShowLightmapShader;
+					m_lightMapEffect.UpdateShader();
+				}
+				else
+				{
+					m_lightMapEffect.shader = m_defaultLightMapTexture;
+					m_lightMapEffect.UpdateShader();
+				}
+				
+				m_showLightmap = showLightmap;
+			}
+			
+			GUI.enabled = true;	
+		}
+		
+		GUILayout.EndVertical();
+		GUILayout.EndArea();
+	}
+#endif
+	
+	private int m_blurRequests				= 0;
+	private float m_blurLerpProgress		= 0.0f;
+	private bool m_blurUp					= false;
+	private BlurEffect m_postBlur 			= null;
+	private Shader m_defaultLightMapTexture = null;
+	private bool m_showLightmap 			= false;
+	private bool m_showFoldout 				= false;
+	private LightMapEffect m_lightMapEffect = null;
 }

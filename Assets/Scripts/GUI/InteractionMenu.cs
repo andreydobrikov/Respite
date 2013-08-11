@@ -8,6 +8,7 @@ public class InteractionMenu : MonoBehaviour
 	public Font font;
 	public GUISkin skin;
 	public float InspectionAngleMax = 60.0f;
+	public float InspectionFocusAngle = 10.0f;
 	public LayerMask collisionLayer = 0;
 	public bool m_renderDebug		= false;
 	
@@ -16,6 +17,8 @@ public class InteractionMenu : MonoBehaviour
 		m_style = new GUIStyle();
 		m_style.font = font;
 		m_style.fontSize = 20;
+		
+		m_gameFlow = GameFlow.Instance;
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -40,6 +43,18 @@ public class InteractionMenu : MonoBehaviour
 	
 	void OnGUI()
 	{
+#if UNITY_EDITOR
+		if(m_gameFlow == null)
+		{
+			m_gameFlow = GameFlow.Instance;	
+		}
+#endif 
+		
+		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.World)
+		{
+			return;	
+		}
+		
 		if(m_objectsInView.Count > 0)
 		{
 			if(Event.current.type == EventType.KeyDown)
@@ -111,6 +126,10 @@ public class InteractionMenu : MonoBehaviour
 	
 	void Update()
 	{
+		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.World)
+		{
+			return;	
+		}
 
 		if(m_objectsInView.Count > 0)
 		{
@@ -159,8 +178,8 @@ public class InteractionMenu : MonoBehaviour
 		{
 			float targetAngle = -Mathf.Atan2(m_lastDirection.x, m_lastDirection.y)  * Mathf.Rad2Deg;
 			
-			float minAngle = targetAngle - InspectionAngleMax;
-			float maxAngle = targetAngle + InspectionAngleMax;
+			float minAngle = targetAngle - InspectionFocusAngle;
+			float maxAngle = targetAngle + InspectionFocusAngle;
 			
 			Vector3 min = Quaternion.Euler(0.0f, 0.0f, minAngle) * Vector3.up;
 			Vector3 max = (Quaternion.Euler(0.0f, 0.0f, maxAngle) ) * Vector3.up;
@@ -173,7 +192,7 @@ public class InteractionMenu : MonoBehaviour
 			
 			const float iterationCount = 10.0f;
 			
-			float sweepDelta = (InspectionAngleMax * 2.0f) / iterationCount;
+			float sweepDelta = (InspectionFocusAngle * 2.0f) / iterationCount;
 			
 			RaycastHit hitInfo;
 			
@@ -202,7 +221,7 @@ public class InteractionMenu : MonoBehaviour
 	List<InteractiveObject> m_objectsInView		= new List<InteractiveObject>();
 	
 	private GUIStyle m_style;
-	
 	private int m_currentTab 		= 0;
 	private Vector3 m_lastDirection = Vector3.zero;
+	private GameFlow m_gameFlow = null;
 }

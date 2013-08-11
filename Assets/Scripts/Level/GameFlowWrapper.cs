@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class GameFlowWrapper : MonoBehaviour 
 {
-	
 	public GameObject LevelObject;
 	
 #if UNITY_EDITOR

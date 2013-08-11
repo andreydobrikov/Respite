@@ -9,6 +9,11 @@ public class Spline
 	{
 		m_beziers 			= new Bezier[m_controlPoints];
 		m_widthModifiers 	= new float[m_controlPoints + 1];
+		
+		for(int i = 0; i < m_controlPoints; ++i)
+		{
+			m_widthModifiers[i] = 1.0f;
+		}
 	}
 	
 	public void Start()

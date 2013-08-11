@@ -107,8 +107,10 @@ public class PathEditor : Editor
 						GameObject newObject = new GameObject("Segment (" + bezier.m_v0.x + ", " + bezier.m_v0.y + ")");
 						newObject.layer = path.m_meshLayer;
 						
-						newObject.transform.parent 		= meshesObject.transform;
-						newObject.transform.position 	= new Vector3(0.0f, 0.0f, path.m_meshDepth);
+						newObject.transform.parent 			= meshesObject.transform;
+					//	newObject.transform.localPosition 	= new Vector3(0.0f, 0.0f, 0.0f);
+						newObject.transform.rotation		= Quaternion.identity;
+						newObject.transform.position 		= new Vector3(0.0f, 0.0f, path.m_meshDepth);
 						
 						MeshFilter filter 				= newObject.AddComponent<MeshFilter>();
 						MeshRenderer renderer 			= newObject.AddComponent<MeshRenderer>();

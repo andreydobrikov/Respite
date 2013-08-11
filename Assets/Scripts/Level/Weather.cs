@@ -17,6 +17,10 @@ public class Weather : MonoBehaviour
 		m_randomUpdate 	= true;
 		
 		m_timeOfDay = GameObject.FindObjectOfType(typeof(TimeOfDay)) as TimeOfDay;
+		m_gameTime	= GameTime.Instance;
+		
+		m_gameTime.TimePaused 	+= new System.Action(TimePaused);
+		m_gameTime.TimeUnpaused += new System.Action(TimeUnpaused);
 		
 		m_timeOfDay.CloudCoverPercentage = m_cloudCover;
 		
@@ -198,7 +202,18 @@ public class Weather : MonoBehaviour
 		SetParticleIntensity(m_stormIntensity);
 	}
 	
-	private TimeOfDay m_timeOfDay = null;
+	private void TimePaused()
+	{
+		m_snowParticles.Pause();
+	}
+	
+	private void TimeUnpaused()
+	{
+		m_snowParticles.Play();
+	}
+	
+	private TimeOfDay m_timeOfDay	= null;
+	private GameTime m_gameTime		= null;
 	
 	private ParticleSystem m_snowParticles 	= null;
 	private MeshRenderer m_overlayRenderer 	= null;

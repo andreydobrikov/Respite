@@ -24,6 +24,11 @@ public class LightMapEffect : ImageEffectBase
 		base.OnDisable();
 //		DestroyImmediate(lightMapTexture);
 	}
+	
+	public void UpdateShader()
+	{
+		material.shader = shader;		
+	}
 
 	// Called by camera to apply image effect
 	void OnRenderImage (RenderTexture source, RenderTexture destination)
@@ -34,6 +39,8 @@ public class LightMapEffect : ImageEffectBase
 			DestroyImmediate(lightMapTexture);
 		}
 	
+		
+		
 		material.SetTexture("_Overlay", lightMapTexture);
 		
 		
