@@ -14,7 +14,7 @@ public class Weather : MonoBehaviour
 	{
 		m_lerpStart 	= Random.value;
 		m_lerpEnd 		= Random.value;
-		m_randomUpdate 	= true;
+		m_randomUpdate 	= false;
 		
 		m_timeOfDay = GameObject.FindObjectOfType(typeof(TimeOfDay)) as TimeOfDay;
 		m_gameTime	= GameTime.Instance;
@@ -38,6 +38,8 @@ public class Weather : MonoBehaviour
 		{
 			m_snowParticles = ParticleObject.GetComponent<ParticleSystem>();
 		}
+		
+		SetStormIntensity(0.0f);
 	}
 	
 	public void Update()
@@ -46,7 +48,7 @@ public class Weather : MonoBehaviour
 		{
 			const float changeRate = 0.01f;
 			
-			m_lerpProgress += Time.deltaTime * changeRate;
+			m_lerpProgress += GameTime.Instance.m_deltaTime * changeRate;
 			
 			SetStormIntensity(Mathf.Lerp(m_lerpStart, m_lerpEnd, Mathf.Sin(Mathf.PI / 2.0f * m_lerpProgress)));
 			

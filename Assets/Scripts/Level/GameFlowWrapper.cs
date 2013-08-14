@@ -15,6 +15,15 @@ public class GameFlowWrapper : MonoBehaviour
 		GameFlow instance = GameFlow.Instance;
 		
 		instance.SaveFadeDuration = m_saveFadeDuration;
+		m_started = true;
+		
+		string[] names = Input.GetJoystickNames();
+		
+		foreach(var name in names)
+		{
+			Debug.Log(name);	
+		}
+		
 	}
 	
 	// Update is called once per frame
@@ -58,5 +67,14 @@ public class GameFlowWrapper : MonoBehaviour
 		}
 	}
 	
-	private float m_saveFadeDuration = 3.0f;
+	void OnApplicationFocus(bool focus)
+	{
+		if(GameFlow.Instance.CurrentControlContext != GameFlow.ControlContext.Menu && !focus && m_started)
+		{
+		//	GameFlow.Instance.RequestMenu();	
+		}
+	}
+	
+	private bool m_started 				= false;
+	private float m_saveFadeDuration 	= 3.0f;
 }

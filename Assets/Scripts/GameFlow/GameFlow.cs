@@ -66,21 +66,21 @@ public class GameFlow
 	
 	public void RequestMenu()
 	{
-		if(m_postManager != null)
+		if(m_cameraFade != null)
 		{
-			m_postManager.ActivateBlur();
+			m_cameraFade.StartFade(new Color(0.0f, 0.0f, 0.0f, 1.0f), 0.5f, MenuFadeComplete);
 		}
 		
-		m_context.Push(ControlContext.Menu);
+		
 		
 		m_gameTime.Paused = true;
 	}
 	
 	public void EndMenu()
 	{
-		if(m_postManager != null)
+		if(m_cameraFade != null)
 		{
-			m_postManager.DeactivateBlur();
+			m_cameraFade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), 0.5f, null);
 		}
 		
 		m_context.Pop();
@@ -109,10 +109,16 @@ public class GameFlow
 	
 	private void ScreenFadeComplete()
 	{
+		Serialiser.Instance.Serialise();
+		
 		m_timeOfDay.AdjustedTime = m_timeOfDay.AdjustedTime + m_advanceTime;
 		
-		Serialiser.Instance.Serialise();
 		m_cameraFade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), SaveFadeDuration, null);
+	}
+	
+	private void MenuFadeComplete()
+	{
+		m_context.Push(ControlContext.Menu);
 	}
 	
 	private GameTime			m_gameTime		= null;

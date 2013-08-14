@@ -24,6 +24,7 @@ Shader "Custom/Light"
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			float4 _Color;
+			float4x4 _Rotation;
 			 
 			struct v2f 
 			{
@@ -34,12 +35,18 @@ Shader "Custom/Light"
 	
 			v2f vert (appdata_full v) 
 			{
-				v2f o;
+				v2f o; 
 		        o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
 		        o.color = v.color;
 		        
 		        
-		        o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
+		        //o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
+		        
+		        half4 test = v.texcoord - half4(0.5f, 0.5f, 0.0f, 0.0f);
+
+           		o.uv = mul ( test, _Rotation ).xy;
+           		
+           		o.uv += 0.5f;
 		        
 		        return o;
 			}
@@ -55,6 +62,8 @@ Shader "Custom/Light"
 				
 				float4 val = tex2D (_MainTex, i.uv) * _Color;
 				val *= i.color;
+				
+				//val = float4(i.uv.x, i.uv.y, 0.0f, 1.0f);
 				return val;
 			}
 			

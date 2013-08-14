@@ -25,6 +25,7 @@ public class TimeOfDay : MonoBehaviour
 	void Start()
 	{
 		Reset ();
+		PauseUpdate = true;
 	}
 	
 	private void Reset()
@@ -51,8 +52,13 @@ public class TimeOfDay : MonoBehaviour
 		UpdateTime(true);
 	}
 	
-	void FixedUpdate () 
+	void Update () 
 	{
+		if(GameTime.Instance.Paused)
+		{
+			return;	
+		}
+		
 		if(!PauseUpdate)
 		{
 			ActiveTime += Time.deltaTime; 
@@ -205,6 +211,23 @@ public class TimeOfDay : MonoBehaviour
 	{
 		get { return ActiveTime / CycleTime; }
 		set { ActiveTime = (value * CycleTime); }
+	}
+	
+	void SaveSerialise(List<SavePair> pairs)
+	{
+		pairs.Add(new SavePair("time", ActiveTime.ToString()));
+	}
+	
+	void SaveDeserialise(List<SavePair> pairs)
+	{
+		float activeTime = 0.0f;
+		
+		foreach(var pair in pairs)
+		{
+			if(pair.id == "time") { float.TryParse(pair.value, out activeTime); }
+		}
+		
+		ActiveTime = activeTime;
 	}
 	
 	private int					m_currentFrameIndex;

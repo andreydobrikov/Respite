@@ -3,15 +3,22 @@ using System.Collections;
 
 public class ThumbstickRotate : MonoBehaviour 
 {
-
+	public GameFlow.ControlContext m_activeContext = GameFlow.ControlContext.World;
+	
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 	
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		if(GameFlow.Instance.CurrentControlContext != m_activeContext)
+		{
+			return;	
+		}
+		
 		Vector3 lastDirection = (Vector3.up * (Input.GetAxis("vertical_2"))) + (Vector3.right * (Input.GetAxis("horizontal_2")));
 		
 		float angle = Mathf.Atan2(lastDirection.x, lastDirection.y);

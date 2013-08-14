@@ -49,6 +49,11 @@ public class Spline
 		
 		Array.Copy(m_beziers, newBeziers, end);
 		
+		for(int i = 0; i < end; i++)
+		{
+			newModifiers[i] = 1.0f;
+		}
+		
 		for(int i = end; i < newBeziers.Length; ++i)
 		{
 			newModifiers[i] = 1.0f;

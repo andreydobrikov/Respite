@@ -13,9 +13,14 @@ public class GameMenu : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		if(m_gameFlow == null)
+		{
+			m_gameFlow = GameFlow.Instance;	
+		}
+		
 		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.Menu)
 		{
-			if(Input.GetKeyDown("escape"))
+			if(Input.GetButtonDown("escape"))
 			{
 				GameFlow.Instance.RequestMenu();	
 			}
@@ -23,7 +28,7 @@ public class GameMenu : MonoBehaviour
 			return;	
 		}
 		
-		if(Input.GetKeyDown("escape"))
+		if(Input.GetButtonDown("escape"))
 		{
 			GameFlow.Instance.EndMenu();	
 		}
@@ -32,6 +37,7 @@ public class GameMenu : MonoBehaviour
 	
 	void OnGUI()
 	{
+		GUI.depth = -11;
 		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.Menu)
 		{
 			return;	

@@ -1,0 +1,183 @@
+fileFormatVersion: 2
+guid: 6f8f155f425edc3478c2cb73d392ff8e
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: apartment_bed_floor
+    100004: apartment_br_floor
+    100006: apartment_cl_floor
+    100008: apartment_sr_floor
+    100010: apartment_walls
+    100012: kitchen_sr_floor
+    100014: kitchen_k_floor
+    100016: apartment_k_floor
+    100018: weather_mask
+    100020: apartment_weather_mask
+    100022: apartment_k_light
+    100024: apartment_sr_light
+    100026: Plane001
+    100028: kitchen_window
+    100030: apartment_br_floor 1
+    100032: apartment_br_light
+    100034: apartment_bed_floor 1
+    100036: apartment_br_light 1
+    100038: apartment_bed_light
+    100040: apartment_k_light_dead
+    100042: apartment_kitchen_ambient
+    100044: apartment_lounge_ambient
+    100046: apartment_kitchen_floor
+    100048: apartment_lounge_floor
+    400000: //RootNode
+    400002: apartment_bed_floor
+    400004: apartment_br_floor
+    400006: apartment_cl_floor
+    400008: apartment_sr_floor
+    400010: apartment_walls
+    400012: kitchen_sr_floor
+    400014: kitchen_k_floor
+    400016: apartment_k_floor
+    400018: weather_mask
+    400020: apartment_weather_mask
+    400022: apartment_k_light
+    400024: apartment_sr_light
+    400026: Plane001
+    400028: kitchen_window
+    400030: apartment_br_floor 1
+    400032: apartment_br_light
+    400034: apartment_bed_floor 1
+    400036: apartment_br_light 1
+    400038: apartment_bed_light
+    400040: apartment_k_light_dead
+    400042: apartment_kitchen_ambient
+    400044: apartment_lounge_ambient
+    400046: apartment_kitchen_floor
+    400048: apartment_lounge_floor
+    2300000: //RootNode
+    2300002: apartment_bed_floor
+    2300004: apartment_br_floor
+    2300006: apartment_cl_floor
+    2300008: apartment_sr_floor
+    2300010: apartment_walls
+    2300012: kitchen_sr_floor
+    2300014: kitchen_k_floor
+    2300016: apartment_k_floor
+    2300018: weather_mask
+    2300020: apartment_weather_mask
+    2300022: apartment_k_light
+    2300024: apartment_sr_light
+    2300026: Plane001
+    2300028: kitchen_window
+    2300030: apartment_br_floor 1
+    2300032: apartment_br_light
+    2300034: apartment_bed_floor 1
+    2300036: apartment_br_light 1
+    2300038: apartment_bed_light
+    2300040: apartment_k_light_dead
+    2300042: apartment_kitchen_ambient
+    2300044: apartment_lounge_ambient
+    2300046: apartment_kitchen_floor
+    2300048: apartment_lounge_floor
+    3300000: //RootNode
+    3300002: apartment_bed_floor
+    3300004: apartment_br_floor
+    3300006: apartment_cl_floor
+    3300008: apartment_sr_floor
+    3300010: apartment_walls
+    3300012: kitchen_sr_floor
+    3300014: kitchen_k_floor
+    3300016: apartment_k_floor
+    3300018: weather_mask
+    3300020: apartment_weather_mask
+    3300022: apartment_k_light
+    3300024: apartment_sr_light
+    3300026: Plane001
+    3300028: kitchen_window
+    3300030: apartment_br_floor 1
+    3300032: apartment_br_light
+    3300034: apartment_bed_floor 1
+    3300036: apartment_br_light 1
+    3300038: apartment_bed_light
+    3300040: apartment_k_light_dead
+    3300042: apartment_kitchen_ambient
+    3300044: apartment_lounge_ambient
+    3300046: apartment_kitchen_floor
+    3300048: apartment_lounge_floor
+    4300000: wall001
+    4300002: apartment_walls
+    4300004: kitchen_sr_floor
+    4300006: apartment_sr_floor
+    4300008: apartment_br_floor
+    4300010: apartment_bed_floor
+    4300012: apartment_cl_floor
+    4300014: kitchen_k_floor
+    4300016: apartment_k_floor
+    4300018: weather_mask
+    4300020: apartment_weather_mask
+    4300022: apartment_k_light
+    4300024: apartment_sr_light
+    4300026: Plane001
+    4300028: kitchen_window
+    4300030: apartment_br_floor
+    4300032: apartment_br_light
+    4300034: apartment_bed_floor
+    4300036: apartment_br_light
+    4300038: apartment_bed_light
+    4300040: apartment_k_light_dead
+    4300042: apartment_kitchen_ambient
+    4300044: apartment_lounge_ambient
+    4300046: apartment_kitchen_floor
+    4300048: apartment_lounge_floor
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    handles: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  additionalBone: 1
+  animationType: 2
+  userData: 

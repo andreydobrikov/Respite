@@ -14,7 +14,7 @@ public class CameraFade : MonoBehaviour
 	private Color m_CurrentScreenOverlayColor 	= new Color(0,0,0,0);	// default starting color: black and fully transparrent
 	private Color m_TargetScreenOverlayColor 	= new Color(0,0,0,0);	// default target color: black and fully transparrent
 	private Color m_DeltaColor 					= new Color(0,0,0,0);	// the delta-color is basically the "speed / second" at which the current color should change
-	private int m_FadeGUIDepth 					= -1000;				// make sure this texture is drawn on top of everything
+	private int m_FadeGUIDepth 					= -10;				// make sure this texture is drawn on top of everything
  	private System.Action m_fadeCompleteHandler = null;
 	
 	// initialize the texture, background-style and initial color:

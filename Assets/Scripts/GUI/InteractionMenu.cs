@@ -126,6 +126,14 @@ public class InteractionMenu : MonoBehaviour
 	
 	void Update()
 	{
+#if UNITY_EDITOR
+		if(m_gameFlow == null)
+		{
+			m_gameFlow = GameFlow.Instance;	
+		}
+#endif
+		
+		
 		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.World)
 		{
 			return;	
@@ -174,8 +182,12 @@ public class InteractionMenu : MonoBehaviour
 		
 		m_objectsInView.Clear();
 		
+		m_lastValidDirection = playerDirection;
+		
 		if(magnitude > 0.0f && diff >= 0.0f && diff < InspectionAngleMax)
 		{
+			m_lastValidDirection = m_lastDirection.normalized;
+			
 			float targetAngle = -Mathf.Atan2(m_lastDirection.x, m_lastDirection.y)  * Mathf.Rad2Deg;
 			
 			float minAngle = targetAngle - InspectionFocusAngle;
@@ -217,11 +229,17 @@ public class InteractionMenu : MonoBehaviour
 		}
 	}
 	
+	public Vector3 LastDirection
+	{
+		get { return m_lastValidDirection; }	
+	}
+	
 	List<InteractiveObject> m_objectsInRange 	= new List<InteractiveObject>();
 	List<InteractiveObject> m_objectsInView		= new List<InteractiveObject>();
 	
 	private GUIStyle m_style;
 	private int m_currentTab 		= 0;
 	private Vector3 m_lastDirection = Vector3.zero;
+	private Vector3 m_lastValidDirection = new Vector3(0.0f, 1.0f, 0.0f);
 	private GameFlow m_gameFlow = null;
 }

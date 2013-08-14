@@ -44,6 +44,10 @@ public class GameTime
 		{
 			m_deltaTime = Time.deltaTime;
 		}
+		else
+		{
+			m_deltaTime = 0.0f;	
+		}
 	}
 	
 	public bool Paused 

@@ -26,6 +26,21 @@ public class AssetHelper
 		return asset;
 	}
 	
+	public UnityEngine.Object FindAsset<T>(string partialName)
+	{
+		UnityEngine.Object[] objects = Resources.FindObjectsOfTypeAll(typeof(T));
+		
+		foreach(var current in objects)
+		{
+			if(current.name.Contains(partialName))
+			{
+				return current;
+			}
+		}
+		
+		return null;
+	}
+	
 	public static AssetHelper Instance
 	{
 		get
