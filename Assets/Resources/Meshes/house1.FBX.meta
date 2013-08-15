@@ -1,0 +1,145 @@
+fileFormatVersion: 2
+guid: 23ef236a4df03e743ae7f3f3840affdf
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: house1_hall_ambient
+    100004: house1_hall_floor
+    100006: house1_kitchen_ambient
+    100008: house1_kitchen_floor
+    100010: house1_lounge_ambient
+    100012: house1_lounge_floor
+    100014: house1_walls
+    100016: house1_weather_mask
+    100018: house1_bathroom_floor
+    100020: house1_bedroom_floor
+    100022: house1_guest_room_floor
+    100024: house1_hall_floor 1
+    100026: house1_study_floor
+    100028: house1_bathroom_ambient
+    100030: house1_bedroom_ambient
+    100032: house1_guest_room_ambient
+    100034: house1_study_ambient
+    400000: //RootNode
+    400002: house1_hall_ambient
+    400004: house1_hall_floor
+    400006: house1_kitchen_ambient
+    400008: house1_kitchen_floor
+    400010: house1_lounge_ambient
+    400012: house1_lounge_floor
+    400014: house1_walls
+    400016: house1_weather_mask
+    400018: house1_bathroom_floor
+    400020: house1_bedroom_floor
+    400022: house1_guest_room_floor
+    400024: house1_hall_floor 1
+    400026: house1_study_floor
+    400028: house1_bathroom_ambient
+    400030: house1_bedroom_ambient
+    400032: house1_guest_room_ambient
+    400034: house1_study_ambient
+    2300000: house1_hall_ambient
+    2300002: house1_hall_floor
+    2300004: house1_kitchen_ambient
+    2300006: house1_kitchen_floor
+    2300008: house1_lounge_ambient
+    2300010: house1_lounge_floor
+    2300012: house1_walls
+    2300014: house1_weather_mask
+    2300016: house1_bathroom_floor
+    2300018: house1_bedroom_floor
+    2300020: house1_guest_room_floor
+    2300022: house1_hall_floor 1
+    2300024: house1_study_floor
+    2300026: house1_bathroom_ambient
+    2300028: house1_bedroom_ambient
+    2300030: house1_guest_room_ambient
+    2300032: house1_study_ambient
+    3300000: house1_hall_ambient
+    3300002: house1_hall_floor
+    3300004: house1_kitchen_ambient
+    3300006: house1_kitchen_floor
+    3300008: house1_lounge_ambient
+    3300010: house1_lounge_floor
+    3300012: house1_walls
+    3300014: house1_weather_mask
+    3300016: house1_bathroom_floor
+    3300018: house1_bedroom_floor
+    3300020: house1_guest_room_floor
+    3300022: house1_hall_floor 1
+    3300024: house1_study_floor
+    3300026: house1_bathroom_ambient
+    3300028: house1_bedroom_ambient
+    3300030: house1_guest_room_ambient
+    3300032: house1_study_ambient
+    4300000: house1_walls
+    4300002: house1_lounge_floor
+    4300004: house1_kitchen_floor
+    4300006: house1_hall_floor
+    4300008: house1_lounge_ambient
+    4300010: house1_kitchen_ambient
+    4300012: house1_hall_ambient
+    4300014: house1_weather_mask
+    4300016: house1_bedroom_floor
+    4300018: house1_bathroom_floor
+    4300020: house1_guest_room_floor
+    4300022: house1_hall_floor
+    4300024: house1_study_floor
+    4300026: house1_bedroom_ambient
+    4300028: house1_bathroom_ambient
+    4300030: house1_study_ambient
+    4300032: house1_guest_room_ambient
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    handles: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  additionalBone: 1
+  animationType: 2
+  userData: 

@@ -59,8 +59,15 @@ public class PlayerView : MonoBehaviour
 	
 	public void OnTriggerEnter(Collider other)
 	{
+		
+		
 		if(other.gameObject.layer == LayerMask.NameToLayer("LevelGeo") && other is BoxCollider)
 		{
+			if(m_colliderVertices.ContainsKey(other))
+			{
+				return;	
+			}
+			
 			BoxCollider newCollider = other as BoxCollider;
 			BoxColliderVertices newVertices = new BoxColliderVertices();
 			
@@ -74,6 +81,11 @@ public class PlayerView : MonoBehaviour
 			m_colliderVertices.Add(other, newVertices);
 			RebuildMesh();
 		}
+	}
+	
+	void OnRegionTransition()
+	{
+		m_colliderVertices.Clear();	
 	}
 	
 	void OnTriggerExit(Collider other)
@@ -109,11 +121,13 @@ public class PlayerView : MonoBehaviour
 		Vector3[] 	normals 	= new Vector3[occluders.Count + 1];
 		Color[] 	colors 		= new Color[occluders.Count + 1];
 		Vector2[] 	uvs 		= new Vector2[occluders.Count + 1];
+		Vector2[] 	uvs1 		= new Vector2[occluders.Count + 1];
 		int[] 		triangles 	= new int[triangleCount + 3];
 		
 		// Add the camera point manually
 		vertices[0] = new Vector3(0.0f, 0.0f, 0.0f);
 		uvs[0] 		= new Vector2(0.5f, 0.5f);
+		uvs1[0] 		= new Vector2(0.5f, 0.5f);
 		colors[0]	= new Color(1.0f, 1.0f, 1.0f, 1.0f);
 		
 		int index = 1;
@@ -127,6 +141,7 @@ public class PlayerView : MonoBehaviour
 			Vector3 localPosition 	= vert.vec - transform.position;
 			vertices[index] 		= rotationInverse *  localPosition;
 			uvs[index] 				= new Vector2((localPosition.x + extentsVal) / (extentsVal * 2.0f), (localPosition.y + extentsVal) / (extentsVal * 2.0f));
+			uvs1[index]				= uvs[index];
 			normals[index] 			= new Vector3(0.0f, 0.0f -1.0f);
 			colors[index]			= new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			
@@ -149,6 +164,7 @@ public class PlayerView : MonoBehaviour
 		m_filter.sharedMesh.Clear();
 		m_filter.sharedMesh.vertices 	= vertices;
 		m_filter.sharedMesh.uv 			= uvs;
+		m_filter.sharedMesh.uv1 		= uvs1;
 		m_filter.sharedMesh.normals 	= normals;
 		m_filter.sharedMesh.colors		= colors;
 		m_filter.sharedMesh.triangles 	= triangles;

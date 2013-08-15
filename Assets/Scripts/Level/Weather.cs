@@ -39,7 +39,7 @@ public class Weather : MonoBehaviour
 			m_snowParticles = ParticleObject.GetComponent<ParticleSystem>();
 		}
 		
-		SetStormIntensity(0.0f);
+		SetStormIntensity(0.8f);
 	}
 	
 	public void Update()

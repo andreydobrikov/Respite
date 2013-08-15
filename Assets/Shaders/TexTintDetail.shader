@@ -13,7 +13,7 @@ Shader "Custom/TexTintDetail"
 		Cull off
 		Tags {"Queue"="Geometry"}
 		LOD 200
-		Blend SrcAlpha OneMinusSrcAlpha
+		//Blend SrcAlpha OneMinusSrcAlpha
 		
 		Pass
 		{
@@ -54,11 +54,13 @@ Shader "Custom/TexTintDetail"
 			fixed4 frag (v2f i) : COLOR0 
 			{ 
 				const half4 white = half4(1.0, 1.0, 1.0, 1.0);
-				float4 detail = lerp(tex2D(_DetailTex, i.uv1), white, _DetailIntensity);
+				float4 detailTex = tex2D(_DetailTex, i.uv1);
+				
+				float4 detail = lerp(detailTex, white, _DetailIntensity);
 				float4 val = tex2D(_MainTex, i.uv0) * detail;
 				
 				val *= i.color;
-			//	val *= _Color;
+				
 				return val;
 			}
 			

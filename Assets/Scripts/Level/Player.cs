@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
 	
 	void OnGUI()
 	{
+		/*
 		GUILayout.BeginArea(new Rect(Screen.width - 110.0f, 10.0f, 100.0f, 300.0f));
 		
 		GUILayout.Label("Player State");
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
 		GUILayout.EndVertical();
 		
 		GUILayout.EndArea();
+		*/
 	}
 	
 	void SaveSerialise(List<SavePair> pairs)

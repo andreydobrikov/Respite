@@ -107,6 +107,10 @@ public class BuildingEditor :  Editor
 		{
 			renderer.material = wallMaterial as Material;	
 		}
+		else
+		{
+			Debug.Log("Material Missing: " + wallAssetName);	
+		}
 	}
 	
 	private void RebuildRooms()
@@ -126,15 +130,18 @@ public class BuildingEditor :  Editor
 		GameObject roomObject 					= new GameObject(room.Name);
 		roomObject.transform.parent				= parent.transform;
 		roomObject.transform.localPosition  	= Vector3.zero;
+		roomObject.transform.localRotation		= Quaternion.identity;
 		
 		GameObject floorObject 					= new GameObject(s_floor_id);
 		floorObject.transform.parent 			= roomObject.transform;
 		floorObject.transform.localPosition		= new Vector3(0.0f, 0.0f, 0.9f);
+		floorObject.transform.localRotation		= Quaternion.identity;
 		
 		GameObject ambientObject				= new GameObject(s_ambient_id);
 		ambientObject.layer						= LayerMask.NameToLayer("Lights");
 		ambientObject.transform.parent 			= roomObject.transform;
 		ambientObject.transform.localPosition	= new Vector3(0.0f, 0.0f, -1.0f);
+		ambientObject.transform.localRotation		= Quaternion.identity;
 		
 		BuildFloor(room, floorObject);
 		BuildAmbient(room, ambientObject);
@@ -149,7 +156,6 @@ public class BuildingEditor :  Editor
 		AmbientLightZone ambient	= ambientObject.AddComponent<AmbientLightZone>();
 		MeshRenderer renderer 		= ambientObject.AddComponent<MeshRenderer>();
 		MeshFilter filter			= ambientObject.AddComponent<MeshFilter>();
-		
 		ambientObject.AddComponent<DisableMeshInEditor>();
 		
 		ambient.TODMinColor			= room.TODMinColor;
@@ -159,6 +165,7 @@ public class BuildingEditor :  Editor
 		
 		UnityEngine.Object ambientMesh 		= AssetHelper.Instance.FindAsset<Mesh>(ambientMeshName);
 		UnityEngine.Object ambientMaterial 	= AssetHelper.Instance.GetAsset<Material>("Materials/Ambient.mat");
+		UnityEngine.Object ambientTexture	= AssetHelper.Instance.FindAsset<Texture>(ambientMeshName);
 		
 		if(ambientMesh != null)
 		{
@@ -171,7 +178,18 @@ public class BuildingEditor :  Editor
 		
 		if(ambientMaterial != null)
 		{
-			renderer.material = ambientMaterial as Material;
+			Material ambientCopy = new Material(ambientMaterial as Material);
+			
+			if(ambientTexture != null)
+			{
+				ambientCopy.mainTexture = ambientTexture as Texture;	
+			}
+			else
+			{
+				Debug.Log("Lightmap Missing: " + ambientMeshName);	
+			}
+			
+			renderer.material = ambientCopy;
 		}
 		else
 		{
@@ -214,15 +232,16 @@ public class BuildingEditor :  Editor
 	{
 		Building building 						= (Building)target;
 		GameObject weatherObject				= GameObjectHelper.FindChild(building.gameObject, s_weather_mask_id, true);
-		weatherObject.transform.localPosition 	= new Vector3(0.0f, 0.0f, -1.0f);	
+		weatherObject.transform.localPosition 	= new Vector3(0.0f, 0.0f, -3.1f);	
+		weatherObject.layer						= LayerMask.NameToLayer("Weather");
 		
 		MeshFilter filter 		= weatherObject.GetComponent<MeshFilter>();
 		MeshRenderer renderer 	= weatherObject.GetComponent<MeshRenderer>();
-		DepthMasked depthMasked = weatherObject.GetComponent<DepthMasked>();
+		//DepthMasked depthMasked = weatherObject.GetComponent<DepthMasked>();
 		
 		if(filter == null) 		{ filter		= weatherObject.AddComponent<MeshFilter>(); }
 		if(renderer == null) 	{ renderer		= weatherObject.AddComponent<MeshRenderer>(); }
-		if(depthMasked == null)	{ depthMasked	= weatherObject.AddComponent<DepthMasked>(); }
+		//if(depthMasked == null)	{ depthMasked	= weatherObject.AddComponent<DepthMasked>(); }
 		
 		string weatherMaskMeshName = building.BuildingName + "_" + s_weather_mask_id;
 		
@@ -235,7 +254,7 @@ public class BuildingEditor :  Editor
 		}
 		else
 		{
-			Debug.Log("Mesh Missing: " + maskMesh);	
+			Debug.Log("Mesh Missing: " + weatherMaskMeshName);	
 		}
 		
 		if(maskMaterial != null)

@@ -14,6 +14,7 @@ Shader "Custom/TwoTexBlendTransparent"
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
 		LOD 200
 		Blend SrcAlpha OneMinusSrcAlpha
+		Cull off
 		
 		Pass
 		{
