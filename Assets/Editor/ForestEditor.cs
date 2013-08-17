@@ -93,7 +93,34 @@ public class ForestEditor : Editor
 		
 		if( GUILayout.Button("Generate Forest"))
 		{
-			int layerMask = ~0;
+			RegenerateForest();
+		}
+	}
+		
+	public void OnSceneGUI()
+	{
+		Forest forest = (Forest)target;
+	
+		float handleSize = HandleUtility.GetHandleSize(new Vector2(forest.m_startX, forest.m_startY)) / 10.0f;
+		
+		Vector2 newMin = Handles.Slider2D(new Vector2(forest.m_startX, forest.m_startY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
+		Vector2 newMax = Handles.Slider2D(new Vector2(forest.m_endX, forest.m_endY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
+		
+		forest.m_startX = Mathf.Min(newMin.x, newMax.x);
+		forest.m_startY = Mathf.Min(newMin.y, newMax.y);
+		
+		forest.m_endX = Mathf.Max(newMin.x, newMax.x);
+		forest.m_endY = Mathf.Max(newMin.y, newMax.y);
+	}
+	
+	[MenuItem ("Respite/Forest/Regenerate")]
+	static void RegenerateForest()
+	{
+		Forest forest = GameObject.FindObjectOfType(typeof(Forest)) as Forest;
+			
+		Selection.activeGameObject = forest.gameObject;
+		
+		int layerMask = ~0;
 			int progressUpdateRate = forest.m_instanceCount / 200;
 			
 			foreach(var mask in forest.m_ignoreLayers)
@@ -165,22 +192,5 @@ public class ForestEditor : Editor
 			Debug.Log("Planted " + treesPlanted + " trees");
 			
 			EditorUtility.ClearProgressBar();
-		}
-	}
-		
-	public void OnSceneGUI()
-	{
-		Forest forest = (Forest)target;
-	
-		float handleSize = HandleUtility.GetHandleSize(new Vector2(forest.m_startX, forest.m_startY)) / 10.0f;
-		
-		Vector2 newMin = Handles.Slider2D(new Vector2(forest.m_startX, forest.m_startY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
-		Vector2 newMax = Handles.Slider2D(new Vector2(forest.m_endX, forest.m_endY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
-		
-		forest.m_startX = Mathf.Min(newMin.x, newMax.x);
-		forest.m_startY = Mathf.Min(newMin.y, newMax.y);
-		
-		forest.m_endX = Mathf.Max(newMin.x, newMax.x);
-		forest.m_endY = Mathf.Max(newMin.y, newMax.y);
 	}
 }

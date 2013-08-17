@@ -34,7 +34,7 @@ public class PlayerView : MonoBehaviour
 	public float m_vertexCast		= 0.99f;
 	private MeshFilter m_filter 	= null;
 	private SphereCollider m_viewCollider = null;
-	private Dictionary<Collider, BoxColliderVertices> m_colliderVertices = new Dictionary<Collider, BoxColliderVertices>();
+	private Dictionary<Collider, ColliderVertices> m_colliderVertices = new Dictionary<Collider, ColliderVertices>();
 	
 	void Start () 
 	{
@@ -59,27 +59,51 @@ public class PlayerView : MonoBehaviour
 	
 	public void OnTriggerEnter(Collider other)
 	{
-		
-		
-		if(other.gameObject.layer == LayerMask.NameToLayer("LevelGeo") && other is BoxCollider)
+		if(other.gameObject.layer == LayerMask.NameToLayer("LevelGeo"))
 		{
 			if(m_colliderVertices.ContainsKey(other))
 			{
 				return;	
 			}
 			
-			BoxCollider newCollider = other as BoxCollider;
-			BoxColliderVertices newVertices = new BoxColliderVertices();
+			if(other is SphereCollider)
+			{
+				SphereCollider newCollider = other as SphereCollider;
+				ColliderVertices newVertices = new ColliderVertices();
+				
+				newVertices.collider = newCollider;
+				
+				Vector2 diff = newCollider.transform.position - transform.position;
+				
+				Vector3 normal = Vector3.Cross(diff, Vector3.forward);
+				
+				
+				Vector2 p0 = (normal.normalized * newCollider.radius);
+				Vector2 p1 = -p0;
+				
+				newVertices.vertices.Add(p0);
+				newVertices.vertices.Add(p1);
+				
+				m_colliderVertices.Add(other, newVertices);
+				RebuildMesh();
+			}
 			
-			newVertices.collider = newCollider;
 			
-			newVertices.vertices.Add(new Vector3(-newCollider.size.x / 2.0f, -newCollider.size.y / 2.0f, 0.0f));
-			newVertices.vertices.Add(new Vector3(-newCollider.size.x / 2.0f, newCollider.size.y / 2.0f, 0.0f));
-			newVertices.vertices.Add(new Vector3( newCollider.size.x / 2.0f, -newCollider.size.y / 2.0f, 0.0f));
-			newVertices.vertices.Add(new Vector3( newCollider.size.x / 2.0f, newCollider.size.y / 2.0f, 0.0f));
-			
-			m_colliderVertices.Add(other, newVertices);
-			RebuildMesh();
+			if(other is BoxCollider)
+			{
+				BoxCollider newCollider = other as BoxCollider;
+				ColliderVertices newVertices = new ColliderVertices();
+				
+				newVertices.collider = newCollider;
+				
+				newVertices.vertices.Add(new Vector3(-newCollider.size.x / 2.0f, -newCollider.size.y / 2.0f, 0.0f));
+				newVertices.vertices.Add(new Vector3(-newCollider.size.x / 2.0f, newCollider.size.y / 2.0f, 0.0f));
+				newVertices.vertices.Add(new Vector3( newCollider.size.x / 2.0f, -newCollider.size.y / 2.0f, 0.0f));
+				newVertices.vertices.Add(new Vector3( newCollider.size.x / 2.0f, newCollider.size.y / 2.0f, 0.0f));
+				
+				m_colliderVertices.Add(other, newVertices);
+				RebuildMesh();
+			}
 		}
 	}
 	
@@ -139,6 +163,8 @@ public class PlayerView : MonoBehaviour
 		foreach(OccluderVector vert in occluders)
 		{
 			Vector3 localPosition 	= vert.vec - transform.position;
+			localPosition.z = 0.0f;
+			
 			vertices[index] 		= rotationInverse *  localPosition;
 			uvs[index] 				= new Vector2((localPosition.x + extentsVal) / (extentsVal * 2.0f), (localPosition.y + extentsVal) / (extentsVal * 2.0f));
 			uvs1[index]				= uvs[index];
@@ -179,6 +205,9 @@ public class PlayerView : MonoBehaviour
 	/// </returns>
 	private List<OccluderVector> GetOccluders()
 	{
+		Vector3 objectPosition = transform.position;
+		objectPosition.z = 0.0f;
+		
 		RaycastHit hitInfo;
 		
 		List<Vector3> validVerts = new List<Vector3>();
@@ -188,18 +217,43 @@ public class PlayerView : MonoBehaviour
 		// Loop through each collider and add its vertices to the list
 		foreach(var colliderPair in m_colliderVertices)
 		{
+			if(colliderPair.Key is SphereCollider)
+			{
+				SphereCollider collider = colliderPair.Key as SphereCollider;
+				Vector2 diff = colliderPair.Key.transform.position - objectPosition;
+				
+				Vector3 normal = Vector3.Cross(diff, Vector3.forward);
+				
+				Vector2 p0 = (normal.normalized * collider.radius);
+				Vector2 p1 = -p0;
+				
+				p0 = Quaternion.Inverse(colliderPair.Key.transform.rotation) * (Vector3)p0;
+				p1 = Quaternion.Inverse(colliderPair.Key.transform.rotation) * (Vector3)p1;
+				
+				colliderPair.Value.vertices[0] = p0;
+				colliderPair.Value.vertices[1] = p1;
+				
+			}
+			
 			foreach(Vector3 vert in colliderPair.Value.vertices)
 			{
 				Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
-				Vector3 direction = worldPos - transform.position;
+				Vector3 direction = worldPos - objectPosition;
 				
 				direction.z = 0.0f;
+				
 				direction *= m_vertexCast;
+				
+				
 				
 				
 				// raycast all the vertices and see if any are occluded
 				float magnitude = direction.magnitude;
-				if(Physics.Raycast(transform.position, direction.normalized, out hitInfo, magnitude, 1 <<  collisionLayer))
+					
+				if(ShowSucceededRays)
+					Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * magnitude), Color.blue);
+					
+				if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, magnitude, 1 <<  collisionLayer))
 				{
 						
 					// Hit something. add it as a vert.
@@ -207,7 +261,7 @@ public class PlayerView : MonoBehaviour
 				}
 				else
 				{
-					Vector3 newDirection = (worldPos - transform.position);
+					Vector3 newDirection = (worldPos - objectPosition);
 					newDirection.z = 0.0f;
 					direction = newDirection * (1.0f + m_nudgeMagnitude);	
 					direction.z = 0.0f;
@@ -222,21 +276,22 @@ public class PlayerView : MonoBehaviour
 						
 						validVerts.Add(worldPos + (offsetDirection * recipDistance));	
 						
-						Vector3 vertexRayDirection = (worldPos - (offsetDirection * recipDistance)) - transform.position;
+						Vector3 vertexRayDirection = (worldPos - (offsetDirection * recipDistance)) - objectPosition;
 						vertexRayDirection.z = 0.0f;
 						
 						if(ShowCandidateRays)
 						{
-							Debug.DrawRay(transform.position + new Vector3(0.0f, 0.0f, -0.2f), (vertexRayDirection.normalized * m_viewCollider.radius) + new Vector3(0.0f, 0.0f, -0.2f), Color.blue);
+							Debug.DrawLine(objectPosition + new Vector3(0.0f, 0.0f, -1.2f), objectPosition + vertexRayDirection + new Vector3(0.0f, 0.0f, -1.2f), Color.yellow);
+							Debug.DrawRay(objectPosition + new Vector3(0.0f, 0.0f, -1.2f), (vertexRayDirection.normalized * m_viewCollider.radius) + new Vector3(0.0f, 0.0f, -1.2f), Color.red);
 						}
 						
-						if(Physics.Raycast(transform.position, vertexRayDirection.normalized, out hitInfo, m_viewCollider.radius, 1 << collisionLayer))
+						if(Physics.Raycast(objectPosition, vertexRayDirection.normalized, out hitInfo, m_viewCollider.radius, 1 << collisionLayer))
 						{
 							validVerts.Add(hitInfo.point);
 						}
 						else
 						{
-							validVerts.Add(transform.position + (vertexRayDirection.normalized * m_viewCollider.radius));	
+							validVerts.Add(objectPosition + (vertexRayDirection.normalized * m_viewCollider.radius));	
 						}
 					}
 					else
@@ -249,32 +304,60 @@ public class PlayerView : MonoBehaviour
 		
 		foreach(var pair in extentsPairs)
 		{
-			Vector3 direction 	= pair - transform.position;
+			Vector3 source = objectPosition;
+				source.z = 0.0f;
 			
-			if(Physics.Raycast(transform.position, direction, out hitInfo, direction.magnitude, 1 << collisionLayer))
+			Vector3 direction 	= pair - objectPosition;
+			
+			Vector3 offset = new Vector3(0.0f, 0.0f, -2.3f);
+			
+			if(ShowSucceededRays)
+				Debug.DrawLine(source + offset, source + direction + offset, Color.red, 1.0f);
+			
+			if(Physics.Raycast((Vector2)objectPosition, direction, out hitInfo, direction.magnitude, 1 << collisionLayer))
 			{
 				validVerts.Add(hitInfo.point);
+				
+				
+				
+				Vector3 target = hitInfo.point;
+				target.z = 0.0f;
+				
+				if(ShowSucceededRays)
+					Debug.DrawLine(source + offset, target + offset, Color.magenta, 1.0f);
+					
+				
 			}
 			else
 			{
-				validVerts.Add(transform.position + direction);	
+				validVerts.Add(objectPosition + direction);	
 			}
 		}
 		
 		// Output all results
 		foreach(Vector3 vert in validVerts)
 		{
-			Vector3 directionToVert = vert - this.transform.position;
+			Vector3 directionToVert = vert - objectPosition;
 			
 			OccluderVector newOccluder = new OccluderVector();
 			newOccluder.vec = vert;
-			newOccluder.vec.z = transform.position.z;
+			
 			Vector3 normalDirection = Vector3.Normalize(directionToVert);
 			
 			double angle = Math.Atan2((double)normalDirection.x, (double)normalDirection.y);
 					
 			newOccluder.angle = angle;
 			occluders.Add(newOccluder);
+			
+			
+			Vector3 source = objectPosition;
+			source.z = 0.0f;
+			
+			
+			Vector3 offset = new Vector3(0.0f, 0.0f, -2.3f);
+			
+			if(ShowSucceededRays)
+				Debug.DrawLine(source + offset , vert + offset, Color.green);
 		}
 		m_sortedEntries = occluders.Count;
 		occluders.Sort(OccluderComparison);
@@ -301,10 +384,13 @@ public class PlayerView : MonoBehaviour
 		
 		float extentsVal = Mathf.Abs(m_viewCollider.radius * Mathf.Cos(Mathf.PI / 4));
 		
-		verts.Add(transform.position + new Vector3(-extentsVal, extentsVal, 0.0f));
-		verts.Add(transform.position + new Vector3(-extentsVal, -extentsVal, 0.0f));
-		verts.Add(transform.position + new Vector3(extentsVal, extentsVal, 0.0f));
-		verts.Add(transform.position + new Vector3(extentsVal, -extentsVal, 0.0f));
+		Vector3 objectPosition = transform.position;
+		objectPosition.z = 0.0f;
+		
+		verts.Add(objectPosition + new Vector3(-extentsVal, extentsVal, 0.0f));
+		verts.Add(objectPosition + new Vector3(-extentsVal, -extentsVal, 0.0f));
+		verts.Add(objectPosition + new Vector3(extentsVal, extentsVal, 0.0f));
+		verts.Add(objectPosition + new Vector3(extentsVal, -extentsVal, 0.0f));
 	
 		return verts;
 	}
@@ -330,9 +416,9 @@ public class PlayerView : MonoBehaviour
 		public double angle;
 	}
 	
-	private class BoxColliderVertices
+	private class ColliderVertices
 	{
-		public BoxCollider collider;
+		public Collider collider;
 		public List<Vector3> vertices = new List<Vector3>();	
 	}
 	

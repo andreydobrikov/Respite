@@ -278,6 +278,8 @@ public class Forest : MonoBehaviour
 		return x * m_sectionsY + y;	
 	}
 	
+	
+	
 	public List<int> m_ignoreLayers				= new List<int>();
 	public bool m_showLayers					= false;
 	public bool m_enabledDebugRendering			= false;
