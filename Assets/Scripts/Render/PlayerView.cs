@@ -29,6 +29,7 @@ public class PlayerView : MonoBehaviour
 	public bool ShowFailedRays		= false;
 	public bool DisplayStats		= false;
 	
+	public float m_sphereExpansion	= 1.5f;
 	public float m_nudgeMagnitude 	= 0.02f; 
 	public float m_centreNudge 		= 0.005f;	// This determines how far vertices are extruded from their mesh centroid when casting rays. Needed to prevent false collisions.
 	public float m_vertexCast		= 0.99f;
@@ -45,15 +46,19 @@ public class PlayerView : MonoBehaviour
 		{
 			m_filter.mesh = new Mesh();	
 		}
+		
+		enabled = false;	
 	}
 	
 	void OnBecameVisible()
 	{
+		Debug.Log(name + " became visible");
 		enabled = true;	
 	}
 	
 	void OnBecameInvisible()
 	{
+		Debug.Log(name + " became invisible");
 		enabled = false;	
 	}
 	
@@ -233,70 +238,115 @@ public class PlayerView : MonoBehaviour
 				colliderPair.Value.vertices[0] = p0;
 				colliderPair.Value.vertices[1] = p1;
 				
-			}
-			
-			foreach(Vector3 vert in colliderPair.Value.vertices)
-			{
-				Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
-				Vector3 direction = worldPos - objectPosition;
 				
-				direction.z = 0.0f;
-				
-				direction *= m_vertexCast;
-				
-				
-				
-				
-				// raycast all the vertices and see if any are occluded
-				float magnitude = direction.magnitude;
-					
-				if(ShowSucceededRays)
-					Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * magnitude), Color.blue);
-					
-				if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, magnitude, 1 <<  collisionLayer))
+				foreach(var vert in colliderPair.Value.vertices)
 				{
-						
-					// Hit something. add it as a vert.
-					validVerts.Add(hitInfo.point);
-				}
-				else
-				{
-					Vector3 newDirection = (worldPos - objectPosition);
-					newDirection.z = 0.0f;
-					direction = newDirection * (1.0f + m_nudgeMagnitude);	
-					direction.z = 0.0f;
-									
-						
-					if(colliderPair.Value.collider != null)
+					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
+					Vector3 direction = worldPos - objectPosition;
+					
+					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, direction.magnitude, 1 <<  collisionLayer))
 					{
-						// If there is going to be an extension ray, nudge the original towards the center of its collider to prevent it
-						// being co-linear and confusing the later sort.
-						Vector3 offsetDirection = colliderPair.Value.collider.bounds.center - worldPos;
-						float recipDistance = m_centreNudge / offsetDirection.magnitude;
-						
-						validVerts.Add(worldPos + (offsetDirection * recipDistance));	
-						
-						Vector3 vertexRayDirection = (worldPos - (offsetDirection * recipDistance)) - objectPosition;
-						vertexRayDirection.z = 0.0f;
-						
-						if(ShowCandidateRays)
-						{
-							Debug.DrawLine(objectPosition + new Vector3(0.0f, 0.0f, -1.2f), objectPosition + vertexRayDirection + new Vector3(0.0f, 0.0f, -1.2f), Color.yellow);
-							Debug.DrawRay(objectPosition + new Vector3(0.0f, 0.0f, -1.2f), (vertexRayDirection.normalized * m_viewCollider.radius) + new Vector3(0.0f, 0.0f, -1.2f), Color.red);
-						}
-						
-						if(Physics.Raycast(objectPosition, vertexRayDirection.normalized, out hitInfo, m_viewCollider.radius, 1 << collisionLayer))
-						{
-							validVerts.Add(hitInfo.point);
-						}
-						else
-						{
-							validVerts.Add(objectPosition + (vertexRayDirection.normalized * m_viewCollider.radius));	
-						}
+						if(ShowExtrusionRays)
+						Debug.DrawLine(objectPosition, hitInfo.point, Color.green);
+						validVerts.Add(hitInfo.point);
 					}
 					else
 					{
+						if(ShowExtrusionRays)
+						Debug.DrawLine(objectPosition, worldPos, Color.red);
 						validVerts.Add(worldPos);	
+					}
+						
+				}
+				
+				foreach(var vert in colliderPair.Value.vertices)
+				{
+					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert * m_sphereExpansion);
+					Vector3 direction = worldPos - objectPosition;
+					
+					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.radius, 1 <<  collisionLayer))
+					{
+						if(ShowExtrusionRays)
+						Debug.DrawLine(objectPosition, hitInfo.point, Color.green);
+						validVerts.Add(hitInfo.point);
+					}
+					else
+					{
+						if(ShowExtrusionRays)
+						Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * m_viewCollider.radius), Color.red);
+						validVerts.Add(objectPosition + (direction.normalized * m_viewCollider.radius));	
+					}
+						
+				}
+				
+			}
+			else
+			{
+				foreach(Vector3 vert in colliderPair.Value.vertices)
+				{
+					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
+					Vector3 direction = worldPos - objectPosition;
+					
+					direction.z = 0.0f;
+					
+					// raycast all the vertices and see if any are occluded
+					float magnitude = direction.magnitude;
+					
+					float val = direction.magnitude -  m_nudgeMagnitude / direction.magnitude;
+					
+					direction *= m_nudgeMagnitude;
+					
+					
+					
+						
+						
+					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, val, 1 <<  collisionLayer))
+					{
+						if(ShowFailedRays)
+						Debug.DrawLine(objectPosition, hitInfo.point, Color.green);
+						
+						// Hit something. add it as a vert.
+						validVerts.Add(hitInfo.point);
+					}
+					else
+					{
+						Vector3 newDirection = (worldPos - objectPosition);
+						newDirection.z = 0.0f;
+						direction = newDirection * (1.0f + m_nudgeMagnitude);	
+						direction.z = 0.0f;
+										
+							
+						if(colliderPair.Value.collider != null)
+						{
+							// If there is going to be an extension ray, nudge the original towards the center of its collider to prevent it
+							// being co-linear and confusing the later sort.
+							Vector3 offsetDirection = colliderPair.Value.collider.bounds.center - worldPos;
+							float recipDistance = m_centreNudge / offsetDirection.magnitude;
+							
+							validVerts.Add(worldPos + (offsetDirection * recipDistance));	
+							
+							Vector3 vertexRayDirection = (worldPos - (offsetDirection * recipDistance)) - objectPosition;
+							vertexRayDirection.z = 0.0f;
+							
+							if(ShowCandidateRays)
+							{
+								Debug.DrawLine(objectPosition + new Vector3(0.0f, 0.0f, -1.2f), objectPosition + vertexRayDirection + new Vector3(0.0f, 0.0f, -1.2f), Color.yellow);
+								Debug.DrawRay(objectPosition + new Vector3(0.0f, 0.0f, -1.2f), (vertexRayDirection.normalized * m_viewCollider.radius) + new Vector3(0.0f, 0.0f, -1.2f), Color.red);
+							}
+							
+							if(Physics.Raycast(objectPosition, vertexRayDirection.normalized, out hitInfo, m_viewCollider.radius, 1 << collisionLayer))
+							{
+								validVerts.Add(hitInfo.point);
+							}
+							else
+							{
+								validVerts.Add(objectPosition + (vertexRayDirection.normalized * m_viewCollider.radius));	
+							}
+						}
+						else
+						{
+							validVerts.Add(worldPos);	
+						}
 					}
 				}
 			}
@@ -309,7 +359,7 @@ public class PlayerView : MonoBehaviour
 			
 			Vector3 direction 	= pair - objectPosition;
 			
-			Vector3 offset = new Vector3(0.0f, 0.0f, -2.3f);
+			Vector3 offset = new Vector3(0.0f, 0.0f, -0.0f);
 			
 			if(ShowSucceededRays)
 				Debug.DrawLine(source + offset, source + direction + offset, Color.red, 1.0f);

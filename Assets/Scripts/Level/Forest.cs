@@ -67,8 +67,6 @@ public class Forest : MonoBehaviour
 		int currentY = (int)((localCentre.y / sectionHeight) );
 		
 		Vector3 start = new Vector3(m_startX, m_startY, 0.0f);
-		Debug.DrawLine(start + new Vector3(0.0f, 0.0f, -1.0f), start + new Vector3(currentX * sectionWidth, currentY * sectionHeight, -1.0f), Color.magenta);
-		Debug.DrawLine(start + new Vector3(0.0f, 0.0f, -1.0f), (Vector3)worldCentre + new Vector3(0.0f, 0.0f, -1.0f), Color.blue);
 		
 		if(GetSectionIndex(currentX, currentY) != m_activeSections[4])
 		{
