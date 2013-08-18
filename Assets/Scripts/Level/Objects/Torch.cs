@@ -15,15 +15,15 @@ using System.Collections.Generic;
 
 public class Torch : MonoBehaviour 
 {
-	InteractionMenu test = null;
+	PlayerView test = null;
 	
 	void Start ()
 	{
-		test = GameObject.FindObjectOfType(typeof(InteractionMenu)) as InteractionMenu;
+		test = GameObject.FindObjectOfType(typeof(PlayerView)) as PlayerView;
 		renderer.enabled = false;
 	}
 
-	void Update ()
+	void LateUpdate ()
 	{
 		if(Input.GetButtonDown("torch"))
 		{
@@ -38,7 +38,7 @@ public class Torch : MonoBehaviour
 		
 			if(test != null)
 			{
-				float angle = Mathf.Atan2(test.LastDirection.x, test.LastDirection.y);
+				float angle = Mathf.Atan2(test.Direction.x, test.Direction.y);
 				r = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0.0f, 0.0f, -angle * Mathf.Rad2Deg), Vector3.one);
 			}
 			

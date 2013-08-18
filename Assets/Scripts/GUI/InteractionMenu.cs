@@ -2,23 +2,25 @@ using UnityEngine;
 using System.Text;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(PlayerView))]
 [AddComponentMenu("Custom/GUI/Interaction Menu")]
 public class InteractionMenu : MonoBehaviour 
 {
 	public Font font;
 	public GUISkin skin;
-	public float InspectionAngleMax = 60.0f;
-	public float InspectionFocusAngle = 10.0f;
-	public LayerMask collisionLayer = 0;
-	public bool m_renderDebug		= false;
+	
+	public LayerMask collisionLayer 	= 0;
+	public bool m_renderDebug			= false;
+	public float InspectionFocusAngle	= 20.0f;
 	
 	void Start()
 	{
-		m_style = new GUIStyle();
-		m_style.font = font;
-		m_style.fontSize = 20;
+		m_style 			= new GUIStyle();
+		m_style.font 		= font;
+		m_style.fontSize 	= 20;
+		m_gameFlow 			= GameFlow.Instance;
 		
-		m_gameFlow = GameFlow.Instance;
+		m_view 				= GameObject.FindObjectOfType(typeof(PlayerView)) as PlayerView;
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -126,13 +128,13 @@ public class InteractionMenu : MonoBehaviour
 	
 	void Update()
 	{
+		
 #if UNITY_EDITOR
 		if(m_gameFlow == null)
 		{
 			m_gameFlow = GameFlow.Instance;	
 		}
 #endif
-		
 		
 		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.World)
 		{
@@ -167,14 +169,7 @@ public class InteractionMenu : MonoBehaviour
 			}
 		}
 		
-		m_lastDirection = (Vector3.up * (Input.GetAxis("vertical_2"))) + (Vector3.right * (Input.GetAxis("horizontal_2")));
-		float magnitude = m_lastDirection.magnitude;
-		m_lastDirection.Normalize();
-		
-		Vector3 origin = transform.position;
-		Vector3 playerDirection = transform.localRotation * Vector3.up;
-		float diff = Mathf.Acos(Vector3.Dot(playerDirection, m_lastDirection)) * Mathf.Rad2Deg;
-		
+				
 		foreach(var currentObject in m_objectsInView)
 		{
 			currentObject.SetHighlightActive(false);
@@ -182,25 +177,16 @@ public class InteractionMenu : MonoBehaviour
 		
 		m_objectsInView.Clear();
 		
-		m_lastValidDirection = playerDirection;
 		
-		if(magnitude > 0.0f && diff >= 0.0f && diff < InspectionAngleMax)
-		{
-			m_lastValidDirection = m_lastDirection.normalized;
+		
+		
+		
 			
-			float targetAngle = -Mathf.Atan2(m_lastDirection.x, m_lastDirection.y)  * Mathf.Rad2Deg;
-			
-			float minAngle = targetAngle - InspectionFocusAngle;
-			float maxAngle = targetAngle + InspectionFocusAngle;
+			float minAngle = m_view.DirectionAngle - InspectionFocusAngle;
+			float maxAngle = m_view.DirectionAngle + InspectionFocusAngle;
 			
 			Vector3 min = Quaternion.Euler(0.0f, 0.0f, minAngle) * Vector3.up;
 			Vector3 max = (Quaternion.Euler(0.0f, 0.0f, maxAngle) ) * Vector3.up;
-			
-			if(m_renderDebug)
-			{
-				Debug.DrawLine(transform.position + new Vector3(0.0f, 0.0f, -1.1f), transform.position + new Vector3(0.0f, 0.0f, -1.1f) + min , Color.green);
-				Debug.DrawLine(transform.position + new Vector3(0.0f, 0.0f, -1.1f), transform.position + new Vector3(0.0f, 0.0f, -1.1f) + max , Color.green);
-			}
 			
 			const float iterationCount = 10.0f;
 			
@@ -226,20 +212,16 @@ public class InteractionMenu : MonoBehaviour
 					}
 				}
 			}
-		}
+			
 	}
 	
-	public Vector3 LastDirection
-	{
-		get { return m_lastValidDirection; }	
-	}
 	
 	List<InteractiveObject> m_objectsInRange 	= new List<InteractiveObject>();
 	List<InteractiveObject> m_objectsInView		= new List<InteractiveObject>();
 	
 	private GUIStyle m_style;
 	private int m_currentTab 		= 0;
-	private Vector3 m_lastDirection = Vector3.zero;
-	private Vector3 m_lastValidDirection = new Vector3(0.0f, 1.0f, 0.0f);
+	
 	private GameFlow m_gameFlow = null;
+	private PlayerView m_view = null;
 }
