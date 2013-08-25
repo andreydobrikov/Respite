@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <entries>
   <entry id="96b56210-c343-4cf1-95af-9bdad7e90e4e">
-    <pair id="time" value="28.23498" />
+    <pair id="time" value="10.77817" />
   </entry>
   <entry id="3f7259bc-11d4-4b42-9eef-cf186975ac4d">
-    <pair id="position_x" value="17.62039" />
-    <pair id="position_y" value="-9.66793" />
+    <pair id="position_x" value="17.65664" />
+    <pair id="position_y" value="-9.228216" />
     <pair id="position_z" value="-0.5" />
   </entry>
   <entry id="cb5bf262-d645-42c8-9ae7-cd831c9391de">
@@ -13,4 +13,10 @@
     <pair id="lerp_direction" value="1" />
     <pair id="lerp_progress" value="1" />
   </entry>
+  <entry id="cb5bf262-d645-42c8-9ae7-cd831c9391de">
+    <pair id="current_rotation" value="-65" />
+    <pair id="lerp_direction" value="1" />
+    <pair id="lerp_progress" value="1" />
+  </entry>
+  <entry id="96b56210-c343-4cf1-95af-9bdad7e90e4e" />
 </entries>

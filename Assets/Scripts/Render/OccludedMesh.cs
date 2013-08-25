@@ -82,7 +82,6 @@ public class OccludedMesh : MonoBehaviour
 				
 				Vector3 normal = Vector3.Cross(diff, Vector3.forward);
 				
-				
 				Vector2 p0 = (normal.normalized * newCollider.radius);
 				Vector2 p1 = -p0;
 				

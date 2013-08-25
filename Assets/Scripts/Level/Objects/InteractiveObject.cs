@@ -12,6 +12,18 @@ public abstract class InteractiveObject : MonoBehaviour
 		return m_interactions;	
 	}
 	
+	public List<Interaction> GetInteractions(params ContextFlag[] flags)
+	{
+		uint allFlags = 0;
+		foreach(var flag in flags)
+		{
+			allFlags = allFlags | (uint)flag;	
+		}
+		
+		
+		return m_interactions.FindAll(x => x.MatchesContext(allFlags));
+	}
+	
 #if UNITY_EDITOR
 	public void GenerateHighlight(bool deleteExisting)
 	{

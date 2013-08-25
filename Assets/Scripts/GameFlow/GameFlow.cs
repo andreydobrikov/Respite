@@ -8,6 +8,7 @@ public class GameFlow
 	{
 		World,
 		Inspection,
+		Inventory,
 		Menu
 	}
 	
@@ -42,6 +43,26 @@ public class GameFlow
 			Debug.Log("Fading down");
 			m_cameraFade.StartFade(Color.black, SaveFadeDuration, ScreenFadeComplete);
 		}
+	}
+	
+	public void RequestInventory()
+	{
+		if(m_postManager != null)
+		{
+			m_postManager.ActivateBlur();
+		}
+		
+		m_context.Push(ControlContext.Inventory);	
+	}
+	
+	public void EndInventory()
+	{
+		if(m_postManager != null)
+		{
+			m_postManager.DeactivateBlur();
+		}
+		
+		m_context.Pop();	
 	}
 	
 	public void RequestInspection()

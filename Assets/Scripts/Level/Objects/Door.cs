@@ -9,8 +9,8 @@ public class Door : InteractiveObject
 	
 	public Door()
 	{
-		m_openInteraction 	= new Interaction("Open", new Interaction.InteractionHandler(HandleOpen));
-		m_closeInteraction 	= new Interaction("Close", new Interaction.InteractionHandler(HandleClose));
+		m_openInteraction 	= new Interaction("Open", new Interaction.InteractionHandler(HandleOpen), ContextFlag.World);
+		m_closeInteraction 	= new Interaction("Close", new Interaction.InteractionHandler(HandleClose), ContextFlag.World);
 		
 		m_closeInteraction.Enabled = false;
 		
@@ -41,6 +41,10 @@ public class Door : InteractiveObject
 		
 		m_openInteraction.Enabled = false;
 		m_closeInteraction.Enabled = true;
+		
+		AudioSource source = GetComponent<AudioSource>() as AudioSource;
+		
+		source.Play();
 	}
 	
 	private void HandleClose(Interaction interaction)
@@ -49,6 +53,10 @@ public class Door : InteractiveObject
 		
 		m_closeInteraction.Enabled 	= false;
 		m_openInteraction.Enabled 	= true;
+		
+		AudioSource source = GetComponent<AudioSource>() as AudioSource;
+		
+		source.Play();
 	}
 	
 	private void SaveSerialise(List<SavePair> pairs)

@@ -28,8 +28,6 @@ public class Torch : MonoBehaviour
 		if(Input.GetButtonDown("torch"))
 		{
 			m_active = !m_active;	
-			
-			renderer.enabled = m_active;
 		}
 		
 		if(m_active)
@@ -45,6 +43,7 @@ public class Torch : MonoBehaviour
 	        renderer.material.SetMatrix("_Rotation", r);
 		}
 		
+		renderer.enabled = m_active;
 		
 	}
 	

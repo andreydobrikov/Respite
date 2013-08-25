@@ -43,7 +43,6 @@ public class PlayerView : MonoBehaviour
 			diff *= diffSign;
 			
 			diff = Mathf.Clamp(diff, -InspectionAngleMax, InspectionAngleMax);
-			Debug.Log(diff);
 		}
 		
 		

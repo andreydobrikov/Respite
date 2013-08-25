@@ -34,8 +34,11 @@ public class GameFlowWrapper : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUILayout.BeginArea(new Rect(10.0f, Screen.height - 70.0f, 300.0f, 60.0f));
+		GUILayout.BeginArea(new Rect(10.0f, Screen.height - 120.0f, 300.0f, 100.0f));
 		GUILayout.BeginVertical();
+		
+		GUILayout.Label(System.Enum.GetName(typeof(GameFlow.ControlContext), GameFlow.Instance.CurrentControlContext));
+		
 		GUILayout.BeginHorizontal();
 		
 		if(GUILayout.Button("Save"))

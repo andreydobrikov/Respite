@@ -94,7 +94,7 @@ public class InteractionMenu : MonoBehaviour
 			
 			if(m_objectsInView.Count > 0)
 			{
-				List<Interaction> interactions = m_objectsInView[0].GetInteractions();
+				List<Interaction> interactions = m_objectsInView[0].GetInteractions(ContextFlag.World);
 				if(interactions.Count > 3)
 				{
 					Debug.Log("Too many interactions");	
@@ -153,7 +153,7 @@ public class InteractionMenu : MonoBehaviour
 				m_currentTab = m_objectsInRange.Count - 1;	
 			}
 		
-			List<Interaction> interactions = m_objectsInView[0].GetInteractions();	
+			List<Interaction> interactions = m_objectsInView[0].GetInteractions(ContextFlag.World);	
 		
 			if(Input.GetButtonUp("option_0"))
 			{
@@ -177,41 +177,36 @@ public class InteractionMenu : MonoBehaviour
 		
 		m_objectsInView.Clear();
 		
+		float minAngle = m_view.DirectionAngle - InspectionFocusAngle;
+		float maxAngle = m_view.DirectionAngle + InspectionFocusAngle;
 		
+		Vector3 min = Quaternion.Euler(0.0f, 0.0f, minAngle) * Vector3.up;
+		Vector3 max = (Quaternion.Euler(0.0f, 0.0f, maxAngle) ) * Vector3.up;
 		
+		const float iterationCount = 10.0f;
 		
+		float sweepDelta = (InspectionFocusAngle * 2.0f) / iterationCount;
 		
-			
-			float minAngle = m_view.DirectionAngle - InspectionFocusAngle;
-			float maxAngle = m_view.DirectionAngle + InspectionFocusAngle;
-			
-			Vector3 min = Quaternion.Euler(0.0f, 0.0f, minAngle) * Vector3.up;
-			Vector3 max = (Quaternion.Euler(0.0f, 0.0f, maxAngle) ) * Vector3.up;
-			
-			const float iterationCount = 10.0f;
-			
-			float sweepDelta = (InspectionFocusAngle * 2.0f) / iterationCount;
-			
-			RaycastHit hitInfo;
-			
-			for(int sweepCount = 0; sweepCount < iterationCount; ++sweepCount)
+		RaycastHit hitInfo;
+		
+		for(int sweepCount = 0; sweepCount < iterationCount; ++sweepCount)
+		{
+			float progress = minAngle + (sweepCount * sweepDelta);
+			Vector3 currentDirection = (Quaternion.Euler(0.0f, 0.0f, progress) ) * Vector3.up;
+			if(m_renderDebug)
 			{
-				float progress = minAngle + (sweepCount * sweepDelta);
-				Vector3 currentDirection = (Quaternion.Euler(0.0f, 0.0f, progress) ) * Vector3.up;
-				if(m_renderDebug)
+				Debug.DrawLine(transform.position + new Vector3(0.0f, 0.0f, -1.0f), transform.position + new Vector3(0.0f, 0.0f, -1.0f) + currentDirection, Color.red);
+			}
+			if(Physics.Raycast(transform.position, currentDirection, out hitInfo, 1.0f, collisionLayer))
+			{
+				InteractiveObject interactiveObject = hitInfo.collider.gameObject.GetComponent<InteractiveObject>();
+				if(interactiveObject != null && !m_objectsInView.Contains(interactiveObject) && interactiveObject.GetInteractions(ContextFlag.World).Count > 0)
 				{
-					Debug.DrawLine(transform.position + new Vector3(0.0f, 0.0f, -1.0f), transform.position + new Vector3(0.0f, 0.0f, -1.0f) + currentDirection, Color.red);
-				}
-				if(Physics.Raycast(transform.position, currentDirection, out hitInfo, 1.0f, collisionLayer))
-				{
-					InteractiveObject interactiveObject = hitInfo.collider.gameObject.GetComponent<InteractiveObject>();
-					if(interactiveObject != null && !m_objectsInView.Contains(interactiveObject))
-					{
-						m_objectsInView.Add(interactiveObject);
-						interactiveObject.SetHighlightActive(true);
-					}
+					m_objectsInView.Add(interactiveObject);
+					interactiveObject.SetHighlightActive(true);
 				}
 			}
+		}
 			
 	}
 	
