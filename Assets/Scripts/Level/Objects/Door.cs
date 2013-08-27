@@ -44,7 +44,10 @@ public class Door : InteractiveObject
 		
 		AudioSource source = GetComponent<AudioSource>() as AudioSource;
 		
-		source.Play();
+		if(source != null)
+		{
+			source.Play();
+		}
 	}
 	
 	private void HandleClose(Interaction interaction)

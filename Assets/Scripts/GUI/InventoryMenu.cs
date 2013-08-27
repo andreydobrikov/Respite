@@ -15,6 +15,7 @@ using System.Collections.Generic;
 
 public class InventoryMenu : MonoBehaviour 
 {
+	public GUISkin skin;
 	public float delay = 0.2f;
 	
 	void Update()
@@ -99,30 +100,23 @@ public class InventoryMenu : MonoBehaviour
 	
 	void SaveSerialise(List<SavePair> pairs)
 	{
-		
-		pairs.Add(new SavePair("position_x", rigidbody.position.x.ToString()));
-		pairs.Add(new SavePair("position_y", rigidbody.position.y.ToString()));
-		pairs.Add(new SavePair("position_z", rigidbody.position.z.ToString()));
+		Inventory.SaveSerialise(pairs);
 	}
 	
 	void SaveDeserialise(List<SavePair> pairs)
 	{
-		Vector3 position = Vector3.one;
-		
-		foreach(var pair in pairs)
-		{
-			if(pair.id == "position_x") { float.TryParse(pair.value, out position.x); }
-			if(pair.id == "position_y") { float.TryParse(pair.value, out position.y); }
-			if(pair.id == "position_z") { float.TryParse(pair.value, out position.z); }
-		}
-		rigidbody.position = position;
+		Inventory.SaveDeserialise(pairs);
+	
+	//	rigidbody.position = position;
 	}	
 	
 	public void OnGUI()
 	{
 		if(GameFlow.Instance.CurrentControlContext == GameFlow.ControlContext.Inventory)
 		{
-			GUILayout.BeginArea(new Rect(Screen.width / 2 - 200, (Screen.height / 2) - 100, 300, 300));
+			Vector2 boxOrigin = new Vector2(Screen.width / 2 - 100, Screen.height / 2 - 100);
+			
+			GUILayout.BeginArea(new Rect(boxOrigin.x, boxOrigin.y, 300, 300));
 		
 			GUILayout.BeginVertical((GUIStyle)("Box"));
 			
@@ -132,60 +126,45 @@ public class InventoryMenu : MonoBehaviour
 			int index = 0;
 			foreach(var item in Inventory.Contents)
 			{
-				if(index == m_selectedIndex && Event.current.type == EventType.Repaint)
+				if(index == m_selectedIndex)
 				{
 					GUI.color = Color.red;	
-					m_lastRect = GUILayoutUtility.GetLastRect();
+					
+					if(Event.current.type == EventType.Repaint)
+					{
+						m_lastRect = GUILayoutUtility.GetLastRect();
+						
+						m_lastOrigin = new Vector2(m_lastRect.x, m_lastRect.y);
+						m_lastOrigin = GUIUtility.GUIToScreenPoint(m_lastOrigin);
+					}
 				}
 				
 				GUILayout.Label(item.name);	
 				
 				GUI.color = Color.white;
-				
-				if(m_state == MenuState.Options)
-				{
-					GUI.depth = GUI.depth + 1;
-					
-					Rect lastRect = m_lastRect;
-					lastRect.x += 10;
-					lastRect.y += 30;
-					lastRect.height = 100;
-					
-					GUILayout.BeginArea(lastRect);
-					
-					GUILayout.BeginVertical((GUIStyle)("Box"));
-					
-					List<Interaction> interactions = item.GetInteractions();
-					
-					if(Input.GetButtonUp("option_0"))
-					{
-						interactions[0].Callback(interactions[0]);	
-					}
-					
-					if(interactions.Count > 1)
-					{
-						if(Input.GetButtonUp("option_1"))
-						{
-							interactions[1].Callback(interactions[1]);	
-						}	
-					}
-					
-					foreach(var interaction in interactions)
-					{
-						GUILayout.Label(interaction.Name);	
-					}
-					
-					GUILayout.EndVertical();
-					
-					GUILayout.EndArea();
-				}
-				
 				index++;
+				
 			}
 			
 			GUILayout.EndVertical();
 			
 			GUILayout.EndArea();
+			
+			GUI.skin = skin;
+			index = 0;
+			GUIStyle current = GUI.skin.GetStyle("Button");
+			foreach(var item in Inventory.Contents)
+			{
+				if(index == m_selectedIndex)
+				{
+					List<Interaction> interactions = item.GetInteractions();
+					
+					GUILayout.BeginArea(new Rect(m_lastOrigin.x - 100 , m_lastOrigin.y, 100, m_lastRect.height));
+					GUILayout.Label("test", current);
+					GUILayout.EndArea();
+				}
+				index++;
+			}
 		}
 		else
 		{
@@ -211,6 +190,7 @@ public class InventoryMenu : MonoBehaviour
 	private int m_selectedIndex = 0;
 	private MenuState m_state = MenuState.ItemSelect;
 	private Rect m_lastRect;
+	private Vector2 m_lastOrigin = Vector2.zero;
 	
 	private enum MenuState
 	{

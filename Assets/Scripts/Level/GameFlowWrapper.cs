@@ -43,12 +43,12 @@ public class GameFlowWrapper : MonoBehaviour
 		
 		if(GUILayout.Button("Save"))
 		{
-			Serialiser.Instance.Serialise();	
+			GameFlow.Instance.RequestSave(0.0f);
 		}
 		
 		if(GUILayout.Button("Load"))
 		{
-			Serialiser.Instance.Deserialise();	
+			GameFlow.Instance.RequestLoad();
 		}
 		
 		GUILayout.EndHorizontal();
@@ -74,9 +74,14 @@ public class GameFlowWrapper : MonoBehaviour
 	{
 		if(GameFlow.Instance.CurrentControlContext != GameFlow.ControlContext.Menu && !focus && m_started)
 		{
-		//	GameFlow.Instance.RequestMenu();	
+			if(Settings.Instance.GetSetting("focus_transition_enabled") == "true")
+			{
+				GameFlow.Instance.RequestMenu();	
+			}
 		}
 	}
+	
+	
 	
 	private bool m_started 				= false;
 	private float m_saveFadeDuration 	= 3.0f;

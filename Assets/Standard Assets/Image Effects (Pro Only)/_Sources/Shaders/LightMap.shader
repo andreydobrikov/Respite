@@ -35,8 +35,8 @@ Shader "Hidden/LightMap" {
 	
 
 
-	half4 frag (v2f i) : COLOR {
-		half4 toBlend = tex2D(_Overlay, i.uv[0]);
+	float4 frag (v2f i) : COLOR {
+		float4 toBlend = tex2D(_Overlay, i.uv[0]);
 		toBlend.a = 1.0f;
 		//return half4(1.0f, 0.0f, 0.0f, 1.0f);
 		//half4 test = tex2D(_MainTex, i.uv[1]);

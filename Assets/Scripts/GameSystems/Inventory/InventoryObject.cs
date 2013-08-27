@@ -13,6 +13,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(SerialisableObject))]
 [RequireComponent(typeof(InteractiveObject))]
 public class InventoryObject : MonoBehaviour 
 {

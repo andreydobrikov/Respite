@@ -1,22 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <entries>
-  <entry id="96b56210-c343-4cf1-95af-9bdad7e90e4e">
-    <pair id="time" value="10.77817" />
+  <entry id="891ec1c7-6079-4348-bdea-06b8977a1a3f">
+    <pair id="house0" value="false" />
+    <pair id="house1" value="true" />
   </entry>
-  <entry id="3f7259bc-11d4-4b42-9eef-cf186975ac4d">
-    <pair id="position_x" value="17.65664" />
-    <pair id="position_y" value="-9.228216" />
+  <entry id="4af49455-92c4-4080-9291-c7c131e417f7" />
+  <entry id="44b8f3ff-7b0d-48bf-bb39-9688ae1da927">
+    <pair id="time" value="0.2190592" />
+  </entry>
+  <entry id="70a8a2a7-9a68-4c51-b0d3-d6f698e90a0e">
+    <pair id="inventory_item_0" value="6a05e8aa-2e21-4f0e-8126-ca547d187102" />
+    <pair id="inventory_item_1" value="adaa8b0e-96c2-4bd8-b6c8-64aab4352ca0" />
+  </entry>
+  <entry id="c54e38c1-999e-4e32-bfbc-1a0bca11c2f8">
+    <pair id="position_x" value="72.55153" />
+    <pair id="position_y" value="-41.42178" />
     <pair id="position_z" value="-0.5" />
   </entry>
-  <entry id="cb5bf262-d645-42c8-9ae7-cd831c9391de">
-    <pair id="current_rotation" value="-65" />
-    <pair id="lerp_direction" value="1" />
-    <pair id="lerp_progress" value="1" />
+  <entry id="c99a99b9-00b2-4d76-988b-5f6e035519bd">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
   </entry>
-  <entry id="cb5bf262-d645-42c8-9ae7-cd831c9391de">
-    <pair id="current_rotation" value="-65" />
-    <pair id="lerp_direction" value="1" />
-    <pair id="lerp_progress" value="1" />
-  </entry>
-  <entry id="96b56210-c343-4cf1-95af-9bdad7e90e4e" />
+  <entry id="79dc00a4-dfc9-4c3e-9242-9f6fcc183424" />
 </entries>

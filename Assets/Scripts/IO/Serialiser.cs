@@ -61,36 +61,12 @@ public class Serialiser
 	public void Deserialise()
 	{
 		Dictionary<string, SerialisableObject> objects 	= new Dictionary<string, SerialisableObject>();
-		SerialisableObject[] serialisableObjects 		= GameObject.FindObjectsOfType(typeof(SerialisableObject)) as SerialisableObject[];
+		SerialisableObject[] serialisableObjects 		= GameObject.FindObjectsOfTypeAll(typeof(SerialisableObject)) as SerialisableObject[];
 		
 		// Create a dictionary of all the serialisable objects in the scene, to prevent iteration later.
 		foreach(var currentObject in serialisableObjects)
 		{
-			
-			try
-			{
-				objects.Add(currentObject.GUID, currentObject);
-			}
-			catch(System.Exception e)
-			{
-				int indent = 0;
-				GameObject current = currentObject.gameObject;
-				while(current != null)
-				{
-					StringBuilder outString = new StringBuilder("");
-					
-					for(int i = 0; i < indent; i++)
-					{
-						outString.Append("\t");	
-					}
-					
-					outString.Append(current.gameObject.name);
-					Debug.Log(outString.ToString());
-					
-					current = current.transform.parent.gameObject;
-					indent++;
-				}
-			}
+			objects.Add(currentObject.GUID, currentObject);
 		}
 		
 		XmlDocument saveFile = new XmlDocument();

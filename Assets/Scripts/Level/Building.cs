@@ -17,13 +17,14 @@ using System.Collections.Generic;
 public class Building : MonoBehaviour 
 {
 	public string BuildingName 		= string.Empty;
-	public List<Room> Rooms		= new List<Room>();
+	public List<Room> Rooms			= new List<Room>();
 	public bool ShowRoomsFoldout	= false;
 	
 	public Building()
 	{
 		Rooms.Add(new Room());	
 	}
+
 }
 
 [Serializable]

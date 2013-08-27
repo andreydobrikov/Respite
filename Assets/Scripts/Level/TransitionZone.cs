@@ -50,6 +50,6 @@ public class TransitionZone : MonoBehaviour
 		m_fade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), TransitionDuration / 2.0f, null);
 	}
 	
-	private CameraFade m_fade = null;
-	private Collider m_other = null;
+	private CameraFade m_fade 	= null;
+	private Collider m_other 	= null;
 }

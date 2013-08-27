@@ -25,12 +25,19 @@ public class Interaction
 		{
 			m_flags = m_flags | (uint)flag;	
 		}
+		
+		if(flags.Length == 0)
+		{
+			m_flags = (uint)ContextFlag.All;	
+		}
 	}
 	
 	public bool MatchesContext(uint flags)
 	{
 		return (m_flags & flags) != 0;
 	}
+	
+	#region Properties
 	
 	public string Name 					{ get { return m_name; } }
 	public InteractionHandler Callback 	{ get { return m_handler; } }
@@ -46,6 +53,8 @@ public class Interaction
 		get { return m_flags; }	
 	}
 	
+	#endregion
+	
 	private string m_name 					= string.Empty;
 	private InteractionHandler m_handler 	= null;
 	private bool m_enabled 					= true;
@@ -54,6 +63,8 @@ public class Interaction
 
 public enum ContextFlag
 {
+	None		= 0x0, 
+			
 	World 		= 0x1,
 	Inventory 	= 0x2,
 	

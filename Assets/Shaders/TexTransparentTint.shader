@@ -43,7 +43,7 @@ Shader "Custom/TexTransparentTint"
 		        return o;
 			}
 			
-			fixed4 frag (v2f i) : COLOR0 
+			float4 frag (v2f i) : COLOR0 
 			{ 
 				//float4 val = i.color + (1.0f - (tex2D (_ShadowTex, i.uv).r *_ShadowFactor));
 				//half rim = 1.0 - saturate(dot (normalize(i.viewDir), i.norm));

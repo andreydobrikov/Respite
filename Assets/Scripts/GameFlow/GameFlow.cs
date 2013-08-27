@@ -1,5 +1,19 @@
+///////////////////////////////////////////////////////////
+// 
+// GameFlow.cs
+//
+// What it does: Singleton controlling all changes between states of the game.
+//
+// Notes: 	Save/Load
+//			Inventory
+//			Inspection
+//			Menus
+// 
+// To-do:
+//
+///////////////////////////////////////////////////////////
+
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class GameFlow
@@ -41,8 +55,17 @@ public class GameFlow
 		if(m_cameraFade != null)
 		{
 			Debug.Log("Fading down");
-			m_cameraFade.StartFade(Color.black, SaveFadeDuration, ScreenFadeComplete);
+			m_cameraFade.StartFade(Color.black, SaveFadeDuration, SaveScreenFadeComplete);
 		}
+	}
+	
+	public void RequestLoad()
+	{
+		if(m_cameraFade != null)
+		{
+			Debug.Log("Fading down");
+			m_cameraFade.StartFade(Color.black, SaveFadeDuration, LoadScreenFadeComplete);
+		}	
 	}
 	
 	public void RequestInventory()
@@ -128,11 +151,18 @@ public class GameFlow
 		m_context.Push(ControlContext.World);
 	}
 	
-	private void ScreenFadeComplete()
+	private void SaveScreenFadeComplete()
 	{
 		Serialiser.Instance.Serialise();
 		
 		m_timeOfDay.AdjustedTime = m_timeOfDay.AdjustedTime + m_advanceTime;
+		
+		m_cameraFade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), SaveFadeDuration, null);
+	}
+	
+	private void LoadScreenFadeComplete()
+	{
+		Serialiser.Instance.Deserialise();
 		
 		m_cameraFade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), SaveFadeDuration, null);
 	}

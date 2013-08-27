@@ -43,8 +43,8 @@ public class SettingsEditor :  EditorWindow
 		{
 			GUILayout.BeginHorizontal();
 			
-			GUILayout.Label(setting.key, GUILayout.Width(200));
-			EditorGUILayout.TextField(setting.value);
+			setting.key 	= EditorGUILayout.TextField(setting.key);
+			setting.value 	= EditorGUILayout.TextField(setting.value);
 			
 			if(GUILayout.Button("delete", GUILayout.Width(80)))
 			{
@@ -70,8 +70,6 @@ public class SettingsEditor :  EditorWindow
 		
 		if(GUILayout.Button("Save", GUILayout.Width(60)))
 		{
-			Settings.Instance.UpdateSetting("test", "20");			
-			Settings.Instance.UpdateSetting("other", "10");		
 			Settings.Instance.SaveSettings();	
 		}
 		
