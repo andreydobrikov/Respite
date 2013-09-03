@@ -66,8 +66,6 @@ public class Forest : MonoBehaviour
 		int currentX = (int)((localCentre.x / sectionWidth) );
 		int currentY = (int)((localCentre.y / sectionHeight) );
 		
-		Vector3 start = new Vector3(m_startX, m_startY, 0.0f);
-		
 		if(GetSectionIndex(currentX, currentY) != m_activeSections[4])
 		{
 			m_newSections[0] = GetSectionIndex(currentX - 1, currentY - 1);

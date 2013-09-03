@@ -178,10 +178,6 @@ public class InteractionMenu : MonoBehaviour
 		m_objectsInView.Clear();
 		
 		float minAngle = m_view.DirectionAngle - InspectionFocusAngle;
-		float maxAngle = m_view.DirectionAngle + InspectionFocusAngle;
-		
-		Vector3 min = Quaternion.Euler(0.0f, 0.0f, minAngle) * Vector3.up;
-		Vector3 max = (Quaternion.Euler(0.0f, 0.0f, maxAngle) ) * Vector3.up;
 		
 		const float iterationCount = 10.0f;
 		

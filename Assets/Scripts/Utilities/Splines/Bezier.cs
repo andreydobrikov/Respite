@@ -130,122 +130,117 @@ public class Bezier
 		int[] 		triangles 	= new int[(iterations - 1) * 24 + 24];
 				
 				
-				float stepSize = 1.0f / (float)(iterations - 1);
-				Vector2 lastPoint = Bezier.GetBezierPoint(0.0f, v0, t0, v1, t1);
-				float accumulatedDistance0 = 0.0f;
-				float accumulatedDistance1 = 0.0f;
-				for(int i = 0; i < iterations; i++)
-				{
-					float wallSize = segmentRadius;
-					wallSize = Mathf.Lerp(wallSize * startWidthFactor, wallSize * endWidthFactor, stepSize * (float)i);
-					
-					Vector2 bezierPoint = Bezier.GetBezierPoint(stepSize * (float)i, v0, t0, v1, t1);
-					Vector2 tangent = Bezier.GetBezierNormal(stepSize * (float)i, v0, t0, v1, t1);
-					
-					vertices[i * 4] = new Vector3(bezierPoint.x, bezierPoint.y, 0.0f);
-					vertices[i * 4] += new Vector3(tangent.x, tangent.y) * wallSize;
-					
-					vertices[i * 4 + 1] = new Vector3(bezierPoint.x, bezierPoint.y, 0.0f);
-					vertices[i * 4 + 1] += new Vector3(-tangent.x, -tangent.y) * wallSize;
-					
-					vertices[i * 4 + 2] = new Vector3(bezierPoint.x, bezierPoint.y, 1.0f);
-					vertices[i * 4 + 2] += new Vector3(tangent.x, tangent.y) * wallSize;
-					
-					vertices[i * 4 + 3] = new Vector3(bezierPoint.x, bezierPoint.y, 1.0f);
-					vertices[i * 4 + 3] += new Vector3(-tangent.x, -tangent.y) * wallSize;
-					
+		float stepSize = 1.0f / (float)(iterations - 1);
+		float accumulatedDistance0 = 0.0f;
+		float accumulatedDistance1 = 0.0f;
+		for(int i = 0; i < iterations; i++)
+		{
+			float wallSize = segmentRadius;
+			wallSize = Mathf.Lerp(wallSize * startWidthFactor, wallSize * endWidthFactor, stepSize * (float)i);
 			
-					/* Removing this to hush warnings. It necessarily can't have been doing anything anyway.
-					if(lastPoint == null)
-					{
-						uvs[i * 4] = new Vector2( 0.0f, 0.0f);
-						uvs[i * 4 + 1] = new Vector2( 0.0f, 1.0f);	
-						uvs[i * 4 + 2] = new Vector2( 0.0f, 0.0f);
-						uvs[i * 4 + 3] = new Vector2( 0.0f, 1.0f);	
-					}
-					else*/
-					{
-						Vector2 toLastPoint = bezierPoint - lastPoint;
-						float distanceToLastPoint = toLastPoint.magnitude;
-						
-						accumulatedDistance0 += (stepSize * uv0Multiplier);
-						accumulatedDistance1 += (stepSize * uv1Multiplier);
-						
-						uvs0[i * 4] = new Vector2( accumulatedDistance0, 0.0f) ;
-						uvs0[i * 4 + 1] = new Vector2( accumulatedDistance0, 1.0f);	
-						uvs0[i * 4 + 2] = new Vector2( accumulatedDistance0, 0.0f) ;
-						uvs0[i * 4 + 3] = new Vector2( accumulatedDistance0, 1.0f);	
+			Vector2 bezierPoint = Bezier.GetBezierPoint(stepSize * (float)i, v0, t0, v1, t1);
+			Vector2 tangent = Bezier.GetBezierNormal(stepSize * (float)i, v0, t0, v1, t1);
+			
+			vertices[i * 4] = new Vector3(bezierPoint.x, bezierPoint.y, 0.0f);
+			vertices[i * 4] += new Vector3(tangent.x, tangent.y) * wallSize;
+			
+			vertices[i * 4 + 1] = new Vector3(bezierPoint.x, bezierPoint.y, 0.0f);
+			vertices[i * 4 + 1] += new Vector3(-tangent.x, -tangent.y) * wallSize;
+			
+			vertices[i * 4 + 2] = new Vector3(bezierPoint.x, bezierPoint.y, 1.0f);
+			vertices[i * 4 + 2] += new Vector3(tangent.x, tangent.y) * wallSize;
+			
+			vertices[i * 4 + 3] = new Vector3(bezierPoint.x, bezierPoint.y, 1.0f);
+			vertices[i * 4 + 3] += new Vector3(-tangent.x, -tangent.y) * wallSize;
+			
+	
+			/* Removing this to hush warnings. It necessarily can't have been doing anything anyway.
+			if(lastPoint == null)
+			{
+				uvs[i * 4] = new Vector2( 0.0f, 0.0f);
+				uvs[i * 4 + 1] = new Vector2( 0.0f, 1.0f);	
+				uvs[i * 4 + 2] = new Vector2( 0.0f, 0.0f);
+				uvs[i * 4 + 3] = new Vector2( 0.0f, 1.0f);	
+			}
+			else*/
+			{
+				accumulatedDistance0 += (stepSize * uv0Multiplier);
+				accumulatedDistance1 += (stepSize * uv1Multiplier);
 				
-						uvs1[i * 4] = new Vector2( accumulatedDistance1, 0.0f) ;
-						uvs1[i * 4 + 1] = new Vector2( accumulatedDistance1, 1.0f);	
-						uvs1[i * 4 + 2] = new Vector2( accumulatedDistance1, 0.0f) ;
-						uvs1[i * 4 + 3] = new Vector2( accumulatedDistance1, 1.0f);	
-					}
-					lastPoint = bezierPoint;
-					
-				}
-
-				for(int i = 0; i < iterations - 1; i++)
-				{
-					//Top
-					triangles[i * 24] = i * 4;
-					triangles[i * 24 + 1] = i * 4 + 1;
-					triangles[i * 24 + 2] =  i * 4 + 4;
-					
-					triangles[i * 24 + 3] = i * 4 + 4;
-					triangles[i * 24 + 4] = i * 4 + 1;
-					triangles[i * 24 + 5] = i * 4 + 5;
-					
-					// Bottom
-					triangles[i * 24 + 6] = i * 4 + 2;
-					triangles[i * 24 + 7] = i * 4 + 6;
-					triangles[i * 24 + 8] =  i * 4+ 3;
-					
-					triangles[i * 24 + 9] = i * 4+ 6;
-					triangles[i * 24 + 10] = i * 4+ 7;
-					triangles[i * 24 + 11] = i * 4+ 3;
-					
-					// Left
-					triangles[i * 24 + 12] = i * 4;
-					triangles[i * 24 + 13] = i * 4+ 4;
-					triangles[i * 24 + 14] =  i * 4+ 2;
-					
-					triangles[i * 24 + 15] = i * 4+ 2;
-					triangles[i * 24 + 16] = i * 4+ 4;
-					triangles[i * 24 + 17] = i * 4+ 6;
-					
-					// Right
-					triangles[i * 24 + 18] = i * 4+ 1;
-					triangles[i * 24 + 19] = i * 4+ 3;
-					triangles[i * 24 + 20] =  i * 4+ 5;
-					
-					triangles[i * 24 + 21] = i * 4+ 5;
-					triangles[i * 24 + 22] = i * 4+ 3;
-					triangles[i * 24 + 23] = i * 4+ 7;
-				}
-				
-				// End caps
-				int capStart = (iterations - 1) * 24;
-				triangles[capStart] = 0;
-				triangles[capStart + 1] = 2;
-				triangles[capStart + 2] = 1;
-				triangles[capStart + 3] = 2;
-				triangles[capStart + 4] = 3;
-				triangles[capStart + 5] = 1;
-				
-				int offset = vertices.Length - 4;
-				triangles[capStart + 6] = offset + 0;
-				triangles[capStart + 7] = offset + 1;
-				triangles[capStart + 8] = offset + 2;
-				triangles[capStart + 9] = offset + 2;
-				triangles[capStart + 10] = offset + 1;
-				triangles[capStart + 11] = offset + 3;
-				
-				nodeMesh.vertices 	= vertices;
-				nodeMesh.uv 		= uvs0;
-				nodeMesh.uv1 		= uvs1;
-				nodeMesh.triangles 	= triangles;	
+				uvs0[i * 4] = new Vector2( accumulatedDistance0, 0.0f) ;
+				uvs0[i * 4 + 1] = new Vector2( accumulatedDistance0, 1.0f);	
+				uvs0[i * 4 + 2] = new Vector2( accumulatedDistance0, 0.0f) ;
+				uvs0[i * 4 + 3] = new Vector2( accumulatedDistance0, 1.0f);	
 		
+				uvs1[i * 4] = new Vector2( accumulatedDistance1, 0.0f) ;
+				uvs1[i * 4 + 1] = new Vector2( accumulatedDistance1, 1.0f);	
+				uvs1[i * 4 + 2] = new Vector2( accumulatedDistance1, 0.0f) ;
+				uvs1[i * 4 + 3] = new Vector2( accumulatedDistance1, 1.0f);	
+			}
+			
+		}
+
+		for(int i = 0; i < iterations - 1; i++)
+		{
+			//Top
+			triangles[i * 24] = i * 4;
+			triangles[i * 24 + 1] = i * 4 + 1;
+			triangles[i * 24 + 2] =  i * 4 + 4;
+			
+			triangles[i * 24 + 3] = i * 4 + 4;
+			triangles[i * 24 + 4] = i * 4 + 1;
+			triangles[i * 24 + 5] = i * 4 + 5;
+			
+			// Bottom
+			triangles[i * 24 + 6] = i * 4 + 2;
+			triangles[i * 24 + 7] = i * 4 + 6;
+			triangles[i * 24 + 8] =  i * 4+ 3;
+			
+			triangles[i * 24 + 9] = i * 4+ 6;
+			triangles[i * 24 + 10] = i * 4+ 7;
+			triangles[i * 24 + 11] = i * 4+ 3;
+			
+			// Left
+			triangles[i * 24 + 12] = i * 4;
+			triangles[i * 24 + 13] = i * 4+ 4;
+			triangles[i * 24 + 14] =  i * 4+ 2;
+			
+			triangles[i * 24 + 15] = i * 4+ 2;
+			triangles[i * 24 + 16] = i * 4+ 4;
+			triangles[i * 24 + 17] = i * 4+ 6;
+			
+			// Right
+			triangles[i * 24 + 18] = i * 4+ 1;
+			triangles[i * 24 + 19] = i * 4+ 3;
+			triangles[i * 24 + 20] =  i * 4+ 5;
+			
+			triangles[i * 24 + 21] = i * 4+ 5;
+			triangles[i * 24 + 22] = i * 4+ 3;
+			triangles[i * 24 + 23] = i * 4+ 7;
+		}
+		
+		// End caps
+		int capStart = (iterations - 1) * 24;
+		triangles[capStart] = 0;
+		triangles[capStart + 1] = 2;
+		triangles[capStart + 2] = 1;
+		triangles[capStart + 3] = 2;
+		triangles[capStart + 4] = 3;
+		triangles[capStart + 5] = 1;
+		
+		int offset = vertices.Length - 4;
+		triangles[capStart + 6] = offset + 0;
+		triangles[capStart + 7] = offset + 1;
+		triangles[capStart + 8] = offset + 2;
+		triangles[capStart + 9] = offset + 2;
+		triangles[capStart + 10] = offset + 1;
+		triangles[capStart + 11] = offset + 3;
+		
+		nodeMesh.vertices 	= vertices;
+		nodeMesh.uv 		= uvs0;
+		nodeMesh.uv1 		= uvs1;
+		nodeMesh.triangles 	= triangles;	
+
 		return nodeMesh;
 	}
 	

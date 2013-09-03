@@ -109,7 +109,6 @@ public class Settings
 					if(reader.TokenType == JsonToken.PropertyName)
 					{
 						currentName = reader.Value as string;		
-						Debug.Log("Grabbed " + currentName);
 					}
 					else if(reader.TokenType == JsonToken.String)
 					{

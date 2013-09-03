@@ -13,7 +13,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class InventoryMenu : MonoBehaviour 
+public class InventoryMenu : MonoBehaviour, ISerialisable
 {
 	public GUISkin skin;
 	public float delay = 0.2f;
@@ -98,16 +98,14 @@ public class InventoryMenu : MonoBehaviour
 		}
 	}
 	
-	void SaveSerialise(List<SavePair> pairs)
+	public void SaveSerialise(List<SavePair> pairs)
 	{
 		Inventory.SaveSerialise(pairs);
 	}
 	
-	void SaveDeserialise(List<SavePair> pairs)
+	public void SaveDeserialise(List<SavePair> pairs)
 	{
 		Inventory.SaveDeserialise(pairs);
-	
-	//	rigidbody.position = position;
 	}	
 	
 	public void OnGUI()
@@ -129,17 +127,20 @@ public class InventoryMenu : MonoBehaviour
 				if(index == m_selectedIndex)
 				{
 					GUI.color = Color.red;	
-					
+				}
+				
+				GUILayout.Label(item.name);	
+				
+				if(index == m_selectedIndex)
+				{
 					if(Event.current.type == EventType.Repaint)
 					{
 						m_lastRect = GUILayoutUtility.GetLastRect();
 						
 						m_lastOrigin = new Vector2(m_lastRect.x, m_lastRect.y);
 						m_lastOrigin = GUIUtility.GUIToScreenPoint(m_lastOrigin);
-					}
+					}	
 				}
-				
-				GUILayout.Label(item.name);	
 				
 				GUI.color = Color.white;
 				index++;
@@ -150,15 +151,14 @@ public class InventoryMenu : MonoBehaviour
 			
 			GUILayout.EndArea();
 			
-			GUI.skin = skin;
-			index = 0;
-			GUIStyle current = GUI.skin.GetStyle("Button");
+			GUI.skin 			= skin;
+			index 				= 0;
+			GUIStyle current 	= GUI.skin.GetStyle("Button");
+			
 			foreach(var item in Inventory.Contents)
 			{
 				if(index == m_selectedIndex)
 				{
-					List<Interaction> interactions = item.GetInteractions();
-					
 					GUILayout.BeginArea(new Rect(m_lastOrigin.x - 100 , m_lastOrigin.y, 100, m_lastRect.height));
 					GUILayout.Label("test", current);
 					GUILayout.EndArea();

@@ -14,7 +14,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(SerialisableObject))]
-public class TransitionSerialiser : MonoBehaviour 
+public class TransitionSerialiser : MonoBehaviour, ISerialisable 
 {
 	public List<GameObject> TransitionObjects = new List<GameObject>();
 	

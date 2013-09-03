@@ -18,6 +18,8 @@ public class TransitionZone : MonoBehaviour
 	public GameObject DisableObject = null;
 	public GameObject EnableObject = null;
 	
+	public GameObject TeleportTarget = null;
+	
 	public float HeightOffset = -1.0f;
 	public float TransitionDuration = 0.6f;
 	
@@ -37,6 +39,11 @@ public class TransitionZone : MonoBehaviour
 				
 	private void FadeComplete()
 	{
+		if(TeleportTarget != null)
+		{
+			m_other.gameObject.transform.position = TeleportTarget.transform.position;
+		}
+		
 		if(m_other != null)
 		{
 			m_other.BroadcastMessage("OnRegionTransition", SendMessageOptions.DontRequireReceiver);

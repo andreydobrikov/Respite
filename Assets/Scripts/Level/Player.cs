@@ -9,7 +9,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Player : MonoBehaviour 
+public class Player : MonoBehaviour, ISerialisable
 {
 	public float CooldownRate = 0.0001f;
 	
@@ -45,24 +45,37 @@ public class Player : MonoBehaviour
 		*/
 	}
 	
-	void SaveSerialise(List<SavePair> pairs)
+	public void SaveSerialise(List<SavePair> pairs)
 	{
 		pairs.Add(new SavePair("position_x", rigidbody.position.x.ToString()));
 		pairs.Add(new SavePair("position_y", rigidbody.position.y.ToString()));
 		pairs.Add(new SavePair("position_z", rigidbody.position.z.ToString()));
+		
+		pairs.Add(new SavePair("rotation_x", rigidbody.rotation.x.ToString()));
+		pairs.Add(new SavePair("rotation_y", rigidbody.rotation.y.ToString()));
+		pairs.Add(new SavePair("rotation_z", rigidbody.rotation.z.ToString()));
+		pairs.Add(new SavePair("rotation_w", rigidbody.rotation.w.ToString()));
 	}
 	
-	void SaveDeserialise(List<SavePair> pairs)
+	public void SaveDeserialise(List<SavePair> pairs)
 	{
-		Vector3 position = Vector3.one;
+		Vector3 position 	= Vector3.one;
+		Quaternion rotation = Quaternion.identity;
 		
 		foreach(var pair in pairs)
 		{
 			if(pair.id == "position_x") { float.TryParse(pair.value, out position.x); }
 			if(pair.id == "position_y") { float.TryParse(pair.value, out position.y); }
 			if(pair.id == "position_z") { float.TryParse(pair.value, out position.z); }
+			
+			if(pair.id == "rotation_x") { float.TryParse(pair.value, out rotation.x); }
+			if(pair.id == "rotation_y") { float.TryParse(pair.value, out rotation.y); }
+			if(pair.id == "rotation_z") { float.TryParse(pair.value, out rotation.z); }
+			if(pair.id == "rotation_w") { float.TryParse(pair.value, out rotation.w); }
 		}
+		
 		rigidbody.position = position;
+		rigidbody.rotation = rotation;
 	}
 	
 	public float Warmth { get; set; }

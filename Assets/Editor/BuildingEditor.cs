@@ -271,7 +271,7 @@ public class BuildingEditor :  Editor
 	private static string s_rooms_id 			= "rooms";
 	private static string s_floor_id 			= "floor";
 	private static string s_ambient_id 			= "ambient";
-	private static string s_lightmap_id 		= "lightmap";
+	//private static string s_lightmap_id 		= "lightmap";
 	private static string s_weather_mask_id 	= "weather_mask";
 	private static string s_weather_mask_mat_id = "DepthMask";
 }

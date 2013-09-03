@@ -32,7 +32,7 @@ public class Serialiser
 	
 	public void Serialise()
 	{
-		UnityEngine.Object[] serialisableObjects = GameObject.FindObjectsOfType(typeof(SerialisableObject));
+		UnityEngine.Object[] serialisableObjects = Resources.FindObjectsOfTypeAll(typeof(SerialisableObject));
 		
 		if(OutputDebugInfo)
 		{
@@ -61,7 +61,7 @@ public class Serialiser
 	public void Deserialise()
 	{
 		Dictionary<string, SerialisableObject> objects 	= new Dictionary<string, SerialisableObject>();
-		SerialisableObject[] serialisableObjects 		= GameObject.FindObjectsOfTypeAll(typeof(SerialisableObject)) as SerialisableObject[];
+		SerialisableObject[] serialisableObjects 		= Resources.FindObjectsOfTypeAll(typeof(SerialisableObject)) as SerialisableObject[];
 		
 		// Create a dictionary of all the serialisable objects in the scene, to prevent iteration later.
 		foreach(var currentObject in serialisableObjects)

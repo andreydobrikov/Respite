@@ -52,13 +52,11 @@ public class OccludedMesh : MonoBehaviour
 	
 	void OnBecameVisible()
 	{
-		Debug.Log(name + " became visible");
 		enabled = true;	
 	}
 	
 	void OnBecameInvisible()
 	{
-		Debug.Log(name + " became invisible");
 		enabled = false;	
 	}
 	
@@ -288,16 +286,9 @@ public class OccludedMesh : MonoBehaviour
 					
 					direction.z = 0.0f;
 					
-					// raycast all the vertices and see if any are occluded
-					float magnitude = direction.magnitude;
-					
 					float val = direction.magnitude -  m_nudgeMagnitude / direction.magnitude;
 					
 					direction *= m_nudgeMagnitude;
-					
-					
-					
-						
 						
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, val, 1 <<  collisionLayer))
 					{

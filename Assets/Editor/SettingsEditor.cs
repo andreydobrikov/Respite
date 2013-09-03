@@ -25,15 +25,11 @@ public class SettingsEditor :  EditorWindow
     void OnGUI () 
 	{
 		
-		s_style = new GUIStyle((GUIStyle)("Button"));
-		
 		//Object test = AssetDatabase.LoadAssetAtPath("Assets/icons/trash.png", typeof(Texture2D));
 		//s_style.normal.background = test as Texture2D;
 		//s_style.normal.textColor = Color.red;
 		
 		m_toDelete.Clear();
-		
-        Settings settings = Settings.Instance;
 		
 		GUILayout.BeginVertical();
 		
@@ -82,8 +78,6 @@ public class SettingsEditor :  EditorWindow
 		
 		GUILayout.EndVertical();
     }
-	
-	static GUIStyle s_style = null;
 	
 	private List<Settings.Setting> m_toDelete = new List<Settings.Setting>();
 }

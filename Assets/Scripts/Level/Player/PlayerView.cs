@@ -26,12 +26,8 @@ public class PlayerView : MonoBehaviour
 		
 		inputDirection.Normalize();
 		
-		Vector3 origin 			= transform.position;
 		Vector3 playerDirection = transform.localRotation * Vector3.up;
 		float diff 				= Mathf.Acos(Vector3.Dot(playerDirection, inputDirection)) * Mathf.Rad2Deg;
-		
-		
-		//m_lastDirection = inputDirection;
 		
 		Vector3 cross 	= Vector3.Cross(inputDirection, playerDirection);
 		float diffSign 	= -Vector3.Dot(Vector3.forward, cross);
@@ -42,7 +38,7 @@ public class PlayerView : MonoBehaviour
 			
 			diff *= diffSign;
 			
-			diff = Mathf.Clamp(diff, -InspectionAngleMax, InspectionAngleMax);
+			diff = Mathf.Clamp(diff, -InspectionAngleMax, InspectionAngleMax); 
 		}
 		
 		

@@ -18,8 +18,6 @@ public class PlayerController : MonoBehaviour
 	void Start ()
 	{
 		m_anim = GetComponent<Animator>();
-		
-		
 	}
 
 	void Update ()
@@ -31,10 +29,7 @@ public class PlayerController : MonoBehaviour
 		float x = Input.GetAxis("Horizontal");
 		float y = Input.GetAxis("Vertical");
 		
-		Vector2 direction = rotation * Vector3.up;
-		
 		Vector2 vals = new Vector2(x, y);
-		
 		
 		float yRot = rotation.eulerAngles.y;
 		Quaternion newRot = Quaternion.Euler(0.0f, 0.0f, yRot);

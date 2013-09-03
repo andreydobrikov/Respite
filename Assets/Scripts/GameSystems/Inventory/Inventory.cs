@@ -54,7 +54,7 @@ public class Inventory
 		// Flush the current dictionary
 		Inventory.Contents.Clear();
 		
-		InventoryObject[] inventoryObjects = GameObject.FindObjectsOfTypeAll(typeof(InventoryObject)) as InventoryObject[];
+		InventoryObject[] inventoryObjects = Resources.FindObjectsOfTypeAll(typeof(InventoryObject)) as InventoryObject[];
 		
 		// Create a dictionary of inventory objects with their guids as a key.
 		// This should make a shift to O(m+n) instead of O(mn)

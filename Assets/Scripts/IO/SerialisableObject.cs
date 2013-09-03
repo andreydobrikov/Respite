@@ -22,12 +22,30 @@ public class SerialisableObject : MonoBehaviour
 	
 	public void Serialise(List<SavePair> pairs)
 	{
-		SendMessage("SaveSerialise", pairs, SendMessageOptions.DontRequireReceiver);
+		Component[] components = GetComponents(typeof(Component));
+		
+		foreach(var component in components)
+		{
+			ISerialisable serialisable = component as ISerialisable;
+			if(serialisable != null)
+			{
+				serialisable.SaveSerialise(pairs);
+			}
+		}
 	}
 	
 	public void Deserialise(List<SavePair> pairs)
 	{
-		SendMessage("SaveDeserialise", pairs, SendMessageOptions.DontRequireReceiver);
+		Component[] components = GetComponents(typeof(Component));
+		
+		foreach(var component in components)
+		{
+			ISerialisable serialisable = component as ISerialisable;
+			if(serialisable != null)
+			{
+				serialisable.SaveDeserialise(pairs);
+			}
+		}
 	}
 	
 	public void AssignNewID()
@@ -40,15 +58,18 @@ public class SerialisableObject : MonoBehaviour
 	static void RebuildIDs () 
 	{
 		bool rebuildIDs = EditorUtility.DisplayDialog("Rebuild all IDs?", "This will invalidate existing saves.", "yes", "no");
-		
-		SerialisableObject[] serialisableObjects = FindObjectsOfType (typeof(SerialisableObject)) as SerialisableObject[];
-		
-		foreach(var currentObject in serialisableObjects)
+
+		if(rebuildIDs)
 		{
-			currentObject.AssignNewID();
-		}
+			SerialisableObject[] serialisableObjects = FindObjectsOfType (typeof(SerialisableObject)) as SerialisableObject[];
 		
-		Debug.Log("New IDs Generated");
+			foreach(var currentObject in serialisableObjects)
+			{
+				currentObject.AssignNewID();
+			}
+			
+			Debug.Log("New IDs Generated");
+		}
 	}
 #endif
 }

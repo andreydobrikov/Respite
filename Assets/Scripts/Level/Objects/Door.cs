@@ -62,14 +62,14 @@ public class Door : InteractiveObject
 		source.Play();
 	}
 	
-	private void SaveSerialise(List<SavePair> pairs)
+	public override void SaveSerialise(List<SavePair> pairs)
 	{
 		pairs.Add(new SavePair("current_rotation", 	m_currentRotation.ToString()));
 		pairs.Add(new SavePair("lerp_direction", 	m_lerpDirection.ToString()));
 		pairs.Add(new SavePair("lerp_progress", 	m_lerpProgress.ToString()));
 	}
 	
-	private void SaveDeserialise(List<SavePair> pairs)
+	public override void SaveDeserialise(List<SavePair> pairs)
 	{
 		foreach(var pair in pairs)
 		{

@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-public abstract class InteractiveObject : MonoBehaviour 
+public abstract class InteractiveObject : MonoBehaviour, ISerialisable
 {
 	public List<Interaction> GetInteractions()
 	{
@@ -42,9 +42,10 @@ public abstract class InteractiveObject : MonoBehaviour
 			highlightObject.transform.localPosition = new Vector3(0.0f, 0.0f, -0.1f);
 			highlightObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 			
+			highlightObject.AddComponent<MeshFilter>();
+			highlightObject.AddComponent<GeometryFactory>();
+			
 			MeshRenderer renderer 		= highlightObject.AddComponent<MeshRenderer>();
-			MeshFilter filter 			= highlightObject.AddComponent<MeshFilter>();
-			GeometryFactory geoFactory  = highlightObject.AddComponent<GeometryFactory>();
 			Highlight highlight			= highlightObject.AddComponent<Highlight>();
 			
 			renderer.material = AssetHelper.Instance.GetAsset<Material>("materials/highlight.mat") as Material;
@@ -97,6 +98,31 @@ public abstract class InteractiveObject : MonoBehaviour
 	}
 	
 #endif
+	
+	public virtual void SaveSerialise(List<SavePair> pairs)
+	{
+		Debug.Log("Save Serialise");
+		
+		Vector3 position = transform.position;
+		
+		pairs.Add(new SavePair("position_x", position.x.ToString()));
+		pairs.Add(new SavePair("position_y", position.y.ToString()));
+		pairs.Add(new SavePair("position_z", position.z.ToString()));
+	}
+	
+	public virtual void SaveDeserialise(List<SavePair> pairs)
+	{
+		Vector3 position = Vector3.zero;
+		
+		foreach(var pair in pairs)
+		{
+			if(pair.id == "position_x") float.TryParse(pair.value, out position.x);		
+			if(pair.id == "position_y") float.TryParse(pair.value, out position.y);
+			if(pair.id == "position_z") float.TryParse(pair.value, out position.z);
+		}
+		
+		transform.position = position;
+	}
 	
 	protected List<Interaction> m_interactions = new List<Interaction>();
 	

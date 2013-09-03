@@ -19,11 +19,6 @@ public class Book : InteractiveObject
 		m_inventoryObject = GetComponent<InventoryObject>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	void TakeBookHandler(Interaction source)
 	{
 		Debug.Log("Book Taken");
