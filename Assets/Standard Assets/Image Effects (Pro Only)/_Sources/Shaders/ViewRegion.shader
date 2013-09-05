@@ -50,13 +50,14 @@ Shader "Hidden/ViewRegion"
 	{
 		half4 uv = half4(i.uv[1].x, i.uv[1].y, 5.0, 0.0);
 	
-		half4 frameBuffer 	= tex2Dbias(_MainTex, uv);
+		half4 frameBuffer 	= tex2D(_MainTex, i.uv[0]);// tex2Dbias(_MainTex, uv);
 		half4 mask			= 1.0f - tex2D(_Overlay, i.uv[0]);
 		
-		
+			
+		//frameBuffer = half4(1.0f, 0.0f, 0.0f, 1.0f);	
 		
 
-		return frameBuffer;// frameBuffer * mask;// * ((1.0f - outColour) * sum);//( * half4(0.6f, 0.6f, 0.6f, 0.4f));
+		return frameBuffer * (mask * ((1.0f - outColour) * sum);//( * half4(0.6f, 0.6f, 0.6f, 0.4f));
 	}	
 
 	ENDCG 

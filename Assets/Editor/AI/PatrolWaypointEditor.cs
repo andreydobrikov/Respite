@@ -20,7 +20,7 @@ public class PatrolWaypointEditor : Editor
 	public void OnSceneGUI()
 	{
 		PatrolWaypoint patrol = (PatrolWaypoint)target;
-		Vector3 offset = new Vector3(0.0f, 0.0f, -1.0f);
+		Vector3 offset = new Vector3(0.0f, 1.0f, 0.0f);
 		
 		Vector3 lastPoint = Vector3.zero;
 		
@@ -34,7 +34,7 @@ public class PatrolWaypointEditor : Editor
 		
 		foreach(var point in patrol.Waypoints)
 		{
-			float handleSize = HandleUtility.GetHandleSize((Vector3)point.position + offset) / 8.0f;
+			float handleSize = HandleUtility.GetHandleSize((Vector3)point.position + offset) / 4.0f;
 			
 			
 			
@@ -48,13 +48,14 @@ public class PatrolWaypointEditor : Editor
 				Handles.color = Color.yellow;	
 			}
 			
-			Vector2 newPos = Handles.Slider2D(handleID, point.position, Vector3.forward, Vector3.right, Vector3.up, handleSize, Handles.SphereCap, handleSnap);
+			Vector3 position = new Vector3(point.position.x, 0.0f, point.position.y);
+			Vector3 newPos = Handles.Slider2D(handleID, position, Vector3.up, Vector3.right, Vector3.forward, handleSize, Handles.SphereCap, handleSnap);
 			
 			Handles.color = Color.green;
 			
 			if(!patrol.Editing)
 			{
-				point.position = newPos;	
+				point.position = new Vector2(newPos.x, newPos.z);	
 			}
 			
 			if(GUIUtility.hotControl == handleID)
@@ -115,7 +116,7 @@ public class PatrolWaypointEditor : Editor
 				mousePos.y = Camera.current.pixelHeight - mousePos.y;
 				Ray ray = Camera.current.ScreenPointToRay(mousePos);
 				
-				Plane groundPlane = new Plane(Vector3.back, Vector3.zero);
+				Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 				
 				float rayDistance;
 				
@@ -123,7 +124,7 @@ public class PatrolWaypointEditor : Editor
 				
 				Vector3 pos = ray.GetPoint(rayDistance);
 				
-				pos.z = -2.0f;
+				pos.y = -2.0f;
 				patrol.LastDragPos = pos;
 				
 				Vector2 direction = patrol.LastDragPos - patrol.DragStartPoint.position;

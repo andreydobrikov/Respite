@@ -19,12 +19,23 @@ public class Building : MonoBehaviour
 	public string BuildingName 		= string.Empty;
 	public List<Room> Rooms			= new List<Room>();
 	public bool ShowRoomsFoldout	= false;
+	public int floorHeight			= 0;
 	
 	public Building()
 	{
 		Rooms.Add(new Room());	
 	}
-
+	
+#if UNITY_EDITOR
+		
+	public static string s_walls_id 			= "walls";
+	public static string s_rooms_id 			= "rooms";
+	public static string s_floor_id 			= "floor";
+	public static string s_ambient_id 			= "ambient";
+	public static string s_weather_mask_id 		= "weather_mask";
+	public static string s_weather_mask_mat_id 	= "DepthMask";
+	
+#endif
 }
 
 [Serializable]

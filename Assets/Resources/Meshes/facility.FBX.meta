@@ -1,0 +1,120 @@
+fileFormatVersion: 2
+guid: 4af9b482025cb974f89d010045caf8b4
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: facility_bedroom_floor
+    100004: facility_walls
+    100006: house0_walls
+    100008: facility_bedroom_ambient
+    100010: facility_weather_mask
+    100012: Plane001
+    100014: facility_bathroom_floor
+    100016: facility_hall_floor
+    100018: facility_rec_floor
+    100020: facility_bathroom_ambient
+    100022: facility_hall_ambient
+    100024: facility_rec_ambient
+    400000: //RootNode
+    400002: facility_bedroom_floor
+    400004: facility_walls
+    400006: house0_walls
+    400008: facility_bedroom_ambient
+    400010: facility_weather_mask
+    400012: Plane001
+    400014: facility_bathroom_floor
+    400016: facility_hall_floor
+    400018: facility_rec_floor
+    400020: facility_bathroom_ambient
+    400022: facility_hall_ambient
+    400024: facility_rec_ambient
+    2300000: facility_bedroom_floor
+    2300002: facility_walls
+    2300004: house0_walls
+    2300006: facility_bedroom_ambient
+    2300008: facility_weather_mask
+    2300010: Plane001
+    2300012: facility_bathroom_floor
+    2300014: facility_hall_floor
+    2300016: facility_rec_floor
+    2300018: facility_bathroom_ambient
+    2300020: facility_hall_ambient
+    2300022: facility_rec_ambient
+    3300000: facility_bedroom_floor
+    3300002: facility_walls
+    3300004: house0_walls
+    3300006: facility_bedroom_ambient
+    3300008: facility_weather_mask
+    3300010: Plane001
+    3300012: facility_bathroom_floor
+    3300014: facility_hall_floor
+    3300016: facility_rec_floor
+    3300018: facility_bathroom_ambient
+    3300020: facility_hall_ambient
+    3300022: facility_rec_ambient
+    4300000: house0_walls
+    4300002: facility_bedroom_floor
+    4300004: facility_walls
+    4300006: facility_bedroom_ambient
+    4300008: facility_weather_mask
+    4300010: Plane001
+    4300012: facility_rec_floor
+    4300014: facility_bathroom_floor
+    4300016: facility_hall_floor
+    4300018: facility_rec_ambient
+    4300020: facility_bathroom_ambient
+    4300022: facility_hall_ambient
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    handles: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  additionalBone: 1
+  animationType: 2
+  userData: 

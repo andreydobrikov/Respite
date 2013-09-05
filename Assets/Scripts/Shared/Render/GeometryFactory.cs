@@ -38,12 +38,12 @@ public class GeometryFactory : MonoBehaviour
 				{
 					case GeometryType.Plane: 		
 					{
-						mesh.sharedMesh = CreatePlane(transform.localScale.x * UVScale0, transform.localScale.y * UVScale0, transform.localScale.x * UVScale1, transform.localScale.y * UVScale1); break;
+						mesh.sharedMesh = CreatePlane(transform.localScale.x * UVScale0, transform.localScale.z * UVScale0, transform.localScale.x * UVScale1, transform.localScale.z * UVScale1); break;
 					}
 						
 					case GeometryType.ScreenPlane:
 					{
-						mesh.sharedMesh = CreateScreenPlane(ScreenPlaneTargetCamera, transform.localScale.x * UVScale0, transform.localScale.y * UVScale0, transform.localScale.x * UVScale1, transform.localScale.y * UVScale1); break;
+						mesh.sharedMesh = CreateScreenPlane(ScreenPlaneTargetCamera, transform.localScale.x * UVScale0, transform.localScale.z * UVScale0, transform.localScale.x * UVScale1, transform.localScale.z * UVScale1); break;
 					}
 				}
 			}
@@ -74,14 +74,20 @@ public class GeometryFactory : MonoBehaviour
 		newMesh.name = "GeometryFactory:Plane";
 		
 		Vector3[] 	vertices 	= new Vector3[4];
+		Vector3[] 	normals 	= new Vector3[4];
 		Vector2[] 	uvs0 		= new Vector2[4];
 		Vector2[] 	uvs1 		= new Vector2[4];
 		int[] 		triangles 	= new int[6];
 		
-		vertices[0] = new Vector3(-0.5f, -0.5f, 0.0f);
-		vertices[1] = new Vector3(0.5f, -0.5f, 0.0f);
-		vertices[2] = new Vector3(-0.5f, 0.5f, 0.0f);
-		vertices[3] = new Vector3(0.5f, 0.5f, 0.0f);
+		vertices[0] = new Vector3(-0.5f, 0.0f, -0.5f);
+		vertices[1] = new Vector3(0.5f, 0.0f, -0.5f);
+		vertices[2] = new Vector3(-0.5f, 0.0f, 0.5f);
+		vertices[3] = new Vector3(0.5f, 0.0f, 0.5f);
+		
+		normals[0] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[1] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[2] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[3] = new Vector3(0.0f, 1.0f, 0.0f);
 		
 		uvs0[0] = new Vector2(0.0f, 0.0f);
 		uvs0[1] = new Vector2(UVXScale0, 0.0f);
@@ -101,6 +107,7 @@ public class GeometryFactory : MonoBehaviour
 		triangles[5] = 3;
 		
 		newMesh.vertices = vertices;
+		newMesh.normals = normals;
 		newMesh.uv = uvs0;
 		newMesh.uv1 = uvs1;
 		newMesh.triangles = triangles;
@@ -124,14 +131,20 @@ public class GeometryFactory : MonoBehaviour
 		float height = (targetCamera.orthographicSize) / 2.0f;
 		
 		Vector3[] 	vertices 	= new Vector3[4];
+		Vector3[] 	normals 	= new Vector3[4];
 		Vector2[] 	uvs0 		= new Vector2[4];
 		Vector2[] 	uvs1 		= new Vector2[4];
 		int[] 		triangles 	= new int[6];
 		
-		vertices[0] = new Vector3(-width, -height, 0.0f);
-		vertices[1] = new Vector3(width, -height, 0.0f);
-		vertices[2] = new Vector3(-width, height, 0.0f);
-		vertices[3] = new Vector3(width, height, 0.0f);
+		vertices[0] = new Vector3(-width, 0.0f, -height);
+		vertices[1] = new Vector3(width, 0.0f, -height);
+		vertices[2] = new Vector3(-width, 0.0f, height);
+		vertices[3] = new Vector3(width, 0.0f, height);
+		
+		normals[0] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[1] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[2] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[3] = new Vector3(0.0f, 1.0f, 0.0f);
 		
 		uvs0[0] = new Vector2(0.0f, 0.0f);
 		uvs0[1] = new Vector2(UVXScale0, 0.0f);
@@ -151,6 +164,7 @@ public class GeometryFactory : MonoBehaviour
 		triangles[5] = 3;
 		
 		newMesh.vertices = vertices;
+		newMesh.normals = normals;
 		newMesh.uv = uvs0;
 		newMesh.uv1 = uvs1;
 		newMesh.triangles = triangles;

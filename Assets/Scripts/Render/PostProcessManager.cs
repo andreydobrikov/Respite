@@ -41,8 +41,8 @@ public class PostProcessManager : MonoBehaviour
 			lightmapCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 			targetCamera.GetComponent<LightMapEffect>().lightMapTexture 		= lightmapCamera.GetComponent<Camera>().targetTexture;
 		
-			int viewWidth 	= pixelWidth;
-			int viewHeight 	= pixelHeight;
+			//int viewWidth 	= pixelWidth;
+			//int viewHeight 	= pixelHeight;
 			
 			if(ViewRegionEnabled)
 			{
@@ -50,7 +50,7 @@ public class PostProcessManager : MonoBehaviour
 				{
 					
 					viewCamera.GetComponent<Camera>().aspect 						= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
-					viewCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(viewWidth, viewHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
+					viewCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth / 4, pixelHeight / 4, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 					viewCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 					
 					postCamera.GetComponent<ViewRegionEffect>().viewRegionTexture 	= viewCamera.GetComponent<Camera>().targetTexture;

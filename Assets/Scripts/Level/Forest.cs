@@ -43,8 +43,8 @@ public class Forest : MonoBehaviour
 				GameObject newTree = GameObject.Instantiate(m_treePrefab) as GameObject;
 				newTree.transform.parent = transform;
 	
-				float z = newTree.transform.position.z;
-				newTree.transform.position = new Vector3(-1000.0f, -1000.0f, z);
+				float y = newTree.transform.position.y;
+				newTree.transform.position = new Vector3(-1000.0f, y, -1000.0f);
 				
 				m_idleInstances.Add(newTree);
 			}

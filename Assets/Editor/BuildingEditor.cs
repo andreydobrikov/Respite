@@ -32,6 +32,8 @@ public class BuildingEditor :  Editor
 		
 		GUILayout.Box("", GUILayout.Height(1), GUILayout.Width(Screen.width - 15));
 		
+		List<Room> toDelete = new List<Room>();
+		
 		for(int roomID = 0; roomID < building.Rooms.Count; ++roomID)
 		{
 			Room current = building.Rooms[roomID];
@@ -43,7 +45,7 @@ public class BuildingEditor :  Editor
 			
 			if(GUILayout.Button("Delete"))
 			{
-				// TODO: er, delete.	
+				toDelete.Add(current);	
 			}
 			
 			EditorGUILayout.EndHorizontal();
@@ -58,11 +60,22 @@ public class BuildingEditor :  Editor
 				current.TODMaxColor = EditorGUILayout.ColorField("TOD Max Colour", current.TODMaxColor);
 				current.TODMinColor = EditorGUILayout.ColorField("TOD Min Colour", current.TODMinColor);
 				
+				if(GUILayout.Button("Generate Lightmap"))
+				{
+					GenerateLightmap(current);
+				}
+				
 				EditorGUI.indentLevel = 0;
 				
 				EditorGUILayout.EndVertical();
 			}
 		}
+		
+		foreach(var room in toDelete)
+		{
+			building.Rooms.Remove(room);	
+		}
+		
 		
 		if(GUILayout.Button("Add Room"))
 		{
@@ -77,15 +90,44 @@ public class BuildingEditor :  Editor
 			RebuildRooms();
 			BuildWeatherMask();
 		}
+	
+		bool cancel = false;
+		if(GUILayout.Button("Rebuild All Lightmaps"))
+		{
+			int currentRoom = 0;
+			foreach(var room in building.Rooms)
+			{
+				cancel = EditorUtility.DisplayCancelableProgressBar("Generating Lightmaps", room.Name,  (float)currentRoom /  (float)building.Rooms.Count);	
+				if(cancel)
+				{
+					break;	
+				}
+				GenerateLightmap(room);
+				currentRoom++;
+			}
+		}
 		
+		building.floorHeight = EditorGUILayout.IntField("Floor", building.floorHeight);
+		
+		if(GUILayout.Button("Set Floor"))
+		{
+			Vector3 pos = building.transform.position;
+			pos.y = building.floorHeight * 5.0f;
+			building.transform.position = pos;
+		}
+		
+		EditorUtility.ClearProgressBar();
 		EditorGUILayout.EndVertical();
 	}
 	
 	private void RebuildWalls()
 	{
 		Building building 					= (Building)target;
-		GameObject wallsObject 				= GameObjectHelper.FindChild(building.gameObject, s_walls_id, true);
-		wallsObject.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+		
+		string wallsID 						= building.BuildingName + "_" + Building.s_walls_id;
+		
+		GameObject wallsObject 				= GameObjectHelper.FindChild(building.gameObject, wallsID, true);
+		wallsObject.transform.localPosition = new Vector3(0.0f, 1.0f, 0.0f);
 		
 		MeshFilter filter 		= wallsObject.GetComponent<MeshFilter>();
 		MeshRenderer renderer 	= wallsObject.GetComponent<MeshRenderer>();
@@ -93,7 +135,7 @@ public class BuildingEditor :  Editor
 		if(filter == null) 		{ filter	= wallsObject.AddComponent<MeshFilter>(); }
 		if(renderer == null) 	{ renderer  = wallsObject.AddComponent<MeshRenderer>(); }
 		
-		string wallAssetName = building.BuildingName + "_" + s_walls_id;
+		string wallAssetName = building.BuildingName + "_" + Building.s_walls_id;
 		
 		UnityEngine.Object wallMesh 	= AssetHelper.Instance.FindAsset<Mesh>(wallAssetName);
 		UnityEngine.Object wallMaterial = AssetHelper.Instance.FindAsset<Material>(wallAssetName);
@@ -116,8 +158,8 @@ public class BuildingEditor :  Editor
 	private void RebuildRooms()
 	{
 		Building building 					= (Building)target;
-		GameObject roomsObject 				= GameObjectHelper.FindChild(building.gameObject, s_rooms_id, true);
-		roomsObject.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+		GameObject roomsObject 				= GameObjectHelper.FindChild(building.gameObject, Building.s_rooms_id, true);
+		roomsObject.transform.localPosition = new Vector3(0.0f, 1.0f, 0.0f);
 		
 		foreach(var room in building.Rooms)
 		{
@@ -127,20 +169,24 @@ public class BuildingEditor :  Editor
 	
 	private GameObject BuildRoomObject(Room room, GameObject parent)
 	{
-		GameObject roomObject 					= new GameObject(room.Name);
+		Building building 					= (Building)target;
+		
+		string roomID = building.BuildingName + "_" + room.Name + "_" + Building.s_floor_id;
+		
+		GameObject roomObject 					= new GameObject(roomID);
 		roomObject.transform.parent				= parent.transform;
 		roomObject.transform.localPosition  	= Vector3.zero;
 		roomObject.transform.localRotation		= Quaternion.identity;
 		
-		GameObject floorObject 					= new GameObject(s_floor_id);
+		GameObject floorObject 					= new GameObject(Building.s_floor_id);
 		floorObject.transform.parent 			= roomObject.transform;
-		floorObject.transform.localPosition		= new Vector3(0.0f, 0.0f, 0.9f);
+		floorObject.transform.localPosition		= new Vector3(0.0f, -0.9f, 0.0f);
 		floorObject.transform.localRotation		= Quaternion.identity;
 		
-		GameObject ambientObject				= new GameObject(s_ambient_id);
+		GameObject ambientObject				= new GameObject(Building.s_ambient_id);
 		ambientObject.layer						= LayerMask.NameToLayer("Lights");
 		ambientObject.transform.parent 			= roomObject.transform;
-		ambientObject.transform.localPosition	= new Vector3(0.0f, 0.0f, -1.0f);
+		ambientObject.transform.localPosition	= new Vector3(0.0f, 1.0f, 0.0f);
 		ambientObject.transform.localRotation		= Quaternion.identity;
 		
 		BuildFloor(room, floorObject);
@@ -161,7 +207,7 @@ public class BuildingEditor :  Editor
 		ambient.TODMinColor			= room.TODMinColor;
 		ambient.TODMaxColor			= room.TODMaxColor;
 		
-		string ambientMeshName 		= building.BuildingName + "_" + room.Name + "_" + s_ambient_id;
+		string ambientMeshName 		= building.BuildingName + "_" + room.Name + "_" + Building.s_ambient_id;
 		
 		UnityEngine.Object ambientMesh 		= AssetHelper.Instance.FindAsset<Mesh>(ambientMeshName);
 		UnityEngine.Object ambientMaterial 	= AssetHelper.Instance.GetAsset<Material>("Materials/Ambient.mat");
@@ -193,7 +239,7 @@ public class BuildingEditor :  Editor
 		}
 		else
 		{
-			Debug.Log("Material Missing: " + s_ambient_id);	
+			Debug.Log("Material Missing: " + Building.s_ambient_id);	
 		}
 	}
 	
@@ -204,7 +250,7 @@ public class BuildingEditor :  Editor
 		MeshRenderer renderer 	= floorObject.AddComponent<MeshRenderer>();
 		MeshFilter filter		= floorObject.AddComponent<MeshFilter>();
 		
-		string floorMeshName 	= building.BuildingName + "_" + room.Name + "_" + s_floor_id;
+		string floorMeshName 	= building.BuildingName + "_" + room.Name + "_" + Building.s_floor_id;
 		
 		UnityEngine.Object floorMesh 		= AssetHelper.Instance.FindAsset<Mesh>(floorMeshName);
 		UnityEngine.Object floorMaterial 	= AssetHelper.Instance.FindAsset<Material>(floorMeshName);
@@ -231,8 +277,8 @@ public class BuildingEditor :  Editor
 	private void BuildWeatherMask()
 	{
 		Building building 						= (Building)target;
-		GameObject weatherObject				= GameObjectHelper.FindChild(building.gameObject, s_weather_mask_id, true);
-		weatherObject.transform.localPosition 	= new Vector3(0.0f, 0.0f, -3.1f);	
+		GameObject weatherObject				= GameObjectHelper.FindChild(building.gameObject, Building.s_weather_mask_id, true);
+		weatherObject.transform.localPosition 	= new Vector3(0.0f, 3.1f, 0.0f);	
 		weatherObject.layer						= LayerMask.NameToLayer("Weather");
 		
 		MeshFilter filter 		= weatherObject.GetComponent<MeshFilter>();
@@ -243,10 +289,10 @@ public class BuildingEditor :  Editor
 		if(renderer == null) 	{ renderer		= weatherObject.AddComponent<MeshRenderer>(); }
 		//if(depthMasked == null)	{ depthMasked	= weatherObject.AddComponent<DepthMasked>(); }
 		
-		string weatherMaskMeshName = building.BuildingName + "_" + s_weather_mask_id;
+		string weatherMaskMeshName = building.BuildingName + "_" + Building.s_weather_mask_id;
 		
 		UnityEngine.Object maskMesh		= AssetHelper.Instance.FindAsset<Mesh>(weatherMaskMeshName);
-		UnityEngine.Object maskMaterial	= AssetHelper.Instance.FindAsset<Material>(s_weather_mask_mat_id);
+		UnityEngine.Object maskMaterial	= AssetHelper.Instance.FindAsset<Material>(Building.s_weather_mask_mat_id);
 		
 		if(maskMesh != null)
 		{
@@ -263,15 +309,19 @@ public class BuildingEditor :  Editor
 		}
 		else
 		{
-			Debug.Log("Material Missing: " + s_weather_mask_mat_id);	
+			Debug.Log("Material Missing: " + Building.s_weather_mask_mat_id);	
 		}
 	}
 	
-	private static string s_walls_id 			= "walls";
-	private static string s_rooms_id 			= "rooms";
-	private static string s_floor_id 			= "floor";
-	private static string s_ambient_id 			= "ambient";
-	//private static string s_lightmap_id 		= "lightmap";
-	private static string s_weather_mask_id 	= "weather_mask";
-	private static string s_weather_mask_mat_id = "DepthMask";
+	// TODO: Move this elsewhere
+	private void GenerateLightmap(Room room)
+	{
+		Building building = (Building)target;
+		
+		string outputPath = Application.dataPath + "/Resources/Textures/Structures/" + building.BuildingName + "/" + building.BuildingName + "_" + room.Name + "_" + Building.s_ambient_id + ".png";
+		Debug.Log("Saving to outputPath: " + outputPath);
+		
+		LightMapGenerator.GenerateLightmap(building, room, outputPath, 2, true);
+	}
+
 }

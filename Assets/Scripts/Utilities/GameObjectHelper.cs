@@ -79,4 +79,9 @@ public class GameObjectHelper
 		
 		return null;
 	}
+	
+	public static void LogQuaternionEuler(Quaternion quaternion)
+	{
+		Debug.Log("Quaternion: " + quaternion.eulerAngles.x + ", " + quaternion.eulerAngles.y + ", " + quaternion.eulerAngles.z);
+	}
 }

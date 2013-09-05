@@ -64,21 +64,25 @@ public class PatrolWaypoint : MonoBehaviour
 		m_origin = Waypoints[0];
 		m_target = Waypoints[1];
 		
-		Vector2 direction = m_target.position - m_origin.position;
+		m_agent = GetComponent<NavMeshAgent>();
 		
-		m_lerpSpeed = direction.magnitude;
-		m_lerpSpeed = 0.01f / m_lerpSpeed;
-		
-		m_lerpRotationProgress = 1.0f;
-		
-		float facingAngle = -Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-		
-		m_originAngle = facingAngle;
-		m_targetAngle = facingAngle;
+		m_agent.SetDestination(new Vector3(m_target.position.x, transform.position.y, m_target.position.y));
 	}
 
 	void Update ()
 	{
+		if(m_agent.remainingDistance == 0.0f)
+		{
+			m_targetIndex++;
+			m_targetIndex = m_targetIndex % Waypoints.Count;
+			
+			m_origin = m_target;
+			
+			m_target = Waypoints[m_targetIndex];
+			m_agent.SetDestination(new Vector3(m_target.position.x, transform.position.y, m_target.position.y));
+		}
+		
+		/*
 		switch(m_state)
 		{
 			case AIState.Walking:
@@ -133,19 +137,9 @@ public class PatrolWaypoint : MonoBehaviour
 				}
 				break;
 			}
-			
-			case AIState.Holding:
-			{
-				m_holdProgress += GameTime.DeltaTime;
-			
-				if(m_holdProgress >= m_holdTime)
-				{
-					m_state = AIState.Walking;	
-				}
-				
-				break;
-			}
+
 		}
+		*/
 	}
 	
 	private static int NodeComparison(WaypointNode n0, WaypointNode n1)
@@ -180,6 +174,8 @@ public class PatrolWaypoint : MonoBehaviour
 	
 	private float m_holdProgress = 0.0f;
 	private float m_holdTime = 3.0f; // TODO: Parameter
+	
+	private NavMeshAgent m_agent = null;
 	
 #if UNITY_EDITOR
 	

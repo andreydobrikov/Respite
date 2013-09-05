@@ -44,12 +44,13 @@ public class Torch : MonoBehaviour, ISerialisable
 		
 			if(test != null)
 			{
-				float angle = Mathf.Atan2(test.Direction.x, test.Direction.y);
+				float angle = Mathf.Atan2(test.Direction.x, test.Direction.z);
 				r = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0.0f, 0.0f, -angle * Mathf.Rad2Deg), Vector3.one);
 			}
 			else
 			{
-				r = Matrix4x4.TRS(Vector3.zero, transform.rotation, Vector3.one);	
+				Quaternion current = Quaternion.Euler(0.0f, 0.0f, -transform.rotation.eulerAngles.y);
+				r = Matrix4x4.TRS(Vector3.zero, current, Vector3.one);	
 			}
 			
 	        renderer.material.SetMatrix("_Rotation", r);

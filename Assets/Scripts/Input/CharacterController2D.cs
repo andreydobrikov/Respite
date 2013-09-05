@@ -35,7 +35,7 @@ public class CharacterController2D : MonoBehaviour
 		
 		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.World)
 		{
-			Vector2 targetDirection = (Vector3.up * (Input.GetAxis("Vertical"))) + (Vector3.right * (Input.GetAxis("Horizontal")));
+			Vector3 targetDirection = (Vector3.forward * (Input.GetAxis("Vertical"))) + (Vector3.right * (Input.GetAxis("Horizontal")));
 			float sprintMultiplier = Input.GetAxis("sprint_analogue");
 			
 			float currentMoveSpeed = MoveSpeed + (Mathf.Sin(sprintMultiplier * Mathf.PI / 2.0f) * SprintIncrease);
@@ -44,12 +44,12 @@ public class CharacterController2D : MonoBehaviour
 			{
 				targetDirection.Normalize();
 				
-				Vector3 currentDirection = m_controller.rotation * Vector3.up;
+				Vector3 currentDirection = m_controller.rotation * Vector3.forward;
 				
-				float targetRotation = -Mathf.Atan2(targetDirection.x, targetDirection.y) * (180.0f / Mathf.PI);
-				Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, targetRotation);
+				float targetRotation = Mathf.Atan2(targetDirection.x, targetDirection.z) * Mathf.Rad2Deg;
+				Quaternion newRotation = Quaternion.Euler(0.0f, targetRotation, 0.0f);
 				
-				targetDirection = newRotation * Vector3.up;
+				targetDirection = newRotation * Vector3.forward;
 				
 				float diffAngle = Quaternion.Angle(newRotation, transform.localRotation);
 					
@@ -57,13 +57,13 @@ public class CharacterController2D : MonoBehaviour
 				
 				if(RenderDebugRays)
 				{
-					Debug.DrawLine(transform.position + new Vector3(0.0f, 0.0f, -1.0f), transform.position + ((Vector3)(currentDirection * 3.0f) + new Vector3(0.0f, 0.0f, -1.0f)), new Color(0.5f, 0.0f, 0.0f, 1.0f));
-					Debug.DrawLine(transform.position + new Vector3(0.0f, 0.0f, -1.0f), transform.position + ((Vector3)(targetDirection * 3.0f) + new Vector3(0.0f, 0.0f, -1.0f)), Color.blue);		
+					Debug.DrawLine(transform.position + new Vector3(0.0f, -1.0f, 0.0f), transform.position + ((Vector3)(currentDirection * 3.0f) + new Vector3(0.0f, -1.0f, 0.0f)), new Color(0.5f, 0.0f, 0.0f, 1.0f));
+					Debug.DrawLine(transform.position + new Vector3(0.0f, -1.0f, 0.0f), transform.position + ((Vector3)(targetDirection * 3.0f) + new Vector3(0.0f, -1.0f, 0.0f)), Color.blue);		
 				}
 				
 				if(diffAngle < MoveAngle)
 				{
-					m_controller.AddForce( (Vector3.up * (Input.GetAxis("Vertical") * currentMoveSpeed)));
+					m_controller.AddForce( (Vector3.forward * (Input.GetAxis("Vertical") * currentMoveSpeed)));
 					m_controller.AddForce( (Vector3.right * (Input.GetAxis("Horizontal") * currentMoveSpeed)));
 				}
 			}

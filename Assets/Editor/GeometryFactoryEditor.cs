@@ -40,9 +40,9 @@ public class GeometryFactoryEditor : Editor
 				if(myTarget.ScaleUVs)
 				{
 					mesh.sharedMesh = CreatePlane(	myTarget.transform.lossyScale.x * myTarget.UVScale0, 
-													myTarget.transform.lossyScale.y * myTarget.UVScale0,
+													myTarget.transform.lossyScale.z * myTarget.UVScale0,
 													myTarget.transform.lossyScale.x * myTarget.UVScale1,
-													myTarget.transform.lossyScale.y * myTarget.UVScale1);
+													myTarget.transform.lossyScale.z * myTarget.UVScale1);
 				}
 				else
 				{
@@ -67,15 +67,15 @@ public class GeometryFactoryEditor : Editor
 		Vector2[] 	uvs1 		= new Vector2[4];
 		int[] 		triangles 	= new int[6];
 		
-		vertices[0] = new Vector3(-0.5f, -0.5f, 0.0f);
-		vertices[1] = new Vector3(0.5f, -0.5f, 0.0f);
-		vertices[2] = new Vector3(-0.5f, 0.5f, 0.0f);
-		vertices[3] = new Vector3(0.5f, 0.5f, 0.0f);
+		vertices[0] = new Vector3(-0.5f, 0.0f, -0.5f);
+		vertices[1] = new Vector3(0.5f, 0.0f, -0.5f);
+		vertices[2] = new Vector3(-0.5f, 0.0f, 0.5f);
+		vertices[3] = new Vector3(0.5f, 0.0f, 0.5f);
 		
-		normals[0] = new Vector3(0.0f, 0.0f, -1.0f);
-		normals[1] = new Vector3(0.0f, 0.0f, -1.0f);
-		normals[2] = new Vector3(0.0f, 0.0f, -1.0f);
-		normals[3] = new Vector3(0.0f, 0.0f, -1.0f);
+		normals[0] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[1] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[2] = new Vector3(0.0f, 1.0f, 0.0f);
+		normals[3] = new Vector3(0.0f, 1.0f, 0.0f);
 		
 		uvs0[0] = new Vector2(0.0f, 0.0f);
 		uvs0[1] = new Vector2(UV0XScale, 0.0f);

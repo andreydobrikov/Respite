@@ -25,6 +25,6 @@ public class FollowCameraXY : MonoBehaviour
 	
 	void LateUpdate () 
 	{
-		transform.position = new Vector3(m_camera.transform.position.x, m_camera.transform.position.y, transform.position.z);
+		transform.position = new Vector3(m_camera.transform.position.x, transform.position.y, m_camera.transform.position.z);
 	}
 }
