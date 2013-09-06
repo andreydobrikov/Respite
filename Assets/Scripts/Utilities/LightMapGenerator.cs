@@ -10,7 +10,7 @@
 //
 ///////////////////////////////////////////////////////////
 
-
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
@@ -58,9 +58,17 @@ public class LightMapGenerator
 		MeshFilter roomFilter	= floorObject.GetComponent<MeshFilter>();
 		MeshFilter wallsFilter	= wallsObject.GetComponent<MeshFilter>();
 		
+		if(ambientFilter == null) { Debug.LogWarning("Ambient Filter missing for room: " + room.Name); return; } 
+		if(roomFilter == null) { Debug.LogWarning("Room Filter missing for room: " + room.Name); return; }
+		if(wallsFilter == null) { Debug.LogWarning("Walls Filter missing for room: " + room.Name); return; }
+		
 		Mesh ambientMesh = ambientFilter.sharedMesh;
 		Mesh roomMesh 	= roomFilter.sharedMesh;
 		Mesh wallsMesh 	= wallsFilter.sharedMesh;
+		
+		if(ambientMesh == null) { Debug.LogWarning("Ambient Mesh missing for room: " + room.Name); return; } 
+		if(roomMesh == null) { Debug.LogWarning("Room Mesh missing for room: " + room.Name); return; }
+		if(wallsMesh == null) { Debug.LogWarning("Walls Mesh missing for room: " + room.Name); return; }
 		
 		m_intersections.Clear();
 		
@@ -154,11 +162,9 @@ public class LightMapGenerator
 		{
 			for(int y = 0; y < mipHeight; ++y)
 			{
-				testTexture.SetPixel(x, y,  new Color(1.0f, 1.0f, 1.0f, 0.0f));
+				testTexture.SetPixel(x, y,  new Color(1.0f, 1.0f, 1.0f, 1.0f));
 			}	
 		}
-		
-		
 		
 		foreach(var intersection in m_intersections)
 		{
@@ -201,8 +207,18 @@ public class LightMapGenerator
 		
 		testTexture.EncodeToPNG();
 		
+		string directory = System.IO.Path.GetDirectoryName(textureOutputPath);
+		
+		if(!Directory.Exists(directory))
+		{
+			Directory.CreateDirectory(directory);	
+		}
+		
 		System.IO.File.WriteAllBytes(textureOutputPath, testTexture.EncodeToPNG());
 		
+		string relative = textureOutputPath.Remove(textureOutputPath.IndexOf(Application.dataPath), Application.dataPath.Length);
+		
+		AssetDatabase.ImportAsset(relative, ImportAssetOptions.ForceSynchronousImport);
 	}
 	
 	private struct IntersectionLine

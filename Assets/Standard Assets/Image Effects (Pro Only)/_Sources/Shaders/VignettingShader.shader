@@ -49,7 +49,7 @@ Shader "Hidden/Vignetting" {
 		half4 colorBlur = tex2D (_VignetteTex, i.uv2);
 		color = lerp (color, colorBlur, saturate (_Blur * coordDot));
 		
-		return color;// mask;
+		return color * mask;
 	}
 
 	ENDCG 

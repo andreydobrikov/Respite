@@ -47,5 +47,7 @@ public class OccludedMeshEditor : Editor
 		view.m_sphereExpansion = GUILayout.HorizontalSlider(view.m_sphereExpansion, 1.0f, 2.5f);
 		GUILayout.EndHorizontal();
 		
+		view.CalculativeOffset = EditorGUILayout.FloatField("Calculative Offset", view.CalculativeOffset);
+		
 	}
 }

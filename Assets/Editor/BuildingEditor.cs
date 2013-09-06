@@ -129,6 +129,8 @@ public class BuildingEditor :  Editor
 		GameObject wallsObject 				= GameObjectHelper.FindChild(building.gameObject, wallsID, true);
 		wallsObject.transform.localPosition = new Vector3(0.0f, 1.0f, 0.0f);
 		
+		GameObjectUtility.SetStaticEditorFlags(wallsObject, StaticEditorFlags.NavigationStatic);
+		
 		MeshFilter filter 		= wallsObject.GetComponent<MeshFilter>();
 		MeshRenderer renderer 	= wallsObject.GetComponent<MeshRenderer>();
 		
@@ -245,6 +247,8 @@ public class BuildingEditor :  Editor
 	
 	private void BuildFloor(Room room, GameObject floorObject)
 	{
+		GameObjectUtility.SetStaticEditorFlags(floorObject, StaticEditorFlags.NavigationStatic);
+		
 		Building building 		= (Building)target;
 		
 		MeshRenderer renderer 	= floorObject.AddComponent<MeshRenderer>();

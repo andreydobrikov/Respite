@@ -29,6 +29,7 @@ public class OccludedMesh : MonoBehaviour
 	public bool ShowFailedRays		= false;
 	public bool DisplayStats		= false;
 	
+	public float CalculativeOffset	= 0.0f; // Oh dear
 	public float m_sphereExpansion	= 1.5f;
 	public float m_nudgeMagnitude 	= 0.02f; 
 	public float m_centreNudge 		= 0.005f;	// This determines how far vertices are extruded from their mesh centroid when casting rays. Needed to prevent false collisions.
@@ -66,6 +67,12 @@ public class OccludedMesh : MonoBehaviour
 		{
 			if(m_colliderVertices.ContainsKey(other))
 			{
+				return;	
+			}
+			
+			if(Mathf.Abs(other.bounds.center.y - (transform.position.y + CalculativeOffset)) > 1.0f)
+			{
+				Debug.Log("Object out of range: " + other.gameObject.name);
 				return;	
 			}
 			
@@ -213,20 +220,25 @@ public class OccludedMesh : MonoBehaviour
 	private List<OccluderVector> GetOccluders()
 	{
 		Vector3 objectPosition = transform.position;
-		objectPosition.y = 0.0f;
+		objectPosition.y += CalculativeOffset;
 		
 		RaycastHit hitInfo;
 		
-		List<Vector3> validVerts = new List<Vector3>();
-		List<Vector3> extentsPairs = GetExtents();
-		List<OccluderVector> occluders = new List<OccluderVector>();
+		// TODO: Don't instantiate these every frame
+		List<Vector3> validVerts 		= new List<Vector3>();
+		List<Vector3> extentsPairs 		= GetExtents();
+		List<OccluderVector> occluders 	= new List<OccluderVector>();
 		
 		// Loop through each collider and add its vertices to the list
 		foreach(var colliderPair in m_colliderVertices)
 		{
+			
+			Debug.DrawLine(colliderPair.Key.bounds.min, colliderPair.Key.bounds.max, Color.cyan);
+			// Process SphereColliders
 			if(colliderPair.Key is SphereCollider)
 			{
 				SphereCollider collider = colliderPair.Key as SphereCollider;
+				
 				Vector3 diff = colliderPair.Key.transform.position - objectPosition;
 				
 				Vector3 normal = Vector3.Cross(diff, Vector3.up);
@@ -240,7 +252,6 @@ public class OccludedMesh : MonoBehaviour
 				colliderPair.Value.vertices[0] = p0;
 				colliderPair.Value.vertices[1] = p1;
 				
-				
 				foreach(var vert in colliderPair.Value.vertices)
 				{
 					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
@@ -248,48 +259,51 @@ public class OccludedMesh : MonoBehaviour
 					
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, direction.magnitude, 1 <<  collisionLayer))
 					{
-						if(ShowExtrusionRays)
-						Debug.DrawLine(objectPosition, hitInfo.point, Color.green);
+						if(ShowExtrusionRays) { Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
+						
 						validVerts.Add(hitInfo.point);
 					}
 					else
 					{
-						if(ShowExtrusionRays)
-						Debug.DrawLine(objectPosition, worldPos, Color.red);
+						if(ShowExtrusionRays) { Debug.DrawLine(objectPosition, worldPos, Color.red); }
+						
 						validVerts.Add(worldPos);	
 					}
-						
 				}
+				
 				
 				foreach(var vert in colliderPair.Value.vertices)
 				{
+					// Find the transformed position of the vertex scaled by the mysterious expansion factor that
 					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert * m_sphereExpansion);
+					
+					
 					Vector3 direction = worldPos - objectPosition;
+					
+				
 					
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.radius, 1 <<  collisionLayer))
 					{
-						if(ShowExtrusionRays)
-						Debug.DrawLine(objectPosition, hitInfo.point, Color.green);
+						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
+						
 						validVerts.Add(hitInfo.point);
 					}
 					else
 					{
-						if(ShowExtrusionRays)
-						Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * m_viewCollider.radius), Color.red);
+						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * m_viewCollider.radius), Color.red); }
+						
 						validVerts.Add(objectPosition + (direction.normalized * m_viewCollider.radius));	
 					}
-						
 				}
-				
 			}
-			else
+			else // Process BoxColliders
 			{
 				foreach(Vector3 vert in colliderPair.Value.vertices)
 				{
 					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
+					worldPos.y = objectPosition.y;
 					Vector3 direction = worldPos - objectPosition;
 					
-					direction.y = 0.0f;
 					
 					float val = direction.magnitude -  m_nudgeMagnitude / direction.magnitude;
 					
@@ -297,8 +311,7 @@ public class OccludedMesh : MonoBehaviour
 						
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, val, 1 <<  collisionLayer))
 					{
-						if(ShowFailedRays)
-						Debug.DrawLine(objectPosition, hitInfo.point, Color.green);
+						if(ShowFailedRays) { Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
 						
 						// Hit something. add it as a vert.
 						validVerts.Add(hitInfo.point);
@@ -306,9 +319,7 @@ public class OccludedMesh : MonoBehaviour
 					else
 					{
 						Vector3 newDirection = (worldPos - objectPosition);
-						newDirection.y = 0.0f;
 						direction = newDirection * (1.0f + m_nudgeMagnitude);	
-						direction.y = 0.0f;
 										
 							
 						if(colliderPair.Value.collider != null)
@@ -316,18 +327,20 @@ public class OccludedMesh : MonoBehaviour
 							// If there is going to be an extension ray, nudge the original towards the center of its collider to prevent it
 							// being co-linear and confusing the later sort.
 							Vector3 offsetDirection = colliderPair.Value.collider.bounds.center - worldPos;
+							
 							float recipDistance = m_centreNudge / offsetDirection.magnitude;
 							
 							validVerts.Add(worldPos + (offsetDirection * recipDistance));	
 							
 							Vector3 vertexRayDirection = (worldPos - (offsetDirection * recipDistance)) - objectPosition;
-							vertexRayDirection.y = 0.0f;
 							
 							if(ShowCandidateRays)
 							{
 								Debug.DrawLine(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), objectPosition + vertexRayDirection + new Vector3(0.0f, -1.2f, 0.0f), Color.yellow);
 								Debug.DrawRay(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), (vertexRayDirection.normalized * m_viewCollider.radius) + new Vector3(0.0f, -1.2f, 0.0f), Color.red);
 							}
+							
+						
 							
 							if(Physics.Raycast(objectPosition, vertexRayDirection.normalized, out hitInfo, m_viewCollider.radius, 1 << collisionLayer))
 							{
@@ -350,14 +363,13 @@ public class OccludedMesh : MonoBehaviour
 		foreach(var pair in extentsPairs)
 		{
 			Vector3 source = objectPosition;
-				source.y = 0.0f;
 			
 			Vector3 direction 	= pair - objectPosition;
-			
+			direction.y = 0.0f;
 			Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
 			
-			if(ShowSucceededRays)
-				Debug.DrawLine(source + offset, source + direction + offset, Color.red, 1.0f);
+			//if(ShowSucceededRays)
+			//	Debug.DrawLine(source + offset, source + direction + offset, Color.red, 1.0f);
 			
 			if(Physics.Raycast(source, direction, out hitInfo, direction.magnitude, 1 << collisionLayer))
 			{
@@ -366,10 +378,9 @@ public class OccludedMesh : MonoBehaviour
 				
 				
 				Vector3 target = hitInfo.point;
-				target.y = 0.0f;
 				
-				if(ShowSucceededRays)
-					Debug.DrawLine(source + offset, target + offset, Color.magenta, 1.0f);
+				//if(ShowSucceededRays)
+				//	Debug.DrawLine(source + offset, target + offset, Color.magenta, 1.0f);
 					
 				
 			}
@@ -396,13 +407,12 @@ public class OccludedMesh : MonoBehaviour
 			
 			
 			Vector3 source = objectPosition;
-			source.y = 0.0f;
 			
 			
-			Vector3 offset = new Vector3(0.0f, -2.3f, 0.0f);
+			//Vector3 offset = new Vector3(0.0f, transform.position.y, 0.0f);
 			
 			if(ShowSucceededRays)
-				Debug.DrawLine(source + offset , vert + offset, Color.green);
+				Debug.DrawLine(source , vert , Color.red);
 		}
 		m_sortedEntries = occluders.Count;
 		occluders.Sort(OccluderComparison);
@@ -430,7 +440,6 @@ public class OccludedMesh : MonoBehaviour
 		float extentsVal = Mathf.Abs(m_viewCollider.radius * Mathf.Cos(Mathf.PI / 4));
 		
 		Vector3 objectPosition = transform.position;
-		objectPosition.y = 0.0f;
 		
 		verts.Add(objectPosition + new Vector3(-extentsVal, 0.0f, extentsVal));
 		verts.Add(objectPosition + new Vector3(-extentsVal, 0.0f, -extentsVal));

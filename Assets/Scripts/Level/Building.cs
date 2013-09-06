@@ -26,6 +26,41 @@ public class Building : MonoBehaviour
 		Rooms.Add(new Room());	
 	}
 	
+	public void Start()
+	{
+		m_lights = GameObjectHelper.FindAllChildrenWithLayer(this.gameObject, LayerMask.NameToLayer("Lights"));
+		Debug.Log("Building \"" + BuildingName + "\" Found " + m_lights.Count + " lights");
+		
+		foreach(var light in m_lights)
+		{
+			Debug.Log("\tLight \"" + light.name + "\"");
+		}
+	}
+	
+	public void DisableLights()
+	{
+		foreach(var light in m_lights)
+		{
+			if(light.renderer != null)
+			{
+				light.renderer.enabled = false;	
+			}
+		}
+	}
+	
+	public void EnableLights()
+	{
+		foreach(var light in m_lights)
+		{
+			if(light.renderer != null)
+			{
+				light.renderer.enabled = true;	
+			}
+		}
+	}
+		
+	private List<GameObject> m_lights = null;
+	
 #if UNITY_EDITOR
 		
 	public static string s_walls_id 			= "walls";
@@ -36,6 +71,7 @@ public class Building : MonoBehaviour
 	public static string s_weather_mask_mat_id 	= "DepthMask";
 	
 #endif
+	
 }
 
 [Serializable]

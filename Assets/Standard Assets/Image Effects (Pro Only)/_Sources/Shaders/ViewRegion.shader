@@ -12,7 +12,6 @@ Shader "Hidden/ViewRegion"
 	#include "UnityCG.cginc"
 	
 	#pragma exclude_renderers flash
-	#pragma glsl
 
 	
 	struct v2f 

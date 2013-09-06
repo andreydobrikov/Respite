@@ -15,8 +15,8 @@ using System.Collections.Generic;
 
 public class TransitionZone : MonoBehaviour 
 {
-	public GameObject DisableObject = null;
-	public GameObject EnableObject = null;
+	public Building LightsDisableObject = null;
+	public Building LightsEnableObject = null;
 	
 	public GameObject TeleportTarget = null;
 	
@@ -51,10 +51,9 @@ public class TransitionZone : MonoBehaviour
 		}
 		m_other = null;
 		
-	//	DisableObject.SetActive(false);
-	//	EnableObject.SetActive(true);
-		
-		
+		// Lightmaps have to be disabled to avoid confusion, so prompt the floors for that
+		LightsDisableObject.DisableLights();
+		LightsEnableObject.EnableLights();
 		
 		Debug.Log("Transitioned");
 		m_fade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), TransitionDuration / 2.0f, null);

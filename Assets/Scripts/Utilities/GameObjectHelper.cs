@@ -6,7 +6,7 @@
 /// </summary>
 
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class GameObjectHelper 
 {
@@ -78,6 +78,46 @@ public class GameObjectHelper
 		}
 		
 		return null;
+	}
+	
+	// Recursive bullshit
+	public static List<GameObject> FindAllChildrenWithTag(GameObject gameObject, string tag)
+	{
+		List<GameObject> foundObjects = new List<GameObject>();
+			
+		for(int i = 0; i < gameObject.transform.childCount; ++i)
+		{
+			Transform currentChild = gameObject.transform.GetChild(i);
+			
+			if(currentChild.gameObject.tag == tag)
+			{
+				foundObjects.Add(currentChild.gameObject);
+			}
+			
+			foundObjects.AddRange(FindAllChildrenWithTag(currentChild.gameObject, tag));
+		}
+		
+		return foundObjects;
+	}
+	
+	// Recursive bullshit
+	public static List<GameObject> FindAllChildrenWithLayer(GameObject gameObject, LayerMask layer)
+	{
+		List<GameObject> foundObjects = new List<GameObject>();
+			
+		for(int i = 0; i < gameObject.transform.childCount; ++i)
+		{
+			Transform currentChild = gameObject.transform.GetChild(i);
+			
+			if(currentChild.gameObject.layer == layer)
+			{
+				foundObjects.Add(currentChild.gameObject);
+			}
+			
+			foundObjects.AddRange(FindAllChildrenWithLayer(currentChild.gameObject, layer));
+		}
+		
+		return foundObjects;
 	}
 	
 	public static void LogQuaternionEuler(Quaternion quaternion)
