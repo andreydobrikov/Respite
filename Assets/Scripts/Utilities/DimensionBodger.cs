@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 public class DimensionBodger : MonoBehaviour 
 {
-	public static float BoxColliderHeight = 3;
+	public static float BoxColliderHeight = 2;
 	
 	#if UNITY_EDITOR
 	

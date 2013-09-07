@@ -16,7 +16,7 @@ using System.Collections.Generic;
 /// </summary>
 
 [RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(BoxCollider))]
 public class OccludedMesh : MonoBehaviour 
 {
 	[SerializeField]
@@ -35,13 +35,13 @@ public class OccludedMesh : MonoBehaviour
 	public float m_centreNudge 		= 0.005f;	// This determines how far vertices are extruded from their mesh centroid when casting rays. Needed to prevent false collisions.
 	public float m_vertexCast		= 0.99f;
 	private MeshFilter m_filter 	= null;
-	private SphereCollider m_viewCollider = null;
+	private BoxCollider m_viewCollider = null;
 	private Dictionary<Collider, ColliderVertices> m_colliderVertices = new Dictionary<Collider, ColliderVertices>();
 	
 	void Start () 
 	{
 		m_filter 		= GetComponent<MeshFilter>();
-		m_viewCollider 	= GetComponent<SphereCollider>();
+		m_viewCollider 	= GetComponent<BoxCollider>();
 		
 		if(m_filter.mesh == null)
 		{
@@ -63,6 +63,7 @@ public class OccludedMesh : MonoBehaviour
 	
 	public void OnTriggerEnter(Collider other)
 	{
+		Debug.Log("Collision");
 		if(other.gameObject.layer == LayerMask.NameToLayer("LevelGeo"))
 		{
 			if(m_colliderVertices.ContainsKey(other))
@@ -73,7 +74,7 @@ public class OccludedMesh : MonoBehaviour
 			if(Mathf.Abs(other.bounds.center.y - (transform.position.y + CalculativeOffset)) > 1.0f)
 			{
 				Debug.Log("Object out of range: " + other.gameObject.name);
-				return;	
+			//	return;	
 			}
 			
 			if(other is SphereCollider)
@@ -167,11 +168,11 @@ public class OccludedMesh : MonoBehaviour
 		
 		Quaternion rotationInverse = Quaternion.Inverse(transform.rotation);
 		
-		float extentsVal = Mathf.Abs(m_viewCollider.radius * Mathf.Cos(Mathf.PI / 4));
+		float extentsVal = Mathf.Abs(m_viewCollider.size.x * 0.7f * Mathf.Cos(Mathf.PI / 4));
 		
 		if(ShowExtrusionRays)
 		{
-			Debug.Log(m_viewCollider.radius);	
+			Debug.Log(m_viewCollider.size.x);	
 		}
 		
 		foreach(OccluderVector vert in occluders)
@@ -232,8 +233,6 @@ public class OccludedMesh : MonoBehaviour
 		// Loop through each collider and add its vertices to the list
 		foreach(var colliderPair in m_colliderVertices)
 		{
-			
-			Debug.DrawLine(colliderPair.Key.bounds.min, colliderPair.Key.bounds.max, Color.cyan);
 			// Process SphereColliders
 			if(colliderPair.Key is SphereCollider)
 			{
@@ -282,7 +281,7 @@ public class OccludedMesh : MonoBehaviour
 					
 				
 					
-					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.radius, 1 <<  collisionLayer))
+					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.size.x, 1 <<  collisionLayer))
 					{
 						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
 						
@@ -290,9 +289,9 @@ public class OccludedMesh : MonoBehaviour
 					}
 					else
 					{
-						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * m_viewCollider.radius), Color.red); }
+						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * m_viewCollider.size.x), Color.red); }
 						
-						validVerts.Add(objectPosition + (direction.normalized * m_viewCollider.radius));	
+						validVerts.Add(objectPosition + (direction.normalized * m_viewCollider.size.x));	
 					}
 				}
 			}
@@ -337,18 +336,18 @@ public class OccludedMesh : MonoBehaviour
 							if(ShowCandidateRays)
 							{
 								Debug.DrawLine(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), objectPosition + vertexRayDirection + new Vector3(0.0f, -1.2f, 0.0f), Color.yellow);
-								Debug.DrawRay(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), (vertexRayDirection.normalized * m_viewCollider.radius) + new Vector3(0.0f, -1.2f, 0.0f), Color.red);
+								Debug.DrawRay(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), (vertexRayDirection.normalized * m_viewCollider.size.x) + new Vector3(0.0f, -1.2f, 0.0f), Color.red);
 							}
 							
 						
 							
-							if(Physics.Raycast(objectPosition, vertexRayDirection.normalized, out hitInfo, m_viewCollider.radius, 1 << collisionLayer))
+							if(Physics.Raycast(objectPosition, vertexRayDirection.normalized, out hitInfo, m_viewCollider.size.x, 1 << collisionLayer))
 							{
 								validVerts.Add(hitInfo.point);
 							}
 							else
 							{
-								validVerts.Add(objectPosition + (vertexRayDirection.normalized * m_viewCollider.radius));	
+								validVerts.Add(objectPosition + (vertexRayDirection.normalized * m_viewCollider.size.x));	
 							}
 						}
 						else
@@ -368,21 +367,9 @@ public class OccludedMesh : MonoBehaviour
 			direction.y = 0.0f;
 			Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
 			
-			//if(ShowSucceededRays)
-			//	Debug.DrawLine(source + offset, source + direction + offset, Color.red, 1.0f);
-			
 			if(Physics.Raycast(source, direction, out hitInfo, direction.magnitude, 1 << collisionLayer))
 			{
 				validVerts.Add(hitInfo.point);
-				
-				
-				
-				Vector3 target = hitInfo.point;
-				
-				//if(ShowSucceededRays)
-				//	Debug.DrawLine(source + offset, target + offset, Color.magenta, 1.0f);
-					
-				
 			}
 			else
 			{
@@ -405,11 +392,7 @@ public class OccludedMesh : MonoBehaviour
 			newOccluder.angle = angle;
 			occluders.Add(newOccluder);
 			
-			
 			Vector3 source = objectPosition;
-			
-			
-			//Vector3 offset = new Vector3(0.0f, transform.position.y, 0.0f);
 			
 			if(ShowSucceededRays)
 				Debug.DrawLine(source , vert , Color.red);
@@ -437,7 +420,7 @@ public class OccludedMesh : MonoBehaviour
 	{
 		List<Vector3> verts = new List<Vector3>();
 		
-		float extentsVal = Mathf.Abs(m_viewCollider.radius * Mathf.Cos(Mathf.PI / 4));
+		float extentsVal = Mathf.Abs(m_viewCollider.size.x * Mathf.Cos(Mathf.PI / 4));
 		
 		Vector3 objectPosition = transform.position;
 		
