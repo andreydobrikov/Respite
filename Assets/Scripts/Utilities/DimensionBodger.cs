@@ -35,5 +35,45 @@ public class DimensionBodger : MonoBehaviour
 		
 	}
 	
+	[MenuItem ("Respite/Bodge/Force Light offsets")]
+	public static void ForceLightOffsets()
+	{
+		List<GameObject> lights = new List<GameObject>();
+		
+		GameObject[] objects = Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[];
+		
+		int lightLayer = LayerMask.NameToLayer("Lights");
+		
+		foreach(var current in objects)
+		{
+			if(current.layer == lightLayer)
+			{
+				lights.Add(current);	
+			}
+		}
+		
+		float minY = float.MaxValue;
+		float maxY = float.MinValue;
+		
+		foreach(var light in lights)
+		{
+			if(light.transform.localPosition.y < minY) { minY = light.transform.localPosition.y; }
+			if(light.transform.localPosition.y > maxY) { maxY = light.transform.localPosition.y; }
+		}
+		
+		float delta = 0.2f / (lights.Count - 1);
+		
+		for(int i = 0; i < lights.Count; ++i)
+		{
+			Vector3 localPosition = lights[i].transform.localPosition;
+			localPosition.y = 2.0f + (delta * i);
+			
+			lights[i].transform.localPosition = localPosition;
+			
+			Debug.Log("Bodged: " + lights[i].name);
+		}
+		
+	}
+	
 	#endif
 }

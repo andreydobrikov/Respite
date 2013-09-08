@@ -186,7 +186,7 @@ public class BuildingEditor :  Editor
 		floorObject.transform.localRotation		= Quaternion.identity;
 		
 		GameObject ambientObject				= new GameObject(Building.s_ambient_id);
-		ambientObject.layer						= LayerMask.NameToLayer("Lights");
+		ambientObject.layer						= LayerMask.NameToLayer("Shadow");
 		ambientObject.transform.parent 			= roomObject.transform;
 		ambientObject.transform.localPosition	= new Vector3(0.0f, 1.0f, 0.0f);
 		ambientObject.transform.localRotation		= Quaternion.identity;

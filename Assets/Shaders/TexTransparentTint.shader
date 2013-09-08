@@ -23,6 +23,7 @@ Shader "Custom/TexTransparentTint"
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			float4 _Color;
+			float4x4 _Rotation;
 			 
 			struct v2f 
 			{
@@ -36,11 +37,18 @@ Shader "Custom/TexTransparentTint"
 				v2f o;
 		        o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
 		        o.color = v.color;
+		         
 		        
+		        //o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
 		        
-		        o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
+		        half4 test = v.texcoord - half4(0.5f, 0.5f, 0.0f, 0.0f);
+
+				half2 ffs = mul ( test, _Rotation ).xy;
+           		ffs += 0.5f;
+           		
+           		o.uv = TRANSFORM_TEX(ffs, _MainTex);
 		        
-		        return o;
+		        return o; 
 			}
 			
 			float4 frag (v2f i) : COLOR0 

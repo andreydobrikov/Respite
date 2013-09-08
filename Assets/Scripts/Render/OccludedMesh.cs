@@ -29,7 +29,7 @@ public class OccludedMesh : MonoBehaviour
 	public bool ShowFailedRays		= false;
 	public bool DisplayStats		= false;
 	
-	public float CalculativeOffset	= 0.0f; // Oh dear
+	private float CalculativeOffset	= 0.0f; // Oh dear
 	public float m_sphereExpansion	= 1.5f;
 	public float m_nudgeMagnitude 	= 0.02f; 
 	public float m_centreNudge 		= 0.005f;	// This determines how far vertices are extruded from their mesh centroid when casting rays. Needed to prevent false collisions.
@@ -47,6 +47,8 @@ public class OccludedMesh : MonoBehaviour
 		{
 			m_filter.mesh = new Mesh();	
 		}
+		
+		CalculativeOffset = -transform.localPosition.y;
 		
 		enabled = false;	
 	}
@@ -69,12 +71,6 @@ public class OccludedMesh : MonoBehaviour
 			if(m_colliderVertices.ContainsKey(other))
 			{
 				return;	
-			}
-			
-			if(Mathf.Abs(other.bounds.center.y - (transform.position.y + CalculativeOffset)) > 1.0f)
-			{
-				Debug.Log("Object out of range: " + other.gameObject.name);
-			//	return;	
 			}
 			
 			if(other is SphereCollider)

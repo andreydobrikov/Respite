@@ -22,7 +22,6 @@ public class OccludedMeshEditor : Editor
 		view.collisionLayer = EditorGUILayout.LayerField("Collision Layer", view.collisionLayer);
 		GUILayout.EndVertical();
 		
-		
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Nudge Magnitude", GUILayout.Width(100));
 		GUILayout.Label(view.m_nudgeMagnitude.ToString("0.00"), GUILayout.Width(40));
@@ -46,8 +45,5 @@ public class OccludedMeshEditor : Editor
 		GUILayout.Label(view.m_sphereExpansion.ToString("0.00"), GUILayout.Width(40));
 		view.m_sphereExpansion = GUILayout.HorizontalSlider(view.m_sphereExpansion, 1.0f, 2.5f);
 		GUILayout.EndHorizontal();
-		
-		view.CalculativeOffset = EditorGUILayout.FloatField("Calculative Offset", view.CalculativeOffset);
-		
 	}
 }

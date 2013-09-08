@@ -56,7 +56,7 @@ Shader "Hidden/ViewRegion"
 		//frameBuffer = half4(1.0f, 0.0f, 0.0f, 1.0f);	
 		
 
-		return frameBuffer * (mask * ((1.0f - outColour) * sum);//( * half4(0.6f, 0.6f, 0.6f, 0.4f));
+		return frameBuffer * half4(1.0f, 0.0f, 0.0f, 1.0f);// * (mask * ((1.0f - outColour) * sum);//( * half4(0.6f, 0.6f, 0.6f, 0.4f));
 	}	
 
 	ENDCG 

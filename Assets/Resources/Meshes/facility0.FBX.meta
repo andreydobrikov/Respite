@@ -16,6 +16,11 @@ ModelImporter:
     100020: facility0_weather_mask
     100022: facility0_stairs_floor
     100024: facility0_stairs_ambient
+    100026: facility0_landing_ambient
+    100028: facility0_landing_floor
+    100030: Plane001
+    100032: facility0_dining_floor
+    100034: facility0_dining_ambient
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -29,6 +34,11 @@ ModelImporter:
     400020: facility0_weather_mask
     400022: facility0_stairs_floor
     400024: facility0_stairs_ambient
+    400026: facility0_landing_ambient
+    400028: facility0_landing_floor
+    400030: Plane001
+    400032: facility0_dining_floor
+    400034: facility0_dining_ambient
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -41,6 +51,11 @@ ModelImporter:
     2300018: facility0_weather_mask
     2300020: facility0_stairs_floor
     2300022: facility0_stairs_ambient
+    2300024: facility0_landing_ambient
+    2300026: facility0_landing_floor
+    2300028: Plane001
+    2300030: facility0_dining_floor
+    2300032: facility0_dining_ambient
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -53,6 +68,11 @@ ModelImporter:
     3300018: facility0_weather_mask
     3300020: facility0_stairs_floor
     3300022: facility0_stairs_ambient
+    3300024: facility0_landing_ambient
+    3300026: facility0_landing_floor
+    3300028: Plane001
+    3300030: facility0_dining_floor
+    3300032: facility0_dining_ambient
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -65,6 +85,11 @@ ModelImporter:
     4300018: facility0_hall_ambient
     4300020: facility0_stairs_floor
     4300022: facility0_stairs_ambient
+    4300024: facility0_landing_floor
+    4300026: facility0_landing_ambient
+    4300028: Plane001
+    4300030: facility0_dining_floor
+    4300032: facility0_dining_ambient
     9500000: //RootNode
   materials:
     importMaterials: 1

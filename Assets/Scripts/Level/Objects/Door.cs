@@ -32,7 +32,7 @@ public class Door : InteractiveObject
 		
 		m_currentRotation = (m_openRotation * Mathf.Sin(m_lerpProgress * Mathf.PI / 2.0f)) ;
 		
-		m_targetObject.GetComponent<Rigidbody>().MoveRotation(m_initialRotation * Quaternion.Euler(new Vector3(0.0f, 0.0f,m_currentRotation)));	
+		m_targetObject.GetComponent<Rigidbody>().MoveRotation(m_initialRotation * Quaternion.Euler(new Vector3(0.0f, m_currentRotation, 0.0f)));	
 	}
 		
 	private void HandleOpen(Interaction interaction)

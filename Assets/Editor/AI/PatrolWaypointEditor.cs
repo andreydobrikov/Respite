@@ -36,8 +36,6 @@ public class PatrolWaypointEditor : Editor
 		{
 			float handleSize = HandleUtility.GetHandleSize((Vector3)point.position + offset) / 4.0f;
 			
-			
-			
 			if(patrol.HighlightedNode == point)
 			{
 				Handles.color = Color.blue;

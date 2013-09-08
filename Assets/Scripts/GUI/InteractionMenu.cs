@@ -188,10 +188,10 @@ public class InteractionMenu : MonoBehaviour
 		for(int sweepCount = 0; sweepCount < iterationCount; ++sweepCount)
 		{
 			float progress = minAngle + (sweepCount * sweepDelta);
-			Vector3 currentDirection = (Quaternion.Euler(0.0f, 0.0f, progress) ) * Vector3.up;
+			Vector3 currentDirection = (Quaternion.Euler(0.0f, progress, 0.0f) ) * Vector3.forward;
 			if(m_renderDebug)
 			{
-				Debug.DrawLine(transform.position + new Vector3(0.0f, 0.0f, -1.0f), transform.position + new Vector3(0.0f, 0.0f, -1.0f) + currentDirection, Color.red);
+				Debug.DrawLine(transform.position + new Vector3(0.0f, -1.0f, 0.0f), transform.position + new Vector3(0.0f, -1.0f, 0.0f) + currentDirection, Color.red);
 			}
 			if(Physics.Raycast(transform.position, currentDirection, out hitInfo, 1.0f, collisionLayer))
 			{
@@ -203,9 +203,7 @@ public class InteractionMenu : MonoBehaviour
 				}
 			}
 		}
-			
 	}
-	
 	
 	List<InteractiveObject> m_objectsInRange 	= new List<InteractiveObject>();
 	List<InteractiveObject> m_objectsInView		= new List<InteractiveObject>();
