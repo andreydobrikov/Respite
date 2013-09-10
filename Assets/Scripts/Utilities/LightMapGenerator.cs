@@ -143,8 +143,6 @@ public class LightMapGenerator
 		
 		int mipLevel = 0;
 		
-		float texelSize = 2.0f;
-		
 		const int texWidth = 256;
 		const int texHeight = 256;
 		

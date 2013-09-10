@@ -19,7 +19,7 @@ public class WaypointNode : ScriptableObject
 	
 	public int sequenceIndex = -1;
 	
-	public Vector2 position = Vector2.zero;
+	public Vector3 position = Vector2.zero;
 	
 	public List<WaypointNode> m_connections = new List<WaypointNode>();
 	

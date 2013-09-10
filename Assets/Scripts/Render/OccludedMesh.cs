@@ -24,7 +24,7 @@ public class OccludedMesh : MonoBehaviour
 	
 	public bool Dynamic				= false;
 	public bool ShowCandidateRays 	= false;
-	public bool ShowSucceededRays 	= true;
+	public bool ShowSucceededRays 	= false;
 	public bool ShowExtrusionRays 	= false;
 	public bool ShowFailedRays		= false;
 	public bool DisplayStats		= false;
@@ -65,7 +65,6 @@ public class OccludedMesh : MonoBehaviour
 	
 	public void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("Collision");
 		if(other.gameObject.layer == LayerMask.NameToLayer("LevelGeo"))
 		{
 			if(m_colliderVertices.ContainsKey(other))
@@ -222,9 +221,9 @@ public class OccludedMesh : MonoBehaviour
 		RaycastHit hitInfo;
 		
 		// TODO: Don't instantiate these every frame
-		List<Vector3> validVerts 		= new List<Vector3>();
-		List<Vector3> extentsPairs 		= GetExtents();
-		List<OccluderVector> occluders 	= new List<OccluderVector>();
+		validVerts.Clear();
+		extentsPairs 	= GetExtents();
+		occluders.Clear();
 		
 		// Loop through each collider and add its vertices to the list
 		foreach(var colliderPair in m_colliderVertices)
@@ -457,4 +456,8 @@ public class OccludedMesh : MonoBehaviour
 	
 	private int m_lastRayCount = 0;
 	private int m_sortedEntries = 0;
+	
+	List<Vector3> validVerts 		= new List<Vector3>();
+	List<Vector3> extentsPairs 		;
+	List<OccluderVector> occluders 	= new List<OccluderVector>();
 }

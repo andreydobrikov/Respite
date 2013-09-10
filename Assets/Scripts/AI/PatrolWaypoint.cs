@@ -160,20 +160,8 @@ public class PatrolWaypoint : MonoBehaviour
 	private WaypointNode m_target;
 	private WaypointNode m_origin;
 			
-	private float m_originAngle = 0.0f;
-	private float m_targetAngle = 0.0f;
-	
-	private float m_lerpProgress 	= 0.0f;
-	private float m_lerpSpeed		= 0.0f;
-	
-	private float m_lerpRotationProgress = 0.0f;
-	
 	private int m_targetIndex = 1;
 	
-	private AIState m_state = AIState.Walking;
-	
-	private float m_holdProgress = 0.0f;
-	private float m_holdTime = 3.0f; // TODO: Parameter
 	
 	private NavMeshAgent m_agent = null;
 	

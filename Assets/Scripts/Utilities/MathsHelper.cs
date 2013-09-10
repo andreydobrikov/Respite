@@ -65,19 +65,19 @@ public class MathsHelper
 		intersectionPoint = Vector2.zero;
 		
 		bool intersection = false;
-		bool coincident = false;
+		//bool coincident = false;
 		
 		float ua = (v3.x - v2.x) * (v0.y - v2.y) - (v3.y - v2.y) * (v0.x - v2.x);
 		float ub = (v1.x - v0.x) * (v0.y - v2.y) - (v1.y - v0.y) * (v0.x - v2.x);
 		float denominator = (v3.y - v2.y) * (v1.x - v0.x) - (v3.x - v2.x) * (v1.y - v0.y);
 		
-		intersection = coincident = false;
+		intersection = /* coincident = */ false;
 		
 		if (Mathf.Abs(denominator) <= 0.00001f)
 		{
 		    if (Mathf.Abs(ua) <= 0.00001f && Mathf.Abs(ub) <= 0.00001f)
 		    {
-		        intersection = coincident = true;
+		        intersection = /* coincident = */ true;
 		        intersectionPoint = (v0 + v1) / 2;
 		    }
 		}

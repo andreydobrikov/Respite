@@ -6,6 +6,7 @@ public class Door : InteractiveObject
 {
 	public GameObject m_targetObject = null;
 	public float openRate = 0.02f;
+	public float maxRotation = -65.0f;
 	
 	public Door()
 	{
@@ -30,7 +31,7 @@ public class Door : InteractiveObject
 		m_lerpProgress = Mathf.Max(m_lerpProgress, 0.0f);
 		m_lerpProgress = Mathf.Min(m_lerpProgress, 1.0f);
 		
-		m_currentRotation = (m_openRotation * Mathf.Sin(m_lerpProgress * Mathf.PI / 2.0f)) ;
+		m_currentRotation = (maxRotation * Mathf.Sin(m_lerpProgress * Mathf.PI / 2.0f)) ;
 		
 		m_targetObject.GetComponent<Rigidbody>().MoveRotation(m_initialRotation * Quaternion.Euler(new Vector3(0.0f, m_currentRotation, 0.0f)));	
 	}
@@ -86,7 +87,6 @@ public class Door : InteractiveObject
 	
 	private Interaction m_openInteraction 	= null;
 	private Interaction m_closeInteraction 	= null;
-	private float m_openRotation = -65.0f;
 	private float m_currentRotation = 0.0f;
 	private float m_lerpProgress = 0.0f;
 	private float m_lerpDirection = -1.0f;

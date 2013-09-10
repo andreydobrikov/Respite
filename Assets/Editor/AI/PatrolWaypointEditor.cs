@@ -74,12 +74,12 @@ public class PatrolWaypointEditor : Editor
 				
 				System.Text.StringBuilder builder = new System.Text.StringBuilder("Position: " + point.position.x.ToString("0.00") + ", " + point.position.y.ToString("0.00"));
 				
-				Handles.Label(point.position - new Vector2(0.0f, 0.2f), builder.ToString(), style);
+				//Handles.Label(point.position - new Vector2(0.0f, 0.2f), builder.ToString(), style);
 			}
 			
 			if(!patrol.Editing)
 			{
-				Handles.Label(point.position + new Vector2(-0.1f, 0.4f), point.sequenceIndex.ToString(), style);
+				//Handles.Label(point.position + new Vector2(-0.1f, 0.4f), point.sequenceIndex.ToString(), style);
 			}
 			
 			handleID++;
@@ -124,7 +124,7 @@ public class PatrolWaypointEditor : Editor
 				
 				pos.y = -2.0f;
 				patrol.LastDragPos = pos;
-				
+				/*
 				Vector2 direction = patrol.LastDragPos - patrol.DragStartPoint.position;
 				
 				int layer = LayerMask.NameToLayer("LevelGeo");
@@ -135,7 +135,7 @@ public class PatrolWaypointEditor : Editor
 					Handles.color = Color.red;
 				}
 				
-				Handles.DrawLine((Vector3)patrol.DragStartPoint.position, patrol.LastDragPos);
+				Handles.DrawLine((Vector3)patrol.DragStartPoint.position, patrol.LastDragPos);*/
 			}
 		}
 		
