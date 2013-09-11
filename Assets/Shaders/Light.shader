@@ -58,16 +58,19 @@ Shader "Custom/Light"
 				//rim = smoothstep(0.4, 1.0f, rim);
 				
 				//val.rgb += rim * _FresnelIntensity;//i.norm;
-				//val.rgb = float3(1.0f, 0.0f, 0.0f);
+				
 				
 				float4 val = tex2D (_MainTex, i.uv) * _Color;
 				val *= i.color;
 				
+			//	val.rgb = float4(1.0f, 0.0f, 0.0f, 1.0f);
 				//val.rg = i.uv;
 				//val.b = 0.0f;
 			//	val.a = 1.0f;
 				
 				//val = float4(i.uv.x, i.uv.y, 0.0f, 1.0f);
+				
+				
 				return val;
 			}
 			

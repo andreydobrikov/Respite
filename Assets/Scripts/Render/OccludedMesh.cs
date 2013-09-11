@@ -38,6 +38,34 @@ public class OccludedMesh : MonoBehaviour
 	private BoxCollider m_viewCollider = null;
 	private Dictionary<Collider, ColliderVertices> m_colliderVertices = new Dictionary<Collider, ColliderVertices>();
 	
+	void OnEnable()
+	{
+		validVerts.Capacity = 200;
+		
+		// Bung four values into the extents to set the initial capacity
+		extentsVals.Add(Vector3.zero);
+		extentsVals.Add(Vector3.zero);
+		extentsVals.Add(Vector3.zero);
+		extentsVals.Add(Vector3.zero);
+
+		
+		for(int occluderID = 0; occluderID < m_maxOccluderVerts; occluderID++)
+		{
+			vertices[occluderID] = new Vector3();
+			uvs[occluderID] 	= new Vector2();
+			normals[occluderID] 	= new Vector3(0.0f, -1.0f, 0.0f);
+			colors[occluderID]		= new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			
+			m_occluders[occluderID] = new OccluderVector();		
+		}
+		 
+				
+		vertices[0] = new Vector3(0.0f, 0.0f, 0.0f);
+		uvs[0] 		= new Vector2(0.5f, 0.5f);
+		
+		m_occluders[m_maxOccluderVerts] = new OccluderVector();	
+	}
+	
 	void Start () 
 	{
 		m_filter 		= GetComponent<MeshFilter>();
@@ -51,6 +79,8 @@ public class OccludedMesh : MonoBehaviour
 		CalculativeOffset = -transform.localPosition.y;
 		
 		enabled = false;	
+		
+		
 	}
 	
 	void OnBecameVisible()
@@ -136,57 +166,36 @@ public class OccludedMesh : MonoBehaviour
 	/// </summary>
 	private void RebuildMesh()
 	{
-		List<OccluderVector> occluders = GetOccluders();
+		GetOccluders();
 		
-		if(occluders.Count == 0)
+		if(m_occluderCount > m_maxOccluderVerts)
 		{
-			m_filter.sharedMesh.Clear();
-			return;	
+			Debug.Log("Occluder vert-count exceeds maximum of " + m_maxOccluderVerts + ". light mesh will be malformed");	
 		}
 		
-		int triangleCount = ((occluders.Count) - 1) * 3;
+		int triangleCount = ((m_occluderCount) ) * 3;
 		
-		Vector3[] 	vertices 	= new Vector3[occluders.Count + 1];
-		Vector3[] 	normals 	= new Vector3[occluders.Count + 1];
-		Color[] 	colors 		= new Color[occluders.Count + 1];
-		Vector2[] 	uvs 		= new Vector2[occluders.Count + 1];
-		Vector2[] 	uvs1 		= new Vector2[occluders.Count + 1];
-		int[] 		triangles 	= new int[triangleCount + 3];
-		
-		// Add the camera point manually
-		vertices[0] = new Vector3(0.0f, 0.0f, 0.0f);
-		uvs[0] 		= new Vector2(0.5f, 0.5f);
-		uvs1[0] 		= new Vector2(0.5f, 0.5f);
-		colors[0]	= new Color(1.0f, 1.0f, 1.0f, 1.0f);
-		
-		int index = 1;
+		// Not much I can do about this allocation
+		int[] triangles	= new int[triangleCount];
 		
 		Quaternion rotationInverse = Quaternion.Inverse(transform.rotation);
 		
 		float extentsVal = Mathf.Abs(m_viewCollider.size.x * 0.7f * Mathf.Cos(Mathf.PI / 4));
 		
-		if(ShowExtrusionRays)
+		for(int vertID = 0; vertID < m_occluderCount && vertID < m_maxOccluderVerts - 1; vertID++)
 		{
-			Debug.Log(m_viewCollider.size.x);	
-		}
-		
-		foreach(OccluderVector vert in occluders)
-		{
-			Vector3 localPosition 	= vert.vec - transform.position;
+			Vector3 localPosition 	= m_occluders[vertID].vec - transform.position;
+			
+			//Debug.DrawLine(transform.position, transform.position + localPosition, Color.red);
 			localPosition.y = 0.0f;
 			
-			vertices[index] 		= rotationInverse *  localPosition;
-			uvs[index] 				= new Vector2((localPosition.x + extentsVal) / (extentsVal * 2.0f), (localPosition.z + extentsVal) / (extentsVal * 2.0f));
-			uvs1[index]				= uvs[index];
-			normals[index] 			= new Vector3(0.0f, -1.0f, 0.0f);
-			colors[index]			= new Color(1.0f, 1.0f, 1.0f, 1.0f);
-			
-			index++;
+			vertices[vertID + 1] 	= rotationInverse *  localPosition;
+			uvs[vertID + 1]  = new Vector2((localPosition.x + extentsVal) / (extentsVal * 2.0f), (localPosition.z + extentsVal) / (extentsVal * 2.0f));
 		}
 		
 		// Loop through the points and build them there triangles
 		int i = 1;
-		for(; i < occluders.Count; i++)
+		for(; i < m_occluderCount && i < m_maxOccluderVerts; i++)
 		{
 			triangles[(i - 1) * 3] 		= 0;
 			triangles[(i - 1) * 3 + 1] 	= i;
@@ -200,7 +209,7 @@ public class OccludedMesh : MonoBehaviour
 		m_filter.sharedMesh.Clear();
 		m_filter.sharedMesh.vertices 	= vertices;
 		m_filter.sharedMesh.uv 			= uvs;
-		m_filter.sharedMesh.uv1 		= uvs1;
+		m_filter.sharedMesh.uv1 		= uvs;
 		m_filter.sharedMesh.normals 	= normals;
 		m_filter.sharedMesh.colors		= colors;
 		m_filter.sharedMesh.triangles 	= triangles;
@@ -213,7 +222,7 @@ public class OccludedMesh : MonoBehaviour
 	/// <returns>
 	/// The occluder list, sorted around increasing angle from the left extent.
 	/// </returns>
-	private List<OccluderVector> GetOccluders()
+	private void GetOccluders()
 	{
 		Vector3 objectPosition = transform.position;
 		objectPosition.y += CalculativeOffset;
@@ -222,8 +231,7 @@ public class OccludedMesh : MonoBehaviour
 		
 		// TODO: Don't instantiate these every frame
 		validVerts.Clear();
-		extentsPairs 	= GetExtents();
-		occluders.Clear();
+		UpdateExtents();
 		
 		// Loop through each collider and add its vertices to the list
 		foreach(var colliderPair in m_colliderVertices)
@@ -246,9 +254,9 @@ public class OccludedMesh : MonoBehaviour
 				colliderPair.Value.vertices[0] = p0;
 				colliderPair.Value.vertices[1] = p1;
 				
-				foreach(var vert in colliderPair.Value.vertices)
+				for(int vertID = 0; vertID < colliderPair.Value.vertices.Count; vertID++)
 				{
-					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
+					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID]);
 					Vector3 direction = worldPos - objectPosition;
 					
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, direction.magnitude, 1 <<  collisionLayer))
@@ -266,10 +274,10 @@ public class OccludedMesh : MonoBehaviour
 				}
 				
 				
-				foreach(var vert in colliderPair.Value.vertices)
+				for(int vertID = 0; vertID < colliderPair.Value.vertices.Count; vertID++)
 				{
 					// Find the transformed position of the vertex scaled by the mysterious expansion factor that
-					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert * m_sphereExpansion);
+					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID] * m_sphereExpansion);
 					
 					
 					Vector3 direction = worldPos - objectPosition;
@@ -292,9 +300,9 @@ public class OccludedMesh : MonoBehaviour
 			}
 			else // Process BoxColliders
 			{
-				foreach(Vector3 vert in colliderPair.Value.vertices)
+				for(int vertID = 0; vertID < colliderPair.Value.vertices.Count; vertID++)
 				{
-					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(vert);
+					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID]);
 					worldPos.y = objectPosition.y;
 					Vector3 direction = worldPos - objectPosition;
 					
@@ -354,13 +362,12 @@ public class OccludedMesh : MonoBehaviour
 			}
 		}
 		
-		foreach(var pair in extentsPairs)
+		for(int pairID = 0; pairID < extentsVals.Count; pairID++)
 		{
 			Vector3 source = objectPosition;
 			
-			Vector3 direction 	= pair - objectPosition;
+			Vector3 direction 	= extentsVals[pairID] - objectPosition;
 			direction.y = 0.0f;
-			Vector3 offset = new Vector3(0.0f, 0.0f, 0.0f);
 			
 			if(Physics.Raycast(source, direction, out hitInfo, direction.magnitude, 1 << collisionLayer))
 			{
@@ -373,29 +380,32 @@ public class OccludedMesh : MonoBehaviour
 		}
 		
 		// Output all results
-		foreach(Vector3 vert in validVerts)
+		for(int vertID = 0; vertID < validVerts.Count && vertID < m_maxOccluderVerts; vertID++)
 		{
-			Vector3 directionToVert = vert - objectPosition;
+			Vector3 directionToVert = validVerts[vertID] - objectPosition;
 			
-			OccluderVector newOccluder = new OccluderVector();
-			newOccluder.vec = vert;
+			m_occluders[vertID].vec = validVerts[vertID];
 			
 			Vector3 normalDirection = Vector3.Normalize(directionToVert);
 			
 			double angle = Math.Atan2((double)normalDirection.x, (double)normalDirection.z);
 					
-			newOccluder.angle = angle;
-			occluders.Add(newOccluder);
+			m_occluders[vertID].angle = angle;
 			
 			Vector3 source = objectPosition;
-			
-			if(ShowSucceededRays)
-				Debug.DrawLine(source , vert , Color.red);
 		}
-		m_sortedEntries = occluders.Count;
-		occluders.Sort(OccluderComparison);
 		
-		return occluders;
+		m_occluderCount = validVerts.Count;
+		
+		Array.Sort(m_occluders, 0, m_occluderCount);
+		
+		float delta = 1.0f / (float)m_occluderCount;
+		for(int i = 0; i < m_occluderCount; i++)
+		{
+			Color current = new Color(delta * i, 0.0f, 0.0f, 1.0f);
+			if(ShowSucceededRays)
+				Debug.DrawLine(transform.position , m_occluders[i].vec , current);
+		}
 	}
 	
 	private void OnGUI()
@@ -411,20 +421,17 @@ public class OccludedMesh : MonoBehaviour
 		}
 	}
 	
-	private List<Vector3> GetExtents()
+	private void UpdateExtents()
 	{
-		List<Vector3> verts = new List<Vector3>();
-		
 		float extentsVal = Mathf.Abs(m_viewCollider.size.x * Mathf.Cos(Mathf.PI / 4));
 		
 		Vector3 objectPosition = transform.position;
 		
-		verts.Add(objectPosition + new Vector3(-extentsVal, 0.0f, extentsVal));
-		verts.Add(objectPosition + new Vector3(-extentsVal, 0.0f, -extentsVal));
-		verts.Add(objectPosition + new Vector3(extentsVal, 0.0f, extentsVal));
-		verts.Add(objectPosition + new Vector3(extentsVal, 0.0f, -extentsVal));
+		extentsVals[0] = objectPosition + new Vector3(-extentsVal, 0.0f, extentsVal);
+		extentsVals[1] = objectPosition + new Vector3(-extentsVal, 0.0f, -extentsVal);
+		extentsVals[2] = objectPosition + new Vector3(extentsVal, 0.0f, extentsVal);
+		extentsVals[3] = objectPosition + new Vector3(extentsVal, 0.0f, -extentsVal);
 	
-		return verts;
 	}
 			
 	private static int OccluderComparison(OccluderVector v1, OccluderVector v2)
@@ -442,10 +449,26 @@ public class OccludedMesh : MonoBehaviour
 		return -1;
 	}
 	
-	private class OccluderVector
+	private class OccluderVector : IComparable<OccluderVector>
 	{
 		public Vector3 vec;
 		public double angle;
+		
+		public int CompareTo(OccluderVector that)
+    	{
+			
+			if(angle == that.angle)
+			{
+				return 0;
+			}
+			
+			if(angle > that.angle)
+			{
+				return 1;	
+			}
+			
+			return -1;
+		}
 	}
 	
 	private class ColliderVertices
@@ -457,7 +480,18 @@ public class OccludedMesh : MonoBehaviour
 	private int m_lastRayCount = 0;
 	private int m_sortedEntries = 0;
 	
+	List<Vector3> extentsVals		= new List<Vector3>();
 	List<Vector3> validVerts 		= new List<Vector3>();
-	List<Vector3> extentsPairs 		;
-	List<OccluderVector> occluders 	= new List<OccluderVector>();
+	
+	private const int m_maxOccluderVerts = 300;
+	
+	Vector3[] 	vertices 	= new Vector3[m_maxOccluderVerts];
+	Vector3[] 	normals 	= new Vector3[m_maxOccluderVerts];
+	Color[] 	colors 		= new Color[m_maxOccluderVerts];
+	Vector2[] 	uvs 		= new Vector2[m_maxOccluderVerts];
+	
+	private OccluderVector[] m_occluders = new OccluderVector[m_maxOccluderVerts + 1];
+	
+	private int m_occluderCount = 0;
+	
 }
