@@ -10,7 +10,7 @@ public class Bed : InteractiveObject
 		m_interactions.Add(m_sleepInteraction);
 	}
 		
-	private void OnSleepInteraction(Interaction interaction)
+	private void OnSleepInteraction(Interaction interaction, GameObject trigger)
 	{
 		GameFlow.Instance.RequestSave(0.3f);
 	}

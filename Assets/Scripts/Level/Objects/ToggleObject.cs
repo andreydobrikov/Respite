@@ -35,15 +35,15 @@ public class ToggleObject : InteractiveObject
 	{
 		if(StartingOn)
 		{
-			ToggleOn(null);	
+			ToggleOn(null, null);	
 		}
 		else
 		{
-			ToggleOff(null);	
+			ToggleOff(null, null);	
 		}
 	}
 	
-	private void ToggleOn(Interaction source)
+	private void ToggleOn(Interaction source, GameObject trigger)
 	{
 		m_toggleOffInteraction.Enabled 	= true;
 		m_toggleOnInteraction.Enabled 	= false;
@@ -54,7 +54,7 @@ public class ToggleObject : InteractiveObject
 		}
 	}
 	
-	private void ToggleOff(Interaction source)
+	private void ToggleOff(Interaction source, GameObject trigger)
 	{
 		m_toggleOffInteraction.Enabled 	= false;
 		m_toggleOnInteraction.Enabled 	= true;

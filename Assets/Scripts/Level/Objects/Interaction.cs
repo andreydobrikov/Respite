@@ -10,11 +10,12 @@
 //
 ///////////////////////////////////////////////////////////
 
+using UnityEngine;
 using System.Collections;
 
 public class Interaction 
 {
-	public delegate void InteractionHandler(Interaction source);
+	public delegate void InteractionHandler(Interaction source, GameObject trigger);
 	
 	public Interaction(string name, InteractionHandler handler, params ContextFlag[] flags)
 	{

@@ -9,7 +9,7 @@ public class WoodBurner : InteractiveObject
 		m_interactions.Add(new Interaction("Stoke", new Interaction.InteractionHandler(HandleStoke)));
 	}
 	
-	private void HandleStoke(Interaction interaction)
+	private void HandleStoke(Interaction interaction, GameObject trigger)
 	{
 		
 	}

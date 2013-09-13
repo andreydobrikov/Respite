@@ -19,13 +19,13 @@ public class Book : InteractiveObject
 		m_inventoryObject = GetComponent<InventoryObject>();
 	}
 	
-	void TakeBookHandler(Interaction source)
+	void TakeBookHandler(Interaction source, GameObject trigger)
 	{
 		Debug.Log("Book Taken");
 		Inventory.AddToInventory(m_inventoryObject);
 	}
 		
-	void InspectBookHandler(Interaction source)
+	void InspectBookHandler(Interaction source, GameObject trigger)
 	{
 		GameFlow.Instance.RequestInspection();
 	}

@@ -107,7 +107,7 @@ public class InteractionMenu : MonoBehaviour
 					GUI.enabled = interactions[0].Enabled;
 					if(GUI.Button(new Rect(centrePoint.x + 20.0f, centrePoint.y - 15.0f, 100.0f, 30.0f), interactions[0].Name))
 					{
-						interactions[0].Callback(interactions[0]);	
+						interactions[0].Callback(interactions[0], gameObject);	
 					}
 				}
 					
@@ -119,7 +119,7 @@ public class InteractionMenu : MonoBehaviour
 					
 					if(GUI.Button(new Rect(centrePoint.x - 40.0f - size.x, centrePoint.y - 15.0f, size.x, 30.0f), interactions[1].Name))
 					{
-						interactions[1].Callback(interactions[1]);	
+						interactions[1].Callback(interactions[1], gameObject);	
 					}
 				}
 			}
@@ -157,22 +157,22 @@ public class InteractionMenu : MonoBehaviour
 		
 			if(Input.GetButtonUp("option_0"))
 			{
-				interactions[0].Callback(interactions[0]);	
+				interactions[0].Callback(interactions[0], gameObject);	
 			}
 			
 			if(interactions.Count > 1)
 			{
 				if(Input.GetButtonUp("option_1"))
 				{
-					interactions[1].Callback(interactions[1]);	
+					interactions[1].Callback(interactions[1], gameObject);	
 				}	
 			}
 		}
 		
 				
-		foreach(var currentObject in m_objectsInView)
+		for(int i = 0; i < m_objectsInView.Count; i++)
 		{
-			currentObject.SetHighlightActive(false);
+			m_objectsInView[i].SetHighlightActive(false);
 		}
 		
 		m_objectsInView.Clear();

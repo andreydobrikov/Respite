@@ -34,17 +34,17 @@ public class AIState : ScriptableObject
 	
 	public AIState Update()
 	{
-		foreach(var behaviour in m_behaviours)
+		for(int i = 0; i < m_behaviours.Count; i++)
 		{
-			if(behaviour.Update())
+			if(m_behaviours[i].Update())
 			{
-				if(behaviour.TransitionTarget == null)
+				if(m_behaviours[i].TransitionTarget == null)
 				{
-					Debug.LogWarning("Behaviour \"" + behaviour.Name + "\" requested a transition, but has no target set");	
+					Debug.LogWarning("Behaviour \"" + m_behaviours[i].Name + "\" requested a transition, but has no target set");	
 				}
 				else
 				{
-					return behaviour.TransitionTarget;		
+					return m_behaviours[i].TransitionTarget;		
 				}
 				
 			}

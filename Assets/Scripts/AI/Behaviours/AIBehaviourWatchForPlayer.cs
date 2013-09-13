@@ -62,9 +62,10 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 					Vector3 rayDirection = Quaternion.Euler(0.0f, currentAngle, 0.0f) * Vector3.forward;
 					
 					//Debug.DrawLine(position, position + ( ), Color.magenta);
-				//	Debug.DrawRay(position, rayDirection, Color.red);
+					Debug.DrawRay(position, rayDirection * distanceToPlayer, Color.red);
 					if(!Physics.Raycast(position, rayDirection, out hitInfo, distanceToPlayer, ~LayerMask.NameToLayer("LevelGeo")))
 					{
+						return true;
 					}
 				}
 			}

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 /// - Lots of raycasting that can probably be trimmed down.
 /// - Remove redundant verts for static light-meshes
 /// - Think of a better way to deal with co-linear rays. They cause flickering at the moment
+/// - Store static-colliders separately to dynamic and cache their transformed vert
 /// </summary>
 
 [RequireComponent(typeof(MeshFilter))]
@@ -40,6 +41,8 @@ public class OccludedMesh : MonoBehaviour
 	
 	void OnEnable()
 	{
+		m_viewCollider 	= GetComponent<BoxCollider>();
+		
 		validVerts.Capacity = 200;
 		
 		// Bung four values into the extents to set the initial capacity
@@ -64,12 +67,19 @@ public class OccludedMesh : MonoBehaviour
 		uvs[0] 		= new Vector2(0.5f, 0.5f);
 		
 		m_occluders[m_maxOccluderVerts] = new OccluderVector();	
+		
+		float extentsVal = Mathf.Abs(m_viewCollider.size.x * Mathf.Cos(Mathf.PI / 4));
+		
+		m_fixedExtents[0] = new Vector3(-extentsVal, 0.0f, extentsVal);
+		m_fixedExtents[1] = new Vector3(-extentsVal, 0.0f, -extentsVal);
+		m_fixedExtents[2] = new Vector3(extentsVal, 0.0f, extentsVal);
+		m_fixedExtents[3] = new Vector3(extentsVal, 0.0f, -extentsVal);
 	}
 	
 	void Start () 
 	{
 		m_filter 		= GetComponent<MeshFilter>();
-		m_viewCollider 	= GetComponent<BoxCollider>();
+		
 		
 		if(m_filter.mesh == null)
 		{
@@ -190,7 +200,8 @@ public class OccludedMesh : MonoBehaviour
 			localPosition.y = 0.0f;
 			
 			vertices[vertID + 1] 	= rotationInverse *  localPosition;
-			uvs[vertID + 1]  = new Vector2((localPosition.x + extentsVal) / (extentsVal * 2.0f), (localPosition.z + extentsVal) / (extentsVal * 2.0f));
+			uvs[vertID + 1].x = (localPosition.x + extentsVal) / (extentsVal * 2.0f);
+			uvs[vertID + 1].y = (localPosition.z + extentsVal) / (extentsVal * 2.0f);
 		}
 		
 		// Loop through the points and build them there triangles
@@ -224,7 +235,9 @@ public class OccludedMesh : MonoBehaviour
 	/// </returns>
 	private void GetOccluders()
 	{
-		Vector3 objectPosition = transform.position;
+		m_cachedPosition = transform.position;
+		
+		Vector3 objectPosition = m_cachedPosition;
 		objectPosition.y += CalculativeOffset;
 		
 		RaycastHit hitInfo;
@@ -399,12 +412,14 @@ public class OccludedMesh : MonoBehaviour
 		
 		Array.Sort(m_occluders, 0, m_occluderCount);
 		
-		float delta = 1.0f / (float)m_occluderCount;
-		for(int i = 0; i < m_occluderCount; i++)
+		if(ShowSucceededRays)
 		{
-			Color current = new Color(delta * i, 0.0f, 0.0f, 1.0f);
-			if(ShowSucceededRays)
-				Debug.DrawLine(transform.position , m_occluders[i].vec , current);
+			float delta = 1.0f / (float)m_occluderCount;
+			for(int i = 0; i < m_occluderCount; i++)
+			{
+				
+					Debug.DrawLine(transform.position , m_occluders[i].vec , Color.red);
+			}
 		}
 	}
 	
@@ -423,15 +438,10 @@ public class OccludedMesh : MonoBehaviour
 	
 	private void UpdateExtents()
 	{
-		float extentsVal = Mathf.Abs(m_viewCollider.size.x * Mathf.Cos(Mathf.PI / 4));
-		
-		Vector3 objectPosition = transform.position;
-		
-		extentsVals[0] = objectPosition + new Vector3(-extentsVal, 0.0f, extentsVal);
-		extentsVals[1] = objectPosition + new Vector3(-extentsVal, 0.0f, -extentsVal);
-		extentsVals[2] = objectPosition + new Vector3(extentsVal, 0.0f, extentsVal);
-		extentsVals[3] = objectPosition + new Vector3(extentsVal, 0.0f, -extentsVal);
-	
+		extentsVals[0] = m_cachedPosition + m_fixedExtents[0];
+		extentsVals[1] = m_cachedPosition + m_fixedExtents[1];
+		extentsVals[2] = m_cachedPosition + m_fixedExtents[2];
+		extentsVals[3] = m_cachedPosition + m_fixedExtents[3];
 	}
 			
 	private static int OccluderComparison(OccluderVector v1, OccluderVector v2)
@@ -480,6 +490,7 @@ public class OccludedMesh : MonoBehaviour
 	private int m_lastRayCount = 0;
 	private int m_sortedEntries = 0;
 	
+	Vector3[] m_fixedExtents		= new Vector3[4];
 	List<Vector3> extentsVals		= new List<Vector3>();
 	List<Vector3> validVerts 		= new List<Vector3>();
 	
@@ -493,5 +504,7 @@ public class OccludedMesh : MonoBehaviour
 	private OccluderVector[] m_occluders = new OccluderVector[m_maxOccluderVerts + 1];
 	
 	private int m_occluderCount = 0;
+	
+	private Vector3 m_cachedPosition = Vector3.zero;
 	
 }
