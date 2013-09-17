@@ -40,6 +40,9 @@ Shader "Hidden/ViewRegion"
 		#endif
 		
 		o.uv[1] =  v.texcoord.xy;	
+		
+
+    
 		return o;
 	}
 	
@@ -50,14 +53,17 @@ Shader "Hidden/ViewRegion"
 		half4 uv = half4(i.uv[1].x, i.uv[1].y, 5.0, 0.0);
 	
 		half4 frameBuffer 	= tex2D(_MainTex, i.uv[0]);// tex2Dbias(_MainTex, uv);
-		half4 mask			= 1.0f - tex2D(_Overlay, i.uv[0]);
+		half4 mask			= tex2D(_Overlay, i.uv[0]);
 		
-			
-		//frameBuffer = half4(1.0f, 0.0f, 0.0f, 1.0f);	
+		mask.r -= 0.3f;
+		mask.r = saturate(mask.r);
 		
-
-		return frameBuffer * half4(1.0f, 0.0f, 0.0f, 1.0f);// * (mask * ((1.0f - outColour) * sum);//( * half4(0.6f, 0.6f, 0.6f, 0.4f));
-	}	
+		float intensity = 0.3f * frameBuffer.r + 0.59f * frameBuffer.g + 0.11f * frameBuffer.b;
+		
+		half4 outCol = lerp(frameBuffer, half4(intensity, intensity, intensity, 1.0f), mask.r);
+		
+		return outCol;//frameBuffer * mask;//half4(1.0f, 0.0f, 0.0f, 1.0f);// * (mask * ((1.0f - outColour) * sum);//( * half4(0.6f, 0.6f, 0.6f, 0.4f));
+	}	 
 
 	ENDCG 
 	

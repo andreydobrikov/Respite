@@ -10,6 +10,10 @@
 //
 ///////////////////////////////////////////////////////////
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -76,7 +80,15 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 	
 	public override void End() { }
 	
+#if UNITY_EDITOR
+	public override void OnInspectorGUI()
+	{
+		m_viewAngle = EditorGUILayout.Slider("View Angle", m_viewAngle, 1.0f, 360.0f);
+	}
+#endif
+	
 	private GameObject m_player = null;
 	
+	[SerializeField]
 	private float m_viewAngle = 180.0f;
 }

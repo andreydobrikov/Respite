@@ -114,8 +114,9 @@ public class LightMapGenerator
 				Vector2 v3 = new Vector2(roomMesh.vertices[roomMesh.triangles[triAlt * 3 + 1]].x, roomMesh.vertices[roomMesh.triangles[triAlt * 3 + 1]].z);
 				Vector2 v4 = new Vector2(roomMesh.vertices[roomMesh.triangles[triAlt * 3 + 2]].x, roomMesh.vertices[roomMesh.triangles[triAlt * 3 + 2]].z);
 				
+				Vector2 intersection0, intersection1;
 				
-				bool intersect = MathsHelper.LineTriIntersect(v0, v1, v2, v3, v4);
+				bool intersect = MathsHelper.LineTriIntersect(v0, v1, v2, v3, v4, out intersection0, out intersection1);
 				intersect |= MathsHelper.LineInTri(v0, v1, v2, v3, v4);
 				
 				if(intersect) { m_intersections.Add(newLine0); }
@@ -123,7 +124,7 @@ public class LightMapGenerator
 				v0 = new Vector2(newLine1.start.x, newLine1.start.z);
 				v1 = new Vector2(newLine1.end.x, newLine1.end.z);
 				
-				intersect = MathsHelper.LineTriIntersect(v0, v1, v2, v3, v4);
+				intersect = MathsHelper.LineTriIntersect(v0, v1, v2, v3, v4, out intersection0, out intersection1);
 				intersect |= MathsHelper.LineInTri(v0, v1, v2, v3, v4);
 				
 				if(intersect) { m_intersections.Add(newLine1); }
@@ -131,7 +132,7 @@ public class LightMapGenerator
 				v0 = new Vector2(newLine2.start.x, newLine2.start.z);
 				v1 = new Vector2(newLine2.end.x, newLine2.end.z);
 				
-				intersect = MathsHelper.LineTriIntersect(v0, v1, v2, v3, v4);
+				intersect = MathsHelper.LineTriIntersect(v0, v1, v2, v3, v4, out intersection0, out intersection1);
 				intersect |= MathsHelper.LineInTri(v0, v1, v2, v3, v4);
 				
 				if(intersect) { m_intersections.Add(newLine2); }

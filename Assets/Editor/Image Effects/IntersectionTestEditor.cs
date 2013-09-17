@@ -36,8 +36,9 @@ public class IntersectionTestEditor : Editor
 		Vector2 altV3 = new Vector2(tester.v3.x, tester.v3.z);
 		Vector2 altV4 = new Vector2(tester.v4.x, tester.v4.z);
 		
+		Vector2 i0, i1;
 		
-		bool intersection = MathsHelper.LineTriIntersect(altV0, altV1, altV2, altV3, altV4);
+		bool intersection = MathsHelper.LineTriIntersect(altV0, altV1, altV2, altV3, altV4, out i0, out i1);
 		
 		intersection |= MathsHelper.LineInTri(altV0, altV1, altV2, altV3, altV4);
 

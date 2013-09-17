@@ -234,7 +234,7 @@ public class BuildingEditor :  Editor
 			}
 			else
 			{
-				Debug.Log("Lightmap Missing: " + ambientMeshName);	
+				Debug.Log("Lightmap Texture Missing: " + ambientMeshName);	
 			}
 			
 			renderer.material = ambientCopy;

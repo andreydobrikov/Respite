@@ -63,15 +63,15 @@ public class ForestSection
 	{
 		{
 			Gizmos.color = new Color(0.0f, 0.0f, 0.5f, 1.0f);
-			Gizmos.DrawLine(m_origin, new Vector2(m_origin.x + m_dimensions.x, m_origin.y));
-			Gizmos.DrawLine(m_origin, new Vector2(m_origin.x, m_origin.y + m_dimensions.y));
-			Gizmos.DrawLine(m_origin + m_dimensions, new Vector2(m_origin.x, m_origin.y + m_dimensions.y));
-			Gizmos.DrawLine(m_origin + m_dimensions, new Vector2(m_origin.x + m_dimensions.x, m_origin.y));
+			Gizmos.DrawLine(m_origin, new Vector3(m_origin.x + m_dimensions.x, 1.0f, m_origin.y));
+			Gizmos.DrawLine(m_origin, new Vector3(m_origin.x, 1.0f, m_origin.y + m_dimensions.y));
+			Gizmos.DrawLine(m_origin + m_dimensions, new Vector3(m_origin.x, 1.0f, m_origin.y + m_dimensions.y));
+			Gizmos.DrawLine(m_origin + m_dimensions, new Vector3(m_origin.x + m_dimensions.x, 1.0f, m_origin.y));
 			
 			Gizmos.color = Color.red;
 			foreach(var instance in m_instancePositions)
 			{
-				Gizmos.DrawSphere((Vector3)instance + new Vector3(0.0f, 0.0f, -1.0f),  2.0f);	
+				Gizmos.DrawSphere(instance + new Vector3(0.0f, 1.0f, 0.0f),  2.0f);	
 			}
 		}
 	}
@@ -92,13 +92,13 @@ public class ForestSection
 			
 			if(instance.activeObject != null)
 			{
-				float z = instance.activeObject.transform.position.z;
-				instance.activeObject.transform.position = (Vector3)instance.position + new Vector3(0.0f, 0.0f, z);
-				instance.activeObject.transform.rotation = Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.Range(0.0f, 360.0f));
+				float y = instance.activeObject.transform.position.y;
+				instance.activeObject.transform.position = (Vector3)instance.position + new Vector3(0.0f, y, 0.0f);
+				instance.activeObject.transform.rotation = Quaternion.Euler(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f);
 				
 				// TODO: Placeholder shit
 				float scale  = UnityEngine.Random.Range(1.0f, 3.5f);
-				instance.activeObject.transform.localScale = new Vector3(scale, scale, 1.0f);
+				instance.activeObject.transform.localScale = new Vector3(scale, 1.0f, scale);
 			}
 		}
 	}
@@ -113,8 +113,8 @@ public class ForestSection
 			
 			if(instance.activeObject != null)
 			{
-				float z = instance.activeObject.transform.position.z;
-				instance.activeObject.transform.position = new Vector3(-1000.0f, -1000.0f, z);
+				float y = instance.activeObject.transform.position.y;
+				instance.activeObject.transform.position = new Vector3(-1000.0f, y, -1000.0f);
 			}
 			
 			m_forest.RequestDeactivation(instance.activeObject);
@@ -135,7 +135,7 @@ public class ForestSection
 	}
 	
 	[SerializeField]
-	private List<Vector2> m_instancePositions	= new List<Vector2>();
+	private List<Vector3> m_instancePositions	= new List<Vector3>();
 	
 	private List<TreeInstance> m_instances 		= new List<TreeInstance>();
 	private float m_treeRadius 					= 0.0f;

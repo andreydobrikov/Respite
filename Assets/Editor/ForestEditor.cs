@@ -20,11 +20,11 @@ public class ForestEditor : Editor
 		
 		
 		int newSectionsX = EditorGUILayout.IntField("Sections X", forest.m_sectionsX);
-		int newSectionsY = EditorGUILayout.IntField("Sections Y", forest.m_sectionsY);
+		int newSectionsZ = EditorGUILayout.IntField("Sections Z", forest.m_sectionsZ);
 		
-		if((newSectionsX != forest.m_sectionsX || newSectionsY != forest.m_sectionsY) && newSectionsX > 0 && newSectionsY > 0)
+		if((newSectionsX != forest.m_sectionsX || newSectionsZ != forest.m_sectionsZ) && newSectionsX > 0 && newSectionsZ > 0)
 		{
-			forest.SetSectionCounts(newSectionsX, newSectionsY);
+			forest.SetSectionCounts(newSectionsX, newSectionsZ);
 		}
 		
 		forest.m_treeRadius					= EditorGUILayout.FloatField("Tree Radius(fix)", forest.m_treeRadius);
@@ -76,12 +76,12 @@ public class ForestEditor : Editor
 			GUILayout.BeginVertical((GUIStyle)("Box"));
 			
 			int newX = EditorGUILayout.IntSlider("X", forest.m_editorSectionX, 0, forest.m_sectionsX - 1);
-			int newY = EditorGUILayout.IntSlider("Y", forest.m_editorSectionY, 0, forest.m_sectionsY - 1);
+			int newZ = EditorGUILayout.IntSlider("Z", forest.m_editorSectionZ, 0, forest.m_sectionsZ - 1);
 			
-			if(newX != forest.m_editorSectionX || newY != forest.m_editorSectionY)
+			if(newX != forest.m_editorSectionX || newZ != forest.m_editorSectionZ)
 			{
 				forest.m_editorSectionX = newX;
-				forest.m_editorSectionY = newY;
+				forest.m_editorSectionZ = newZ;
 				EditorUtility.SetDirty(forest);	
 			}
 			
@@ -101,16 +101,16 @@ public class ForestEditor : Editor
 	{
 		Forest forest = (Forest)target;
 	
-		float handleSize = HandleUtility.GetHandleSize(new Vector2(forest.m_startX, forest.m_startY)) / 10.0f;
+		float handleSize = HandleUtility.GetHandleSize(new Vector2(forest.m_startX, forest.m_startZ)) / 10.0f;
 		
-		Vector2 newMin = Handles.Slider2D(new Vector2(forest.m_startX, forest.m_startY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
-		Vector2 newMax = Handles.Slider2D(new Vector2(forest.m_endX, forest.m_endY), new Vector3(0.0f, 0.0f, -1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
+		Vector3 newMin = Handles.Slider2D(new Vector3(forest.m_startX, 0.0f, forest.m_startZ), new Vector3(0.0f, 1.0f, 0.0f), new Vector2(1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
+		Vector3 newMax = Handles.Slider2D(new Vector3(forest.m_endX, 0.0f, forest.m_endZ), new Vector3(0.0f, 1.0f, 0.0f), new Vector2(1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), handleSize, Handles.CubeCap, new Vector2(0.1f, 0.1f));
 		
 		forest.m_startX = Mathf.Min(newMin.x, newMax.x);
-		forest.m_startY = Mathf.Min(newMin.y, newMax.y);
+		forest.m_startZ = Mathf.Min(newMin.z, newMax.z);
 		
 		forest.m_endX = Mathf.Max(newMin.x, newMax.x);
-		forest.m_endY = Mathf.Max(newMin.y, newMax.y);
+		forest.m_endZ = Mathf.Max(newMin.z, newMax.z);
 	}
 	
 	[MenuItem ("Respite/Forest/Regenerate")]
@@ -144,16 +144,14 @@ public class ForestEditor : Editor
 				bool succeeded = false;
 				int counter = 0;
 				
-				
-				
 				while(!succeeded && counter < forest.m_retryBailout)
 				{
 					float x = Random.Range(forest.m_startX, forest.m_endX);
-					float y = Random.Range(forest.m_startY, forest.m_endY);
+					float z = Random.Range(forest.m_startZ, forest.m_endZ);
 				
-					Vector3 position = new Vector3(x, y, 0.0f);
+					Vector3 position = new Vector3(x, 0.0f, z);
 					
-					bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, 0.0f, -50.0f), (Vector3)position + new Vector3(0.0f, 0.0f, 50.0f), forest.m_treeRadius, layerMask);
+					bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, -50.0f, 0.0f), (Vector3)position + new Vector3(0.0f, 50.0f, 0.0f), forest.m_treeRadius, layerMask);
 					if(!overlap)
 					{
 						
@@ -171,7 +169,7 @@ public class ForestEditor : Editor
 							}
 							catch(System.Exception e)
 							{
-								Debug.Log("Instance out of bound at " + position.x + ", " + position.y);
+								Debug.Log("Instance out of bound at " + position.x + ", " + position.z);
 								Debug.Log(e);	
 								Debug.Break();
 							}

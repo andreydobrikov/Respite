@@ -112,9 +112,9 @@ public class OccludedMesh : MonoBehaviour
 				return;	
 			}
 			
-			if(other is SphereCollider)
+			if(other is CapsuleCollider)
 			{
-				SphereCollider newCollider = other as SphereCollider;
+				CapsuleCollider newCollider = other as CapsuleCollider;
 				ColliderVertices newVertices = new ColliderVertices();
 				
 				newVertices.collider = newCollider;
@@ -250,9 +250,9 @@ public class OccludedMesh : MonoBehaviour
 		foreach(var colliderPair in m_colliderVertices)
 		{
 			// Process SphereColliders
-			if(colliderPair.Key is SphereCollider)
+			if(colliderPair.Key is CapsuleCollider)
 			{
-				SphereCollider collider = colliderPair.Key as SphereCollider;
+				CapsuleCollider collider = colliderPair.Key as CapsuleCollider;
 				
 				Vector3 diff = colliderPair.Key.transform.position - objectPosition;
 				

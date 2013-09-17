@@ -19,16 +19,51 @@ public class MathsHelper
 	/// Returns whether a line-segment intersects a triangle in 2D.
 	/// First two parameters are the line start and end. Other three are triangle verts
 	/// </summary>
-	public static bool LineTriIntersect(Vector2 l0, Vector2 l1, Vector2 t0, Vector2 t1, Vector2 t2)
+	public static bool LineTriIntersect(Vector2 l0, Vector2 l1, Vector2 t0, Vector2 t1, Vector2 t2, out Vector2 intersect0, out Vector2 intersect1)
 	{
 		bool intersect = false;
 		
 		Vector2 intersectionPoint;
+		bool point0Used = false;
+		
+		intersect0 = Vector2.zero;
+		intersect1 = Vector2.zero;
 		
 		// TODO: Can early out here
-		intersect |= LineIntersectionPoint(l0, l1, t0, t1, out intersectionPoint);
-		intersect |= LineIntersectionPoint(l0, l1, t2, t1, out intersectionPoint);
-		intersect |= LineIntersectionPoint(l0, l1, t0, t2, out intersectionPoint);
+		if(LineIntersectionPoint(l0, l1, t0, t1, out intersectionPoint)) 
+		{
+			intersect = true;
+			intersect0 = intersectionPoint;
+			point0Used = true;
+		}
+		
+		if(LineIntersectionPoint(l0, l1, t2, t1, out intersectionPoint))
+		{
+			intersect = true;
+			if(point0Used)
+			{
+				intersect1 = intersectionPoint;	
+			}
+			else
+			{
+				intersect0 = intersectionPoint;
+				point0Used = true;
+			}
+		}
+		
+		if(LineIntersectionPoint(l0, l1, t0, t2, out intersectionPoint))
+		{
+			intersect = true;
+			if(point0Used)
+			{
+				intersect1 = intersectionPoint;	
+			}
+			else
+			{
+				intersect0 = intersectionPoint;
+				point0Used = true;
+			}
+		}
 		
 		return intersect;
 	}
