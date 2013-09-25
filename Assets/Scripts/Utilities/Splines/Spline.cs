@@ -98,6 +98,67 @@ public class Spline
 		return length;
 	}
 	
+	public Vector2 GetPosition(float progress)
+	{
+		float splineLength = GetLength ();
+		float positionLength = progress * splineLength;
+		
+		float accumulatedLength = 0.0f;
+		for(int i = 0; i < m_beziers.Length; i++)
+		{
+			float bezierLength = m_beziers[i].GetLength();
+			
+			if(accumulatedLength + bezierLength < positionLength)
+			{
+				accumulatedLength += bezierLength;	
+			}
+			else
+			{
+				// This is distance along the current bezier that the progress will be.
+				float localProgress = positionLength - accumulatedLength;
+				
+				// This is the normalized distance along the current bezier
+				float normalizedDistance = 	localProgress / bezierLength;
+				//return Vector2.one;
+				return m_beziers[i].GetBezierPoint(normalizedDistance);
+			}
+		}
+		
+	//	Debug.LogWarning("Requested spline progress is out of bounds! (" + progress + ")");
+		return Vector2.zero;	
+	}
+	
+	public float GetWidth(float progress)
+	{
+		int modifierIndex = 0;
+		float splineLength = GetLength ();
+		float positionLength = progress * splineLength;
+		
+		float accumulatedLength = 0.0f;
+		for(int i = 0; i < m_beziers.Length; i++)
+		{
+			float bezierLength = m_beziers[i].GetLength();
+			
+			if(accumulatedLength + bezierLength < positionLength)
+			{
+				accumulatedLength += bezierLength;	
+				modifierIndex++;
+			}
+			else
+			{
+				// This is distance along the current bezier that the progress will be.
+				float localProgress = positionLength - accumulatedLength;
+				
+				// This is the normalized distance along the current bezier
+				float normalizedDistance = 	localProgress / bezierLength;
+				
+				float width = Mathf.Lerp(m_widthModifiers[modifierIndex], m_widthModifiers[modifierIndex + 1], localProgress);
+				return width;
+			}
+		}
+		return 1.0f;
+	}	
+	
 	[SerializeField]
 	private int m_controlPoints = 10;
 	

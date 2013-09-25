@@ -14,7 +14,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-[CustomEditor(typeof(Island))]
+
 public class SliceEditor : Editor 
 {
 
@@ -75,7 +75,7 @@ public class SliceEditor : Editor
 		{
 			if(island.IslandSourceMesh != null)
 			{
-				Mesh[,] meshes = MeshSlice.Slice(island.IslandSourceMesh, island.SectionsX, island.SectionsY);
+				Mesh[,] meshes = MeshSlice.Slice(island.IslandSourceMesh, island.SectionsX, island.SectionsY, true, true);
 					
 				GameObject meshesObject = GameObjectHelper.FindChild(island.gameObject, "meshes", true);
 				

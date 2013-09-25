@@ -282,7 +282,12 @@ public class BuildingEditor :  Editor
 	{
 		Building building 						= (Building)target;
 		GameObject weatherObject				= GameObjectHelper.FindChild(building.gameObject, Building.s_weather_mask_id, true);
-		weatherObject.transform.localPosition 	= new Vector3(0.0f, 3.1f, 0.0f);	
+		string maskHeightSetting				= Settings.Instance.GetSetting("building_weather_mask_height");
+		float maskHeight = 3.1f;
+		
+		float.TryParse(maskHeightSetting, out maskHeight);
+		
+		weatherObject.transform.localPosition 	= new Vector3(0.0f, maskHeight, 0.0f);	
 		weatherObject.layer						= LayerMask.NameToLayer("Weather");
 		
 		MeshFilter filter 		= weatherObject.GetComponent<MeshFilter>();

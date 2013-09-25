@@ -9,6 +9,7 @@ public class PathEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		Path path = (Path)target;
+		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;		
 		
 		GUILayout.BeginVertical((GUIStyle)("Box"));
 		GUILayout.Label("Spline Settings");
@@ -37,6 +38,7 @@ public class PathEditor : Editor
 			
 			path.m_meshes = EditorGUILayout.Toggle("Generate Meshes", path.m_meshes);
 			path.m_colliders = EditorGUILayout.Toggle("Generate Colliders", path.m_colliders);
+			path.m_paint = EditorGUILayout.Toggle("Paint Splat-Map", path.m_paint);
 			
 			GUILayout.EndVertical();
 			
@@ -69,7 +71,7 @@ public class PathEditor : Editor
 				GUILayout.BeginVertical((GUIStyle)("Box"));
 				path.m_meshMaterial 	= EditorGUILayout.ObjectField(path.m_meshMaterial, typeof(Material), false) as Material;
 				path.m_meshLayer		= EditorGUILayout.LayerField("Mesh Layer", path.m_meshLayer);
-				path.m_meshDepth		= EditorGUILayout.FloatField("Mesh Z", path.m_meshDepth);
+				path.m_meshDepth		= EditorGUILayout.FloatField("Mesh Y", path.m_meshDepth);
 				path.m_meshWidth		= EditorGUILayout.FloatField("Mesh Segment Radius", path.m_meshWidth);
 				path.m_uv0Multiplier	= EditorGUILayout.FloatField("UV0 Multiplier", path.m_uv0Multiplier);
 				path.m_uv1Multiplier	= EditorGUILayout.FloatField("UV1 Multiplier", path.m_uv1Multiplier);
@@ -87,7 +89,24 @@ public class PathEditor : Editor
 			
 			GUILayout.EndVertical();
 			
-			GUI.enabled = path.m_colliders || path.m_meshes;
+			GUI.enabled = path.m_paint;
+			
+			GUILayout.BeginVertical((GUIStyle)("Box"));
+			
+			path.m_showPaintFoldout = EditorGUILayout.Foldout(path.m_showPaintFoldout, "Paint Settings");
+			
+			if(path.m_showPaintFoldout)
+			{
+				GUILayout.BeginVertical((GUIStyle)("Box"));
+													
+				IslandBrushEditor.ShowInspectorGUI(island);
+				
+				GUILayout.EndVertical();
+			}
+			
+			GUILayout.EndVertical();
+			
+			GUI.enabled = path.m_colliders || path.m_meshes || path.m_paint;
 			
 			if(GUILayout.Button("Rebuild Path"))
 			{
@@ -133,11 +152,36 @@ public class PathEditor : Editor
 							
 						MeshCollider meshCollider = newCollider.AddComponent<MeshCollider>();
 						meshCollider.sharedMesh = colliderMesh;
-							
+						meshCollider.isTrigger = true;
 					}
 					
 					count++;
 				}
+				
+				if(path.m_paint)
+				{
+					island.StartPainting();
+					int blobCount = (int)(path.m_spline.GetLength() / 0.01f);
+					
+					Debug.Log("Painted " + blobCount + " blobs");
+					
+					
+					float delta = 1.0f / (float)blobCount;
+					for(int i = 0; i < blobCount; i++)
+					{
+						
+						EditorUtility.DisplayProgressBar("Painting blobs", "Paint blob: " + i + "\\" + blobCount, (float)i / (float)blobCount);
+						island.brushSize = (int)island.WorldSizeToTexel(path.m_spline.GetWidth(delta * i));
+						island.UpdateBrush();
+						
+						Vector2 position = path.m_spline.GetPosition(delta * i);
+						island.PaintPixel(position.x, position.y);
+					}
+					
+					island.ApplyPaintChanges();
+					island.SaveTextures();
+				}
+				EditorUtility.ClearProgressBar();
 			}
 		}
 		

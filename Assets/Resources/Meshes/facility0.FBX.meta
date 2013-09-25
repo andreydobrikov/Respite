@@ -34,6 +34,12 @@ ModelImporter:
     100056: facility0_preproom_ambient
     100058: facility_garden_wall
     100060: island
+    100062: Plane005
+    100064: Plane006
+    100066: Plane007
+    100068: Plane008
+    100070: Plane009
+    100072: Plane010
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -65,6 +71,12 @@ ModelImporter:
     400056: facility0_preproom_ambient
     400058: facility_garden_wall
     400060: island
+    400062: Plane005
+    400064: Plane006
+    400066: Plane007
+    400068: Plane008
+    400070: Plane009
+    400072: Plane010
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -95,6 +107,12 @@ ModelImporter:
     2300054: facility0_preproom_ambient
     2300056: facility_garden_wall
     2300058: island
+    2300060: Plane005
+    2300062: Plane006
+    2300064: Plane007
+    2300066: Plane008
+    2300068: Plane009
+    2300070: Plane010
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -125,6 +143,12 @@ ModelImporter:
     3300054: facility0_preproom_ambient
     3300056: facility_garden_wall
     3300058: island
+    3300060: Plane005
+    3300062: Plane006
+    3300064: Plane007
+    3300066: Plane008
+    3300068: Plane009
+    3300070: Plane010
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -155,6 +179,12 @@ ModelImporter:
     4300054: facility0_hall1_ambient
     4300056: facility_garden_wall
     4300058: island
+    4300060: Plane005
+    4300062: Plane006
+    4300064: Plane007
+    4300066: Plane008
+    4300068: Plane009
+    4300070: Plane010
     9500000: //RootNode
   materials:
     importMaterials: 1

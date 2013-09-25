@@ -96,11 +96,13 @@ public class OccludedMesh : MonoBehaviour
 	void OnBecameVisible()
 	{
 		enabled = true;	
+		m_activeMeshes++;
 	}
 	
 	void OnBecameInvisible()
 	{
 		enabled = false;	
+		m_activeMeshes--;
 	}
 	
 	public void OnTriggerEnter(Collider other)
@@ -506,5 +508,6 @@ public class OccludedMesh : MonoBehaviour
 	private int m_occluderCount = 0;
 	
 	private Vector3 m_cachedPosition = Vector3.zero;
+	public static int m_activeMeshes = 0;
 	
 }

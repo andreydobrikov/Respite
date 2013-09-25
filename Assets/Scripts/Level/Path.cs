@@ -38,8 +38,10 @@ public class Path : MonoBehaviour
 	public bool m_showCollidersFoldout		= false;
 	public bool m_showMeshesFoldout			= false;
 	public bool m_showGeneratorFoldout 		= false;
+	public bool m_showPaintFoldout			= false;
 	public bool m_colliders					= true;
 	public bool m_meshes					= true;
+	public bool m_paint						= true;
 	public bool m_drawPathOnly 				= false;
 #endif
 	

@@ -39,7 +39,11 @@ public class Weather : MonoBehaviour
 			m_snowParticles = ParticleObject.GetComponent<ParticleSystem>();
 		}
 		
-		SetStormIntensity(0.8f);
+		string initialIntensity = Settings.Instance.GetSetting("initial_storm_intensity");
+		float initialValue = 0.0f;
+		float.TryParse(initialIntensity, out initialValue);
+		
+		SetStormIntensity(initialValue);
 	}
 	
 	public void Update()

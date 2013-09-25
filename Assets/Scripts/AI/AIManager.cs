@@ -27,6 +27,7 @@ public class AIManager : MonoBehaviour
 		AvailableBehaviours.Add(typeof(AIBehaviourPatrol));
 		AvailableBehaviours.Add(typeof(AIBehaviourActivateAlarms));
 		AvailableBehaviours.Add(typeof(AIBehaviourWatchForPlayer));
+		AvailableBehaviours.Add(typeof(AIBehaviourFollowPlayer));
 		
 		foreach(var behaviour in AvailableBehaviours)
 		{

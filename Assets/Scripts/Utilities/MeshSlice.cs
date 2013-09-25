@@ -21,16 +21,25 @@ using System.Collections.Generic;
 
 public class MeshSlice 
 {
-	public static Mesh[,] Slice(Mesh input, int sectionsX, int sectionsY)
+	public static Mesh[,] Slice(Mesh input, int sectionsX, int sectionsY, bool localUVs, bool showProgressBar)
 	{
 		Mesh[,] output = new Mesh[sectionsX, sectionsY];
 		
 		// Mangle all the Mesh's triangle information into slice-friendly Triangle objects
 		List<Triangle> triangles = new List<Triangle>();
 		
+		if(showProgressBar) 
+		{
+			EditorUtility.DisplayProgressBar("Slicing Mesh", "Generating Triangle Lists", 0.0f);	
+		}
+			
 		for(int i = 0; i < input.triangles.Length / 3; i++)
 		{
 			Triangle newTri = new Triangle();
+			
+			newTri.y0 = input.vertices[input.triangles[i * 3]].y;
+			newTri.y1 = input.vertices[input.triangles[i * 3 + 1]].y;
+			newTri.y2 = input.vertices[input.triangles[i * 3 + 2]].y;
 			
 			newTri.p0 = new Vector2(input.vertices[input.triangles[i * 3]].x, input.vertices[input.triangles[i * 3]].z);
 			newTri.p1 = new Vector2(input.vertices[input.triangles[i * 3 + 1]].x, input.vertices[input.triangles[i * 3 + 1]].z);
@@ -43,7 +52,7 @@ public class MeshSlice
 			triangles.Add(newTri);
 		}
 		
-		Debug.Log("Located " + triangles.Count + " triangles");
+		//Debug.Log("Located " + triangles.Count + " triangles");
 		
 		// Ignoring Y for now.
 		
@@ -102,7 +111,9 @@ public class MeshSlice
 			triangles = newTris;
 		}
 		
-		Debug.Log("Finished slicing with " + triangles.Count + " tris");
+		EditorUtility.DisplayProgressBar("Slicing Mesh", "Allocating Sliced Triangles", 0.5f);
+		
+		//Debug.Log("Finished slicing with " + triangles.Count + " tris");
 		
 		// Okay, so triangles *should* be full of slices triangles
 		
@@ -150,9 +161,9 @@ public class MeshSlice
 				int count = 0;
 				foreach(var tri in candidateTris)
 				{
-					verts[count] = 	new Vector3(tri.p0.x, 0.0f, tri.p0.y);
-					verts[count + 1] = 	new Vector3(tri.p1.x, 0.0f, tri.p1.y);
-					verts[count + 2] = 	new Vector3(tri.p2.x, 0.0f, tri.p2.y);
+					verts[count] = 	new Vector3(tri.p0.x, tri.y0, tri.p0.y);
+					verts[count + 1] = 	new Vector3(tri.p1.x, tri.y1, tri.p1.y);
+					verts[count + 2] = 	new Vector3(tri.p2.x, tri.y2, tri.p2.y);
 					
 					indices[count] = count;
 					
@@ -169,9 +180,24 @@ public class MeshSlice
 						indices[count + 2] = count + 1;
 					}
 					
-					uvs[count] = tri.uv0;
-					uvs[count + 1] = tri.uv1;
-					uvs[count + 2] = tri.uv2;
+					
+					if(localUVs)
+					{
+						uvs[count].x = (verts[count].x - xMin) / (xMax - xMin);
+						uvs[count].y = (verts[count].z - yMin) / (yMax - yMin);
+						
+						uvs[count + 1].x = (verts[count + 1].x - xMin) / (xMax - xMin);
+						uvs[count + 1].y = (verts[count + 1].z - yMin) / (yMax - yMin);
+						
+						uvs[count + 2].x = (verts[count + 2].x - xMin) / (xMax - xMin);
+						uvs[count + 2].y = (verts[count + 2].z - yMin) / (yMax - yMin);
+					}
+					else
+					{
+						uvs[count] = tri.uv0;
+						uvs[count + 1] = tri.uv1;
+						uvs[count + 2] = tri.uv2;
+					}
 					
 					count += 3;
 				}
@@ -181,8 +207,9 @@ public class MeshSlice
 				output[i, j].uv = uvs;
 			}
 		}
+		EditorUtility.ClearProgressBar();
 		
-		Debug.LogError("Finished with " + triangles.Count + " triangles unassigned");
+		//Debug.LogError("Finished with " + triangles.Count + " triangles unassigned");
 		
 		return output;
 	}
@@ -195,25 +222,59 @@ public class MeshSlice
 		
 		Vector2 soloPoint;
 		Vector2 soloUV;
+		float soloY;
 		
 		Vector2 pairPoint0;
 		Vector2 pairPoint1;
-				Vector2 pairUV0;
+		Vector2 pairUV0;
 		Vector2 pairUV1;
+		float pairY0;
+		float pairY1;
 		
 		bool sign0 = MathsHelper.sign(source.p0, lineStart, lineEnd) <= 0.0f;
 		bool sign1 = MathsHelper.sign(source.p1, lineStart, lineEnd) <= 0.0f;
 		bool sign2 = MathsHelper.sign(source.p2, lineStart, lineEnd) <= 0.0f;
 		
-		if(sign0 == sign1) 		{ soloPoint = source.p2; pairPoint0 = source.p0; pairPoint1 = source.p1; soloUV = source.uv2; pairUV0 = source.uv0; pairUV1 = source.uv1; }
-		else if(sign1 == sign2) { soloPoint = source.p0; pairPoint0 = source.p1; pairPoint1 = source.p2; soloUV = source.uv0; pairUV0 = source.uv1; pairUV1 = source.uv2; }
-		else 					{ soloPoint = source.p1; pairPoint0 = source.p0; pairPoint1 = source.p2; soloUV = source.uv1; pairUV0 = source.uv0; pairUV1 = source.uv2; }
+		if(sign0 == sign1) 		
+		{ 
+			soloPoint = source.p2; 
+			pairPoint0 = source.p0; 
+			pairPoint1 = source.p1; 
+			soloUV = source.uv2; 
+			pairUV0 = source.uv0; 
+			pairUV1 = source.uv1;  
+			soloY = source.y2;
+			pairY0 = source.y0;
+			pairY1 = source.y1;
+		}
+		else if(sign1 == sign2) 
+		{ 
+			soloPoint = source.p0; 
+			pairPoint0 = source.p1; 
+			pairPoint1 = source.p2; 
+			soloUV = source.uv0; 
+			pairUV0 = source.uv1; 
+			pairUV1 = source.uv2; 
+			soloY = source.y0;
+			pairY0 = source.y1;
+			pairY1 = source.y2;
+		}
+		else 					
+		{ 
+			soloPoint = source.p1; 
+			pairPoint0 = source.p0; 
+			pairPoint1 = source.p2; 
+			soloUV = source.uv1; 
+			pairUV0 = source.uv0; 
+			pairUV1 = source.uv2; 
+			soloY = source.y1;
+			pairY0 = source.y0;
+			pairY1 = source.y2;
+		}
 		
 		// Right, so we know which verts are on which side of the slice-line. Time for the intersections.
 		
 		Vector2 intersection0, intersection1;
-		
-		
 		
 		MathsHelper.LineIntersectionPoint(lineStart, lineEnd, pairPoint0, soloPoint, out intersection0);
 		MathsHelper.LineIntersectionPoint(lineStart, lineEnd, pairPoint1, soloPoint, out intersection1);
@@ -225,6 +286,9 @@ public class MeshSlice
 		Vector2 intersectionUV0 = pairUV0 + (soloUV - pairUV0) * lerpDistance0;
 		Vector2 intersectionUV1 = pairUV1 + (soloUV - pairUV1) * lerpDistance1;
 		
+		float intersectionY0 = pairY0 + (soloY - pairY0) * lerpDistance0;
+		float intersectionY1 = pairY1 + (soloY - pairY1) * lerpDistance1;
+		
 		// Three triangles. One for the isolated tri, two for the trapezoid base.
 		
 		output[0].p0 = soloPoint;
@@ -234,6 +298,10 @@ public class MeshSlice
 		output[0].uv0 = soloUV;
 		output[0].uv1 = intersectionUV1;
 		output[0].uv2 = intersectionUV0;
+		
+		output[0].y0 = soloY;
+		output[0].y1 = intersectionY1;
+		output[0].y2 = intersectionY0;
 		
 		Vector2 midLower = pairPoint0 + ((pairPoint1 - pairPoint0) / 2.0f);
 		
@@ -245,6 +313,10 @@ public class MeshSlice
 		output[1].uv1 = intersectionUV0;
 		output[1].uv2 = pairUV1;
 		
+		output[1].y0 = pairY0;
+		output[1].y1 = intersectionY0;
+		output[1].y2 = pairY1;
+		
 		output[2].p0 = pairPoint1;
 		output[2].p1 = intersection0;
 		output[2].p2 = intersection1;
@@ -253,12 +325,17 @@ public class MeshSlice
 		output[2].uv1 = intersectionUV0;
 		output[2].uv2 = intersectionUV1;
 		
+		output[2].y0 = pairY1;
+		output[2].y1 = intersectionY0;
+		output[2].y2 = intersectionY1;
+		
 		return output;
 	}
 			
 	
 	public class Triangle
 	{
+		public float y0, y1, y2;
 		public Vector2 p0, p1, p2;	
 		public Vector2 uv0, uv1, uv2;
 	}

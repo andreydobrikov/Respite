@@ -18,6 +18,7 @@ public class PostProcessManager : MonoBehaviour
 		GameObject postCamera		= GameObject.FindGameObjectWithTag("PostCamera");
 		GameObject viewCamera		= GameObject.FindGameObjectWithTag("ViewRegionCamera");
 		
+		
 		if(postCamera != null)
 		{
 			m_postBlur = postCamera.GetComponent<BlurEffect>() as BlurEffect;	
@@ -114,7 +115,7 @@ public class PostProcessManager : MonoBehaviour
 #if UNITY_EDITOR
 	void OnGUI()
 	{
-		GUILayout.BeginArea(new Rect(600, 10, 180, 100));
+		GUILayout.BeginArea(new Rect(600, 10, 180, m_showFoldout ? 200 : 100));
 		GUILayout.BeginVertical((GUIStyle)("Box"));
 		
 		m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Post Process");
@@ -143,6 +144,27 @@ public class PostProcessManager : MonoBehaviour
 			}
 			
 			GUI.enabled = true;	
+			
+			m_showSplatMap = GUILayout.Toggle(m_showSplatMap, "Show Splat-Map");
+			
+			if(m_showSplatMap)
+			{
+				
+				Shader.SetGlobalFloat("_SplatDisplayFactor", 1.0f);
+				
+				GUILayout.BeginVertical((GUIStyle)("Box"));
+				m_splatMapWeights.x = GUILayout.HorizontalSlider(m_splatMapWeights.x, 0.0f, 1.0f);
+				m_splatMapWeights.y = GUILayout.HorizontalSlider(m_splatMapWeights.y, 0.0f, 1.0f);
+				m_splatMapWeights.z = GUILayout.HorizontalSlider(m_splatMapWeights.z, 0.0f, 1.0f);
+				GUILayout.EndVertical();
+				
+				Shader.SetGlobalVector("_SplatDisplayOverride", m_splatMapWeights);
+				
+			}
+			else
+			{
+				Shader.SetGlobalFloat("_SplatDisplayFactor", 0.0f);	
+			}
 		}
 		
 		GUILayout.EndVertical();
@@ -157,5 +179,7 @@ public class PostProcessManager : MonoBehaviour
 	private Shader m_defaultLightMapTexture = null;
 	private bool m_showLightmap 			= false;
 	private bool m_showFoldout 				= false;
+	private bool m_showSplatMap				= false;
 	private LightMapEffect m_lightMapEffect = null;
+	private Vector4 m_splatMapWeights		= Vector4.zero;
 }

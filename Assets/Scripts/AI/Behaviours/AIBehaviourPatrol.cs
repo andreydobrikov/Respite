@@ -17,23 +17,16 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class AIBehaviourPatrol : AIBehaviour 
+public class AIBehaviourPatrol : AIBehaviourNavigationBase 
 {
 	public AIBehaviourPatrol() 
 	{
 		m_name = "patrol behaviour";
+		m_destinationReached = WaypointReached;
 	}
 	
-	public override void Start() 
+	public override void NavStart() 
 	{
-		m_agent = GetObject().GetComponent<NavMeshAgent>();
-		m_player = GameObject.FindGameObjectWithTag("Player");
-		
-		if(m_agent == null)
-		{
-			Debug.LogError("AIBehaviourPatrol requires NavMeshAgent component");
-		}
-		
 		m_nodes.Sort(NodeComparison);
 		
 		m_origin = m_nodes[0];
@@ -41,103 +34,40 @@ public class AIBehaviourPatrol : AIBehaviour
 		
 		m_targetIndex = 0;
 		
-		m_agent.SetDestination(new Vector3(m_target.position.x, m_target.position.y, m_target.position.z));
-		
-		//m_agent.destination = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), 0.3f);
-		
-		 m_activeState = PatrolState.Routing;
+		SetDestination(new Vector3(m_target.position.x, m_target.position.y, m_target.position.z));
 	}
 	
-	public override bool Update() 
+	public override bool NavUpdate() 
 	{ 
-		
-		switch(m_activeState)
-		{
-			case PatrolState.Routing:
-			{
-				Door door = RayCastDoor();
-				if(door != null)
-				{
-					m_cachedTarget = m_agent.destination;
-					Debug.Log("Travelling through door");
-					m_activeState = PatrolState.DoorFound;
-					m_door = door;
-				}
-				
-				if(m_agent.remainingDistance == 0.0f)
-				{
-					m_targetIndex++;
-					
-					if(m_targetIndex >= m_nodes.Count)
-					{
-						if(m_loop)
-						{
-							m_targetIndex = m_targetIndex % m_nodes.Count;
-						}
-						else
-						{
-							m_targetIndex = 0;
-							return true;
-						}
-					}
-					
-					m_origin = m_target;
-					
-					m_target = m_nodes[m_targetIndex];
-					m_agent.SetDestination(new Vector3(m_target.position.x, m_target.position.y, m_target.position.z));
-				}	
-				break;
-			}
-			
-			case PatrolState.DoorFound:
-			{
-				if(m_door.State == Door.DoorState.Closed)
-				{
-					m_door.Open(GetObject());
-				
-				}
-				else if(m_door.State == Door.DoorState.Open)
-				{
-					Door door = RayCastDoor();
-					// if the player still wants to go through the door once it's open, point them to the door's end
-					if(door != null && door == m_door)
-					{
-						Vector3 pivot = m_door.PivotPosition;
-						Vector3 direction = m_door.DoorDirection;
-						
-						m_agent.destination = pivot + (direction * 1.4f);
-	
-						m_activeState = PatrolState.RoutingAroundDoor;
-					}
-					else
-					{
-						// Otherwise, return them to their route
-						m_agent.destination = m_cachedTarget;
-						m_activeState = PatrolState.Routing;
-					}
-				}
-				//m_activeState = PatrolState.Routing;
-				break;
-			}
-
-			case PatrolState.RoutingAroundDoor:
-			{
-				if (m_agent.remainingDistance == 0.0f)
-				{
-					m_agent.destination = m_cachedTarget;
-					m_activeState = PatrolState.Routing;
-				}
-				break;			
-			}
-		}
-		
 		return false;
 	}
 	
-	public override void End() 
+	public override void NavEnd() {	}
+	
+	protected bool WaypointReached()
 	{
-		m_agent.destination = GetObject().transform.position;
+		m_targetIndex++;
 		
+		if(m_targetIndex >= m_nodes.Count)
+		{
+			if(m_loop)
+			{
+				m_targetIndex = m_targetIndex % m_nodes.Count;
+			}
+			else
+			{
+				m_targetIndex = 0;
+				return true;
+			}
+		}
+		
+		m_origin = m_target;
+		
+		m_target = m_nodes[m_targetIndex];
+		
+		SetDestination(new Vector3(m_target.position.x, m_target.position.y, m_target.position.z));
+		
+		return false;
 	}
 	
 #if UNITY_EDITOR
@@ -221,36 +151,6 @@ public class AIBehaviourPatrol : AIBehaviour
 		return -1;
 	}
 	
-	private Door RayCastDoor()
-	{
-		Debug.DrawLine(GetObject().transform.position, GetObject().transform.position + m_agent.velocity, Color.green);
-				
-		Vector3 direction = m_agent.steeringTarget - GetObject().transform.position;
-		
-		Debug.DrawRay(GetObject().transform.position, direction, Color.yellow);
-	
-		RaycastHit hitInfo;
-		if(Physics.Raycast(GetObject().transform.position, direction, out hitInfo, direction.magnitude, ~LayerMask.NameToLayer("Interactive")))
-		{
-			Door door = hitInfo.collider.gameObject.GetComponent<Door>();
-			if(door != null)
-			{	
-				return door;
-			}
-		}
-	
-		if(Physics.Raycast(GetObject().transform.position, m_agent.velocity, out hitInfo, 1.0f, ~LayerMask.NameToLayer("Interactive")))
-		{
-			Door door = hitInfo.collider.gameObject.GetComponent<Door>();
-			if(door != null)
-			{
-				return door;
-			}
-		}
-			
-		return null;
-	}
-	
 	[SerializeField]
 	private List<WaypointNode> m_nodes = new List<WaypointNode>();
 	
@@ -262,19 +162,4 @@ public class AIBehaviourPatrol : AIBehaviour
 	private WaypointNode m_target = null;
 	private WaypointNode m_origin = null;
 	private int m_targetIndex = 1;
-	
-	private GameObject m_player = null;
-	private NavMeshAgent m_agent = null;
-	
-	private PatrolState m_activeState = PatrolState.Routing;
-	private Vector3 m_cachedTarget = Vector3.zero;
-	private Door m_door = null;
-			
-	private enum PatrolState
-	{
-		Routing,
-		DoorFound,
-		RoutingAroundDoor
-	}
-	
 }

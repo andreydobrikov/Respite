@@ -141,17 +141,17 @@ public class Bezier
 			Vector2 bezierPoint = Bezier.GetBezierPoint(stepSize * (float)i, v0, t0, v1, t1);
 			Vector2 tangent = Bezier.GetBezierNormal(stepSize * (float)i, v0, t0, v1, t1);
 			
-			vertices[i * 4] = new Vector3(bezierPoint.x, bezierPoint.y, 0.0f);
-			vertices[i * 4] += new Vector3(tangent.x, tangent.y) * wallSize;
+			vertices[i * 4] = new Vector3(bezierPoint.x, 0.0f, bezierPoint.y);
+			vertices[i * 4] += new Vector3(tangent.x, 0.0f, tangent.y) * wallSize;
 			
-			vertices[i * 4 + 1] = new Vector3(bezierPoint.x, bezierPoint.y, 0.0f);
-			vertices[i * 4 + 1] += new Vector3(-tangent.x, -tangent.y) * wallSize;
+			vertices[i * 4 + 1] = new Vector3(bezierPoint.x, 0.0f, bezierPoint.y);
+			vertices[i * 4 + 1] += new Vector3(-tangent.x, 0.0f, -tangent.y) * wallSize;
 			
-			vertices[i * 4 + 2] = new Vector3(bezierPoint.x, bezierPoint.y, 1.0f);
-			vertices[i * 4 + 2] += new Vector3(tangent.x, tangent.y) * wallSize;
+			vertices[i * 4 + 2] = new Vector3(bezierPoint.x, 1.0f, bezierPoint.y);
+			vertices[i * 4 + 2] += new Vector3(tangent.x, 0.0f, tangent.y) * wallSize;
 			
-			vertices[i * 4 + 3] = new Vector3(bezierPoint.x, bezierPoint.y, 1.0f);
-			vertices[i * 4 + 3] += new Vector3(-tangent.x, -tangent.y) * wallSize;
+			vertices[i * 4 + 3] = new Vector3(bezierPoint.x, 1.0f, bezierPoint.y);
+			vertices[i * 4 + 3] += new Vector3(-tangent.x, 0.0f, -tangent.y) * wallSize;
 			
 	
 			/* Removing this to hush warnings. It necessarily can't have been doing anything anyway.

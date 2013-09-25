@@ -21,14 +21,23 @@ public class SplineEditor
 			if(i == spline.m_beziers.Length)
 			{
 				normal = Bezier.GetBezierNormal(1.0f, spline.m_beziers[i - 1].m_v0, spline.m_beziers[i - 1].m_t0, spline.m_beziers[i - 1].m_v1, spline.m_beziers[i - 1].m_t1);	
-				Handles.DrawLine(spline.m_beziers[i - 1].m_v1, spline.m_beziers[i - 1].m_v1 + (normal * spline.m_widthModifiers[i]));
-				Handles.DrawLine(spline.m_beziers[i - 1].m_v1, spline.m_beziers[i - 1].m_v1 - (normal * spline.m_widthModifiers[i]));
+				
+				// Spunk these into 3D
+				Vector3 normal3D = new Vector3(normal.x, 0.0f, normal.y);
+				Vector3 v1 = new Vector3(spline.m_beziers[i - 1].m_v1.x, 0.0f, spline.m_beziers[i - 1].m_v1.y);
+				
+				Handles.DrawLine(v1, v1 + (normal3D * spline.m_widthModifiers[i]));
+				Handles.DrawLine(v1, v1 - (normal3D * spline.m_widthModifiers[i]));
 			}
 			else
 			{
 				normal = Bezier.GetBezierNormal(0.0f, spline.m_beziers[i].m_v0, spline.m_beziers[i].m_t0, spline.m_beziers[i].m_v1, spline.m_beziers[i].m_t1);	
-				Handles.DrawLine(spline.m_beziers[i].m_v0, spline.m_beziers[i].m_v0 + (normal * spline.m_widthModifiers[i]));
-				Handles.DrawLine(spline.m_beziers[i].m_v0, spline.m_beziers[i].m_v0 - (normal * spline.m_widthModifiers[i]));
+				
+				Vector3 normal3D = new Vector3(normal.x, 0.0f, normal.y);
+				Vector3 v0 = new Vector3(spline.m_beziers[i].m_v0.x, 0.0f, spline.m_beziers[i].m_v0.y);
+				
+				Handles.DrawLine(v0, v0 + (normal3D * spline.m_widthModifiers[i]));
+				Handles.DrawLine(v0, v0 - (normal3D * spline.m_widthModifiers[i]));
 			}
 			 
 			

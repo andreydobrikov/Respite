@@ -10,19 +10,338 @@
 //
 ///////////////////////////////////////////////////////////
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
+[ExecuteInEditMode]
 public class Island : MonoBehaviour 
 {
 	public int SectionsX = 10;
 	public int SectionsY = 10;
 	
+	public Vector2 MinBounds = Vector2.zero;
+	public Vector2 MaxBounds = Vector2.zero;
 	
+	public GameObject[] Sections;
+	
+	public Material IslandBaseMaterial = null;
 	public Mesh IslandSourceMesh = null;
+	
+	void OnEnable()
+	{
+		painting = false;	
+	}
+	
+	void Start()
+	{
+		m_sectionSizeX = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
+		m_sectionSizeY = (MaxBounds.y - MinBounds.y) / (float)SectionsY; 
+		
+		m_camera = Camera.main;
+	}
+	
+	void LateUpdate()
+	{
+		
+	}
+	
+#if UNITY_EDITOR
+	public void StartPainting()
+	{
+		m_editTextures = new ColorBlock[SectionsX * SectionsY];
+		
+		for(int x = 0; x < SectionsX; x++)
+		{
+			for(int y = 0; y < SectionsY; y++)
+			{	
+				m_editTextures[y * SectionsX + x] = new ColorBlock();
+				
+				Texture2D tex = Sections[y * SectionsX + x].renderer.sharedMaterial.GetTexture("_Splat") as Texture2D;
+				m_editTextures[y * SectionsX + x].splatTex = tex;
+				m_editTextures[y * SectionsX + x].colors = tex.GetPixels();
+			}
+		}
+		
+		if(Sections.Length >= 1)
+		{
+			texture0 = Sections[0].renderer.sharedMaterial.GetTexture("_Layer0") as Texture2D;
+			texture1 = Sections[0].renderer.sharedMaterial.GetTexture("_Layer1") as Texture2D;
+			texture2 = Sections[0].renderer.sharedMaterial.GetTexture("_Layer2") as Texture2D;
+		}
+		
+		UpdateBrush();
+	}
+	
+	public void UpdateBrush()
+	{
+		m_currentBrush = new Brush();
+		
+		m_currentBrush.width = brushSize;
+		m_currentBrush.height = brushSize;
+		
+		m_currentBrush.brushColors = new Color[brushSize * brushSize];
+		
+		for(int x = 0; x < brushSize; x++)
+		{
+			for(int y = 0; y < brushSize; y++)
+			{
+				Color currentColor = paintColor;
+				
+				float relativeX = Mathf.Abs(((float)brushSize / 2.0f) - (float)x) / ((float)brushSize / 2.0f);
+				float relativeY = Mathf.Abs(((float)brushSize / 2.0f) - (float)y) / ((float)brushSize / 2.0f);
+				//Debug.Log(relativeX);
+				float val = 1.0f - Mathf.Sqrt(relativeX * relativeX + relativeY * relativeY);
+				
+				
+				if(solidBrush && val > 0.2f)
+				{
+					val = 1.0f;	
+				}
+				
+				currentColor.a = (val * brushOpacity);
+				
+				m_currentBrush.brushColors[y * brushSize + x] = currentColor;
+			}	
+		}
+	}
+	 
+	/// plonk the brush down at the given point.
+	/// More complicated than I would have liked thanks to the sliced terrain.
+	/// TODO: Sort the importing so that read/write is disabled on the splat maps when building
+	/// outside the editor. Re-enable compression so the splat-maps aren't a meg each.
+	public void PaintPixel(float x, float y)
+	{
+		m_sectionSizeX = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
+		m_sectionSizeY = (MaxBounds.y - MinBounds.y) / (float)SectionsY;
+		
+		if(x > MinBounds.x && y > MinBounds.y && x < MaxBounds.x && y < MaxBounds.y)
+		{
+			SectionPixelPair pair = GetPair(x, y);
+
+					
+			int xStart = pair.pixelX - m_currentBrush.width / 2;
+			int xEnd = pair.pixelX + m_currentBrush.width / 2;
+					
+			int yStart = pair.pixelY - m_currentBrush.height / 2;
+			int yEnd = pair.pixelY + m_currentBrush.height / 2;
+			
+			for(int currentX = xStart; currentX < xEnd; currentX++)
+			{
+				for(int currentY = yStart; currentY < yEnd; currentY++)
+				{
+					int sectionX = pair.sectionX;
+					int sectionY = pair.sectionY;
+					int pixelX = currentX;
+					int pixelY = currentY; 
+					
+					while(pixelX < 0)
+					{
+						sectionX--;
+						pixelX += 512;
+					}
+					
+					while(pixelX >= 512)
+					{
+						sectionX++;
+						pixelX -= 512;
+					}
+					
+					while(pixelY < 0)
+					{
+						sectionY--;
+						pixelY += 512;
+					}
+					
+					while(pixelY >= 512)
+					{
+						sectionY++;
+						pixelY -= 512;
+					}
+					
+					if(sectionX >= SectionsX || sectionY >= SectionsY)
+					{
+						continue;	
+					}
+					
+					int index = (currentY - yStart) * m_currentBrush.width + (currentX - xStart);
+					
+					Color current = m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX];
+					
+					
+					if(editDetail)
+					{
+						// TODO: What a complete hack.
+						// The brush's alpha channel is being used to store the brush dynamics, so when trying to write alpha I just
+						// bung the target value into R. How shameful.
+						float newColor = m_currentBrush.brushColors[index].r;
+						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX].a = Mathf.Lerp(current.a, newColor,  m_currentBrush.brushColors[index].a);	
+					}
+					else
+					{
+						float alpha = current.a; // Don't lerp alpha in this scenario, else you'll bugger t'detail
+						Vector3 newColor = (Vector3)((Vector4)(m_currentBrush.brushColors[index]));
+						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX] = Vector4.Lerp(current, newColor,  m_currentBrush.brushColors[index].a);	
+						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX].a = alpha;
+					}
+					
+					m_editTextures[sectionY * SectionsX + sectionX].dirty = true;
+					m_editTextures[sectionY * SectionsX + sectionX].saveRequired = true;
+					
+					saveRequired = true;
+				}
+			}
+			
+			
+		}
+	}
+	
+	public void ApplyPaintChanges()
+	{
+		
+		for(int i = 0; i < m_editTextures.Length; i++)
+			{
+				if(m_editTextures[i].dirty)
+				{
+					m_editTextures[i].splatTex.SetPixels(m_editTextures[i].colors);
+					m_editTextures[i].splatTex.Apply();		
+					m_editTextures[i].dirty = false;
+				}
+			}
+	}
+	
+	public void SaveTextures()
+	{
+		int saveCount = 0;
+		
+		for(int i = 0; i < m_editTextures.Length; i++)
+		{
+			if(m_editTextures[i].saveRequired)
+			{
+				string assetPath = AssetDatabase.GetAssetPath(m_editTextures[i].splatTex);	
+				System.IO.File.WriteAllBytes(assetPath, m_editTextures[i].splatTex.EncodeToPNG());	
+				m_editTextures[i].saveRequired = false;
+				saveCount++;
+			}
+		}
+		
+		Debug.Log("Saved " + saveCount + " sections");
+		saveRequired = false;
+	}
+	
+	// TODO: These are rather broken as they assume the world is square
+	public float WorldSizeToTexel(float worldSize)
+	{
+		m_sectionSizeX = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
+		m_sectionSizeY = (MaxBounds.y - MinBounds.y) / (float)SectionsY;
+		
+		float texelSize = (worldSize / m_sectionSizeX) * 512.0f;
+		
+		return texelSize;
+	}
+	
+	private SectionPixelPair GetPair(float x, float y)
+	{
+		// 0-1
+		float relativeX = (x - MinBounds.x	) / (MaxBounds.x - MinBounds.x);
+		float relativeY = (y - MinBounds.y	) / (MaxBounds.y - MinBounds.y);
+		
+		// 0 - section count
+		int sectionX = (int)(relativeX * (float)SectionsX);
+		int sectionY = (int)(relativeY * (float)SectionsY);
+		
+		float localX = relativeX - (sectionX / (float)SectionsX);
+		float localY = relativeY - (sectionY / (float)SectionsY);
+		
+		float worldX = MinBounds.x + (sectionX * m_sectionSizeX);
+		float worldY = MinBounds.y + (sectionY * m_sectionSizeY);
+		
+		int pixelX = (int)(localX * SectionsX * 512.0f);
+		int pixelY = (int)(localY * SectionsY * 512.0f);
+		
+		SectionPixelPair pair;
+		pair.sectionX = sectionX;
+		pair.sectionY = sectionY;
+		pair.pixelX = pixelX;
+		pair.pixelY = pixelY;
+		
+		return pair;
+	}
+	
+#endif
+	
+	private float m_sectionSizeX;
+	private float m_sectionSizeY;
+	
+	private Camera m_camera;
+	
+#if UNITY_EDITOR
+	public bool painting = false;
+	public bool mouseDown = false;
+	
+	public bool solidBrush = false;
+	public Color paintColor = Color.white;
+	public int brushSize = 20;
+	public float brushOpacity = 1.0f;
+	[SerializeField]
+	public bool saveRequired = false;
+	public bool editDetail = false;
 	
 	public List<MeshSlice.Triangle> m_triangles = new List<MeshSlice.Triangle>();
 	
 	public Vector2 sliceStart = Vector2.zero;
 	public Vector2 sliceEnd = Vector2.one;
+	
+	public Vector3 lastWorldPos = Vector3.zero;
+	public Vector3 lastLocalPos = Vector3.zero;
+	
+	public Texture2D texture0;
+	public Texture2D texture1;
+	public Texture2D texture2;
+	
+	[SerializeField]
+	public ColorBlock[] m_editTextures;
+	
+	[SerializeField]
+	public Brush m_currentBrush;
+	
+	[Serializable]
+	public struct ColorBlock
+	{
+		[SerializeField]
+		public Color[] colors;
+		
+		[SerializeField]
+		public Texture2D splatTex;
+		
+		[SerializeField]
+		public bool dirty;
+		
+		[SerializeField]
+		public bool saveRequired;
+	}
+	
+	// TODO: This should hold all brush data and be responsible for updating it. 
+	// The PaintPixels function should then take a brush as a parameter.
+	// It should also be called PaintTexels, not PaintPixels. FRRRRP.
+	public struct Brush
+	{
+		public int width;
+		public int height;
+		
+		public Color[] brushColors;
+	}
+	
+	public struct SectionPixelPair
+	{
+		public int sectionX, sectionY;	
+		public int pixelX, pixelY;
+	}
+	
+	
+#endif
 }
