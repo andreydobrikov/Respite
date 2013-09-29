@@ -1,3 +1,15 @@
+///////////////////////////////////////////////////////////
+// 
+// ForestEditor.cs
+//
+// What it does: Editor for the forest, innit
+//
+// Notes:
+// 
+// To-do: It's good and confusing at the moment.
+//
+///////////////////////////////////////////////////////////
+
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -117,78 +129,90 @@ public class ForestEditor : Editor
 	static void RegenerateForest()
 	{
 		Forest forest = GameObject.FindObjectOfType(typeof(Forest)) as Forest;
+		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
 			
 		Selection.activeGameObject = forest.gameObject;
 		
 		int layerMask = ~0;
-			int progressUpdateRate = forest.m_instanceCount / 200;
+		int progressUpdateRate = forest.m_instanceCount / 200;
+		
+		foreach(var mask in forest.m_ignoreLayers)
+		{
+			layerMask &= ~(1 << mask);
+			Debug.Log("Layer Mask: " + layerMask);
+		}
+		
+		while(forest.transform.childCount > 0)
+		{
+			GameObject.DestroyImmediate(forest.transform.GetChild(0).gameObject);
+		}
+		
+		forest.RebuildSections();
+		bool cancel = false;
+		int treesPlanted = 0;
+		
+		
+		// TODO: This won't ever reach the target tree count as it gives up following a collision.
+		for(int treeCount = 0; treeCount < forest.m_instanceCount && !cancel; ++treeCount)
+		{
+			bool succeeded = false;
+			int counter = 0;
 			
-			foreach(var mask in forest.m_ignoreLayers)
+			while(!succeeded && counter < forest.m_retryBailout)
 			{
-				layerMask &= ~(1 << mask);
-				Debug.Log("Layer Mask: " + layerMask);
-			}
+				float x = Random.Range(forest.m_startX, forest.m_endX);
+				float z = Random.Range(forest.m_startZ, forest.m_endZ);
 			
-			while(forest.transform.childCount > 0)
-			{
-				GameObject.DestroyImmediate(forest.transform.GetChild(0).gameObject);
-			}
-			
-			forest.RebuildSections();
-			bool cancel = false;
-			int treesPlanted = 0;
-			
-			// TODO: This won't ever reach the target tree count as it gives up following a collision.
-			for(int treeCount = 0; treeCount < forest.m_instanceCount && !cancel; ++treeCount)
-			{
-				bool succeeded = false;
-				int counter = 0;
+				Vector3 position = new Vector3(x, 0.0f, z);
 				
-				while(!succeeded && counter < forest.m_retryBailout)
+				bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, -50.0f, 0.0f), (Vector3)position + new Vector3(0.0f, 50.0f, 0.0f), forest.m_treeRadius, layerMask);
+				bool terrainValid = true;
+				
+				RaycastHit hitInfo;
+				if(Physics.Raycast(new Vector3(x, 1.0f, z), new Vector3(0.0f, -1.0f, 0.0f), out hitInfo, 50.0f, ~LayerMask.NameToLayer("WorldCollision")))
 				{
-					float x = Random.Range(forest.m_startX, forest.m_endX);
-					float z = Random.Range(forest.m_startZ, forest.m_endZ);
-				
-					Vector3 position = new Vector3(x, 0.0f, z);
-					
-					bool overlap = Physics.CheckCapsule((Vector3)position + new Vector3(0.0f, -50.0f, 0.0f), (Vector3)position + new Vector3(0.0f, 50.0f, 0.0f), forest.m_treeRadius, layerMask);
-					if(!overlap)
+					if(	hitInfo.point.y < -0.1f)
 					{
-						
-							try
-							{
-								TreeInstance instance = new TreeInstance();
-								instance.position = position;
-								
-								succeeded = !forest.AddInstance(instance);
-								
-								if(succeeded)
-								{
-									treesPlanted++;	
-								}
-							}
-							catch(System.Exception e)
-							{
-								Debug.Log("Instance out of bound at " + position.x + ", " + position.z);
-								Debug.Log(e);	
-								Debug.Break();
-							}
-							
-							counter++;
-						
-						
-						if(treeCount % progressUpdateRate == 0)
-						{
-							cancel = EditorUtility.DisplayCancelableProgressBar("Generating Forest", "Creating trees (" + treeCount + ", " + forest.m_instanceCount + ")", (float)treeCount / (float)forest.m_instanceCount);
-						}
+						terrainValid = false;
 					}
 				}
-			
 				
+				if(!overlap && terrainValid)
+				{
+					try
+					{
+						TreeInstance instance = new TreeInstance();
+						
+						instance.position = position;
+						instance.radius = UnityEngine.Random.Range(1.0f, 3.5f);
+						
+						succeeded = !forest.AddInstance(instance);
+						
+						if(succeeded)
+						{
+							treesPlanted++;	
+							
+						}
+					}
+					catch(System.Exception e)
+					{
+						Debug.Log("Instance out of bound at " + position.x + ", " + position.z);
+						Debug.Log(e);	
+						Debug.Break();
+					}
 					
+					counter++;
+					
+					if(treeCount % progressUpdateRate == 0)
+					{
+						cancel = EditorUtility.DisplayCancelableProgressBar("Generating Forest", "Creating trees (" + treeCount + ", " + forest.m_instanceCount + ")", (float)treeCount / (float)forest.m_instanceCount);
+					}
+				}
 			}
-			Debug.Log("Planted " + treesPlanted + " trees");
-			
-			EditorUtility.ClearProgressBar();
+		}
+		
+		EditorUtility.ClearProgressBar();
+		
+		Debug.Log("Planted " + treesPlanted + " trees");
 	}
 }

@@ -106,8 +106,6 @@ public class IslandEditor : Editor
 	{
 		Island island = (Island)target;
 		
-		
-		
 		if(island.painting)
 		{
 			if(GUILayout.Button("Stop Painting"))
@@ -117,13 +115,14 @@ public class IslandEditor : Editor
 			
 			IslandBrushEditor.ShowInspectorGUI(island);
 			
+			ShowPaintAllInspectorGUI();
+			
 			GUI.enabled = island.saveRequired;
 			if(GUILayout.Button("Save Changes")) 
 			{
 				island.SaveTextures();	
 			}
 			GUI.enabled = true;
-			
 			
 		}
 		else
@@ -228,7 +227,6 @@ public class IslandEditor : Editor
 							
 							island.Sections[y * island.SectionsX + x] = newObject;
 						}
-					
 					}
 					
 					AssetDatabase.StopAssetEditing();
@@ -237,42 +235,147 @@ public class IslandEditor : Editor
 				EditorUtility.ClearProgressBar();
 			}
 			
-			const int texWidth = 512;
-			const int texHeight = 512;
-			
 			if(GUILayout.Button("Create initial splat-maps"))
 			{
-				Color[] colors = new Color[texWidth*texHeight];
-				
-				for(int i = 0; i < texWidth*texHeight; i++)
-				{
-					colors[i] = Color.red;	
-				}
-				
-				for(int x = 0; x < island.SectionsX; x++)
-				{
-					for(int y = 0; y < island.SectionsY; y++)
-					{
-						string outputPath = Application.dataPath + "/Resources/Textures/Terrain Maps/splat_" + x + "_" + y + ".png";
-				
-						string directory = System.IO.Path.GetDirectoryName(outputPath);
-						
-						if(!Directory.Exists(directory))
-						{
-							Directory.CreateDirectory(directory);	
-						}
-						
-						Texture2D newTex = new Texture2D(texWidth, texHeight);
-						
-						newTex.SetPixels(colors);
-						
-						
-						System.IO.File.WriteAllBytes(outputPath, newTex.EncodeToPNG());
-					}
-				}
+				ClearSplatMap();
 			}
 		}
 	}
+	
+	private void ShowPaintAllInspectorGUI()
+	{
+		Island island = (Island)target;
+		
+		GUILayout.Box("", GUILayout.Height(1), GUILayout.Width(Screen.width - 5));
+		
+		island.HeightThreshold = EditorGUILayout.FloatField("Height Threshold", island.HeightThreshold);
+		island.HeightBlend = EditorGUILayout.FloatField("Height Blend", island.HeightBlend);
+		
+		if(GUILayout.Button("Paint All"))
+		{
+			PaintSand();
+		}
+	}
+	
+	[MenuItem ("Respite/Island/Clear Splat-Map")]
+	public static void ClearSplatMap()
+	{
+		
+		//EditorUtility.dis
+		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
+		
+		Color[] colors = new Color[TexWidth*TexHeight];
+				
+		for(int i = 0; i < TexWidth*TexHeight; i++)
+		{
+			colors[i] = new Color(1.0f, 0.0f, 0.0f, 0.0f);
+		}
+		
+		for(int x = 0; x < island.SectionsX; x++)
+		{
+			for(int y = 0; y < island.SectionsY; y++)
+			{
+				string outputPath = Application.dataPath + "/Resources/Textures/Terrain Maps/splat_" + x + "_" + y + ".png";
+		
+				string directory = System.IO.Path.GetDirectoryName(outputPath);
+				
+				if(!Directory.Exists(directory))
+				{
+					Directory.CreateDirectory(directory);	
+				}
+				
+				Texture2D newTex = new Texture2D(TexWidth, TexHeight);
+				
+				newTex.SetPixels(colors);
+				
+				
+				System.IO.File.WriteAllBytes(outputPath, newTex.EncodeToPNG());
+			}
+		}
+		
+		island.SaveTextures();
+	}
+	
+	[MenuItem ("Respite/Island/Paint Sand")]
+	public static void PaintSand()
+	{
+		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island; 
+		
+		int res = 20;
+		
+		Vector2 islandSize 	= island.MaxBounds - island.MinBounds;
+		Vector2 sectionSize = new Vector2(islandSize.x / island.SectionsX, islandSize.y / island.SectionsY);
+		Vector2 texelSize 	= new Vector2(sectionSize.x / (TexWidth / res), sectionSize.y / (TexHeight / res));
+		
+		Debug.Log(texelSize.x);
+		
+		texelSize = texelSize / 4.0f;
+		island.brushSize = res;
+		//island.editDetail = false;
+		//island.solidBrush = true;
+		island.UpdateBrush();
+		//island.brushOpacity = 1.0f;
+		
+		island.StartPainting();
+		
+		RaycastHit hitInfo;
+		
+		float max = float.MinValue;
+		float min = float.MaxValue;
+		
+		int counter = 0;
+		for(float x = island.MinBounds.x - 10.0f; x < island.MaxBounds.x; x += texelSize.x)
+		{
+			if(counter % 10 == 0)
+			if(EditorUtility.DisplayCancelableProgressBar("Painting sand", "Painting...", (x - island.MinBounds.x) / islandSize.x))
+			{
+				EditorUtility.ClearProgressBar();
+				return;	
+			}
+			
+			
+			for(float y = island.MinBounds.y - 10.0f; y < island.MaxBounds.y; y += texelSize.y)
+			{
+				if(Physics.Raycast(new Vector3(x, 1.0f, y), new Vector3(0.0f, -1.0f, 0.0f), out hitInfo, 50.0f, ~LayerMask.NameToLayer("WorldCollision")))
+				{
+					if(hitInfo.point.y < island.HeightThreshold)
+					{
+						if(hitInfo.point.y > island.HeightBlend)
+						{
+							float opacity = Mathf.Abs((hitInfo.point.y - island.HeightBlend) / (island.HeightThreshold - island.HeightBlend));
+							opacity = Mathf.Clamp(opacity, 0.0f, 1.0f);
+							//island.paintColor = new Color(0.0f, 0.0f, opacity, 1.0f);
+							island.brushOpacity = 1.0f - opacity;
+							island.UpdateBrush();
+							
+							min = Mathf.Min(opacity, min);
+							max = Mathf.Max(opacity, max);
+						}
+						else
+						{
+							island.brushOpacity = 1.0f;
+							island.UpdateBrush();
+						}
+						
+						island.PaintPixel(x, y);
+					}
+				}
+				
+				
+			}
+			counter++;
+		}
+		
+		Debug.Log("Min: " + min);
+		Debug.Log("Max: " + max);
+		
+		EditorUtility.ClearProgressBar();
+		island.ApplyPaintChanges();
+		
+	}
+	
+	public static int TexWidth = 512;
+	public static int TexHeight = 512;
 }
 
 public class IslandBrushEditor
@@ -344,3 +447,4 @@ public class IslandBrushEditor
 			}
 	}
 }
+

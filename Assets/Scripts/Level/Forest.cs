@@ -28,20 +28,28 @@ public class Forest : MonoBehaviour
 			RebuildSections();
 		}
 		
+		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
+		island.StartPainting();
+		
 		foreach(var section in m_sections)
 		{
 			section.Start(this);	
 		}
+		
+		island.ApplyPaintChanges();
 		
 		if(m_treePrefab != null)
 		{
 			m_idleInstances.Clear();
 			m_activeInstances.Clear();
 			
+			
 			for(int treeCount = 0; treeCount < m_activeInstanceCount; ++treeCount)
 			{
 				GameObject newTree = GameObject.Instantiate(m_treePrefab) as GameObject;
 				newTree.transform.parent = transform;
+				
+				//GameObject shadowObject = newTree.transform.FindChild("branch_shadows");
 	
 				float y = newTree.transform.position.y;
 				newTree.transform.position = new Vector3(-1000.0f, y, -1000.0f);

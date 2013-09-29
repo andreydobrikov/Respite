@@ -29,12 +29,31 @@ public class ForestSection
 	
 	public void Start(Forest forest)
 	{
+		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
 		m_forest = forest;
 		
 		for(int i = 0; i < m_instancePositions.Count; ++i)
 		{
 			TreeInstance instance = new TreeInstance();
 			instance.position = m_instancePositions[i];
+			instance.radius = m_instanceSizes[i];
+			
+			island.editDetail = false;
+			island.solidBrush = false;
+			island.paintColor = new Color(0.5f, 0.5f, 0.0f, 1.0f);
+			island.brushOpacity = 1.0f;
+			island.brushSize = (int)island.WorldSizeToTexel(instance.radius);
+			island.UpdateBrush();
+			
+			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z);
+							
+			island.editDetail = true;
+			island.paintColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+			island.brushOpacity = 1.0f;
+			island.brushSize = (int)island.WorldSizeToTexel(instance.radius * 1.5f);
+			island.UpdateBrush();
+			
+			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z);
 			
 			m_instances.Add(instance);
 		}
@@ -56,6 +75,7 @@ public class ForestSection
 		}
 		
 		m_instancePositions.Add(instance.position);
+		m_instanceSizes.Add(instance.radius);
 		return true;
 	}
 	
@@ -97,8 +117,9 @@ public class ForestSection
 				instance.activeObject.transform.rotation = Quaternion.Euler(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f);
 				
 				// TODO: Placeholder shit
+				
 				float scale  = UnityEngine.Random.Range(1.0f, 3.5f);
-				instance.activeObject.transform.localScale = new Vector3(scale, 1.0f, scale);
+				instance.activeObject.transform.localScale = new Vector3(instance.radius, 1.0f, instance.radius);
 			}
 		}
 	}
@@ -136,6 +157,9 @@ public class ForestSection
 	
 	[SerializeField]
 	private List<Vector3> m_instancePositions	= new List<Vector3>();
+	
+	[SerializeField]
+	private List<float> m_instanceSizes	= new List<float>();
 	
 	private List<TreeInstance> m_instances 		= new List<TreeInstance>();
 	private float m_treeRadius 					= 0.0f;

@@ -50,7 +50,7 @@ public class Island : MonoBehaviour
 		
 	}
 	
-#if UNITY_EDITOR
+
 	public void StartPainting()
 	{
 		m_editTextures = new ColorBlock[SectionsX * SectionsY];
@@ -77,6 +77,7 @@ public class Island : MonoBehaviour
 		UpdateBrush();
 	}
 	
+#if UNITY_EDITOR
 	public void UpdateBrush()
 	{
 		m_currentBrush = new Brush();
@@ -163,7 +164,7 @@ public class Island : MonoBehaviour
 						pixelY -= 512;
 					}
 					
-					if(sectionX >= SectionsX || sectionY >= SectionsY)
+					if(sectionX >= SectionsX || sectionY >= SectionsY || sectionX < 0 || sectionY < 0)
 					{
 						continue;	
 					}
@@ -204,14 +205,14 @@ public class Island : MonoBehaviour
 	{
 		
 		for(int i = 0; i < m_editTextures.Length; i++)
+		{
+			if(m_editTextures[i].dirty)
 			{
-				if(m_editTextures[i].dirty)
-				{
-					m_editTextures[i].splatTex.SetPixels(m_editTextures[i].colors);
-					m_editTextures[i].splatTex.Apply();		
-					m_editTextures[i].dirty = false;
-				}
+				m_editTextures[i].splatTex.SetPixels(m_editTextures[i].colors);
+				m_editTextures[i].splatTex.Apply();		
+				m_editTextures[i].dirty = false;
 			}
+		}
 	}
 	
 	public void SaveTextures()
@@ -283,13 +284,14 @@ public class Island : MonoBehaviour
 	public bool painting = false;
 	public bool mouseDown = false;
 	
-	public bool solidBrush = false;
-	public Color paintColor = Color.white;
-	public int brushSize = 20;
-	public float brushOpacity = 1.0f;
+	public bool solidBrush 		= false;
+	public Color paintColor 	= Color.white;
+	public int brushSize 		= 20;
+	public float brushOpacity 	= 1.0f;
+	
 	[SerializeField]
-	public bool saveRequired = false;
-	public bool editDetail = false;
+	public bool saveRequired 	= false;
+	public bool editDetail 		= false;
 	
 	public List<MeshSlice.Triangle> m_triangles = new List<MeshSlice.Triangle>();
 	
@@ -302,6 +304,9 @@ public class Island : MonoBehaviour
 	public Texture2D texture0;
 	public Texture2D texture1;
 	public Texture2D texture2;
+	
+	public float HeightThreshold 	= 0.0f;
+	public float HeightBlend 	= 0.0f;
 	
 	[SerializeField]
 	public ColorBlock[] m_editTextures;

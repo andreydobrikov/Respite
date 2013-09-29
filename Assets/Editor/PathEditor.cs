@@ -171,7 +171,7 @@ public class PathEditor : Editor
 					{
 						
 						EditorUtility.DisplayProgressBar("Painting blobs", "Paint blob: " + i + "\\" + blobCount, (float)i / (float)blobCount);
-						island.brushSize = (int)island.WorldSizeToTexel(path.m_spline.GetWidth(delta * i));
+						island.brushSize = (int)island.WorldSizeToTexel(path.m_spline.GetWidth(delta * i) * (path.m_meshWidth * 2.0f));
 						island.UpdateBrush();
 						
 						Vector2 position = path.m_spline.GetPosition(delta * i);
