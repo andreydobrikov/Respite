@@ -14,7 +14,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Forest : MonoBehaviour
+public class Forest : Painter
 {
 	/// <summary>
 	/// Start this instance.
@@ -28,15 +28,10 @@ public class Forest : MonoBehaviour
 			RebuildSections();
 		}
 		
-		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
-		island.StartPainting();
-		
 		foreach(var section in m_sections)
 		{
 			section.Start(this);	
 		}
-		
-		island.ApplyPaintChanges();
 		
 		if(m_treePrefab != null)
 		{
@@ -61,6 +56,24 @@ public class Forest : MonoBehaviour
 		{
 			Debug.LogWarning("No tree-prefab set. No tree instances will be created");
 		}
+	}
+	
+	public override void Paint(Island island)
+	{
+		int count = 0;
+		foreach(var section in m_sections)
+		{
+#if UNITY_EDITOR
+			UnityEditor.EditorUtility.DisplayProgressBar("Painting Forest", "Painting Sections...", (float)count / (float)m_sections.Length);
+#endif
+			section.Paint();
+			count++;
+		}
+	}
+	
+	public override string GetName()
+	{
+		return "Forest";
 	}
 	
 	void LateUpdate()

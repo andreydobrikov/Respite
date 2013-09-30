@@ -44,12 +44,6 @@ public class Island : MonoBehaviour
 		
 		m_camera = Camera.main;
 	}
-	
-	void LateUpdate()
-	{
-		
-	}
-	
 
 	public void StartPainting()
 	{
@@ -59,9 +53,14 @@ public class Island : MonoBehaviour
 		{
 			for(int y = 0; y < SectionsY; y++)
 			{	
+#if UNITY_EDITOR
+				EditorUtility.DisplayProgressBar("Starting Painting", "Grabbing Texture Data " + x + ", " + y, (y * SectionsX + x) / (SectionsX * SectionsY));		
+#endif
+				
 				m_editTextures[y * SectionsX + x] = new ColorBlock();
 				
 				Texture2D tex = Sections[y * SectionsX + x].renderer.sharedMaterial.GetTexture("_Splat") as Texture2D;
+				
 				m_editTextures[y * SectionsX + x].splatTex = tex;
 				m_editTextures[y * SectionsX + x].colors = tex.GetPixels();
 			}
@@ -74,48 +73,19 @@ public class Island : MonoBehaviour
 			texture2 = Sections[0].renderer.sharedMaterial.GetTexture("_Layer2") as Texture2D;
 		}
 		
-		UpdateBrush();
+#if UNITY_EDITOR
+		EditorUtility.ClearProgressBar();	
+#endif
+		
 	}
 	
 #if UNITY_EDITOR
-	public void UpdateBrush()
-	{
-		m_currentBrush = new Brush();
-		
-		m_currentBrush.width = brushSize;
-		m_currentBrush.height = brushSize;
-		
-		m_currentBrush.brushColors = new Color[brushSize * brushSize];
-		
-		for(int x = 0; x < brushSize; x++)
-		{
-			for(int y = 0; y < brushSize; y++)
-			{
-				Color currentColor = paintColor;
-				
-				float relativeX = Mathf.Abs(((float)brushSize / 2.0f) - (float)x) / ((float)brushSize / 2.0f);
-				float relativeY = Mathf.Abs(((float)brushSize / 2.0f) - (float)y) / ((float)brushSize / 2.0f);
-				//Debug.Log(relativeX);
-				float val = 1.0f - Mathf.Sqrt(relativeX * relativeX + relativeY * relativeY);
-				
-				
-				if(solidBrush && val > 0.2f)
-				{
-					val = 1.0f;	
-				}
-				
-				currentColor.a = (val * brushOpacity);
-				
-				m_currentBrush.brushColors[y * brushSize + x] = currentColor;
-			}	
-		}
-	}
 	 
 	/// plonk the brush down at the given point.
 	/// More complicated than I would have liked thanks to the sliced terrain.
 	/// TODO: Sort the importing so that read/write is disabled on the splat maps when building
 	/// outside the editor. Re-enable compression so the splat-maps aren't a meg each.
-	public void PaintPixel(float x, float y)
+	public void PaintPixel(float x, float y, IslandBrush brush)
 	{
 		m_sectionSizeX = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
 		m_sectionSizeY = (MaxBounds.y - MinBounds.y) / (float)SectionsY;
@@ -125,11 +95,11 @@ public class Island : MonoBehaviour
 			SectionPixelPair pair = GetPair(x, y);
 
 					
-			int xStart = pair.pixelX - m_currentBrush.width / 2;
-			int xEnd = pair.pixelX + m_currentBrush.width / 2;
+			int xStart = pair.pixelX - brush.m_brushSize / 2;
+			int xEnd = pair.pixelX + brush.m_brushSize / 2;
 					
-			int yStart = pair.pixelY - m_currentBrush.height / 2;
-			int yEnd = pair.pixelY + m_currentBrush.height / 2;
+			int yStart = pair.pixelY - brush.m_brushSize / 2;
+			int yEnd = pair.pixelY + brush.m_brushSize / 2;
 			
 			for(int currentX = xStart; currentX < xEnd; currentX++)
 			{
@@ -169,24 +139,24 @@ public class Island : MonoBehaviour
 						continue;	
 					}
 					
-					int index = (currentY - yStart) * m_currentBrush.width + (currentX - xStart);
+					int index = (currentY - yStart) * brush.m_brushSize + (currentX - xStart);
 					
 					Color current = m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX];
 					
 					
-					if(editDetail)
+					if(brush.m_detailBrush)
 					{
 						// TODO: What a complete hack.
 						// The brush's alpha channel is being used to store the brush dynamics, so when trying to write alpha I just
 						// bung the target value into R. How shameful.
-						float newColor = m_currentBrush.brushColors[index].r;
-						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX].a = Mathf.Lerp(current.a, newColor,  m_currentBrush.brushColors[index].a);	
+						float newColor = brush.m_brushPixels[index].r;
+						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX].a = Mathf.Lerp(current.a, newColor,  brush.m_brushPixels[index].a);	
 					}
 					else
 					{
 						float alpha = current.a; // Don't lerp alpha in this scenario, else you'll bugger t'detail
-						Vector3 newColor = (Vector3)((Vector4)(m_currentBrush.brushColors[index]));
-						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX] = Vector4.Lerp(current, newColor,  m_currentBrush.brushColors[index].a);	
+						Vector3 newColor = (Vector3)((Vector4)(brush.m_brushPixels[index]));
+						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX] = Vector4.Lerp(current, newColor,  brush.m_brushPixels[index].a);	
 						m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX].a = alpha;
 					}
 					
@@ -203,7 +173,6 @@ public class Island : MonoBehaviour
 	
 	public void ApplyPaintChanges()
 	{
-		
 		for(int i = 0; i < m_editTextures.Length; i++)
 		{
 			if(m_editTextures[i].dirty)
@@ -215,12 +184,31 @@ public class Island : MonoBehaviour
 		}
 	}
 	
+	public void ClearSplatMap()
+	{
+		Color[] clearColors = new Color[TexWidth * TexHeight];
+		for(int i = 0; i < TexWidth * TexHeight; i++)
+		{
+			clearColors[i] = new Color(1.0f, 0.0f, 0.0f, 0.0f);	
+		}
+		
+		for(int i = 0; i < m_editTextures.Length; i++)
+		{
+			Array.Copy(clearColors, m_editTextures[i].colors, clearColors.Length);
+			m_editTextures[i].dirty = true;
+			m_editTextures[i].saveRequired = true;
+			saveRequired = true;
+		}
+	}
+	
 	public void SaveTextures()
 	{
 		int saveCount = 0;
 		
 		for(int i = 0; i < m_editTextures.Length; i++)
 		{
+			EditorUtility.DisplayProgressBar("Saving Splat-Map Textures", "Saving...", (float)i / (float)m_editTextures.Length);
+			
 			if(m_editTextures[i].saveRequired)
 			{
 				string assetPath = AssetDatabase.GetAssetPath(m_editTextures[i].splatTex);	
@@ -229,6 +217,8 @@ public class Island : MonoBehaviour
 				saveCount++;
 			}
 		}
+		
+		EditorUtility.ClearProgressBar();
 		
 		Debug.Log("Saved " + saveCount + " sections");
 		saveRequired = false;
@@ -275,6 +265,9 @@ public class Island : MonoBehaviour
 	
 #endif
 	
+	public static int TexWidth = 512;
+	public static int TexHeight = 512;
+	
 	private float m_sectionSizeX;
 	private float m_sectionSizeY;
 	
@@ -284,14 +277,11 @@ public class Island : MonoBehaviour
 	public bool painting = false;
 	public bool mouseDown = false;
 	
-	public bool solidBrush 		= false;
-	public Color paintColor 	= Color.white;
-	public int brushSize 		= 20;
-	public float brushOpacity 	= 1.0f;
+	public int m_width;
+	public int m_height;
 	
 	[SerializeField]
 	public bool saveRequired 	= false;
-	public bool editDetail 		= false;
 	
 	public List<MeshSlice.Triangle> m_triangles = new List<MeshSlice.Triangle>();
 	
@@ -305,14 +295,13 @@ public class Island : MonoBehaviour
 	public Texture2D texture1;
 	public Texture2D texture2;
 	
-	public float HeightThreshold 	= 0.0f;
-	public float HeightBlend 	= 0.0f;
+
 	
 	[SerializeField]
 	public ColorBlock[] m_editTextures;
 	
 	[SerializeField]
-	public Brush m_currentBrush;
+	public IslandBrush m_currentBrush;
 	
 	[Serializable]
 	public struct ColorBlock
@@ -328,17 +317,6 @@ public class Island : MonoBehaviour
 		
 		[SerializeField]
 		public bool saveRequired;
-	}
-	
-	// TODO: This should hold all brush data and be responsible for updating it. 
-	// The PaintPixels function should then take a brush as a parameter.
-	// It should also be called PaintTexels, not PaintPixels. FRRRRP.
-	public struct Brush
-	{
-		public int width;
-		public int height;
-		
-		public Color[] brushColors;
 	}
 	
 	public struct SectionPixelPair

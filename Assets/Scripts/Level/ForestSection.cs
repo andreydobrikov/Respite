@@ -29,7 +29,7 @@ public class ForestSection
 	
 	public void Start(Forest forest)
 	{
-		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
+		
 		m_forest = forest;
 		
 		for(int i = 0; i < m_instancePositions.Count; ++i)
@@ -38,24 +38,35 @@ public class ForestSection
 			instance.position = m_instancePositions[i];
 			instance.radius = m_instanceSizes[i];
 			
-			island.editDetail = false;
-			island.solidBrush = false;
-			island.paintColor = new Color(0.5f, 0.5f, 0.0f, 1.0f);
-			island.brushOpacity = 1.0f;
-			island.brushSize = (int)island.WorldSizeToTexel(instance.radius);
-			island.UpdateBrush();
-			
-			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z);
-							
-			island.editDetail = true;
-			island.paintColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-			island.brushOpacity = 1.0f;
-			island.brushSize = (int)island.WorldSizeToTexel(instance.radius * 1.5f);
-			island.UpdateBrush();
-			
-			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z);
 			
 			m_instances.Add(instance);
+		}
+	}
+	
+	public void Paint()
+	{
+		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
+		
+		m_brush.m_detailBrush = false;
+		m_brush.m_solidBrush = false;
+		m_brush.m_color = new Color(0.5f, 0.5f, 0.0f, 1.0f);
+		m_brush.m_opacity = 1.0f;
+		
+		m_detailBrush.m_detailBrush = true;
+		m_detailBrush.m_solidBrush = false;
+		m_detailBrush.m_color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+		m_detailBrush.m_opacity = 1.0f;
+		
+		for(int i = 0; i < m_instancePositions.Count; ++i)
+		{
+			m_brush.m_brushSize = (int)island.WorldSizeToTexel(m_instanceSizes[i]);
+			m_brush.Update();
+			
+			m_detailBrush.m_brushSize = (int)island.WorldSizeToTexel(m_instanceSizes[i] * 1.5f);
+			m_detailBrush.Update();
+			
+			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_brush);
+			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_detailBrush);
 		}
 	}
 	
@@ -160,6 +171,12 @@ public class ForestSection
 	
 	[SerializeField]
 	private List<float> m_instanceSizes	= new List<float>();
+	
+	[SerializeField]
+	private IslandBrush m_brush = new IslandBrush();
+	
+	[SerializeField]
+	private IslandBrush m_detailBrush = new IslandBrush();
 	
 	private List<TreeInstance> m_instances 		= new List<TreeInstance>();
 	private float m_treeRadius 					= 0.0f;

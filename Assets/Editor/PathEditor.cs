@@ -9,7 +9,6 @@ public class PathEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		Path path = (Path)target;
-		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;		
 		
 		GUILayout.BeginVertical((GUIStyle)("Box"));
 		GUILayout.Label("Spline Settings");
@@ -99,14 +98,14 @@ public class PathEditor : Editor
 			{
 				GUILayout.BeginVertical((GUIStyle)("Box"));
 													
-				IslandBrushEditor.ShowInspectorGUI(island);
+				path.m_brush.ShowInspectorGUI();
 				
 				GUILayout.EndVertical();
 			}
 			
 			GUILayout.EndVertical();
 			
-			GUI.enabled = path.m_colliders || path.m_meshes || path.m_paint;
+			GUI.enabled = path.m_colliders || path.m_meshes;
 			
 			if(GUILayout.Button("Rebuild Path"))
 			{
@@ -158,30 +157,8 @@ public class PathEditor : Editor
 					count++;
 				}
 				
-				if(path.m_paint)
-				{
-					island.StartPainting();
-					int blobCount = (int)(path.m_spline.GetLength() / 0.01f);
-					
-					Debug.Log("Painted " + blobCount + " blobs");
-					
-					
-					float delta = 1.0f / (float)blobCount;
-					for(int i = 0; i < blobCount; i++)
-					{
-						
-						EditorUtility.DisplayProgressBar("Painting blobs", "Paint blob: " + i + "\\" + blobCount, (float)i / (float)blobCount);
-						island.brushSize = (int)island.WorldSizeToTexel(path.m_spline.GetWidth(delta * i) * (path.m_meshWidth * 2.0f));
-						island.UpdateBrush();
-						
-						Vector2 position = path.m_spline.GetPosition(delta * i);
-						island.PaintPixel(position.x, position.y);
-					}
-					
-					island.ApplyPaintChanges();
-					island.SaveTextures();
-				}
-				EditorUtility.ClearProgressBar();
+				
+				
 			}
 		}
 		
