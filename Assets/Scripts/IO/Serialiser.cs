@@ -66,7 +66,16 @@ public class Serialiser
 		// Create a dictionary of all the serialisable objects in the scene, to prevent iteration later.
 		foreach(var currentObject in serialisableObjects)
 		{
-			objects.Add(currentObject.GUID, currentObject);
+			if(objects.ContainsKey(currentObject.GUID))
+			{
+				Debug.LogError("Duplicate key found for item " + currentObject.gameObject.name + ".\n Object will not be deserialised");
+			}
+			else
+			{
+				objects.Add(currentObject.GUID, currentObject);	
+			}
+			
+			
 		}
 		
 		XmlDocument saveFile = new XmlDocument();

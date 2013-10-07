@@ -119,16 +119,19 @@ public class Door : InteractiveObject
 		pairs.Add(new SavePair("current_rotation", 	m_currentRotation.ToString()));
 		pairs.Add(new SavePair("lerp_direction", 	m_lerpDirection.ToString()));
 		pairs.Add(new SavePair("lerp_progress", 	m_lerpProgress.ToString()));
+		pairs.Add(new SavePair("target_value", 		m_targetValue.ToString()));
 	}
 	
 	public override void SaveDeserialise(List<SavePair> pairs)
 	{
 		foreach(var pair in pairs)
 		{
-			if(pair.id == "current_rotation") {	float.TryParse(pair.value, out m_currentRotation); }
-			if(pair.id == "lerp_direction") {	float.TryParse(pair.value, out m_lerpDirection); }
-			if(pair.id == "lerp_progress") {	float.TryParse(pair.value, out m_lerpProgress); }
+			if(pair.id == "current_rotation") 	{	if(!float.TryParse(pair.value, out m_currentRotation)) { Debug.LogError("BLURP"); }; }
+			if(pair.id == "lerp_direction") 	{	if(!float.TryParse(pair.value, out m_lerpDirection)) { Debug.LogError("BLURP"); }; }
+			if(pair.id == "lerp_progress") 		{	if(!float.TryParse(pair.value, out m_lerpProgress)) { Debug.LogError("BLURP"); }; }
+			if(pair.id == "target_value") 		{	if(!float.TryParse(pair.value, out m_targetValue)) { Debug.LogError("BLURP"); }; }
 			
+			Debug.Log("Door deserialising key " + pair.id);	
 			Debug.Log("Door deserialising value " + pair.value);	
 		}
 		

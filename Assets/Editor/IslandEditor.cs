@@ -194,37 +194,7 @@ public class IslandEditor : Editor
 			EditorUtility.ClearProgressBar();
 		}
 		
-		return;
-		
-		if(island.painting)
-		{
-			if(GUILayout.Button("Stop Painting"))
-			{
-				island.painting = !island.painting;	
-			}
-			
-			GUI.enabled = island.saveRequired;
-			
-			if(GUILayout.Button("Save Changes")) 
-			{
-				island.SaveTextures();	
-			}
-			GUI.enabled = true;
-			
-		}
-		else
-		{ 
-			if(GUILayout.Button("Paint"))
-			{
-				island.painting = !island.painting;	
-				
-				if(island.painting)
-				{
-					island.StartPainting();	
-				}
-			}
-			
-			island.IslandBaseMaterial = EditorGUILayout.ObjectField(island.IslandBaseMaterial, typeof(Material), true) as Material;
+		island.IslandBaseMaterial = EditorGUILayout.ObjectField(island.IslandBaseMaterial, typeof(Material), true) as Material;
 			island.IslandSourceMesh = EditorGUILayout.ObjectField(island.IslandSourceMesh, typeof(Mesh), true) as Mesh;
 			
 			island.SectionsX = EditorGUILayout.IntField("Slices X", island.SectionsX);
@@ -326,6 +296,38 @@ public class IslandEditor : Editor
 			{
 				ClearSplatMap();
 			}
+		
+		return;
+		
+		if(island.painting)
+		{
+			if(GUILayout.Button("Stop Painting"))
+			{
+				island.painting = !island.painting;	
+			}
+			
+			GUI.enabled = island.saveRequired;
+			
+			if(GUILayout.Button("Save Changes")) 
+			{
+				island.SaveTextures();	
+			}
+			GUI.enabled = true;
+			
+		}
+		else
+		{ 
+			if(GUILayout.Button("Paint"))
+			{
+				island.painting = !island.painting;	
+				
+				if(island.painting)
+				{
+					island.StartPainting();	
+				}
+			}
+			
+			
 		}
 	}
 	

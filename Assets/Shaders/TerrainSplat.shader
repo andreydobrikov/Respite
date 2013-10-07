@@ -66,37 +66,26 @@ Shader "Custom/TerrainSplat"
 			{ 
 				const half4 white = half4(1.0, 1.0, 1.0, 1.0);
 			
+				// Grab dem textures
+				float4 sourceDetail = tex2D(_Detail, i.uv3); 
+				float4 splat 		= tex2D(_Splat, i.uv4);
 				float4 layer0 		= tex2D(_Layer0, i.uv0);
 				float4 layer1 		= tex2D(_Layer1, i.uv1);
 				float4 layer2		= tex2D(_Layer2, i.uv2);
-				float4 sourceDetail = tex2D(_Detail, i.uv3); 
-				float4 splat 		= tex2D(_Splat, i.uv4);
 				
+				// Modulate the detail texture by the splat-map. 
+				float3 detail 	= (sourceDetail * splat);
 				
+				// The detail ends up just being an intensity.
+				// The splat map rgb should always be a unit vector, so summing the components of the modulated detail gives the intensity.
+				// Detail darkens, so do a "1.0f - x";
+				detail 			= float3(1.0f - ((detail.r + detail.g + detail.b) ));
 				
-				float detail0 = (sourceDetail.r * splat.r);
-				float detail1 = (sourceDetail.g * splat.g);
-				float detail2 = (sourceDetail.b * splat.b);
-				
-				float detailCombined = 1.0f - ((detail0 + detail1 + detail2) );
-				
-				float3 detail = float3(detailCombined, detailCombined, detailCombined);
 				detail = lerp(detail, white, 1.0f - ( _DetailIntensity * splat.a));
-				
-				//splat.rgb = normalize(splat.rgb);
-				//layer0.rgb *= (1.0f -(sourceDetail.r * splat.r));
-				//layer1.rgb *= (1.0f -(sourceDetail.g * splat.g));
-				//layer2.rgb *= (1.0f -(sourceDetail.b * splat.b));
-				
-				layer0.rgb *= detail;
-				layer1.rgb *= detail;
-				layer2.rgb *= detail;
 				
 				float3 combined = ((layer0.rgb * splat.r) + (layer1.rgb * splat.g) + (layer2.rgb * splat.b)) ;
 				
-				
-				//val.rgb = splat.rgb;
-				//combined = combined * detail;
+				combined.rgb *= detail;
 				
 				float4 val = white;
 				val.rgb = combined;
@@ -104,7 +93,6 @@ Shader "Custom/TerrainSplat"
 				
 				val.rgb = lerp(val.rgb, (splat.rgb * _SplatDisplayOverride.rgb), _SplatDisplayFactor);
 				
-				//val.rgb = splat.a;
 				return val;
 			}
 			

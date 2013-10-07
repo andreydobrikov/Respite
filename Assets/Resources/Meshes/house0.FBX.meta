@@ -15,6 +15,7 @@ ModelImporter:
     100018: house0_weather_mask
     100020: house_shadow
     100022: nav_mesh
+    100024: house0_shadow
     400000: //RootNode
     400002: house0_kitchen_floor
     400004: house0_lounge_floor
@@ -27,6 +28,7 @@ ModelImporter:
     400018: house0_weather_mask
     400020: house_shadow
     400022: nav_mesh
+    400024: house0_shadow
     2300000: //RootNode
     2300002: house0_kitchen_floor
     2300004: house0_lounge_floor
@@ -39,6 +41,7 @@ ModelImporter:
     2300018: house0_weather_mask
     2300020: house_shadow
     2300022: nav_mesh
+    2300024: house0_shadow
     3300000: //RootNode
     3300002: house0_kitchen_floor
     3300004: house0_lounge_floor
@@ -51,6 +54,7 @@ ModelImporter:
     3300018: house0_weather_mask
     3300020: house_shadow
     3300022: nav_mesh
+    3300024: house0_shadow
     4300000: house0_walls
     4300002: house0_lounge_floor
     4300004: house0_kitchen_floor
@@ -62,6 +66,7 @@ ModelImporter:
     4300016: house0_weather_mask
     4300018: house_shadow
     4300020: nav_mesh
+    4300022: house0_shadow
     9500000: //RootNode
   materials:
     importMaterials: 1

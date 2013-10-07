@@ -40,6 +40,7 @@ ModelImporter:
     100068: Plane008
     100070: Plane009
     100072: Plane010
+    100074: facility_garden_shadow
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -77,6 +78,7 @@ ModelImporter:
     400068: Plane008
     400070: Plane009
     400072: Plane010
+    400074: facility_garden_shadow
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -113,6 +115,7 @@ ModelImporter:
     2300066: Plane008
     2300068: Plane009
     2300070: Plane010
+    2300072: facility_garden_shadow
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -149,6 +152,7 @@ ModelImporter:
     3300066: Plane008
     3300068: Plane009
     3300070: Plane010
+    3300072: facility_garden_shadow
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -185,6 +189,7 @@ ModelImporter:
     4300066: Plane008
     4300068: Plane009
     4300070: Plane010
+    4300072: facility_garden_shadow
     9500000: //RootNode
   materials:
     importMaterials: 1

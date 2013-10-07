@@ -62,10 +62,11 @@ public class ForestSection
 			m_brush.m_brushSize = (int)island.WorldSizeToTexel(m_instanceSizes[i]);
 			m_brush.Update();
 			
-			m_detailBrush.m_brushSize = (int)island.WorldSizeToTexel(m_instanceSizes[i] * 1.5f);
+			m_detailBrush.m_brushSize = (int)island.WorldSizeToTexel(m_instanceSizes[i] * 1.8f);
 			m_detailBrush.Update();
 			
 			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_brush);
+			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_detailBrush);
 			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_detailBrush);
 		}
 	}
@@ -125,8 +126,15 @@ public class ForestSection
 			{
 				float y = instance.activeObject.transform.position.y;
 				instance.activeObject.transform.position = (Vector3)instance.position + new Vector3(0.0f, y, 0.0f);
-				instance.activeObject.transform.rotation = Quaternion.Euler(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f);
+				//instance.activeObject.transform.rotation = Quaternion.Euler(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f);
 				
+				
+				Transform shadowTransform = instance.activeObject.transform.FindChild("test_shadow");
+				if(shadowTransform != null)
+				{
+					//shadowTransform.rotation = Quaternion.identity;
+					//Debug.Log("Shadow found");	
+				}
 				// TODO: Placeholder shit
 				
 				float scale  = UnityEngine.Random.Range(1.0f, 3.5f);

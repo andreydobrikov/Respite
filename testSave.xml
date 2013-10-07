@@ -1,55 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <entries>
-  <entry id="d43b8bb5-b567-45a3-ad25-4e0a6c421b23">
-    <pair id="active" value="true" />
-  </entry>
-  <entry id="ed664379-5b75-4e11-9394-a8ef579afb9b" />
-  <entry id="d43b8bb5-b567-45a3-ad25-4e0a6c421b23">
-    <pair id="active" value="false" />
-  </entry>
-  <entry id="bd02d55b-55bf-435c-a357-5c2353012c9f" />
-  <entry id="15bd9272-bc6a-42e9-9a5e-5e6bd303f768">
-    <pair id="position_x" value="68.79649" />
-    <pair id="position_y" value="-39.10881" />
-    <pair id="position_z" value="-0.7" />
-  </entry>
-  <entry id="4d7bab8e-cefa-4d59-a1eb-d27c5f77ed3c">
-    <pair id="position_x" value="44.3204" />
-    <pair id="position_y" value="-53.85693" />
-    <pair id="position_z" value="-0.5" />
-    <pair id="rotation_x" value="0" />
-    <pair id="rotation_y" value="0" />
-    <pair id="rotation_z" value="0.7071069" />
-    <pair id="rotation_w" value="0.7071067" />
-  </entry>
-  <entry id="2d48bfd8-5eb5-41cd-a038-ca30e185c840">
+  <entry id="" debug_name="collider">
     <pair id="current_rotation" value="0" />
     <pair id="lerp_direction" value="-1" />
     <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
   </entry>
-  <entry id="998d4961-ac4a-403e-8342-315b8944d705">
+  <entry id="" debug_name="collider">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="" debug_name="collider">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="fac1e292-c150-4e67-b05b-fbb32612c34e" debug_name="collider">
     <pair id="current_rotation" value="-65" />
     <pair id="lerp_direction" value="1" />
     <pair id="lerp_progress" value="1" />
+    <pair id="target_value" value="1" />
   </entry>
-  <entry id="cb5bf262-d645-42c8-9ae7-cd831c9391de">
+  <entry id="" debug_name="collider">
     <pair id="current_rotation" value="0" />
     <pair id="lerp_direction" value="-1" />
     <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
   </entry>
-  <entry id="c2a1d6b1-8cf7-488c-bc5c-4b17dc17ed37">
-    <pair id="house0" value="true" />
-    <pair id="house1" value="false" />
-    <pair id="apartment" value="true" />
+  <entry id="822d2d09-dd68-4c8e-aa3b-4e40044ec50f" debug_name="Camera_1_main" />
+  <entry id="421e0f9f-72b7-4aed-8e24-df092a4cff2a" debug_name="light">
+    <pair id="active" value="false" />
   </entry>
-  <entry id="c79946fe-3142-4a5c-97ef-edca3e1f1943">
-    <pair id="position_x" value="68.68603" />
-    <pair id="position_y" value="-39.16263" />
-    <pair id="position_z" value="-0.7" />
+  <entry id="4dec5650-7f50-4709-8e7d-43a222643016" debug_name="Inventory" />
+  <entry id="d465c923-36c9-4b64-a3d6-c980bae53a91" debug_name="Actor">
+    <pair id="position_x" value="-115.2057" />
+    <pair id="position_y" value="0.11" />
+    <pair id="position_z" value="33.61232" />
+    <pair id="rotation_x" value="0" />
+    <pair id="rotation_y" value="0.898794" />
+    <pair id="rotation_z" value="0" />
+    <pair id="rotation_w" value="-0.4383712" />
   </entry>
-  <entry id="fa49ef55-ffc7-4b8b-85b5-da69802b03e8">
-    <pair id="position_x" value="68.92782" />
-    <pair id="position_y" value="-39.04483" />
-    <pair id="position_z" value="-0.7" />
+  <entry id="901a3b8a-0844-4b38-97b9-dffd3ab96557" debug_name="facility">
+    <pair id="facility0" value="true" />
+    <pair id="facility1" value="true" />
+  </entry>
+  <entry id="d43b8bb5-b567-45a3-ad25-4e0a6c421b23" debug_name="light">
+    <pair id="active" value="false" />
   </entry>
 </entries>

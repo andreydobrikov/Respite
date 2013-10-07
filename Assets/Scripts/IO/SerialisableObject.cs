@@ -16,7 +16,7 @@ public class SerialisableObject : MonoBehaviour
 	{
 		if(string.IsNullOrEmpty(GUID))
 		{
-			GUID = System.Guid.NewGuid().ToString();	
+			GUID = System.Guid.NewGuid().ToString();	 
 		}
 	}
 	
