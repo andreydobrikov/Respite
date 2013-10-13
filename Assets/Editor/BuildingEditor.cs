@@ -25,6 +25,7 @@ public class BuildingEditor :  Editor
 		EditorGUILayout.BeginVertical();
 		
 		building.BuildingName = EditorGUILayout.TextField("Building Name", building.BuildingName);
+		building.BuildFog		= EditorGUILayout.Toggle("Build Fog", building.BuildFog);
 		
 		EditorGUILayout.BeginVertical((GUIStyle)("Box"));
 		
@@ -162,11 +163,18 @@ public class BuildingEditor :  Editor
 		Building building 					= (Building)target;
 		GameObject roomsObject 				= GameObjectHelper.FindChild(building.gameObject, Building.s_rooms_id, true);
 		roomsObject.transform.localPosition = new Vector3(0.0f, 1.0f, 0.0f);
+		roomsObject.transform.localRotation = Quaternion.identity;
+		
+		AssetDatabase.StartAssetEditing();
 		
 		foreach(var room in building.Rooms)
 		{
 			BuildRoomObject(room, roomsObject);
 		}
+		
+		AssetDatabase.StopAssetEditing();
+		AssetDatabase.SaveAssets();
+		AssetDatabase.Refresh();
 	}
 	
 	private GameObject BuildRoomObject(Room room, GameObject parent)
@@ -189,10 +197,21 @@ public class BuildingEditor :  Editor
 		ambientObject.layer						= LayerMask.NameToLayer("Shadow");
 		ambientObject.transform.parent 			= roomObject.transform;
 		ambientObject.transform.localPosition	= new Vector3(0.0f, 1.0f, 0.0f);
-		ambientObject.transform.localRotation		= Quaternion.identity;
+		ambientObject.transform.localRotation	= Quaternion.identity;
+		
+		GameObject fogObject					= new GameObject(Building.s_fog_id);
+		fogObject.layer							= LayerMask.NameToLayer("Overlay");
+		fogObject.transform.parent 				= roomObject.transform;
+		fogObject.transform.localPosition		= new Vector3(0.0f, 0.0f, 0.0f);
+		fogObject.transform.localRotation		= Quaternion.identity;
 		
 		BuildFloor(room, floorObject);
 		BuildAmbient(room, ambientObject);
+		
+		if(building.BuildFog)
+		{
+			BuildFog(room, fogObject);
+		}
 		
 		return roomObject;
 	}
@@ -245,6 +264,39 @@ public class BuildingEditor :  Editor
 		}
 	}
 	
+	private void BuildFog(Room room, GameObject fogObject)
+	{
+		Building building 			= (Building)target;
+	
+		MeshRenderer renderer 		= fogObject.AddComponent<MeshRenderer>();
+		MeshFilter filter			= fogObject.AddComponent<MeshFilter>();
+		fogObject.AddComponent<DisableMeshInEditor>();
+		
+		// The fog mesh is just the same as the ambient
+		string fogMeshName 		= building.BuildingName + "_" + room.Name + "_" + Building.s_ambient_id;
+		
+		UnityEngine.Object fogMesh 			= AssetHelper.Instance.FindAsset<Mesh>(fogMeshName);
+		UnityEngine.Object fogMaterial 		= AssetHelper.Instance.GetAsset<Material>("Materials/Fog.mat");
+		
+		if(fogMesh != null)
+		{
+			filter.mesh = fogMesh as Mesh;	
+		}
+		else
+		{
+			Debug.Log("Mesh Missing: " + fogMeshName);	
+		}
+		
+		if(fogMaterial != null)
+		{
+			renderer.material = fogMaterial as Material;	
+		}
+		else
+		{
+			Debug.Log("Material Missing: Materials/Fog.mat");
+		}
+	}
+	
 	private void BuildFloor(Room room, GameObject floorObject)
 	{
 		GameObjectUtility.SetStaticEditorFlags(floorObject, StaticEditorFlags.NavigationStatic);
@@ -275,6 +327,14 @@ public class BuildingEditor :  Editor
 		else
 		{
 			Debug.Log("Material Missing: " + floorMeshName);	
+			Shader flatShader = AssetHelper.Instance.FindAsset<Shader>("FlatColour") as Shader;
+			Material newMaterial = new Material(flatShader);
+			newMaterial.color = Color.red;
+			string path = "Assets/Resources/Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat";
+			AssetDatabase.CreateAsset(newMaterial, path);
+			
+			renderer.material = newMaterial as Material;
+			
 		}
 	}
 	

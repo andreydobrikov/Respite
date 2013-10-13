@@ -41,6 +41,74 @@ ModelImporter:
     100070: Plane009
     100072: Plane010
     100074: facility_garden_shadow
+    100076: facility0_hall_floor 1
+    100078: Plane011
+    100080: Plane016
+    100082: Plane017
+    100084: facility0_temp
+    100086: facility0_temp_floor
+    100088: facility0_f_dining_floor
+    100090: facility0_m_dining_floor
+    100092: facility0_f_class_floor
+    100094: facility0_f_study_floor
+    100096: facility0_m_class_floor
+    100098: facility0_m_study_floor
+    100100: facility0_f_landing_floor
+    100102: facility0_f_stairs_floor
+    100104: facility0_m_landing_floor
+    100106: facility0_m_stairs_floor
+    100108: weather_mask
+    100110: facility0_f_delivery_floor
+    100112: facility0_m_delivery_floor
+    100114: garden_walls
+    100116: facility0_kitchen_floor 1
+    100118: facility0_shed_floor
+    100120: facility0_backhall_floor
+    100122: facility0_f_clean_floor
+    100124: facility0_m_clean_floor
+    100126: facility0_f_clean_floor 1
+    100128: facility0_m_clean_floor 1
+    100130: facility0_fronthall_floor
+    100132: facility0_midhall_floor
+    100134: caility0_temp3_floor
+    100136: facility0_temp2_floor
+    100138: facility0_temp4_floor
+    100140: facility0_temp5_floor
+    100142: facility0_temp6_floor
+    100144: facility0_temp7_floor
+    100146: facility0_temp8_floor
+    100148: facility0_temp9_floor
+    100150: facility0_temp3_floor
+    100152: facility0_f_class_ambient
+    100154: facility0_f_study_ambient
+    100156: facility0_f_hall_floor
+    100158: facility0_m_hall_floor
+    100160: facility0_f_hall_ambient
+    100162: facility0_m_hall_ambient
+    100164: facility0_backhall_ambient
+    100166: facility0_f_clean_ambient
+    100168: facility0_f_delivery_ambient
+    100170: facility0_f_dining_ambient
+    100172: facility0_f_landing_ambient
+    100174: facility0_f_stairs_ambient
+    100176: facility0_fronthall_ambient
+    100178: facility0_m_class_ambient
+    100180: facility0_m_clean_ambient
+    100182: facility0_m_delivery_ambient
+    100184: facility0_m_dining_ambient
+    100186: facility0_m_landing_ambient
+    100188: facility0_m_stairs_ambient
+    100190: facility0_m_study_ambient
+    100192: facility0_midhall_ambient
+    100194: facility0_shed_ambient
+    100196: facility0_temp2_ambient
+    100198: facility0_temp3_ambient
+    100200: facility0_temp4_ambient
+    100202: facility0_temp5_ambient
+    100204: facility0_temp6_ambient
+    100206: facility0_temp7_ambient
+    100208: facility0_temp8_ambient
+    100210: facility0_temp9_ambient
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -79,6 +147,74 @@ ModelImporter:
     400070: Plane009
     400072: Plane010
     400074: facility_garden_shadow
+    400076: facility0_hall_floor 1
+    400078: Plane011
+    400080: Plane016
+    400082: Plane017
+    400084: facility0_temp
+    400086: facility0_temp_floor
+    400088: facility0_f_dining_floor
+    400090: facility0_m_dining_floor
+    400092: facility0_f_class_floor
+    400094: facility0_f_study_floor
+    400096: facility0_m_class_floor
+    400098: facility0_m_study_floor
+    400100: facility0_f_landing_floor
+    400102: facility0_f_stairs_floor
+    400104: facility0_m_landing_floor
+    400106: facility0_m_stairs_floor
+    400108: weather_mask
+    400110: facility0_f_delivery_floor
+    400112: facility0_m_delivery_floor
+    400114: garden_walls
+    400116: facility0_kitchen_floor 1
+    400118: facility0_shed_floor
+    400120: facility0_backhall_floor
+    400122: facility0_f_clean_floor
+    400124: facility0_m_clean_floor
+    400126: facility0_f_clean_floor 1
+    400128: facility0_m_clean_floor 1
+    400130: facility0_fronthall_floor
+    400132: facility0_midhall_floor
+    400134: caility0_temp3_floor
+    400136: facility0_temp2_floor
+    400138: facility0_temp4_floor
+    400140: facility0_temp5_floor
+    400142: facility0_temp6_floor
+    400144: facility0_temp7_floor
+    400146: facility0_temp8_floor
+    400148: facility0_temp9_floor
+    400150: facility0_temp3_floor
+    400152: facility0_f_class_ambient
+    400154: facility0_f_study_ambient
+    400156: facility0_f_hall_floor
+    400158: facility0_m_hall_floor
+    400160: facility0_f_hall_ambient
+    400162: facility0_m_hall_ambient
+    400164: facility0_backhall_ambient
+    400166: facility0_f_clean_ambient
+    400168: facility0_f_delivery_ambient
+    400170: facility0_f_dining_ambient
+    400172: facility0_f_landing_ambient
+    400174: facility0_f_stairs_ambient
+    400176: facility0_fronthall_ambient
+    400178: facility0_m_class_ambient
+    400180: facility0_m_clean_ambient
+    400182: facility0_m_delivery_ambient
+    400184: facility0_m_dining_ambient
+    400186: facility0_m_landing_ambient
+    400188: facility0_m_stairs_ambient
+    400190: facility0_m_study_ambient
+    400192: facility0_midhall_ambient
+    400194: facility0_shed_ambient
+    400196: facility0_temp2_ambient
+    400198: facility0_temp3_ambient
+    400200: facility0_temp4_ambient
+    400202: facility0_temp5_ambient
+    400204: facility0_temp6_ambient
+    400206: facility0_temp7_ambient
+    400208: facility0_temp8_ambient
+    400210: facility0_temp9_ambient
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -116,6 +252,74 @@ ModelImporter:
     2300068: Plane009
     2300070: Plane010
     2300072: facility_garden_shadow
+    2300074: facility0_hall_floor 1
+    2300076: Plane011
+    2300078: Plane016
+    2300080: Plane017
+    2300082: facility0_temp
+    2300084: facility0_temp_floor
+    2300086: facility0_f_dining_floor
+    2300088: facility0_m_dining_floor
+    2300090: facility0_f_class_floor
+    2300092: facility0_f_study_floor
+    2300094: facility0_m_class_floor
+    2300096: facility0_m_study_floor
+    2300098: facility0_f_landing_floor
+    2300100: facility0_f_stairs_floor
+    2300102: facility0_m_landing_floor
+    2300104: facility0_m_stairs_floor
+    2300106: weather_mask
+    2300108: facility0_f_delivery_floor
+    2300110: facility0_m_delivery_floor
+    2300112: garden_walls
+    2300114: facility0_kitchen_floor 1
+    2300116: facility0_shed_floor
+    2300118: facility0_backhall_floor
+    2300120: facility0_f_clean_floor
+    2300122: facility0_m_clean_floor
+    2300124: facility0_f_clean_floor 1
+    2300126: facility0_m_clean_floor 1
+    2300128: facility0_fronthall_floor
+    2300130: facility0_midhall_floor
+    2300132: caility0_temp3_floor
+    2300134: facility0_temp2_floor
+    2300136: facility0_temp4_floor
+    2300138: facility0_temp5_floor
+    2300140: facility0_temp6_floor
+    2300142: facility0_temp7_floor
+    2300144: facility0_temp8_floor
+    2300146: facility0_temp9_floor
+    2300148: facility0_temp3_floor
+    2300150: facility0_f_class_ambient
+    2300152: facility0_f_study_ambient
+    2300154: facility0_f_hall_floor
+    2300156: facility0_m_hall_floor
+    2300158: facility0_f_hall_ambient
+    2300160: facility0_m_hall_ambient
+    2300162: facility0_backhall_ambient
+    2300164: facility0_f_clean_ambient
+    2300166: facility0_f_delivery_ambient
+    2300168: facility0_f_dining_ambient
+    2300170: facility0_f_landing_ambient
+    2300172: facility0_f_stairs_ambient
+    2300174: facility0_fronthall_ambient
+    2300176: facility0_m_class_ambient
+    2300178: facility0_m_clean_ambient
+    2300180: facility0_m_delivery_ambient
+    2300182: facility0_m_dining_ambient
+    2300184: facility0_m_landing_ambient
+    2300186: facility0_m_stairs_ambient
+    2300188: facility0_m_study_ambient
+    2300190: facility0_midhall_ambient
+    2300192: facility0_shed_ambient
+    2300194: facility0_temp2_ambient
+    2300196: facility0_temp3_ambient
+    2300198: facility0_temp4_ambient
+    2300200: facility0_temp5_ambient
+    2300202: facility0_temp6_ambient
+    2300204: facility0_temp7_ambient
+    2300206: facility0_temp8_ambient
+    2300208: facility0_temp9_ambient
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -153,6 +357,74 @@ ModelImporter:
     3300068: Plane009
     3300070: Plane010
     3300072: facility_garden_shadow
+    3300074: facility0_hall_floor 1
+    3300076: Plane011
+    3300078: Plane016
+    3300080: Plane017
+    3300082: facility0_temp
+    3300084: facility0_temp_floor
+    3300086: facility0_f_dining_floor
+    3300088: facility0_m_dining_floor
+    3300090: facility0_f_class_floor
+    3300092: facility0_f_study_floor
+    3300094: facility0_m_class_floor
+    3300096: facility0_m_study_floor
+    3300098: facility0_f_landing_floor
+    3300100: facility0_f_stairs_floor
+    3300102: facility0_m_landing_floor
+    3300104: facility0_m_stairs_floor
+    3300106: weather_mask
+    3300108: facility0_f_delivery_floor
+    3300110: facility0_m_delivery_floor
+    3300112: garden_walls
+    3300114: facility0_kitchen_floor 1
+    3300116: facility0_shed_floor
+    3300118: facility0_backhall_floor
+    3300120: facility0_f_clean_floor
+    3300122: facility0_m_clean_floor
+    3300124: facility0_f_clean_floor 1
+    3300126: facility0_m_clean_floor 1
+    3300128: facility0_fronthall_floor
+    3300130: facility0_midhall_floor
+    3300132: caility0_temp3_floor
+    3300134: facility0_temp2_floor
+    3300136: facility0_temp4_floor
+    3300138: facility0_temp5_floor
+    3300140: facility0_temp6_floor
+    3300142: facility0_temp7_floor
+    3300144: facility0_temp8_floor
+    3300146: facility0_temp9_floor
+    3300148: facility0_temp3_floor
+    3300150: facility0_f_class_ambient
+    3300152: facility0_f_study_ambient
+    3300154: facility0_f_hall_floor
+    3300156: facility0_m_hall_floor
+    3300158: facility0_f_hall_ambient
+    3300160: facility0_m_hall_ambient
+    3300162: facility0_backhall_ambient
+    3300164: facility0_f_clean_ambient
+    3300166: facility0_f_delivery_ambient
+    3300168: facility0_f_dining_ambient
+    3300170: facility0_f_landing_ambient
+    3300172: facility0_f_stairs_ambient
+    3300174: facility0_fronthall_ambient
+    3300176: facility0_m_class_ambient
+    3300178: facility0_m_clean_ambient
+    3300180: facility0_m_delivery_ambient
+    3300182: facility0_m_dining_ambient
+    3300184: facility0_m_landing_ambient
+    3300186: facility0_m_stairs_ambient
+    3300188: facility0_m_study_ambient
+    3300190: facility0_midhall_ambient
+    3300192: facility0_shed_ambient
+    3300194: facility0_temp2_ambient
+    3300196: facility0_temp3_ambient
+    3300198: facility0_temp4_ambient
+    3300200: facility0_temp5_ambient
+    3300202: facility0_temp6_ambient
+    3300204: facility0_temp7_ambient
+    3300206: facility0_temp8_ambient
+    3300208: facility0_temp9_ambient
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -190,6 +462,74 @@ ModelImporter:
     4300068: Plane009
     4300070: Plane010
     4300072: facility_garden_shadow
+    4300074: Plane011
+    4300076: facility0_hall_floor
+    4300078: Plane016
+    4300080: Plane017
+    4300082: facility0_temp
+    4300084: facility0_temp_floor
+    4300086: facility0_f_dining_floor
+    4300088: facility0_m_dining_floor
+    4300090: facility0_f_study_floor
+    4300092: facility0_f_class_floor
+    4300094: facility0_m_study_floor
+    4300096: facility0_m_class_floor
+    4300098: facility0_f_stairs_floor
+    4300100: facility0_f_landing_floor
+    4300102: facility0_m_stairs_floor
+    4300104: facility0_m_landing_floor
+    4300106: weather_mask
+    4300108: garden_walls
+    4300110: facility0_f_delivery_floor
+    4300112: facility0_m_delivery_floor
+    4300114: facility0_kitchen_floor
+    4300116: facility0_shed_floor
+    4300118: facility0_f_clean_floor
+    4300120: facility0_m_clean_floor
+    4300122: facility0_backhall_floor
+    4300124: facility0_f_clean_floor
+    4300126: facility0_m_clean_floor
+    4300128: facility0_fronthall_floor
+    4300130: facility0_midhall_floor
+    4300132: facility0_temp2_floor
+    4300134: caility0_temp3_floor
+    4300136: facility0_temp4_floor
+    4300138: facility0_temp5_floor
+    4300140: facility0_temp6_floor
+    4300142: facility0_temp7_floor
+    4300144: facility0_temp8_floor
+    4300146: facility0_temp9_floor
+    4300148: facility0_temp3_floor
+    4300150: facility0_f_class_ambient
+    4300152: facility0_f_study_ambient
+    4300154: facility0_m_hall_floor
+    4300156: facility0_f_hall_floor
+    4300158: facility0_m_hall_ambient
+    4300160: facility0_f_hall_ambient
+    4300162: facility0_f_dining_ambient
+    4300164: facility0_m_dining_ambient
+    4300166: facility0_m_study_ambient
+    4300168: facility0_m_class_ambient
+    4300170: facility0_f_stairs_ambient
+    4300172: facility0_f_landing_ambient
+    4300174: facility0_m_stairs_ambient
+    4300176: facility0_m_landing_ambient
+    4300178: facility0_f_delivery_ambient
+    4300180: facility0_m_delivery_ambient
+    4300182: facility0_shed_ambient
+    4300184: facility0_f_clean_ambient
+    4300186: facility0_backhall_ambient
+    4300188: facility0_m_clean_ambient
+    4300190: facility0_fronthall_ambient
+    4300192: facility0_midhall_ambient
+    4300194: facility0_temp2_ambient
+    4300196: facility0_temp3_ambient
+    4300198: facility0_temp4_ambient
+    4300200: facility0_temp5_ambient
+    4300202: facility0_temp6_ambient
+    4300204: facility0_temp7_ambient
+    4300206: facility0_temp8_ambient
+    4300208: facility0_temp9_ambient
     9500000: //RootNode
   materials:
     importMaterials: 1

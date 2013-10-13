@@ -70,7 +70,7 @@ public class DimensionBodger : MonoBehaviour
 			
 			lights[i].transform.localPosition = localPosition;
 			
-			Debug.Log("Bodged: " + lights[i].name);
+			//Debug.Log("Bodged: " + lights[i].name);
 		}
 		
 	}

@@ -19,6 +19,12 @@ public class AI : MonoBehaviour
 
 	void Start ()
 	{
+		// TODO: This has to be done because AI behaviours were sharing a parent when copied, rather than re-assigning
+		foreach(var state in m_states)
+		{
+			state.Parent = this;
+		}	
+		
 		m_currentState = m_states[m_startStateIndex];
 		m_currentState.Start();
 	}

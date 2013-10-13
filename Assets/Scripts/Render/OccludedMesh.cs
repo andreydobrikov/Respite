@@ -96,13 +96,21 @@ public class OccludedMesh : MonoBehaviour
 	void OnBecameVisible()
 	{
 		enabled = true;	
-		m_activeMeshes++;
+		if(Dynamic)
+		{
+			m_activeMeshes++;
+			m_meshes.Add(this);
+		}
 	}
 	
 	void OnBecameInvisible()
 	{
 		enabled = false;	
-		m_activeMeshes--;
+		if(Dynamic)
+		{
+			m_activeMeshes--;
+			m_meshes.Remove(this);
+		}
 	}
 	
 	public void OnTriggerEnter(Collider other)
@@ -132,7 +140,8 @@ public class OccludedMesh : MonoBehaviour
 				newVertices.vertices.Add(p1);
 				
 				m_colliderVertices.Add(other, newVertices);
-				RebuildMesh();
+				
+				
 			}
 			
 			
@@ -149,7 +158,13 @@ public class OccludedMesh : MonoBehaviour
 				newVertices.vertices.Add(new Vector3( newCollider.size.x / 2.0f, 0.0f, newCollider.size.z / 2.0f));
 				
 				m_colliderVertices.Add(other, newVertices);
-				RebuildMesh();
+			//	RebuildMesh();
+			}
+			
+			// If this is a static light, rebuild meshes immediately as there will be no Update
+			if(!Dynamic)
+			{
+				RebuildMesh();		
 			}
 		}
 	}
@@ -509,5 +524,6 @@ public class OccludedMesh : MonoBehaviour
 	
 	private Vector3 m_cachedPosition = Vector3.zero;
 	public static int m_activeMeshes = 0;
+	public static List<OccludedMesh> m_meshes = new List<OccludedMesh>();
 	
 }

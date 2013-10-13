@@ -13,6 +13,11 @@ ModelImporter:
     100014: hut_mask
     100016: shed_floor
     100018: hut_shadow
+    100020: hut_room_floor
+    100022: hut_shed_floor
+    100024: hut_room_ambient
+    100026: hut_shed_ambient
+    100028: hut_weather_mask
     400000: floor
     400002: //RootNode
     400004: walls
@@ -23,6 +28,11 @@ ModelImporter:
     400014: hut_mask
     400016: shed_floor
     400018: hut_shadow
+    400020: hut_room_floor
+    400022: hut_shed_floor
+    400024: hut_room_ambient
+    400026: hut_shed_ambient
+    400028: hut_weather_mask
     2300000: floor
     2300002: walls
     2300004: hut_floor
@@ -32,6 +42,11 @@ ModelImporter:
     2300012: hut_mask
     2300014: shed_floor
     2300016: hut_shadow
+    2300018: hut_room_floor
+    2300020: hut_shed_floor
+    2300022: hut_room_ambient
+    2300024: hut_shed_ambient
+    2300026: hut_weather_mask
     3300000: floor
     3300002: walls
     3300004: hut_floor
@@ -41,6 +56,11 @@ ModelImporter:
     3300012: hut_mask
     3300014: shed_floor
     3300016: hut_shadow
+    3300018: hut_room_floor
+    3300020: hut_shed_floor
+    3300022: hut_room_ambient
+    3300024: hut_shed_ambient
+    3300026: hut_weather_mask
     4300000: floor
     4300002: walls
     4300004: hut_floor
@@ -50,6 +70,11 @@ ModelImporter:
     4300012: hut_mask
     4300014: shed_floor
     4300016: hut_shadow
+    4300018: hut_room_floor
+    4300020: hut_shed_floor
+    4300022: hut_room_ambient
+    4300024: hut_shed_ambient
+    4300026: hut_weather_mask
     9500000: //RootNode
   materials:
     importMaterials: 1

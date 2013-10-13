@@ -1,88 +1,74 @@
-Shader "Hidden/ViewRegion" 
-{
-	Properties 
-	{
-		_MainTex ("Screen Blended", 2D) = "" {}
-		_Overlay ("Light Map", 2D) = "" {}
-		_Color("Tint", Color) = (0.1, 0.8, 0.3, 1.0)
-	}
+Shader "Hidden/ViewRegion" {
+	Properties
+	 {
+	  	_MainTex ("", any) = "" {} 
+	  	_SourceTex("Source", 2D) = "" {}
+	  	_BlendTex ("Blur", 2D) = "" {}
+	 }
 	
+	/*SubShader { 
+		Pass {
+			ZTest Always Cull Off ZWrite Off Fog { Mode Off }
+			SetTexture [_MainTex] {constantColor (0,0,0,0.25) combine texture * constant alpha}
+			SetTexture [_MainTex] {constantColor (0,0,0,0.25) combine texture * constant + previous}
+			SetTexture [_MainTex] {constantColor (0,0,0,0.25) combine texture * constant + previous}
+			SetTexture [_MainTex] {constantColor (0,0,0,0.25) combine texture * constant + previous}
+		}
+	}*/
 	CGINCLUDE
-
 	#include "UnityCG.cginc"
-	
-	#pragma exclude_renderers flash
-
-	
-	struct v2f 
-	{
+	struct v2f {
 		float4 pos : POSITION;
-		float2 uv[2] : TEXCOORD0;
-
+		half2 uvMain : TEXCOORD0; 
+		half2 uv : TEXCOORD1;
+		half2 taps[4] : TEXCOORD2; 
 	};
-			
-	sampler2D _Overlay;
 	sampler2D _MainTex;
-	float4 _Color;
-	
-	half _Intensity;
+	sampler2D _SourceTex;
+	sampler2D _BlendTex;
 	half4 _MainTex_TexelSize;
-		
-	v2f vert( appdata_img v )
-	 { 
-		v2f o;
+	half4 _BlurOffsets;
+	v2f vert( appdata_img v ) {
+		v2f o; 
 		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-		o.uv[0] =  v.texcoord.xy;
-		
-		#if UNITY_UV_STARTS_AT_TOP
-		if(_MainTex_TexelSize.y<0.0)
-			o.uv[0].y = 1.0-o.uv[0].y;
-		#endif
-		
-		o.uv[1] =  v.texcoord.xy;	
-		
-
-    
+		o.uv = v.texcoord - _BlurOffsets.xy * _MainTex_TexelSize.xy; // hack, see BlurEffect.cs for the reason for this. let's make a new blur effect soon
+		o.uvMain = v.texcoord;
+		o.taps[0] = o.uv + _MainTex_TexelSize * _BlurOffsets.xy;
+		o.taps[1] = o.uv - _MainTex_TexelSize * _BlurOffsets.xy;
+		o.taps[2] = o.uv + _MainTex_TexelSize * _BlurOffsets.xy * half2(1,-1);
+		o.taps[3] = o.uv - _MainTex_TexelSize * _BlurOffsets.xy * half2(1,-1);
 		return o;
 	}
-	
+	half4 frag(v2f i) : COLOR {
+		half4 mainTex = tex2D(_SourceTex, i.uvMain);
+		half4 blend = tex2D(_BlendTex, i.uvMain);
+		half4 color = tex2D(_MainTex, i.taps[0]);
+		color += tex2D(_MainTex, i.taps[1]);
+		color += tex2D(_MainTex, i.taps[2]);
+		color += tex2D(_MainTex, i.taps[3]); 
+		//return mainTex;
+		color *= 0.25;
+		
+		float intensity =  0.3f * color.r + 0.59f * color.g + 0.11f * color.b;
+		color = lerp(color, half4(intensity, intensity, intensity, 1.0 ), blend.r * 0.2f);
+		
+		color = lerp(mainTex, color, blend.r);
+		return color;
+		return half4(1.0f, 0.0f, 0.0f, 1.0f); 
+		
+	}
+	ENDCG
+	SubShader {
+		 Pass {
+			  ZTest Always Cull Off ZWrite Off
+			  Fog { Mode off }      
 
-
-	half4 frag (v2f i) : COLOR 
-	{
-		half4 uv = half4(i.uv[1].x, i.uv[1].y, 5.0, 0.0);
-	
-		half4 frameBuffer 	= tex2D(_MainTex, i.uv[0]);// tex2Dbias(_MainTex, uv);
-		half4 mask			= tex2D(_Overlay, i.uv[0]);
-		
-		mask.r -= 0.3f;
-		mask.r = saturate(mask.r);
-		
-		float intensity = 0.3f * frameBuffer.r + 0.59f * frameBuffer.g + 0.11f * frameBuffer.b;
-		
-		half4 outCol = lerp(frameBuffer, half4(intensity, intensity, intensity, 1.0f), mask.r);
-		
-		return outCol;//frameBuffer * mask;//half4(1.0f, 0.0f, 0.0f, 1.0f);// * (mask * ((1.0f - outColour) * sum);//( * half4(0.6f, 0.6f, 0.6f, 0.4f));
-	}	 
-
-	ENDCG 
-	
-Subshader {
-	  ZTest Always Cull Off ZWrite Off
-	  Fog { Mode off }  
-      ColorMask RGB	  
-  		  	
-	 Pass {    
-	
-	      CGPROGRAM
-	      #pragma fragmentoption ARB_precision_hint_fastest
-	      #pragma vertex vert
-	      #pragma fragment frag
-	      ENDCG
-	  }
-  
+			  CGPROGRAM
+			  #pragma fragmentoption ARB_precision_hint_fastest
+			  #pragma vertex vert
+			  #pragma fragment frag
+			  ENDCG
+		  }
+	}
+	Fallback off
 }
-
-Fallback off
-	
-} // shader

@@ -10,8 +10,7 @@ Shader "Custom/TexTint"
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 200
-		Cull off
-		
+				
 		Pass
 		{
 		

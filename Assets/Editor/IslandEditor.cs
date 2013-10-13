@@ -229,9 +229,9 @@ public class IslandEditor : Editor
 							
 							GameObject newObject = new GameObject("blah");
 							
-							if(mesh.triangles.Length > 0)
+						//	if(mesh.triangles.Length > 0)
 							{
-								GameObjectUtility.SetStaticEditorFlags(newObject, StaticEditorFlags.NavigationStatic);	
+							//	GameObjectUtility.SetStaticEditorFlags(newObject, StaticEditorFlags.NavigationStatic);	
 							}
 							
 							Debug.Log("Mesh has " + mesh.triangles.Length + " count");

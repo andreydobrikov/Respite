@@ -1,5 +1,10 @@
 Shader "Hidden/BlurEffectConeTap" {
-	Properties { _MainTex ("", any) = "" {} }
+	Properties
+	 {
+	  	_MainTex ("", any) = "" {} 
+	  	_BlendTex ("Blur", 2D) = "" {}
+	 }
+	
 	SubShader { 
 		Pass {
 			ZTest Always Cull Off ZWrite Off Fog { Mode Off }
@@ -17,6 +22,7 @@ Shader "Hidden/BlurEffectConeTap" {
 		half2 taps[4] : TEXCOORD1; 
 	};
 	sampler2D _MainTex;
+	sampler2D _BlendTex;
 	half4 _MainTex_TexelSize;
 	half4 _BlurOffsets;
 	v2f vert( appdata_img v ) {
@@ -30,10 +36,12 @@ Shader "Hidden/BlurEffectConeTap" {
 		return o;
 	}
 	half4 frag(v2f i) : COLOR {
+	half4 mainTex = tex2D(_BlendTex, i.uv);
 		half4 color = tex2D(_MainTex, i.taps[0]);
 		color += tex2D(_MainTex, i.taps[1]);
 		color += tex2D(_MainTex, i.taps[2]);
 		color += tex2D(_MainTex, i.taps[3]); 
+		half4(1.0f, 0.0f, 0.0f, 1.0f);
 		return color * 0.25;
 	}
 	ENDCG

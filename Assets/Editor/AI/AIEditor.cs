@@ -174,8 +174,11 @@ public class AIEditor :  EditorWindow
 		{
 			activeAI.SelectedState = -1;
 		}
-		
-		
+	}
+	
+	public void OnInspectorUpdate()
+	{
+		Repaint();
 	}
 			
 	void DrawWindow1(int id)

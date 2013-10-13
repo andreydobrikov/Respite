@@ -14,6 +14,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public abstract class AIBehaviourNavigationBase : AIBehaviour 
 {
 	// Called when a requested destination is reached.
@@ -44,6 +45,11 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 		{
 			case AINavigationState.Routing:
 			{
+				if(m_agent.pathPending == true)
+				{
+					break;	
+				}
+			
 				Door door = RayCastDoor();
 			
 				// If there's a door, switch to the appropriate state
@@ -137,7 +143,7 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 		
 		if(m_activeState == AINavigationState.Routing)
 		{
-			m_agent.destination = m_requestedRoute;
+			m_agent.SetDestination(m_requestedRoute);
 			m_routeRequested 	= false;
 		}
 	}

@@ -10,7 +10,6 @@ Shader "Custom/TexTintDetail"
 	
 	SubShader 
 	{
-		Cull off
 		Tags {"Queue"="Geometry"}
 		LOD 200
 		//Blend SrcAlpha OneMinusSrcAlpha

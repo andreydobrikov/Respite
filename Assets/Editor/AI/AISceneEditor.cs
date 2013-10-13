@@ -31,6 +31,10 @@ public class AISceneEditor : Editor
 			{
 				behaviour.OnSceneGUI();
 			}
+			
+			EditorUtility.SetDirty(activeAI);
+			
+			Repaint();
 		}
 		
 	}

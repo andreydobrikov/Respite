@@ -13,6 +13,8 @@ public class BlurEffect : MonoBehaviour
 	/// get large blurs. Value is usually between 0.5 and 1.0.
 	public float blurSpread = 0.6f;
 	
+	public RenderTexture mask;
+	
 	
 	// --------------------------------------------------------
 	// The blur iteration shader.
@@ -88,6 +90,8 @@ public class BlurEffect : MonoBehaviour
 		
 		// Copy source to the 4x4 smaller texture.
 		DownSample4x (source, buffer);
+		
+		material.SetTexture("_BlurTex", mask);
 		
 		// Blur the small texture
 		bool oddEven = true;

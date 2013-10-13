@@ -110,8 +110,10 @@ public class Door : InteractiveObject
 		m_targetValue = 0.0f;
 		
 		AudioSource source = GetComponent<AudioSource>() as AudioSource;
-		
-		source.Play();
+		if(source != null)
+		{
+			source.Play();
+		}
 	}
 	
 	public override void SaveSerialise(List<SavePair> pairs)

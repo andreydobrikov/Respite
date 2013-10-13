@@ -11,7 +11,6 @@ Shader "Custom/TexTransparentTint"
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
 		LOD 200
 		Blend SrcAlpha OneMinusSrcAlpha
-		Cull Off
 		
 		Pass
 		{

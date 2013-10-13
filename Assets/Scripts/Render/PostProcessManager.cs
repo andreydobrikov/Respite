@@ -54,7 +54,8 @@ public class PostProcessManager : MonoBehaviour
 					viewCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth / 4, pixelHeight / 4, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 					viewCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 					
-					postCamera.GetComponent<ViewRegionEffect>().viewRegionTexture 	= viewCamera.GetComponent<Camera>().targetTexture;
+					postCamera.GetComponent<ViewRegionEffect>().mask 	= viewCamera.GetComponent<Camera>().targetTexture;
+					//viewCamera.GetComponent<BlurEffect>().mask = viewCamera.GetComponent<Camera>().targetTexture;
 					
 				}
 				else

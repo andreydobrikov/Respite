@@ -20,6 +20,7 @@ public class Building : MonoBehaviour
 	public List<Room> Rooms			= new List<Room>();
 	public bool ShowRoomsFoldout	= false;
 	public int floorHeight			= 0;
+	public bool BuildFog			= false;
 	
 	public Building()
 	{
@@ -28,15 +29,10 @@ public class Building : MonoBehaviour
 	
 	public void Start()
 	{
-		m_lights = GameObjectHelper.FindAllChildrenWithLayer(this.gameObject, LayerMask.NameToLayer("Lights"));
-		Debug.Log("Building \"" + BuildingName + "\" Found " + m_lights.Count + " lights");
-		
-		foreach(var light in m_lights)
-		{
-			Debug.Log("\tLight \"" + light.name + "\"");
-		}
+	//	m_lights = GameObjectHelper.FindAllChildrenWithLayer(this.gameObject, LayerMask.NameToLayer("Lights"));
+		//Debug.Log("Building \"" + BuildingName + "\" Found " + m_lights.Count + " lights");
 	}
-	
+	/*
 	public void DisableLights()
 	{
 		foreach(var light in m_lights)
@@ -60,13 +56,14 @@ public class Building : MonoBehaviour
 	}
 		
 	private List<GameObject> m_lights = null;
-	
+	*/
 #if UNITY_EDITOR
 		
 	public static string s_walls_id 			= "walls";
 	public static string s_rooms_id 			= "rooms";
 	public static string s_floor_id 			= "floor";
 	public static string s_ambient_id 			= "ambient";
+	public static string s_fog_id 				= "fog";
 	public static string s_weather_mask_id 		= "weather_mask";
 	public static string s_weather_mask_mat_id 	= "DepthMask";
 	

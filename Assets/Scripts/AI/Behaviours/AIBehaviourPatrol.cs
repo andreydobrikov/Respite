@@ -115,10 +115,15 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 			
 			Handles.color = Color.green;
 			
-			node.position = Handles.PositionHandle(node.position, Quaternion.identity);
+			Vector3 newPosition = Handles.PositionHandle(node.position, Quaternion.identity);
 			
+			if(newPosition != node.position)
+			{
+				node.position = newPosition;
+				EditorUtility.SetDirty(this);
+			}
 			
-			if(GUIUtility.hotControl != hotControl)
+			if(GUIUtility.hotControl != hotControl) 
 			{
 				Debug.Log("Changed");	
 				m_selectedNode = controlIndex;
@@ -162,4 +167,11 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 	private WaypointNode m_target = null;
 	private WaypointNode m_origin = null;
 	private int m_targetIndex = 1;
+	private PatrolState m_patrolState = PatrolState.Patrolling;
+	
+	private enum PatrolState
+	{
+		Patrolling,
+		Holding
+	}
 }

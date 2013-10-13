@@ -8,6 +8,7 @@
 //			Inventory
 //			Inspection
 //			Menus
+//			
 // 
 // To-do:
 //
@@ -114,8 +115,6 @@ public class GameFlow
 		{
 			m_cameraFade.StartFade(new Color(0.0f, 0.0f, 0.0f, 1.0f), 0.5f, MenuFadeComplete);
 		}
-		
-		
 		
 		m_gameTime.Paused = true;
 	}
