@@ -41,6 +41,11 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	{
 		bool transition = false;
 		
+		if(m_door != null)
+		{
+			Debug.DrawLine(GetObject().transform.position, m_door.transform.position + new Vector3(0.0f, 1.0f, 0.0f), Color.magenta);	
+		}
+		
 		switch(m_activeState)
 		{
 			case AINavigationState.Routing:
@@ -56,6 +61,7 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 				if(door != null)
 				{
 					m_activeState = AINavigationState.DoorFound;
+					m_cachedTarget = m_agent.destination;
 					m_door = door;
 				}
 				
@@ -98,7 +104,7 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 						Vector3 pivot = m_door.PivotPosition;
 						Vector3 direction = m_door.DoorDirection;
 						
-						m_agent.destination = pivot + (direction * 1.4f);
+						m_agent.destination = pivot + (direction * 1.8f);
 	
 						m_activeState = AINavigationState.RoutingAroundDoor;
 					}
@@ -117,7 +123,6 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 			{
 				if (m_agent.remainingDistance == 0.0f)
 				{
-					m_routeRequested = false;
 					m_agent.destination = m_requestedRoute;
 					m_activeState = AINavigationState.Routing;
 				}
@@ -139,12 +144,10 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	protected void SetDestination(Vector3 destination)
 	{
 		m_requestedRoute = destination;
-		m_routeRequested = true;
 		
 		if(m_activeState == AINavigationState.Routing)
 		{
 			m_agent.SetDestination(m_requestedRoute);
-			m_routeRequested 	= false;
 		}
 	}
 	
@@ -188,7 +191,6 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	private AINavigationState m_activeState 					= AINavigationState.Routing;
 	private Vector3 m_cachedTarget 								= Vector3.zero;
 	private Door m_door 										= null;
-	private bool m_routeRequested								= false;
 	private Vector3 m_requestedRoute							= Vector3.zero;
 }
 

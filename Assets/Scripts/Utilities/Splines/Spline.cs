@@ -149,9 +149,6 @@ public class Spline
 				// This is distance along the current bezier that the progress will be.
 				float localProgress = positionLength - accumulatedLength;
 				
-				// This is the normalized distance along the current bezier
-				float normalizedDistance = 	localProgress / bezierLength;
-				
 				float width = Mathf.Lerp(m_widthModifiers[modifierIndex], m_widthModifiers[modifierIndex + 1], localProgress);
 				return width;
 			}

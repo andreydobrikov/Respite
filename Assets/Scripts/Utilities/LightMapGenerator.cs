@@ -11,7 +11,9 @@
 ///////////////////////////////////////////////////////////
 
 using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -21,6 +23,7 @@ public class LightMapGenerator
 
 	public static void GenerateLightmap(Building building, Room room, string textureOutputPath, int pixelSpread, bool filter)
 	{
+#if UNITY_EDITOR
 		List<IntersectionLine> m_intersections = new List<IntersectionLine>();
 		
 		string roomID 	= building.BuildingName + "_" + room.Name + "_" + Building.s_floor_id;
@@ -154,9 +157,6 @@ public class LightMapGenerator
 		
 		Texture2D testTexture = new Texture2D(mipWidth, mipHeight);
 		
-		float texelWidth = ambientMesh.bounds.size.x / (float)mipWidth;
-		float texelHeight = ambientMesh.bounds.size.y / (float)mipHeight;
-		
 		for(int x = 0; x < mipWidth; ++x)
 		{
 			for(int y = 0; y < mipHeight; ++y)
@@ -167,13 +167,10 @@ public class LightMapGenerator
 		
 		foreach(var intersection in m_intersections)
 		{
-			float length = (intersection.end - intersection.start).magnitude;
-			
 			Vector3 localStart 	= intersection.start - ambientMesh.bounds.min;
 			Vector3 localEnd 	= intersection.end - ambientMesh.bounds.min;
 			
 			// trundle along the line and draw some things
-			
 			float delta = 1.0f / 1000.0f;
 			
 			for(int i = 0; i < 1000; i++)
@@ -218,6 +215,7 @@ public class LightMapGenerator
 		string relative = textureOutputPath.Remove(textureOutputPath.IndexOf(Application.dataPath), Application.dataPath.Length);
 		
 		AssetDatabase.ImportAsset(relative, ImportAssetOptions.ForceSynchronousImport);
+#endif
 	}
 	
 	private struct IntersectionLine

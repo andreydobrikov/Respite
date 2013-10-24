@@ -52,7 +52,7 @@ public class SpriteData
 		set { m_currentAnimation = value; }
 	}
 	
-	Texture2D m_texture;
+	Texture2D m_texture; 
 	
 	float speed = 0.38f; 
 	

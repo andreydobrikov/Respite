@@ -10,7 +10,7 @@ public class Weather : MonoBehaviour
 	public GameObject OverlayObject 	= null;
 	public GameObject ParticleObject 	= null;
 	
-	public void Start()
+	public void Awake()
 	{
 		m_lerpStart 	= Random.value;
 		m_lerpEnd 		= Random.value;

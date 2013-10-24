@@ -96,6 +96,7 @@ public class Settings
 	
 	public void LoadSettings()
 	{
+		
 		m_settings.Clear();
 		
 		using(TextReader tr = File.OpenText(@"C:\json.txt"))
@@ -123,10 +124,12 @@ public class Settings
 				}
 			}
 		}
+		
 	}
 	
 	public void SaveSettings()
 	{
+		
 		using (StreamWriter sw = new StreamWriter(@"c:\json.txt"))
 		{
 			using (JsonWriter writer = new JsonTextWriter(sw))
@@ -142,6 +145,7 @@ public class Settings
 				writer.WriteEndObject();
 			}
 		}
+		
 	}
 	
 	public List<Setting> Values

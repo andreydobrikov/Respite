@@ -109,6 +109,59 @@ ModelImporter:
     100206: facility0_temp7_ambient
     100208: facility0_temp8_ambient
     100210: facility0_temp9_ambient
+    100212: facility0_temp10_ambient
+    100214: facility0_temp10_floor
+    100216: facility0_temp11_ambient
+    100218: facility0_temp11_floor
+    100220: facility0_temp12_ambient
+    100222: facility0_temp12_floor
+    100224: facility0_front_e_hall_floor
+    100226: facility0_front_hall_floor
+    100228: facility0_front_w_hall_floor
+    100230: facility0_mid_hall_floor
+    100232: facility0_other_hall_floor
+    100234: Plane012
+    100236: Plane014
+    100238: Plane018
+    100240: Plane020
+    100242: Plane021
+    100244: Plane023
+    100246: Plane024
+    100248: Plane026
+    100250: facility0_entrance_hall_floor
+    100252: facility0_entrance_hall_ambient
+    100254: facility0_front_e_hall_ambient
+    100256: facility0_front_w_hall_ambient
+    100258: facility0_mid_hall_ambient
+    100260: facility0_other_hall_ambient
+    100262: facility0_admin_office_floor
+    100264: facility0_medical_floor
+    100266: facility0_medical_store_floor
+    100268: facility0_staff_cupboard_floor
+    100270: facility0_staff_meeting_floor
+    100272: facility0_staff_post_floor
+    100274: facility0_staff_storage_floor
+    100276: facility0_staff_study_floor
+    100278: facility0_staff_w_office_floor
+    100280: facility0_admin_office_ambient
+    100282: facility0_laundry_ambient
+    100284: facility0_laundry_floor
+    100286: facility0_maintenance_ambient
+    100288: facility0_maintenance_floor
+    100290: facility0_medical_ambient
+    100292: facility0_medical_store_ambient
+    100294: facility0_staff_break_ambient
+    100296: facility0_staff_break_floor
+    100298: facility0_staff_cupboard_ambient
+    100300: facility0_staff_meeting_ambient
+    100302: facility0_staff_post_ambient
+    100304: facility0_staff_storage1_ambient
+    100306: facility0_staff_storage1_floor
+    100308: facility0_staff_storage2_ambient
+    100310: facility0_staff_storage2_floor
+    100312: facility0_staff_storage_ambient
+    100314: facility0_staff_study_ambient
+    100316: facility0_staff_w_office_ambient
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -215,6 +268,59 @@ ModelImporter:
     400206: facility0_temp7_ambient
     400208: facility0_temp8_ambient
     400210: facility0_temp9_ambient
+    400212: facility0_temp10_ambient
+    400214: facility0_temp10_floor
+    400216: facility0_temp11_ambient
+    400218: facility0_temp11_floor
+    400220: facility0_temp12_ambient
+    400222: facility0_temp12_floor
+    400224: facility0_front_e_hall_floor
+    400226: facility0_front_hall_floor
+    400228: facility0_front_w_hall_floor
+    400230: facility0_mid_hall_floor
+    400232: facility0_other_hall_floor
+    400234: Plane012
+    400236: Plane014
+    400238: Plane018
+    400240: Plane020
+    400242: Plane021
+    400244: Plane023
+    400246: Plane024
+    400248: Plane026
+    400250: facility0_entrance_hall_floor
+    400252: facility0_entrance_hall_ambient
+    400254: facility0_front_e_hall_ambient
+    400256: facility0_front_w_hall_ambient
+    400258: facility0_mid_hall_ambient
+    400260: facility0_other_hall_ambient
+    400262: facility0_admin_office_floor
+    400264: facility0_medical_floor
+    400266: facility0_medical_store_floor
+    400268: facility0_staff_cupboard_floor
+    400270: facility0_staff_meeting_floor
+    400272: facility0_staff_post_floor
+    400274: facility0_staff_storage_floor
+    400276: facility0_staff_study_floor
+    400278: facility0_staff_w_office_floor
+    400280: facility0_admin_office_ambient
+    400282: facility0_laundry_ambient
+    400284: facility0_laundry_floor
+    400286: facility0_maintenance_ambient
+    400288: facility0_maintenance_floor
+    400290: facility0_medical_ambient
+    400292: facility0_medical_store_ambient
+    400294: facility0_staff_break_ambient
+    400296: facility0_staff_break_floor
+    400298: facility0_staff_cupboard_ambient
+    400300: facility0_staff_meeting_ambient
+    400302: facility0_staff_post_ambient
+    400304: facility0_staff_storage1_ambient
+    400306: facility0_staff_storage1_floor
+    400308: facility0_staff_storage2_ambient
+    400310: facility0_staff_storage2_floor
+    400312: facility0_staff_storage_ambient
+    400314: facility0_staff_study_ambient
+    400316: facility0_staff_w_office_ambient
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -320,6 +426,59 @@ ModelImporter:
     2300204: facility0_temp7_ambient
     2300206: facility0_temp8_ambient
     2300208: facility0_temp9_ambient
+    2300210: facility0_temp10_ambient
+    2300212: facility0_temp10_floor
+    2300214: facility0_temp11_ambient
+    2300216: facility0_temp11_floor
+    2300218: facility0_temp12_ambient
+    2300220: facility0_temp12_floor
+    2300222: facility0_front_e_hall_floor
+    2300224: facility0_front_hall_floor
+    2300226: facility0_front_w_hall_floor
+    2300228: facility0_mid_hall_floor
+    2300230: facility0_other_hall_floor
+    2300232: Plane012
+    2300234: Plane014
+    2300236: Plane018
+    2300238: Plane020
+    2300240: Plane021
+    2300242: Plane023
+    2300244: Plane024
+    2300246: Plane026
+    2300248: facility0_entrance_hall_floor
+    2300250: facility0_entrance_hall_ambient
+    2300252: facility0_front_e_hall_ambient
+    2300254: facility0_front_w_hall_ambient
+    2300256: facility0_mid_hall_ambient
+    2300258: facility0_other_hall_ambient
+    2300260: facility0_admin_office_floor
+    2300262: facility0_medical_floor
+    2300264: facility0_medical_store_floor
+    2300266: facility0_staff_cupboard_floor
+    2300268: facility0_staff_meeting_floor
+    2300270: facility0_staff_post_floor
+    2300272: facility0_staff_storage_floor
+    2300274: facility0_staff_study_floor
+    2300276: facility0_staff_w_office_floor
+    2300278: facility0_admin_office_ambient
+    2300280: facility0_laundry_ambient
+    2300282: facility0_laundry_floor
+    2300284: facility0_maintenance_ambient
+    2300286: facility0_maintenance_floor
+    2300288: facility0_medical_ambient
+    2300290: facility0_medical_store_ambient
+    2300292: facility0_staff_break_ambient
+    2300294: facility0_staff_break_floor
+    2300296: facility0_staff_cupboard_ambient
+    2300298: facility0_staff_meeting_ambient
+    2300300: facility0_staff_post_ambient
+    2300302: facility0_staff_storage1_ambient
+    2300304: facility0_staff_storage1_floor
+    2300306: facility0_staff_storage2_ambient
+    2300308: facility0_staff_storage2_floor
+    2300310: facility0_staff_storage_ambient
+    2300312: facility0_staff_study_ambient
+    2300314: facility0_staff_w_office_ambient
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -425,6 +584,59 @@ ModelImporter:
     3300204: facility0_temp7_ambient
     3300206: facility0_temp8_ambient
     3300208: facility0_temp9_ambient
+    3300210: facility0_temp10_ambient
+    3300212: facility0_temp10_floor
+    3300214: facility0_temp11_ambient
+    3300216: facility0_temp11_floor
+    3300218: facility0_temp12_ambient
+    3300220: facility0_temp12_floor
+    3300222: facility0_front_e_hall_floor
+    3300224: facility0_front_hall_floor
+    3300226: facility0_front_w_hall_floor
+    3300228: facility0_mid_hall_floor
+    3300230: facility0_other_hall_floor
+    3300232: Plane012
+    3300234: Plane014
+    3300236: Plane018
+    3300238: Plane020
+    3300240: Plane021
+    3300242: Plane023
+    3300244: Plane024
+    3300246: Plane026
+    3300248: facility0_entrance_hall_floor
+    3300250: facility0_entrance_hall_ambient
+    3300252: facility0_front_e_hall_ambient
+    3300254: facility0_front_w_hall_ambient
+    3300256: facility0_mid_hall_ambient
+    3300258: facility0_other_hall_ambient
+    3300260: facility0_admin_office_floor
+    3300262: facility0_medical_floor
+    3300264: facility0_medical_store_floor
+    3300266: facility0_staff_cupboard_floor
+    3300268: facility0_staff_meeting_floor
+    3300270: facility0_staff_post_floor
+    3300272: facility0_staff_storage_floor
+    3300274: facility0_staff_study_floor
+    3300276: facility0_staff_w_office_floor
+    3300278: facility0_admin_office_ambient
+    3300280: facility0_laundry_ambient
+    3300282: facility0_laundry_floor
+    3300284: facility0_maintenance_ambient
+    3300286: facility0_maintenance_floor
+    3300288: facility0_medical_ambient
+    3300290: facility0_medical_store_ambient
+    3300292: facility0_staff_break_ambient
+    3300294: facility0_staff_break_floor
+    3300296: facility0_staff_cupboard_ambient
+    3300298: facility0_staff_meeting_ambient
+    3300300: facility0_staff_post_ambient
+    3300302: facility0_staff_storage1_ambient
+    3300304: facility0_staff_storage1_floor
+    3300306: facility0_staff_storage2_ambient
+    3300308: facility0_staff_storage2_floor
+    3300310: facility0_staff_storage_ambient
+    3300312: facility0_staff_study_ambient
+    3300314: facility0_staff_w_office_ambient
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -530,6 +742,59 @@ ModelImporter:
     4300204: facility0_temp7_ambient
     4300206: facility0_temp8_ambient
     4300208: facility0_temp9_ambient
+    4300210: facility0_temp12_floor
+    4300212: facility0_temp11_floor
+    4300214: facility0_temp10_floor
+    4300216: facility0_temp12_ambient
+    4300218: facility0_temp11_ambient
+    4300220: facility0_temp10_ambient
+    4300222: Plane012
+    4300224: Plane014
+    4300226: Plane018
+    4300228: Plane020
+    4300230: Plane021
+    4300232: Plane023
+    4300234: Plane024
+    4300236: Plane026
+    4300238: facility0_front_hall_floor
+    4300240: facility0_front_w_hall_floor
+    4300242: facility0_front_e_hall_floor
+    4300244: facility0_other_hall_floor
+    4300246: facility0_mid_hall_floor
+    4300248: facility0_entrance_hall_floor
+    4300250: facility0_entrance_hall_ambient
+    4300252: facility0_front_w_hall_ambient
+    4300254: facility0_front_e_hall_ambient
+    4300256: facility0_other_hall_ambient
+    4300258: facility0_mid_hall_ambient
+    4300260: facility0_staff_study_floor
+    4300262: facility0_staff_cupboard_floor
+    4300264: facility0_staff_w_office_floor
+    4300266: facility0_staff_storage_floor
+    4300268: facility0_medical_floor
+    4300270: facility0_medical_store_floor
+    4300272: facility0_staff_meeting_floor
+    4300274: facility0_admin_office_floor
+    4300276: facility0_staff_post_floor
+    4300278: facility0_staff_storage1_floor
+    4300280: facility0_laundry_floor
+    4300282: facility0_staff_storage2_floor
+    4300284: facility0_maintenance_floor
+    4300286: facility0_staff_break_floor
+    4300288: facility0_staff_study_ambient
+    4300290: facility0_staff_cupboard_ambient
+    4300292: facility0_staff_w_office_ambient
+    4300294: facility0_staff_storage_ambient
+    4300296: facility0_staff_storage1_ambient
+    4300298: facility0_laundry_ambient
+    4300300: facility0_staff_storage2_ambient
+    4300302: facility0_maintenance_ambient
+    4300304: facility0_medical_ambient
+    4300306: facility0_medical_store_ambient
+    4300308: facility0_staff_break_ambient
+    4300310: facility0_staff_meeting_ambient
+    4300312: facility0_admin_office_ambient
+    4300314: facility0_staff_post_ambient
     9500000: //RootNode
   materials:
     importMaterials: 1

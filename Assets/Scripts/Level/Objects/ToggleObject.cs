@@ -18,7 +18,7 @@ public class ToggleObject : InteractiveObject
 	public string ToggleOnString = "Toggle On";
 	public string ToggleOffString = "Toggle Off";
 	
-	public GameObject ToggleObjectTarget = null;
+	public List<ToggleableObject> ToggleTargets = new List<ToggleableObject>();
 	
 	public bool StartingOn = true;
 	
@@ -48,9 +48,9 @@ public class ToggleObject : InteractiveObject
 		m_toggleOffInteraction.Enabled 	= true;
 		m_toggleOnInteraction.Enabled 	= false;
 		
-		if(ToggleObjectTarget != null)
+		foreach(var toggle in ToggleTargets)
 		{
-			ToggleObjectTarget.SetActive(true);	
+			toggle.ToggleOn();		
 		}
 	}
 	
@@ -59,9 +59,9 @@ public class ToggleObject : InteractiveObject
 		m_toggleOffInteraction.Enabled 	= false;
 		m_toggleOnInteraction.Enabled 	= true;
 		
-		if(ToggleObjectTarget != null)
+		foreach(var toggle in ToggleTargets)
 		{
-			ToggleObjectTarget.SetActive(false);	
+			toggle.ToggleOff();		
 		}
 	}
 	

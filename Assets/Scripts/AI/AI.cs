@@ -14,23 +14,34 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(SphereCollider))]
 public class AI : MonoBehaviour 
 {
 
 	void Start ()
 	{
+		m_collider = GetComponent<SphereCollider>();
+		
 		// TODO: This has to be done because AI behaviours were sharing a parent when copied, rather than re-assigning
 		foreach(var state in m_states)
 		{
 			state.Parent = this;
 		}	
 		
-		m_currentState = m_states[m_startStateIndex];
-		m_currentState.Start();
+		if(m_states.Count > 0)
+		{
+			m_currentState = m_states[m_startStateIndex];
+			m_currentState.Start();
+		}
 	}
 
 	void Update ()
 	{
+		if(m_currentState == null)
+		{
+			return;	
+		}
+		
 		AIState nextState = m_currentState.Update();
 		
 		if(nextState != null)
@@ -53,6 +64,8 @@ public class AI : MonoBehaviour
 				}
 			}
 		}
+		
+		SelectedState = -1;	
 		
 		m_states.Remove(state);
 	}
@@ -85,6 +98,11 @@ public class AI : MonoBehaviour
 		set { m_startStateIndex = value; }
 	}
 	
+	public float PerceptionRange
+	{
+		get	{ return m_collider.radius; }
+	}
+	
 	public int SelectedState { get; set; }
 	
 	public bool PlayerInPerceptionRange = false;
@@ -97,6 +115,8 @@ public class AI : MonoBehaviour
 	
 	[SerializeField]
 	private AIState m_currentState = null;
+	
+	private SphereCollider m_collider = null;
 	
 #if UNITY_EDITOR
 	

@@ -129,7 +129,6 @@ public class ForestEditor : Editor
 	static void RegenerateForest()
 	{
 		Forest forest = GameObject.FindObjectOfType(typeof(Forest)) as Forest;
-		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
 			
 		Selection.activeGameObject = forest.gameObject;
 		

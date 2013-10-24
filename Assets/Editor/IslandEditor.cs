@@ -102,8 +102,6 @@ public class IslandEditor : Editor
 		}
 	}
 	
-	Vector3 lastPos = Vector3.one;
-	
 	public override void OnInspectorGUI()
 	{
 		Island island = (Island)target;
@@ -298,37 +296,6 @@ public class IslandEditor : Editor
 			}
 		
 		return;
-		
-		if(island.painting)
-		{
-			if(GUILayout.Button("Stop Painting"))
-			{
-				island.painting = !island.painting;	
-			}
-			
-			GUI.enabled = island.saveRequired;
-			
-			if(GUILayout.Button("Save Changes")) 
-			{
-				island.SaveTextures();	
-			}
-			GUI.enabled = true;
-			
-		}
-		else
-		{ 
-			if(GUILayout.Button("Paint"))
-			{
-				island.painting = !island.painting;	
-				
-				if(island.painting)
-				{
-					island.StartPainting();	
-				}
-			}
-			
-			
-		}
 	}
 	
 	[MenuItem ("Respite/Misc/Flush Progress Bar")]

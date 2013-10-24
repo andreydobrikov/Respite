@@ -29,7 +29,6 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 	{
 		m_nodes.Sort(NodeComparison);
 		
-		m_origin = m_nodes[0];
 		m_target = m_nodes[1];
 		
 		m_targetIndex = 0;
@@ -61,13 +60,11 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 			}
 		}
 		
-		m_origin = m_target;
-		
 		m_target = m_nodes[m_targetIndex];
 		
 		SetDestination(new Vector3(m_target.position.x, m_target.position.y, m_target.position.z));
 		
-		return false;
+		return false; 
 	}
 	
 #if UNITY_EDITOR
@@ -84,7 +81,11 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 		
 		if(GUILayout.Button("Add Waypoint"))
 		{
-			m_nodes.Add(new WaypointNode());	
+			WaypointNode newNode = ScriptableObject.CreateInstance<WaypointNode>();
+			m_nodes.Add(newNode);	
+			newNode.position = GetObject().transform.position;
+			newNode.position.x += 2.0f;
+			newNode.position.y = 0.3f;
 		}
 		
 		m_loop = GUILayout.Toggle(m_loop, "Loop");
@@ -125,7 +126,6 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 			
 			if(GUIUtility.hotControl != hotControl) 
 			{
-				Debug.Log("Changed");	
 				m_selectedNode = controlIndex;
 			}
 			
@@ -165,9 +165,7 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 	private int m_selectedNode = 0;
 	
 	private WaypointNode m_target = null;
-	private WaypointNode m_origin = null;
 	private int m_targetIndex = 1;
-	private PatrolState m_patrolState = PatrolState.Patrolling;
 	
 	private enum PatrolState
 	{

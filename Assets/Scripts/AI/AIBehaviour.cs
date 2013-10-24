@@ -72,10 +72,11 @@ public abstract class AIBehaviour : ScriptableObject
 	[SerializeField]
 	public AIState m_targetTransition = null;
 	
-#if UNITY_EDITOR
 	
 	[SerializeField]
 	public Rect m_lastBounds;
+	
+#if UNITY_EDITOR
 	
 	[SerializeField]
 	public bool m_showFoldout = false;

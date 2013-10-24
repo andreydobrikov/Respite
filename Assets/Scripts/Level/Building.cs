@@ -22,6 +22,7 @@ public class Building : MonoBehaviour
 	public int floorHeight			= 0;
 	public bool BuildFog			= false;
 	
+	
 	public Building()
 	{
 		Rooms.Add(new Room());	

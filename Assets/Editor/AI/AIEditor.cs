@@ -271,6 +271,15 @@ public class AIEditor :  EditorWindow
 			}
 			
 			EditorGUILayout.EndHorizontal();
+			
+			if(GUILayout.Button("Delete State"))
+			{
+				if(EditorUtility.DisplayDialog("Delete State", "Delete State: " + currentState.Name, "Delete", "Cancel"))
+				{
+					activeAI.States.Remove(currentState);
+					return;
+				}
+			}
 		}
 		
 		if(currentState.Running)
@@ -283,7 +292,6 @@ public class AIEditor :  EditorWindow
 		
 	}
 	
-	private static List<AIBehaviour> m_behaviours = new List<AIBehaviour>();
 	private static List<AIBehaviour> m_toDelete = new List<AIBehaviour>();
 	private static Vector2 m_offset = Vector2.zero;
 	private static Vector2 m_scrollStart = Vector2.zero;

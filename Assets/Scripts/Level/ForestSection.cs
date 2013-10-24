@@ -45,6 +45,7 @@ public class ForestSection
 	
 	public void Paint()
 	{
+#if UNITY_EDITOR
 		Island island = GameObject.FindObjectOfType(typeof(Island)) as Island;
 		
 		m_brush.m_detailBrush = false;
@@ -69,6 +70,7 @@ public class ForestSection
 			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_detailBrush);
 			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_detailBrush);
 		}
+#endif
 	}
 	
 	public void Reset()
@@ -137,7 +139,6 @@ public class ForestSection
 				}
 				// TODO: Placeholder shit
 				
-				float scale  = UnityEngine.Random.Range(1.0f, 3.5f);
 				instance.activeObject.transform.localScale = new Vector3(instance.radius, 1.0f, instance.radius);
 			}
 		}

@@ -66,22 +66,7 @@ public abstract class InteractiveObject : MonoBehaviour, ISerialisable
 			m_highlight.Deactivate();
 		}
 	}
-	
-	public void SetHighlightActive(bool active)
-	{
-		if(m_highlight != null)
-		{
-			if(active)
-			{
-				m_highlight.Activate();
-			}
-			else
-			{
-				m_highlight.Deactivate();	
-			}
-		}
-	}
-	
+		
 	[MenuItem ("Respite/Interactive Objects/Rebuild Highlights")]
 	static void RebuildHighlights () 
 	{
@@ -98,6 +83,22 @@ public abstract class InteractiveObject : MonoBehaviour, ISerialisable
 	}
 	
 #endif
+	
+	
+	public void SetHighlightActive(bool active)
+	{
+		if(m_highlight != null)
+		{
+			if(active)
+			{
+				m_highlight.Activate();
+			}
+			else
+			{
+				m_highlight.Deactivate();	
+			}
+		}
+	}
 	
 	public virtual void SaveSerialise(List<SavePair> pairs)
 	{

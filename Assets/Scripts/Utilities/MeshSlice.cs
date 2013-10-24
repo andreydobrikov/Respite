@@ -15,12 +15,16 @@
 //
 ///////////////////////////////////////////////////////////
 
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 using System.Collections.Generic;
 
 public class MeshSlice 
 {
+#if UNITY_EDITOR
 	public static Mesh[,] Slice(Mesh input, int sectionsX, int sectionsY, bool localUVs, bool showProgressBar)
 	{
 		Mesh[,] output = new Mesh[sectionsX, sectionsY];
@@ -213,6 +217,7 @@ public class MeshSlice
 		
 		return output;
 	}
+#endif
 	
 	public static Triangle[] SliceTri(Triangle source, Vector2 lineStart, Vector2 lineEnd)
 	{
@@ -302,8 +307,6 @@ public class MeshSlice
 		output[0].y0 = soloY;
 		output[0].y1 = intersectionY1;
 		output[0].y2 = intersectionY0;
-		
-		Vector2 midLower = pairPoint0 + ((pairPoint1 - pairPoint0) / 2.0f);
 		
 		output[1].p0 = pairPoint0;
 		output[1].p1 = intersection0;

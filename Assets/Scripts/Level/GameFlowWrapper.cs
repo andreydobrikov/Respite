@@ -12,6 +12,7 @@ public class GameFlowWrapper : MonoBehaviour
 	
 	void Start()
 	{
+		GameObject.DontDestroyOnLoad(this);
 		GameFlow instance = GameFlow.Instance;
 		
 		instance.SaveFadeDuration = m_saveFadeDuration;
@@ -81,6 +82,10 @@ public class GameFlowWrapper : MonoBehaviour
 		}
 	}
 	
+	void OnLevelWasLoaded()
+	{
+		GameFlow.Instance.LevelLoaded();
+	}
 	
 	
 	private bool m_started 				= false;

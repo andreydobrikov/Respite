@@ -29,52 +29,56 @@ public class BuildingEditor :  Editor
 		
 		EditorGUILayout.BeginVertical((GUIStyle)("Box"));
 		
-		EditorGUILayout.LabelField("Rooms");
+		building.ShowRoomsFoldout = EditorGUILayout.Foldout(building.ShowRoomsFoldout, "Rooms");
 		
-		GUILayout.Box("", GUILayout.Height(1), GUILayout.Width(Screen.width - 15));
-		
-		List<Room> toDelete = new List<Room>();
-		
-		for(int roomID = 0; roomID < building.Rooms.Count; ++roomID)
+		if(building.ShowRoomsFoldout)
 		{
-			Room current = building.Rooms[roomID];
+			GUILayout.Box("", GUILayout.Height(1), GUILayout.Width(Screen.width - 15));
+		
+			List<Room> toDelete = new List<Room>();
 			
-			EditorGUILayout.BeginHorizontal();
-			
-			
-			current.ShowFoldout = EditorGUILayout.Foldout(current.ShowFoldout, current.Name);
-			
-			if(GUILayout.Button("Delete"))
+			for(int roomID = 0; roomID < building.Rooms.Count; ++roomID)
 			{
-				toDelete.Add(current);	
-			}
-			
-			EditorGUILayout.EndHorizontal();
-			
-			if(current.ShowFoldout)
-			{
-				EditorGUILayout.BeginVertical((GUIStyle)("Box"));
+				Room current = building.Rooms[roomID];
 				
-				EditorGUI.indentLevel = 1;
+				EditorGUILayout.BeginHorizontal();
 				
-				current.Name = EditorGUILayout.TextField(current.Name);
-				current.TODMaxColor = EditorGUILayout.ColorField("TOD Max Colour", current.TODMaxColor);
-				current.TODMinColor = EditorGUILayout.ColorField("TOD Min Colour", current.TODMinColor);
 				
-				if(GUILayout.Button("Generate Lightmap"))
+				current.ShowFoldout = EditorGUILayout.Foldout(current.ShowFoldout, current.Name);
+				
+				if(GUILayout.Button("Delete"))
 				{
-					GenerateLightmap(current);
+					toDelete.Add(current);	
 				}
 				
-				EditorGUI.indentLevel = 0;
+				EditorGUILayout.EndHorizontal();
 				
-				EditorGUILayout.EndVertical();
+				if(current.ShowFoldout)
+				{
+					EditorGUILayout.BeginVertical((GUIStyle)("Box"));
+					
+					EditorGUI.indentLevel = 1;
+					
+					current.Name = EditorGUILayout.TextField(current.Name);
+					current.TODMaxColor = EditorGUILayout.ColorField("TOD Max Colour", current.TODMaxColor);
+					current.TODMinColor = EditorGUILayout.ColorField("TOD Min Colour", current.TODMinColor);
+					
+					if(GUILayout.Button("Generate Lightmap"))
+					{
+						GenerateLightmap(current);
+					}
+					
+					EditorGUI.indentLevel = 0;
+					
+					EditorGUILayout.EndVertical();
+				}
 			}
-		}
+			
+			foreach(var room in toDelete)
+			{
+				building.Rooms.Remove(room);	
+			}
 		
-		foreach(var room in toDelete)
-		{
-			building.Rooms.Remove(room);	
 		}
 		
 		

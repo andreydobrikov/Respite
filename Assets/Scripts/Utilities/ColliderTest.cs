@@ -34,7 +34,6 @@ public class ColliderTest : MonoBehaviour
 	
 	void Start()
 	{
-		m_collider = GetComponent<BoxCollider>() as BoxCollider;	
 	}
 	
 	void Update()
@@ -45,6 +44,5 @@ public class ColliderTest : MonoBehaviour
 		}
 	}
 	
-	private BoxCollider m_collider = null;
 	private bool collided = false;
 }

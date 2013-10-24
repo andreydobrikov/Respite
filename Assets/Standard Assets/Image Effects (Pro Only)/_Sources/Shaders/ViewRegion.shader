@@ -28,7 +28,9 @@ Shader "Hidden/ViewRegion" {
 	sampler2D _BlendTex;
 	half4 _MainTex_TexelSize;
 	half4 _BlurOffsets;
-	v2f vert( appdata_img v ) {
+	
+	v2f vert( appdata_img v ) 
+	{
 		v2f o; 
 		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 		o.uv = v.texcoord - _BlurOffsets.xy * _MainTex_TexelSize.xy; // hack, see BlurEffect.cs for the reason for this. let's make a new blur effect soon
@@ -37,26 +39,28 @@ Shader "Hidden/ViewRegion" {
 		o.taps[1] = o.uv - _MainTex_TexelSize * _BlurOffsets.xy;
 		o.taps[2] = o.uv + _MainTex_TexelSize * _BlurOffsets.xy * half2(1,-1);
 		o.taps[3] = o.uv - _MainTex_TexelSize * _BlurOffsets.xy * half2(1,-1);
+		
 		return o;
 	}
-	half4 frag(v2f i) : COLOR {
+	
+	half4 frag(v2f i) : COLOR 
+	{
 		half4 mainTex = tex2D(_SourceTex, i.uvMain);
 		half4 blend = tex2D(_BlendTex, i.uvMain);
 		half4 color = tex2D(_MainTex, i.taps[0]);
 		color += tex2D(_MainTex, i.taps[1]);
 		color += tex2D(_MainTex, i.taps[2]);
 		color += tex2D(_MainTex, i.taps[3]); 
-		//return mainTex;
 		color *= 0.25;
 		
 		float intensity =  0.3f * color.r + 0.59f * color.g + 0.11f * color.b;
-		color = lerp(color, half4(intensity, intensity, intensity, 1.0 ), blend.r * 0.2f);
+		//intensity *= 0.15f;
+		color = lerp(color, half4(intensity, intensity, intensity, 1.0 ), blend.r * 0.3f);
 		
 		color = lerp(mainTex, color, blend.r);
 		return color;
-		return half4(1.0f, 0.0f, 0.0f, 1.0f); 
-		
 	}
+	
 	ENDCG
 	SubShader {
 		 Pass {

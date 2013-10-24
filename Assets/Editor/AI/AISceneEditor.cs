@@ -23,7 +23,7 @@ public class AISceneEditor : Editor
 		
 		AI activeAI = (AI)target;
 		
-		if(activeAI.SelectedState <= activeAI.States.Count && activeAI.SelectedState >= 0)
+		if(activeAI.SelectedState < activeAI.States.Count && activeAI.SelectedState >= 0)
 		{
 			AIState currentState = activeAI.States[activeAI.SelectedState];
 			

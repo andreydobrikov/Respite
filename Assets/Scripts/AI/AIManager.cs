@@ -24,10 +24,13 @@ public class AIManager : MonoBehaviour
 		AvailableBehaviours.Clear();	
 		AvailableBehaviourNames.Clear();
 		
+		// TODO: I would love to find a way to automate this. 
+		// You could do it by reflection I suppose.
 		AvailableBehaviours.Add(typeof(AIBehaviourPatrol));
 		AvailableBehaviours.Add(typeof(AIBehaviourActivateAlarms));
 		AvailableBehaviours.Add(typeof(AIBehaviourWatchForPlayer));
 		AvailableBehaviours.Add(typeof(AIBehaviourFollowPlayer));
+		AvailableBehaviours.Add(typeof(AIBehaviourEndGame));
 		
 		foreach(var behaviour in AvailableBehaviours)
 		{

@@ -43,7 +43,7 @@ public class OccludedMesh : MonoBehaviour
 	{
 		m_viewCollider 	= GetComponent<BoxCollider>();
 		
-		validVerts.Capacity = 200;
+		//validVerts.Capacity = m_maxOccluderVerts;
 		
 		// Bung four values into the extents to set the initial capacity
 		extentsVals.Add(Vector3.zero);
@@ -421,21 +421,27 @@ public class OccludedMesh : MonoBehaviour
 			double angle = Math.Atan2((double)normalDirection.x, (double)normalDirection.z);
 					
 			m_occluders[vertID].angle = angle;
-			
-			Vector3 source = objectPosition;
 		}
 		
 		m_occluderCount = validVerts.Count;
+		m_lastRayCount = m_occluderCount;
 		
-		Array.Sort(m_occluders, 0, m_occluderCount);
+		int occluderCount = Mathf.Min(validVerts.Count, m_maxOccluderVerts);
+		
+#if UNITY_EDITOR
+		if(m_occluderCount >= m_maxOccluderVerts)
+		{
+			Debug.LogError("Number of occluder-verts has exceeded pre-allocated buffers. Mesh will be malformed");	
+		}
+#endif
+		
+		Array.Sort(m_occluders, 0, occluderCount);
 		
 		if(ShowSucceededRays)
 		{
-			float delta = 1.0f / (float)m_occluderCount;
 			for(int i = 0; i < m_occluderCount; i++)
 			{
-				
-					Debug.DrawLine(transform.position , m_occluders[i].vec , Color.red);
+				Debug.DrawLine(transform.position , m_occluders[i].vec , Color.red);
 			}
 		}
 	}
@@ -444,7 +450,7 @@ public class OccludedMesh : MonoBehaviour
 	{
 		if(DisplayStats)
 		{
-			GUILayout.BeginArea(new Rect(150.0f, 10.0f, 200.0f, 100.0f), (GUIStyle)("Box"));	
+			GUILayout.BeginArea(new Rect(150.0f, Screen.height - 200.0f, 200.0f, 100.0f), (GUIStyle)("Box"));	
 			
 			GUILayout.Label("Ray Count: \t" + m_lastRayCount);
 			GUILayout.Label("Sorted Entries: \t" + m_sortedEntries);

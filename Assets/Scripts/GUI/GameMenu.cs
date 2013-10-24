@@ -18,6 +18,16 @@ public class GameMenu : MonoBehaviour
 			m_gameFlow = GameFlow.Instance;	
 		}
 		
+		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.GameOver)
+		{
+			if(Input.GetButtonDown("escape"))
+			{
+				m_gameFlow.ResetLevel();
+				
+			}
+			return;
+		}
+		
 		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.Menu)
 		{
 			if(Input.GetButtonDown("escape"))
@@ -38,13 +48,34 @@ public class GameMenu : MonoBehaviour
 	void OnGUI()
 	{
 		GUI.depth = -11;
-		if(m_gameFlow.CurrentControlContext != GameFlow.ControlContext.Menu)
+		
+		// TODO: Switch, duh
+		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.Menu)
 		{
-			return;	
+			GUI.Label(new Rect(Screen.width / 2.0f - 50.0f, Screen.height / 2.0f - 50.0f, 100, 100), "MENU, INNIT");	
 		}
 		
-		GUI.Label(new Rect(Screen.width / 2.0f - 50.0f, Screen.height / 2.0f - 50.0f, 100, 100), "MENU, INNIT");
-	}
+		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.GameOver)
+		{
+			GUI.Label(new Rect(Screen.width / 2.0f - 50.0f, Screen.height / 2.0f - 50.0f, 100, 100), "Game Over");
+		}
+		
+		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.Loading)
+		{
+			m_loadingInt++;
+			m_loadingInt = m_loadingInt % 3;
 			
+			string progress = "Loading";
+			for(int i = 0; i < m_loadingInt; i++)
+			{
+				progress += ".";	
+			}
+			
+			GUI.Label(new Rect(Screen.width / 2.0f - 50.0f, Screen.height / 2.0f - 50.0f, 100, 100), progress);
+		}
+		
+	}
+	
+	private static int m_loadingInt = 0;
 	GameFlow m_gameFlow = null;	
 }

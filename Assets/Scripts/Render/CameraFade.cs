@@ -11,23 +11,22 @@ public class CameraFade : MonoBehaviour
 {   
 	private GUIStyle m_BackgroundStyle 			= new GUIStyle();		// Style for background tiling
 	private Texture2D m_FadeTexture;									// 1x1 pixel texture used for fading
-	private Color m_CurrentScreenOverlayColor 	= new Color(0,0,0,0);	// default starting color: black and fully transparrent
-	private Color m_TargetScreenOverlayColor 	= new Color(0,0,0,0);	// default target color: black and fully transparrent
-	private Color m_DeltaColor 					= new Color(0,0,0,0);	// the delta-color is basically the "speed / second" at which the current color should change
+	private static Color m_CurrentScreenOverlayColor 	= new Color(0,0,0,0);	// default starting color: black and fully transparrent
+	private static Color m_TargetScreenOverlayColor 	= new Color(0,0,0,0);	// default target color: black and fully transparrent
+	private static Color m_DeltaColor 					= new Color(0,0,0,0);	// the delta-color is basically the "speed / second" at which the current color should change
 	private int m_FadeGUIDepth 					= -10;				// make sure this texture is drawn on top of everything
  	private System.Action m_fadeCompleteHandler = null;
+	private float m_fadeTimeDelta = 0.0f;
 	
 	// initialize the texture, background-style and initial color:
 	private void Awake()
 	{		
 		m_FadeTexture = new Texture2D(1, 1);        
         m_BackgroundStyle.normal.background = m_FadeTexture;
-		SetScreenOverlayColor(m_CurrentScreenOverlayColor);
  
-		// TEMP:
-		// usage: use "SetScreenOverlayColor" to set the initial color, then use "StartFade" to set the desired color & fade duration and start the fade
-		//SetScreenOverlayColor(new Color(0,0,0,1));
-		//StartFade(new Color(1,0,0,1), 5);
+		m_FadeTexture.SetPixel(0, 0, m_CurrentScreenOverlayColor);
+		m_FadeTexture.Apply();
+		m_fadeTimeDelta = Time.fixedDeltaTime;
 	}
  
  
@@ -38,12 +37,13 @@ public class CameraFade : MonoBehaviour
 		if (m_CurrentScreenOverlayColor != m_TargetScreenOverlayColor)
 		{			
 			// if the difference between the current alpha and the desired alpha is smaller than delta-alpha * deltaTime, then we're pretty much done fading:
-			if (Mathf.Abs(m_CurrentScreenOverlayColor.a - m_TargetScreenOverlayColor.a) < Mathf.Abs(m_DeltaColor.a) * Time.deltaTime)
+			if (Mathf.Abs(m_CurrentScreenOverlayColor.a - m_TargetScreenOverlayColor.a) < Mathf.Abs(m_DeltaColor.a) * m_fadeTimeDelta)
 			{
 				m_CurrentScreenOverlayColor = m_TargetScreenOverlayColor;
 				SetScreenOverlayColor(m_CurrentScreenOverlayColor);
 				m_DeltaColor = new Color(0,0,0,0);
 				
+				Debug.Log("Fade complete, calling handler...");
 				if(m_fadeCompleteHandler != null)
 				{
 					m_fadeCompleteHandler();	
@@ -52,7 +52,7 @@ public class CameraFade : MonoBehaviour
 			else
 			{
 				// fade!
-				SetScreenOverlayColor(m_CurrentScreenOverlayColor + m_DeltaColor * Time.deltaTime);
+				SetScreenOverlayColor(m_CurrentScreenOverlayColor + m_DeltaColor * m_fadeTimeDelta);
 			}
 		}
  
@@ -78,11 +78,17 @@ public class CameraFade : MonoBehaviour
 	// initiate a fade from the current screen color (set using "SetScreenOverlayColor") towards "newScreenOverlayColor" taking "fadeDuration" seconds
 	public void StartFade(Color newScreenOverlayColor, float fadeDuration, System.Action completeHandler)
 	{
+		Debug.Log("Fade requested");
 		m_fadeCompleteHandler = completeHandler;
 			
-		if (fadeDuration <= 0.0f)		// can't have a fade last -2455.05 seconds!
+		if (fadeDuration <= 0.0f || newScreenOverlayColor == m_CurrentScreenOverlayColor)		// can't have a fade last -2455.05 seconds!
 		{
+			Debug.Log("Fade not needed, calling handler...");
 			SetScreenOverlayColor(newScreenOverlayColor);
+			if(m_fadeCompleteHandler != null)
+			{
+				m_fadeCompleteHandler();	
+			}
 		}
 		else					// initiate the fade: set the target-color and the delta-color
 		{

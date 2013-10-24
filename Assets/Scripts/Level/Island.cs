@@ -34,28 +34,28 @@ public class Island : MonoBehaviour
 	
 	void OnEnable()
 	{
+#if UNITY_EDITOR
 		painting = false;	
+#endif
 	}
 	
 	void Start()
 	{
-		m_sectionSizeX = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
-		m_sectionSizeY = (MaxBounds.y - MinBounds.y) / (float)SectionsY; 
-		
-		m_camera = Camera.main;
+		m_sectionSize = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
 	}
 
 	public void StartPainting()
 	{
+#if UNITY_EDITOR
 		m_editTextures = new ColorBlock[SectionsX * SectionsY];
 		
 		for(int x = 0; x < SectionsX; x++)
 		{
 			for(int y = 0; y < SectionsY; y++)
 			{	
-#if UNITY_EDITOR
+
 				EditorUtility.DisplayProgressBar("Starting Painting", "Grabbing Texture Data " + x + ", " + y, (y * SectionsX + x) / (SectionsX * SectionsY));		
-#endif
+
 				
 				m_editTextures[y * SectionsX + x] = new ColorBlock();
 				
@@ -73,7 +73,6 @@ public class Island : MonoBehaviour
 			texture2 = Sections[0].renderer.sharedMaterial.GetTexture("_Layer2") as Texture2D;
 		}
 		
-#if UNITY_EDITOR
 		EditorUtility.ClearProgressBar();	
 #endif
 		
@@ -87,8 +86,7 @@ public class Island : MonoBehaviour
 	/// outside the editor. Re-enable compression so the splat-maps aren't a meg each.
 	public void PaintPixel(float x, float y, IslandBrush brush)
 	{
-		m_sectionSizeX = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
-		m_sectionSizeY = (MaxBounds.y - MinBounds.y) / (float)SectionsY;
+		m_sectionSize = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
 		
 		if(x > MinBounds.x && y > MinBounds.y && x < MaxBounds.x && y < MaxBounds.y)
 		{
@@ -227,10 +225,9 @@ public class Island : MonoBehaviour
 	// TODO: These are rather broken as they assume the world is square
 	public float WorldSizeToTexel(float worldSize)
 	{
-		m_sectionSizeX = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
-		m_sectionSizeY = (MaxBounds.y - MinBounds.y) / (float)SectionsY;
+		m_sectionSize = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
 		
-		float texelSize = (worldSize / m_sectionSizeX) * 512.0f;
+		float texelSize = (worldSize / m_sectionSize) * 512.0f;
 		
 		return texelSize;
 	}
@@ -247,9 +244,6 @@ public class Island : MonoBehaviour
 		
 		float localX = relativeX - (sectionX / (float)SectionsX);
 		float localY = relativeY - (sectionY / (float)SectionsY);
-		
-		float worldX = MinBounds.x + (sectionX * m_sectionSizeX);
-		float worldY = MinBounds.y + (sectionY * m_sectionSizeY);
 		
 		int pixelX = (int)(localX * SectionsX * 512.0f);
 		int pixelY = (int)(localY * SectionsY * 512.0f);
@@ -268,10 +262,7 @@ public class Island : MonoBehaviour
 	public static int TexWidth = 512;
 	public static int TexHeight = 512;
 	
-	private float m_sectionSizeX;
-	private float m_sectionSizeY;
-	
-	private Camera m_camera;
+	private float m_sectionSize;
 	
 #if UNITY_EDITOR
 	public bool painting = false;
