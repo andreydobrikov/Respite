@@ -50,7 +50,10 @@ public class ToggleObject : InteractiveObject
 		
 		foreach(var toggle in ToggleTargets)
 		{
-			toggle.ToggleOn();		
+			if(toggle != null)
+			{
+				toggle.ToggleOn();		
+			}
 		}
 	}
 	
@@ -61,7 +64,10 @@ public class ToggleObject : InteractiveObject
 		
 		foreach(var toggle in ToggleTargets)
 		{
-			toggle.ToggleOff();		
+			if(toggle != null)
+			{
+				toggle.ToggleOff();		
+			}
 		}
 	}
 	

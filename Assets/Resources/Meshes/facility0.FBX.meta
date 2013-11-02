@@ -162,6 +162,21 @@ ModelImporter:
     100312: facility0_staff_storage_ambient
     100314: facility0_staff_study_ambient
     100316: facility0_staff_w_office_ambient
+    100318: facility0_back_rec_ambient
+    100320: facility0_back_rec_floor
+    100322: facility0_conservatory_floor
+    100324: facility0_conservatory_ambient
+    100326: facility0_conservatory_shadow
+    100328: facility0_walls_shadow
+    100330: house0_hall_ambient
+    100332: house0_hall_floor
+    100334: house0_kitchen_ambient
+    100336: house0_kitchen_floor
+    100338: house0_lounge_ambient
+    100340: house0_lounge_floor
+    100342: house0_shadow
+    100344: house0_walls
+    100346: house0_weather_mask
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -321,6 +336,21 @@ ModelImporter:
     400312: facility0_staff_storage_ambient
     400314: facility0_staff_study_ambient
     400316: facility0_staff_w_office_ambient
+    400318: facility0_back_rec_ambient
+    400320: facility0_back_rec_floor
+    400322: facility0_conservatory_floor
+    400324: facility0_conservatory_ambient
+    400326: facility0_conservatory_shadow
+    400328: facility0_walls_shadow
+    400330: house0_hall_ambient
+    400332: house0_hall_floor
+    400334: house0_kitchen_ambient
+    400336: house0_kitchen_floor
+    400338: house0_lounge_ambient
+    400340: house0_lounge_floor
+    400342: house0_shadow
+    400344: house0_walls
+    400346: house0_weather_mask
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -479,6 +509,21 @@ ModelImporter:
     2300310: facility0_staff_storage_ambient
     2300312: facility0_staff_study_ambient
     2300314: facility0_staff_w_office_ambient
+    2300316: facility0_back_rec_ambient
+    2300318: facility0_back_rec_floor
+    2300320: facility0_conservatory_floor
+    2300322: facility0_conservatory_ambient
+    2300324: facility0_conservatory_shadow
+    2300326: facility0_walls_shadow
+    2300328: house0_hall_ambient
+    2300330: house0_hall_floor
+    2300332: house0_kitchen_ambient
+    2300334: house0_kitchen_floor
+    2300336: house0_lounge_ambient
+    2300338: house0_lounge_floor
+    2300340: house0_shadow
+    2300342: house0_walls
+    2300344: house0_weather_mask
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -637,6 +682,21 @@ ModelImporter:
     3300310: facility0_staff_storage_ambient
     3300312: facility0_staff_study_ambient
     3300314: facility0_staff_w_office_ambient
+    3300316: facility0_back_rec_ambient
+    3300318: facility0_back_rec_floor
+    3300320: facility0_conservatory_floor
+    3300322: facility0_conservatory_ambient
+    3300324: facility0_conservatory_shadow
+    3300326: facility0_walls_shadow
+    3300328: house0_hall_ambient
+    3300330: house0_hall_floor
+    3300332: house0_kitchen_ambient
+    3300334: house0_kitchen_floor
+    3300336: house0_lounge_ambient
+    3300338: house0_lounge_floor
+    3300340: house0_shadow
+    3300342: house0_walls
+    3300344: house0_weather_mask
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -795,6 +855,21 @@ ModelImporter:
     4300310: facility0_staff_meeting_ambient
     4300312: facility0_admin_office_ambient
     4300314: facility0_staff_post_ambient
+    4300316: facility0_back_rec_floor
+    4300318: facility0_back_rec_ambient
+    4300320: facility0_conservatory_floor
+    4300322: facility0_conservatory_ambient
+    4300324: facility0_conservatory_shadow
+    4300326: facility0_walls_shadow
+    4300328: house0_walls
+    4300330: house0_lounge_floor
+    4300332: house0_kitchen_floor
+    4300334: house0_hall_floor
+    4300336: house0_weather_mask
+    4300338: house0_lounge_ambient
+    4300340: house0_shadow
+    4300342: house0_kitchen_ambient
+    4300344: house0_hall_ambient
     9500000: //RootNode
   materials:
     importMaterials: 1

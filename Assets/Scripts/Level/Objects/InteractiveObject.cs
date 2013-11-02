@@ -20,7 +20,6 @@ public abstract class InteractiveObject : MonoBehaviour, ISerialisable
 			allFlags = allFlags | (uint)flag;	
 		}
 		
-		
 		return m_interactions.FindAll(x => x.MatchesContext(allFlags));
 	}
 	

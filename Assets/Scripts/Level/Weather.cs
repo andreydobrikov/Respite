@@ -10,6 +10,9 @@ public class Weather : MonoBehaviour
 	public GameObject OverlayObject 	= null;
 	public GameObject ParticleObject 	= null;
 	
+	public float MinOverlayAlpha		= 0.05f;
+	public float MaxOverlayAlpha		= 0.6f;
+	
 	public void Awake()
 	{
 		m_lerpStart 	= Random.value;
@@ -181,7 +184,7 @@ public class Weather : MonoBehaviour
 		if(m_overlayRenderer != null)
 		{
 			Vector4 color = m_overlayRenderer.sharedMaterial.color;
-			color.w = alpha;
+			color.w = Mathf.Lerp(MinOverlayAlpha, MaxOverlayAlpha, alpha);
 			m_overlayRenderer.sharedMaterial.color = color;
 			m_overlayAlpha = alpha;
 		}
@@ -204,7 +207,7 @@ public class Weather : MonoBehaviour
 		m_stormIntensity = intensity;
 		
 		CloudCover = m_stormIntensity;
-		SetOverlayAlpha(m_stormIntensity);
+		SetOverlayAlpha( m_stormIntensity);
 		SetParticleIntensity(m_stormIntensity);
 	}
 	

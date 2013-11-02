@@ -15,6 +15,12 @@ using System.Collections.Generic;
 
 public class StatsTracker : MonoBehaviour 
 {
+	void OnLevelWasLoaded()
+	{
+		Debug.Log("Level loaded");
+		OccludedMesh.m_meshes.Clear();
+	}
+	
 	void OnGUI()
 	{
 		GUILayout.BeginArea(new Rect(Screen.width - 200, 10, 180, 1000));

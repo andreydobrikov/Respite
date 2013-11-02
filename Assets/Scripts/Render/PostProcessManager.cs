@@ -11,13 +11,15 @@ public class PostProcessManager : MonoBehaviour
 	
 	public Shader ShowLightmapShader = null;
 	
+	public GameObject[] snowOverlay;
+	
 	void Start () 
 	{
-		GameObject lightmapCamera 	= GameObject.FindGameObjectWithTag("LightMapCamera");
-		GameObject targetCamera 	= GameObject.FindGameObjectWithTag("WeatherCamera");
-		GameObject postCamera		= GameObject.FindGameObjectWithTag("PostCamera");
-		GameObject viewCamera		= GameObject.FindGameObjectWithTag("ViewRegionCamera");
-		
+		GameObject lightmapCamera 		= GameObject.FindGameObjectWithTag("LightMapCamera");
+		GameObject targetCamera 		= GameObject.FindGameObjectWithTag("WeatherCamera");
+		GameObject postCamera			= GameObject.FindGameObjectWithTag("PostCamera");
+		GameObject viewCamera			= GameObject.FindGameObjectWithTag("ViewRegionCamera");
+		GameObject weatherMaskCamera	= GameObject.FindGameObjectWithTag("WeatherMaskCamera");
 		
 		if(postCamera != null)
 		{
@@ -26,13 +28,31 @@ public class PostProcessManager : MonoBehaviour
 		
 		m_lightMapEffect = FindObjectOfType(typeof(LightMapEffect)) as LightMapEffect;
 		
+		// Fiddle with these to use a smaller render-texture for the light-pass.
+		// Note: Too small a target can cause light bleeding when the overlay is interpolated.
+		int pixelWidth 	= (int)Camera.mainCamera.pixelWidth;
+		int pixelHeight = (int)Camera.mainCamera.pixelHeight;
+		
+		if(weatherMaskCamera != null && snowOverlay != null)
+		{
+			int maskWidth = pixelWidth / 4;
+			int maskHeight = pixelHeight / 4;
+			
+			weatherMaskCamera.GetComponent<Camera>().aspect 					= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+			weatherMaskCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(maskWidth, maskHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
+			weatherMaskCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo = false;		
+			
+			foreach(var overlay in snowOverlay)
+			{
+				overlay.renderer.sharedMaterial.SetTexture("_MaskTex", weatherMaskCamera.GetComponent<Camera>().targetTexture);	
+			}
+			
+		}
+		
 		if(lightmapCamera != null && targetCamera != null )
 		{
 			
-			// Fiddle with these to use a smaller render-texture for the light-pass.
-			// Note: Too small a target can cause light bleeding when the overlay is interpolated.
-			int pixelWidth 	= (int)Camera.mainCamera.pixelWidth;
-			int pixelHeight = (int)Camera.mainCamera.pixelHeight;
+			
 			
 			// If this is run-in-editor, the camera's aspect ratio will not yet have been updated.
 			// This in turn will crap up the aspect ratio of the attached RenderTexture, so manually set the aspect
@@ -42,9 +62,6 @@ public class PostProcessManager : MonoBehaviour
 			lightmapCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 			targetCamera.GetComponent<LightMapEffect>().lightMapTexture 		= lightmapCamera.GetComponent<Camera>().targetTexture;
 		
-			//int viewWidth 	= pixelWidth;
-			//int viewHeight 	= pixelHeight;
-			
 			if(ViewRegionEnabled)
 			{
 				if(viewCamera != null && postCamera != null)

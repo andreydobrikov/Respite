@@ -41,7 +41,7 @@ Shader "Hidden/LightMap" {
 		// Why am I using a specific shader for this when it's just a texture blend?
 		float4 toBlend = tex2D(_Overlay, i.uv[0]);
 		toBlend.a = 1.0f;
-		
+		//toBlend *= 5.5f;
 		
 		return tex2D(_MainTex, i.uv[1]) * toBlend;
 	}	

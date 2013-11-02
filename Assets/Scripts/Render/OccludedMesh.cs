@@ -336,14 +336,14 @@ public class OccludedMesh : MonoBehaviour
 					worldPos.y = objectPosition.y;
 					Vector3 direction = worldPos - objectPosition;
 					
-					
-					float val = direction.magnitude -  m_nudgeMagnitude / direction.magnitude;
+					float magnitude = direction.magnitude;
+					float val = magnitude -  m_nudgeMagnitude / magnitude;
 					
 					direction *= m_nudgeMagnitude;
 						
-					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, val, 1 <<  collisionLayer))
+					if(Physics.Raycast(objectPosition, direction / magnitude, out hitInfo, val, 1 <<  collisionLayer))
 					{
-						if(ShowFailedRays) { Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
+						if(ShowFailedRays) { Debug.DrawLine(objectPosition, direction, Color.green); }
 						
 						// Hit something. add it as a vert.
 						validVerts.Add(hitInfo.point);
@@ -369,9 +369,8 @@ public class OccludedMesh : MonoBehaviour
 							if(ShowCandidateRays)
 							{
 								Debug.DrawLine(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), objectPosition + vertexRayDirection + new Vector3(0.0f, -1.2f, 0.0f), Color.yellow);
-								Debug.DrawRay(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), (vertexRayDirection.normalized * m_viewCollider.size.x) + new Vector3(0.0f, -1.2f, 0.0f), Color.red);
+								Debug.DrawRay(objectPosition + new Vector3(0.0f, -1.2f, 0.0f), (vertexRayDirection.normalized * m_viewCollider.size.x) + new Vector3(0.0f, -1.2f, 0.0f), Color.green);
 							}
-							
 						
 							
 							if(Physics.Raycast(objectPosition, vertexRayDirection.normalized, out hitInfo, m_viewCollider.size.x, 1 << collisionLayer))

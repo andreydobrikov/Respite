@@ -5,6 +5,7 @@
 // What it does: Defines an interaction with an object in the world.
 //
 // Notes: Holds a context in which the interaction is available.
+//
 // 
 // To-do:
 //
@@ -49,6 +50,12 @@ public class Interaction
 		set { m_enabled = value; }
 	}
 	
+	public bool Hidden
+	{
+		get { return m_hidden; }
+		set { m_hidden = value; }
+	}
+	
 	public uint Flags
 	{
 		get { return m_flags; }	
@@ -59,6 +66,7 @@ public class Interaction
 	private string m_name 					= string.Empty;
 	private InteractionHandler m_handler 	= null;
 	private bool m_enabled 					= true;
+	private bool m_hidden 					= true;
 	private uint m_flags					= 0;
 }
 

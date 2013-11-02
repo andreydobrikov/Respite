@@ -12,7 +12,7 @@ public class TimeOfDay : MonoBehaviour
 {
 	public float CycleTime 				= 1000.0f;
 	public float ActiveTime 			= 0.0f;
-	public float StartTime 				= 0.0f;
+	public float StartTime 				= 0.4f;
 	public bool PauseUpdate 			= false;
 	public float CloudCoverPercentage 	= 0.0f;
 	public Vector4 TODColor 			= Vector4.one;
@@ -36,7 +36,14 @@ public class TimeOfDay : MonoBehaviour
 		{
 			m_lightMapCamera = cameraObject.GetComponent<Camera>();
 		}
-		 
+		
+		string startTimeSetting = Settings.Instance.GetSetting("start_time");
+		
+		if(startTimeSetting != null)
+		{
+			float.TryParse(startTimeSetting, out StartTime);	
+		}
+		
 		ActiveTime 			= StartTime;
 		m_currentFrameIndex = 0;
 		
@@ -50,6 +57,8 @@ public class TimeOfDay : MonoBehaviour
 		
 		AdvanceFrame();
 		UpdateTime(true);
+		
+		
 	}
 	
 	void Update () 
@@ -162,7 +171,9 @@ public class TimeOfDay : MonoBehaviour
 			float minutes = 1440.0f * AdjustedTime;
 			TimeSpan time = TimeSpan.FromMinutes(minutes);
 			
-			m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, "Time Of Day " + (m_showFoldout ? "" : (time.Hours.ToString("00") + ":" + time.Minutes.ToString("00"))));
+			m_updateString = "Time Of Day " + (m_showFoldout ? "" : (time.Hours.ToString("00") + ":" + time.Minutes.ToString("00")));
+			
+			m_showFoldout = EditorGUILayout.Foldout(m_showFoldout, m_updateString);
 			
 			
 			if(m_showFoldout)
@@ -196,6 +207,7 @@ public class TimeOfDay : MonoBehaviour
 			GUILayout.EndVertical();
 			
 			GUILayout.EndArea();
+			
 		}
 		
 #endif
@@ -237,6 +249,8 @@ public class TimeOfDay : MonoBehaviour
 	[SerializeField]
 	private List<TODKeyFrame> 	m_frames;
 	private Camera 				m_lightMapCamera = null;
+	
+	private string 				m_updateString = string.Empty;
 	
 #if UNITY_EDITOR
 	private bool m_showFoldout = false;

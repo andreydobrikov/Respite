@@ -2,7 +2,7 @@ Shader "Custom/FlatColour"
 {
 	Properties 
 	{
-	    _Color ("Main Color", Color) = (1,1,1,0.5)
+	    _Color ("Main Color", Color) = (1, 1, 1, 1)
 	
 	}
 	
@@ -11,6 +11,7 @@ Shader "Custom/FlatColour"
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
 		LOD 200
 		Blend SrcAlpha OneMinusSrcAlpha
+		
 		cull off
 	
 	    Pass 
@@ -40,7 +41,6 @@ Shader "Custom/FlatColour"
 			
 			half4 frag (v2f i) : COLOR
 			{
-			    
 			    return _Color * i.color.a;
 			}
 			ENDCG

@@ -22,6 +22,9 @@ public class TextureScroll : MonoBehaviour
 	void FixedUpdate () 
 	{
 		m_uvScroll += new Vector2(UScrollRate, VScrollRate);
+		if(m_uvScroll.x >= 1.0f) { m_uvScroll.x -= 1.0f; }
+		if(m_uvScroll.y >= 1.0f) { m_uvScroll.y -= 1.0f; }
+		
 		m_renderer.sharedMaterial.SetTextureOffset(string.IsNullOrEmpty(TargetTexture) ? "_MainTex" : TargetTexture, m_uvScroll);
 	}
 }

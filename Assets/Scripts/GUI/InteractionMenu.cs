@@ -155,14 +155,14 @@ public class InteractionMenu : MonoBehaviour
 		
 			List<Interaction> interactions = m_objectsInView[0].GetInteractions(ContextFlag.World);	
 		
-			if(Input.GetButtonUp("option_0"))
+			if(Input.GetButtonUp("option_0") && interactions[0].Enabled)
 			{
 				interactions[0].Callback(interactions[0], gameObject);	
 			}
 			
 			if(interactions.Count > 1)
 			{
-				if(Input.GetButtonUp("option_1"))
+				if(Input.GetButtonUp("option_1") && interactions[1].Enabled)
 				{
 					interactions[1].Callback(interactions[1], gameObject);	
 				}	

@@ -53,23 +53,10 @@ Shader "Custom/Light"
 			
 			fixed4 frag (v2f i) : COLOR0 
 			{ 
-				//float4 val = i.color + (1.0f - (tex2D (_ShadowTex, i.uv).r *_ShadowFactor));
-				//half rim = 1.0 - saturate(dot (normalize(i.viewDir), i.norm));
-				//rim = smoothstep(0.4, 1.0f, rim);
-				
-				//val.rgb += rim * _FresnelIntensity;//i.norm;
 				
 				
 				float4 val = tex2D (_MainTex, i.uv) * _Color;
 				val *= i.color;
-				
-			//	val.rgb = float4(1.0f, 0.0f, 0.0f, 1.0f);
-				//val.rg = i.uv;
-				//val.b = 0.0f;
-			//	val.a = 1.0f;
-				
-				//val = float4(i.uv.x, i.uv.y, 0.0f, 1.0f);
-				
 				
 				return val;
 			}

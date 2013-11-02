@@ -7,6 +7,7 @@ public class Door : InteractiveObject
 	public GameObject m_targetObject = null;
 	public float openRate = 0.02f;
 	public float maxRotation = -65.0f;
+	public bool Locked = false;
 	
 	public enum DoorState
 	{
@@ -25,11 +26,17 @@ public class Door : InteractiveObject
 		
 		m_interactions.Add(m_openInteraction);
 		m_interactions.Add(m_closeInteraction);
+		
 	}
 	
 	public void Start()
 	{
 		m_initialRotation = transform.rotation;	
+		
+		if(Locked)
+		{
+			Lock();
+		}
 	}
 	
 	public void FixedUpdate()
@@ -93,6 +100,22 @@ public class Door : InteractiveObject
 		{
 			source.Play();
 		}
+	}
+	
+	public void Lock()
+	{
+		m_openInteraction.Enabled 	= false;
+		m_closeInteraction.Enabled 	= false;
+		
+		m_currentRotation = 0.0f;
+		m_lerpProgress = 0.0f;
+		m_lerpDirection = -1.0f;
+		m_targetValue = 0.0f;
+	}
+	
+	public void Unlock()
+	{
+		m_openInteraction.Enabled = true;
 	}
 		
 	private void HandleOpen(Interaction interaction, GameObject trigger)
