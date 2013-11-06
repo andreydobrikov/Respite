@@ -47,7 +47,7 @@ public class AssetHelper
 		{
 			if(s_instance == null)
 			{
-				s_instance = new AssetHelper();	
+				s_instance = new AssetHelper();	 
 			}
 			
 			return s_instance;

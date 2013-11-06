@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 public abstract class InteractiveObject : MonoBehaviour, ISerialisable
 {
+	public GameObject HighlightObject = null;
+	
 	public List<Interaction> GetInteractions()
 	{
 		return m_interactions;	
@@ -26,50 +28,51 @@ public abstract class InteractiveObject : MonoBehaviour, ISerialisable
 #if UNITY_EDITOR
 	public void GenerateHighlight(bool deleteExisting)
 	{
-		GameObject highlightObject = GameObjectHelper.FindChild(this.gameObject, s_highlightObjectName, true);
-		
-		if(highlightObject != null && deleteExisting)
+		if(HighlightObject == null)
 		{
-			DestroyImmediate(highlightObject);
+			return;
 		}
 		
-		if(highlightObject == null)
-		{
-			highlightObject = new GameObject(s_highlightObjectName);
-			highlightObject.layer = LayerMask.NameToLayer("Overlay");
-			highlightObject.transform.parent = transform;
-			highlightObject.transform.localPosition = new Vector3(0.0f, 0.0f, -0.1f);
-			highlightObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+		GameObject newHighlight = new GameObject(s_highlightObjectName);
+		newHighlight.tag = "Highlight";
+		newHighlight.layer = LayerMask.NameToLayer("Overlay");
+		
+		newHighlight.AddComponent<MeshFilter>();
+		newHighlight.AddComponent<GeometryFactory>();
+		
+		MeshRenderer renderer 		= newHighlight.AddComponent<MeshRenderer>();
+		Highlight highlight			= newHighlight.AddComponent<Highlight>();
+		
+		renderer.material = AssetHelper.Instance.GetAsset<Material>("materials/highlight.mat") as Material;
+		
+		newHighlight.transform.parent = HighlightObject.transform;		
+		newHighlight.transform.localScale = Vector3.one;
+		newHighlight.transform.localPosition = Vector3.zero;
+		newHighlight.transform.localRotation = Quaternion.identity;
 			
-			highlightObject.AddComponent<MeshFilter>();
-			highlightObject.AddComponent<GeometryFactory>();
-			
-			MeshRenderer renderer 		= highlightObject.AddComponent<MeshRenderer>();
-			Highlight highlight			= highlightObject.AddComponent<Highlight>();
-			
-			renderer.material = AssetHelper.Instance.GetAsset<Material>("materials/highlight.mat") as Material;
-			
-			GameObject parentRenderer = GameObjectHelper.SearchForComponent(highlightObject, typeof(MeshRenderer));
-			
-			if(parentRenderer != null)
-			{
-				renderer.material.mainTexture = parentRenderer.renderer.sharedMaterial.mainTexture;
-				Debug.Log("Parent renderer found at " + parentRenderer.name + " | " + renderer.sharedMaterial.mainTexture.name);	
-			}
-			else
-			{
-				Debug.Log("No parent renderer found for " + highlightObject.transform.parent.name);	
-			}
-			
-			m_highlight = highlight;
-			m_highlight.Deactivate();
-		}
+		renderer.material.mainTexture = HighlightObject.renderer.sharedMaterial.mainTexture;
+		Debug.Log("Parent renderer found at " + HighlightObject.name + " | " + renderer.sharedMaterial.mainTexture.name);	
+	
+		
+		m_highlight = highlight;
+		m_highlight.Deactivate();
 	}
 		
 	[MenuItem ("Respite/Interactive Objects/Rebuild Highlights")]
 	static void RebuildHighlights () 
 	{
 		bool deleteCurrent = EditorUtility.DisplayDialog("Delete Existing Highlights?", "Would you like to rebuild all highlights? Huh?", "yes", "no");
+		
+		List<GameObject> currentHighlights = new List<GameObject>(GameObject.FindGameObjectsWithTag("Highlight"));
+		
+		while(currentHighlights.Count > 0)
+		{
+			GameObject current = currentHighlights[0];
+			currentHighlights.Remove(current);
+			DestroyImmediate(current);	
+			
+		}
+		
 		
 		InteractiveObject[] interactiveObjects = FindObjectsOfType (typeof(InteractiveObject)) as InteractiveObject[];
 		

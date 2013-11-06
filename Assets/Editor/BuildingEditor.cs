@@ -158,6 +158,22 @@ public class BuildingEditor :  Editor
 		}
 		else
 		{
+			Shader flatShader = AssetHelper.Instance.FindAsset<Shader>("FlatColour") as Shader;
+			Material newMaterial = new Material(flatShader);
+			newMaterial.color = Color.green;
+			
+			string directory = System.IO.Path.GetDirectoryName(Application.dataPath + "/Resources/Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat");
+			
+			if(!System.IO.Directory.Exists(directory))
+			{
+				System.IO.Directory.CreateDirectory(directory);	
+			}
+			string path = "Assets/Resources/Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat";
+			
+			
+			AssetDatabase.CreateAsset(newMaterial, path);
+			
+			renderer.material = newMaterial as Material;
 			Debug.Log("Material Missing: " + wallAssetName);	
 		}
 	}
@@ -324,6 +340,7 @@ public class BuildingEditor :  Editor
 			Debug.Log("Mesh Missing: " + floorMeshName);	
 		}
 		
+		string fullPath = Application.dataPath;
 		if(floorMaterial != null)
 		{
 			renderer.material = floorMaterial as Material;
@@ -334,7 +351,16 @@ public class BuildingEditor :  Editor
 			Shader flatShader = AssetHelper.Instance.FindAsset<Shader>("FlatColour") as Shader;
 			Material newMaterial = new Material(flatShader);
 			newMaterial.color = Color.red;
+			
+			string directory = System.IO.Path.GetDirectoryName(Application.dataPath + "/Resources/Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat");
+			
+			if(!System.IO.Directory.Exists(directory))
+			{
+				System.IO.Directory.CreateDirectory(directory);	
+			}
 			string path = "Assets/Resources/Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat";
+			
+			
 			AssetDatabase.CreateAsset(newMaterial, path);
 			
 			renderer.material = newMaterial as Material;

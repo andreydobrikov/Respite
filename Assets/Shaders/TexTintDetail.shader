@@ -3,6 +3,7 @@ Shader "Custom/TexTintDetail"
 	Properties 
 	{
 		_MainTex ("Diffuse Tex", 2D) = "white" {}
+		_AltTex ("Diffuse Tex", 2D) = "white" {}
 		_DetailTex ("Detail Tex", 2D) = "white" {}
 		_Color("Tint", Color) = (0.1, 0.8, 0.3, 1.0)
 		_DetailIntensity("Detail Intensity", Range(0.0, 1.0)) = 0.5
@@ -23,11 +24,14 @@ Shader "Custom/TexTintDetail"
 			#include "UnityCG.cginc"
 			
 			sampler2D _MainTex;
+			sampler2D _AltTex;
 			sampler2D _DetailTex;
 			float4 _MainTex_ST;
 			float4 _DetailTex_ST;
 			float4 _Color;
 			float _DetailIntensity;
+			
+			float BlendLerp;
 			 
 			struct v2f 
 			{
@@ -56,7 +60,13 @@ Shader "Custom/TexTintDetail"
 				float4 detailTex = tex2D(_DetailTex, i.uv1);
 				
 				float4 detail = lerp(detailTex, white, _DetailIntensity);
-				float4 val = tex2D(_MainTex, i.uv0) * detail;
+				
+				float4 mainTexVal = tex2D(_MainTex, i.uv0);
+				float4 altTexVal = tex2D(_MainTex, i.uv0 + float2(0.5, 0.5));
+				
+				float4 val = lerp(mainTexVal, altTexVal, BlendLerp);
+				
+				val = val * detail;
 				
 				val *= i.color;
 				

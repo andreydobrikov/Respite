@@ -54,8 +54,8 @@ public class TransitionZone : MonoBehaviour
 		m_other = null;
 		
 		// Lightmaps have to be disabled to avoid confusion, so prompt the floors for that
-		//LightsDisableObject.DisableLights();
-	//	LightsEnableObject.EnableLights();
+		LightsDisableObject.DisableLights();
+		LightsEnableObject.EnableLights();
 		
 		Debug.Log("Transitioned");
 		m_fade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), TransitionDuration / 2.0f, null);

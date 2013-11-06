@@ -30,10 +30,10 @@ public class Building : MonoBehaviour
 	
 	public void Start()
 	{
-	//	m_lights = GameObjectHelper.FindAllChildrenWithLayer(this.gameObject, LayerMask.NameToLayer("Lights"));
+		m_lights = GameObjectHelper.FindAllChildrenWithLayer(this.gameObject, LayerMask.NameToLayer("Lights"));
 		//Debug.Log("Building \"" + BuildingName + "\" Found " + m_lights.Count + " lights");
 	}
-	/*
+	
 	public void DisableLights()
 	{
 		foreach(var light in m_lights)
@@ -57,7 +57,7 @@ public class Building : MonoBehaviour
 	}
 		
 	private List<GameObject> m_lights = null;
-	*/
+	
 #if UNITY_EDITOR
 		
 	public static string s_walls_id 			= "walls";

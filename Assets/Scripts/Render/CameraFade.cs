@@ -53,8 +53,17 @@ public class CameraFade : MonoBehaviour
 			{
 				// fade!
 				SetScreenOverlayColor(m_CurrentScreenOverlayColor + m_DeltaColor * m_fadeTimeDelta);
+				if (m_CurrentScreenOverlayColor == m_TargetScreenOverlayColor)
+				{
+					Debug.Log("Fade complete, calling handler...");
+					if(m_fadeCompleteHandler != null)
+					{
+						m_fadeCompleteHandler();	
+					}
+				}
 			}
 		}
+	
  
 		// only draw the texture when the alpha value is greater than 0:
 		if (m_CurrentScreenOverlayColor.a > 0)
@@ -80,8 +89,11 @@ public class CameraFade : MonoBehaviour
 	{
 		Debug.Log("Fade requested");
 		m_fadeCompleteHandler = completeHandler;
+		
+		bool instantFade = fadeDuration <= 0.0f;
+		bool sameColour = newScreenOverlayColor == m_CurrentScreenOverlayColor;
 			
-		if (fadeDuration <= 0.0f || newScreenOverlayColor == m_CurrentScreenOverlayColor)		// can't have a fade last -2455.05 seconds!
+		if (sameColour || instantFade)		// can't have a fade last -2455.05 seconds!
 		{
 			Debug.Log("Fade not needed, calling handler...");
 			SetScreenOverlayColor(newScreenOverlayColor);

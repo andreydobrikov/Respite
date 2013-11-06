@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [AddComponentMenu("Custom/Interactive Objects/Door")]
 public class Door : InteractiveObject 
 {
+	public ObjectPool m_noisePool;
 	public GameObject m_targetObject = null;
 	public float openRate = 0.02f;
 	public float maxRotation = -65.0f;
@@ -86,7 +87,6 @@ public class Door : InteractiveObject
 		float sign = MathsHelper.sign(posXY, hingeStart, hingeEnd);
 		
 		sign = sign / Mathf.Abs(sign);
-		Debug.Log("Sign: " + sign);
 		m_lerpDirection = -sign;// 1.0f;	
 		
 		m_openInteraction.Enabled = false;
@@ -120,11 +120,23 @@ public class Door : InteractiveObject
 		
 	private void HandleOpen(Interaction interaction, GameObject trigger)
 	{
+		if(m_noisePool != null)
+		{
+			GameObject noiseRipple = m_noisePool.ActivateObject();	
+			noiseRipple.transform.position = transform.position;
+		}
+		
 		Open(trigger);
 	}
 	
 	private void HandleClose(Interaction interaction, GameObject trigger)
 	{
+		if(m_noisePool != null)
+		{
+			GameObject noiseRipple = m_noisePool.ActivateObject();	
+			noiseRipple.transform.position = transform.position;
+		}
+		
 		m_lerpDirection = -1.0f;
 		
 		m_closeInteraction.Enabled 	= false;
