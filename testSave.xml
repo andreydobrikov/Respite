@@ -1,54 +1,116 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <entries>
-  <entry id="" debug_name="collider">
+  <entry id="2206e791-3fa6-439a-a0ae-c1e474677c00">
+    <pair id="house0" value="false" />
+    <pair id="house1" value="true" />
+    <pair id="house_basement" value="false" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
     <pair id="current_rotation" value="0" />
     <pair id="lerp_direction" value="-1" />
     <pair id="lerp_progress" value="0" />
     <pair id="target_value" value="0" />
   </entry>
-  <entry id="" debug_name="collider">
+  <entry id="0b20f7ce-034b-49a7-9229-bf86a4d2eb88">
     <pair id="current_rotation" value="0" />
     <pair id="lerp_direction" value="-1" />
     <pair id="lerp_progress" value="0" />
     <pair id="target_value" value="0" />
   </entry>
-  <entry id="" debug_name="collider">
+  <entry id="822d2d09-dd68-4c8e-aa3b-4e40044ec50f" />
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
     <pair id="current_rotation" value="0" />
     <pair id="lerp_direction" value="-1" />
     <pair id="lerp_progress" value="0" />
     <pair id="target_value" value="0" />
   </entry>
-  <entry id="fac1e292-c150-4e67-b05b-fbb32612c34e" debug_name="collider">
-    <pair id="current_rotation" value="-65" />
-    <pair id="lerp_direction" value="1" />
-    <pair id="lerp_progress" value="1" />
-    <pair id="target_value" value="1" />
-  </entry>
-  <entry id="" debug_name="collider">
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
     <pair id="current_rotation" value="0" />
     <pair id="lerp_direction" value="-1" />
     <pair id="lerp_progress" value="0" />
     <pair id="target_value" value="0" />
   </entry>
-  <entry id="822d2d09-dd68-4c8e-aa3b-4e40044ec50f" debug_name="Camera_1_main" />
-  <entry id="421e0f9f-72b7-4aed-8e24-df092a4cff2a" debug_name="light">
+  <entry id="421e0f9f-72b7-4aed-8e24-df092a4cff2a">
     <pair id="active" value="false" />
   </entry>
-  <entry id="4dec5650-7f50-4709-8e7d-43a222643016" debug_name="Inventory" />
-  <entry id="d465c923-36c9-4b64-a3d6-c980bae53a91" debug_name="Actor">
-    <pair id="position_x" value="-115.2057" />
-    <pair id="position_y" value="0.11" />
-    <pair id="position_z" value="33.61232" />
+  <entry id="0b20f7ce-034b-49a7-9229-bf86a4d2eb88">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="4dec5650-7f50-4709-8e7d-43a222643016" />
+  <entry id="d465c923-36c9-4b64-a3d6-c980bae53a91">
+    <pair id="position_x" value="19.87561" />
+    <pair id="position_y" value="5.11" />
+    <pair id="position_z" value="42.86376" />
     <pair id="rotation_x" value="0" />
-    <pair id="rotation_y" value="0.898794" />
+    <pair id="rotation_y" value="0.1165365" />
     <pair id="rotation_z" value="0" />
-    <pair id="rotation_w" value="-0.4383712" />
+    <pair id="rotation_w" value="0.9931864" />
   </entry>
-  <entry id="901a3b8a-0844-4b38-97b9-dffd3ab96557" debug_name="facility">
-    <pair id="facility0" value="true" />
-    <pair id="facility1" value="true" />
+  <entry id="d43b8bb5-b567-45a3-ad25-4e0a6c421b23">
+    <pair id="active" value="true" />
   </entry>
-  <entry id="d43b8bb5-b567-45a3-ad25-4e0a6c421b23" debug_name="light">
-    <pair id="active" value="false" />
+  <entry id="d43b8bb5-b567-45a3-ad25-4e0a6c421b23">
+    <pair id="active" value="true" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="901a3b8a-0844-4b38-97b9-dffd3ab96557" />
+  <entry id="d43b8bb5-b567-45a3-ad25-4e0a6c421b23">
+    <pair id="active" value="true" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="0b20f7ce-034b-49a7-9229-bf86a4d2eb88">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
+  </entry>
+  <entry id="45eadd25-e890-4582-b474-879f80c846a3">
+    <pair id="current_rotation" value="0" />
+    <pair id="lerp_direction" value="-1" />
+    <pair id="lerp_progress" value="0" />
+    <pair id="target_value" value="0" />
   </entry>
 </entries>

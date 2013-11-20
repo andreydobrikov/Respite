@@ -16,6 +16,7 @@ public class TimeOfDay : MonoBehaviour
 	public bool PauseUpdate 			= false;
 	public float CloudCoverPercentage 	= 0.0f;
 	public Vector4 TODColor 			= Vector4.one;
+	public float TODColorMagnitude		= 1.0f;
 	
 	void OnEnable()
 	{
@@ -136,7 +137,7 @@ public class TimeOfDay : MonoBehaviour
 		lerpedValue.w = 1.0f;
 		TODColor = lerpedValue;
 		TODColor.w = 1.0f -CloudCoverPercentage;
-		
+		TODColorMagnitude = ((Vector3)TODColor).magnitude; // The magnitude of the TOD color is used all over the shop, so just grab it once here.
 
 		if(m_lightMapCamera != null)
 		{

@@ -21,7 +21,7 @@ public class Building : MonoBehaviour
 	public bool ShowRoomsFoldout	= false;
 	public int floorHeight			= 0;
 	public bool BuildFog			= false;
-	
+	public bool lightsActive		= false;
 	
 	public Building()
 	{
@@ -31,7 +31,9 @@ public class Building : MonoBehaviour
 	public void Start()
 	{
 		m_lights = GameObjectHelper.FindAllChildrenWithLayer(this.gameObject, LayerMask.NameToLayer("Lights"));
+		m_lights.AddRange(GameObjectHelper.FindAllChildrenWithLayer(this.gameObject, LayerMask.NameToLayer("Shadow")));
 		//Debug.Log("Building \"" + BuildingName + "\" Found " + m_lights.Count + " lights");
+		
 	}
 	
 	public void DisableLights()
@@ -43,6 +45,8 @@ public class Building : MonoBehaviour
 				light.renderer.enabled = false;	
 			}
 		}
+		
+		lightsActive = false;
 	}
 	
 	public void EnableLights()
@@ -54,6 +58,8 @@ public class Building : MonoBehaviour
 				light.renderer.enabled = true;	
 			}
 		}
+		
+		lightsActive = true;
 	}
 		
 	private List<GameObject> m_lights = null;

@@ -62,11 +62,15 @@ public class SpriteAnimation
 		return true;
 	}
 	
+	public Vector4 CurrentOffset()
+	{
+		return m_frames[m_currentFrame].m_uvOffset;	
+	}
+	
 	public Vector4 Advance()
 	{
 		m_currentFrame++;
 		m_currentFrame = m_currentFrame % m_frameCount;
-		
 		return m_frames[m_currentFrame].m_uvOffset;
 	}
 	

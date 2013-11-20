@@ -64,12 +64,12 @@ public class AssetHelper
 		}
 		
 		// For projects not using the resources folder
-		int dataPathIndex = path.IndexOf(Application.dataPath);
+		/*int dataPathIndex = path.IndexOf(Application.dataPath) ;
 		if(dataPathIndex != -1)
 		{
 			path = path.Remove(dataPathIndex, Application.dataPath.Length);
 		}
-		
+		*/
 		return path;
 	}
 	

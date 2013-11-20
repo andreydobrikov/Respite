@@ -54,7 +54,7 @@ Shader "Custom/LightDetail"
 			fixed4 frag (v2f i) : COLOR0 
 			{ 
 				const half4 white = half4(1.0, 1.0, 1.0, 1.0);
-				float4 detail = lerp(tex2D(_DetailTex, i.uv1), white, _DetailIntensity);
+				float4 detail = lerp(white, tex2D(_DetailTex, i.uv1) , _DetailIntensity);
 				float4 val = tex2D(_MainTex, i.uv0) * detail;
 				
 				val *= i.color;

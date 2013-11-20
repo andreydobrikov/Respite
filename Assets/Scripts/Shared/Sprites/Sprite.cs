@@ -14,6 +14,7 @@ using System.IO;
 [RequireComponent(typeof(MeshRenderer))]
 public class Sprite : MonoBehaviour 
 {
+	public bool BlendFrames 		= false;
 	public string SpriteData 		= "";
 	public Texture2D SpriteTexture 	= null;
 	public float updateSpeed 		= 0.1f;
@@ -29,7 +30,10 @@ public class Sprite : MonoBehaviour
 			MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
 			
 			meshFilter.sharedMesh = CreateSpritePlane();
-			meshRenderer.material.mainTexture = SpriteTexture;
+			meshRenderer.material.SetTexture("_SpriteTex0", SpriteTexture);
+			meshRenderer.material.SetTexture("_SpriteTex1", SpriteTexture);
+			
+			m_spriteMaterial = meshRenderer.material;
 		}
 		else
 		{
@@ -39,20 +43,43 @@ public class Sprite : MonoBehaviour
 	
 	void Update () 
 	{
-		MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+		if(m_spriteMaterial == null)
+		{
+			return;	
+		}
+		
 		
 		timeProgress += Time.deltaTime;
+		m_spriteMaterial.SetFloat("_BlendFrameLerp", 1.0f - ( timeProgress / updateSpeed));
+		
 		if(timeProgress > updateSpeed)
 		{
 			timeProgress = 0.0f;
+			m_spriteMaterial.SetFloat("_BlendFrameLerp", 1.0f -timeProgress / updateSpeed);
 			if(m_data != null && m_data.CurrentAnimation != null)
 			{
-				Vector4 offset = m_data.CurrentAnimation.Advance();
-				meshRenderer.material.SetTextureOffset("_MainTex", new Vector2(offset.x, offset.y));
-				meshRenderer.material.SetTextureScale("_MainTex", new Vector2(offset.z, offset.w));
+				m_previousOffset = m_data.CurrentAnimation.CurrentOffset();
 				
+				Vector4 offset = m_data.CurrentAnimation.Advance();
+				m_spriteMaterial.SetTextureOffset("_SpriteTex0", new Vector2(offset.x, offset.y));
+				m_spriteMaterial.SetTextureScale("_SpriteTex0", new Vector2(offset.z, offset.w));
+				
+				if(BlendFrames)
+				{
+					m_spriteMaterial.SetTextureOffset("_SpriteTex1", new Vector2(m_previousOffset.x, m_previousOffset.y));
+					m_spriteMaterial.SetTextureScale("_SpriteTex1", new Vector2(m_previousOffset.z, m_previousOffset.w));
+					
+					
+				}
+				else
+				{
+					m_spriteMaterial.SetTextureOffset("_SpriteTex1", new Vector2(offset.x, offset.y));
+					m_spriteMaterial.SetTextureScale("_SpriteTex1", new Vector2(offset.z, offset.w));	
+				}
 			}
 		}
+		//Debug.Log("LERP: " + timeProgress / updateSpeed + "( " + timeProgress + " \\ " + updateSpeed + " ) ");
+
 	}
 	
 	public bool LoadSpriteData(string spriteData)
@@ -96,6 +123,9 @@ public class Sprite : MonoBehaviour
 		
 		return newMesh;
 	}
+	
+	private Vector4 m_previousOffset = Vector4.one;
+	private Material m_spriteMaterial;
 }
 
 

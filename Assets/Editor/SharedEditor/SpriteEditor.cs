@@ -25,6 +25,7 @@ public class SpriteEditor : Editor
 		
 		
 		sprite.updateSpeed = EditorGUILayout.FloatField("Update Speed", sprite.updateSpeed);
+		sprite.BlendFrames = EditorGUILayout.Toggle("Blend Frames", sprite.BlendFrames);
 		
 		GUILayout.EndVertical();
 		GUILayout.EndHorizontal();

@@ -16,13 +16,33 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SerialisableObject))]
 public class TransitionSerialiser : MonoBehaviour, ISerialisable 
 {
-	public List<GameObject> TransitionObjects = new List<GameObject>();
+	public List<Building> TransitionObjects = new List<Building>();
+	public Building InitiallyEnabledBuilding = null;
+	
+	public void Start()
+	{
+		foreach(var currentObject in TransitionObjects)
+		{
+			if(currentObject != null)
+			{
+				currentObject.DisableLights();		
+			}
+		}
+		
+		if(InitiallyEnabledBuilding != null)
+		{
+			InitiallyEnabledBuilding.EnableLights();	
+		}
+	}
 	
 	public void SaveSerialise(List<SavePair> pairs)
 	{
 		foreach(var current in TransitionObjects)
 		{
-			pairs.Add(new SavePair(current.name, current.activeInHierarchy ? "true" : "false"));		
+			if(current != null)
+			{
+				pairs.Add(new SavePair(current.name, current.lightsActive ? "true" : "false"));		
+			}
 		}
 	}
 	
@@ -37,7 +57,14 @@ public class TransitionSerialiser : MonoBehaviour, ISerialisable
 			{
 				if(pair.id == currentObject.name)
 				{
-					currentObject.SetActive(pair.value == "true" ? true : false);	
+					if(pair.value == "true")
+					{
+						currentObject.EnableLights();	
+					}
+					else
+					{
+						currentObject.DisableLights();	
+					}
 				}
 			}
 		}
