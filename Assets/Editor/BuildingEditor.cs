@@ -62,7 +62,7 @@ public class BuildingEditor :  Editor
 					current.Name = EditorGUILayout.TextField(current.Name);
 					current.TODMaxColor = EditorGUILayout.ColorField("TOD Max Colour", current.TODMaxColor);
 					current.TODMinColor = EditorGUILayout.ColorField("TOD Min Colour", current.TODMinColor);
-					
+					current.OverrideMaterial = EditorGUILayout.ObjectField("Override Material", current.OverrideMaterial, typeof(Material), true) as Material;
 					if(GUILayout.Button("Generate Lightmap"))
 					{
 						GenerateLightmap(current);
@@ -253,7 +253,12 @@ public class BuildingEditor :  Editor
 		UnityEngine.Object ambientMesh 		= AssetHelper.Instance.FindAsset<Mesh>(ambientMeshName);
 		UnityEngine.Object ambientMaterial 	= AssetHelper.Instance.GetAsset<Material>("Materials/Ambient.mat");
 		UnityEngine.Object ambientTexture	= AssetHelper.Instance.FindAsset<Texture>(ambientMeshName);
-		
+
+		if(room.OverrideMaterial != null)
+		{
+			ambientMaterial = room.OverrideMaterial;
+		}
+
 		if(ambientMesh != null)
 		{
 			filter.mesh = ambientMesh as Mesh;	

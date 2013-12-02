@@ -44,6 +44,6 @@ public class LightMapEffect : ImageEffectBase
 		material.SetTexture("_Overlay", lightMapTexture);
 		
 		
-		Graphics.Blit(source, targetTexture, material);
+		Graphics.Blit(source, destination, material);
 	}
 }

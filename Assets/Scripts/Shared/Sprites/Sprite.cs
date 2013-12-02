@@ -14,6 +14,7 @@ using System.IO;
 [RequireComponent(typeof(MeshRenderer))]
 public class Sprite : MonoBehaviour 
 {
+	public bool UseDebugColours		= false;
 	public bool BlendFrames 		= false;
 	public string SpriteData 		= "";
 	public Texture2D SpriteTexture 	= null;
@@ -55,31 +56,16 @@ public class Sprite : MonoBehaviour
 		if(timeProgress > updateSpeed)
 		{
 			timeProgress = 0.0f;
-			m_spriteMaterial.SetFloat("_BlendFrameLerp", 1.0f -timeProgress / updateSpeed);
-			if(m_data != null && m_data.CurrentAnimation != null)
-			{
-				m_previousOffset = m_data.CurrentAnimation.CurrentOffset();
-				
-				Vector4 offset = m_data.CurrentAnimation.Advance();
-				m_spriteMaterial.SetTextureOffset("_SpriteTex0", new Vector2(offset.x, offset.y));
-				m_spriteMaterial.SetTextureScale("_SpriteTex0", new Vector2(offset.z, offset.w));
-				
-				if(BlendFrames)
-				{
-					m_spriteMaterial.SetTextureOffset("_SpriteTex1", new Vector2(m_previousOffset.x, m_previousOffset.y));
-					m_spriteMaterial.SetTextureScale("_SpriteTex1", new Vector2(m_previousOffset.z, m_previousOffset.w));
-					
-					
-				}
-				else
-				{
-					m_spriteMaterial.SetTextureOffset("_SpriteTex1", new Vector2(offset.x, offset.y));
-					m_spriteMaterial.SetTextureScale("_SpriteTex1", new Vector2(offset.z, offset.w));	
-				}
-			}
+			UpdateShader();
 		}
 		//Debug.Log("LERP: " + timeProgress / updateSpeed + "( " + timeProgress + " \\ " + updateSpeed + " ) ");
 
+	}
+	
+	public void Play(string animationName)
+	{
+		m_data.PlayAnimation(animationName);	
+		UpdateShader();
 	}
 	
 	public bool LoadSpriteData(string spriteData)
@@ -88,6 +74,37 @@ public class Sprite : MonoBehaviour
 		m_data.SpriteSetTexture = SpriteTexture;
 		
 		return m_data.Load(spriteData);
+	}
+	
+	private void UpdateShader()
+	{
+		m_spriteMaterial.SetFloat("_BlendFrameLerp", 1.0f -timeProgress / updateSpeed);
+		if(m_data != null && m_data.CurrentAnimation != null)
+		{
+			m_previousOffset = m_data.CurrentAnimation.CurrentOffset();
+			
+			Vector4 offset = m_data.CurrentAnimation.Advance();
+			m_spriteMaterial.SetTextureOffset("_SpriteTex0", new Vector2(offset.x, offset.y));
+			m_spriteMaterial.SetTextureScale("_SpriteTex0", new Vector2(offset.z, offset.w));
+			
+			if(UseDebugColours)
+			{
+				Vector3 color = m_data.CurrentAnimation.DebugColour;
+				Color debugColor = new Color(color.x, color.y, color.z, 1.0f);
+				m_spriteMaterial.SetColor("_Color", debugColor);
+			}
+			
+			if(BlendFrames)
+			{
+				m_spriteMaterial.SetTextureOffset("_SpriteTex1", new Vector2(m_previousOffset.x, m_previousOffset.y));
+				m_spriteMaterial.SetTextureScale("_SpriteTex1", new Vector2(m_previousOffset.z, m_previousOffset.w));
+			}
+			else
+			{
+				m_spriteMaterial.SetTextureOffset("_SpriteTex1", new Vector2(offset.x, offset.y));
+				m_spriteMaterial.SetTextureScale("_SpriteTex1", new Vector2(offset.z, offset.w));	
+			}
+		}
 	}
 	
 	private Mesh CreateSpritePlane()

@@ -7,6 +7,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Xml;
 using System.IO;
 
@@ -14,6 +15,8 @@ public class SpriteAnimationSet
 {
 	public bool Load(string dataPath)
 	{
+		m_animationDictionary.Clear();
+		
 		XmlDocument spriteDoc = new XmlDocument();
 		
 		TextAsset spriteAsset = AssetHelper.Instance.GetAsset<TextAsset>(dataPath) as TextAsset;
@@ -36,6 +39,8 @@ public class SpriteAnimationSet
 			m_animations[currentNode] = new SpriteAnimation();
 			m_animations[currentNode].Load(node);
 			
+			m_animationDictionary.Add(m_animations[currentNode].Name, currentNode);
+			
 			currentNode++;
 		}
 		
@@ -47,6 +52,26 @@ public class SpriteAnimationSet
 		return true;
 	}
 	
+	public void PlayAnimation(string animName)
+	{
+		if(animName == CurrentAnimation.Name)
+		{
+			return;	
+		}
+		
+		int index = -1;
+		m_animationDictionary.TryGetValue(animName, out index);
+		
+		if(index != -1)
+		{
+			CurrentAnimation = m_animations[index];
+			Advance();
+		}
+		else
+		{
+			Debug.LogWarning("Sprite Animation \"" + animName + "\" not found");	
+		}
+	}
 	
 	public Texture2D SpriteSetTexture {	get; set; }
 	
@@ -70,4 +95,5 @@ public class SpriteAnimationSet
 	private Texture2D m_texture;
 	private float speed = 0.38f; 
 	private SpriteAnimation[] m_animations;
+	private Dictionary<string, int> m_animationDictionary = new Dictionary<string, int>();
 }

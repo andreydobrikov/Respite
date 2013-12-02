@@ -49,7 +49,7 @@ public class PostProcessManager : MonoBehaviour
 			
 		}
 		
-		if(lightmapCamera != null && targetCamera != null )
+		if(lightmapCamera != null && postCamera != null )
 		{
 			
 			
@@ -60,7 +60,7 @@ public class PostProcessManager : MonoBehaviour
 			lightmapCamera.GetComponent<Camera>().aspect 						= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
 			lightmapCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 			lightmapCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
-			targetCamera.GetComponent<LightMapEffect>().lightMapTexture 		= lightmapCamera.GetComponent<Camera>().targetTexture;
+			postCamera.GetComponent<LightMapEffect>().lightMapTexture 			= lightmapCamera.GetComponent<Camera>().targetTexture;
 		
 			if(ViewRegionEnabled)
 			{

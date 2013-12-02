@@ -27,6 +27,32 @@ public class SpriteAnimation
 	public bool Load(XmlNode node)
 	{
 		m_name = node.Attributes.GetNamedItem("name").Value;
+		
+		XmlNode debugColourNode = node.Attributes.GetNamedItem("debug_colour");
+		
+		if(debugColourNode != null)
+		{
+			string colour = debugColourNode.Value;
+			string[] elements = colour.Split(',');
+			
+			float r,g,b;
+			
+			if(elements.Length == 3)
+			{
+				bool valid = true;
+				valid &= float.TryParse(elements[0], out r);
+				valid &= float.TryParse(elements[1], out g);
+				valid &= float.TryParse(elements[2], out b);
+				
+				if(valid)
+				{
+					m_debugColor.x = r;
+					m_debugColor.y = g;
+					m_debugColor.z = b;
+				}
+			}
+			
+		}
 	
 		m_frameCount = node.ChildNodes.Count;
 		
@@ -79,6 +105,11 @@ public class SpriteAnimation
 		get { return m_name; }	
 	}
 	
+	public Vector3 DebugColour
+	{
+		get { return m_debugColor; }	
+	}
+	
 	// Current animation state
 	private int m_currentFrame = 0;
 	
@@ -86,4 +117,5 @@ public class SpriteAnimation
 	private FrameData[] m_frames;
 	private int m_frameCount = 0;
 	private string m_name;
+	private Vector3 m_debugColor = Vector3.one;
 }

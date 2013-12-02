@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <spritemap>
-	<animation name="walk">
-		<frame x="0.0" y="0.0" width="0.5" height="1.0"/>
-		<frame x="0.5" y="0.0" width="0.5" height="1.0"/>
-
-	</animation>
+	<animation name="idle" debug_colour="1.0,0.0,0.0">
+		<frame x="0.0" y="0.5" width="0.33" height="0.5"/>
+		<frame x="0.66" y="0.5" width="0.33" height="0.5"/>
+       </animation>
+       <animation name="turn_right" debug_colour="0.0,1.0,0.0">
+		<frame x="0.0" y="0.0" width="0.33" height="0.5"/>
+       </animation>
 </spritemap>

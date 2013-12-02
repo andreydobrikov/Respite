@@ -58,7 +58,7 @@ Shader "Hidden/ViewRegion" {
 		color = lerp(color, half4(intensity, intensity, intensity, 1.0 ), blend.r * 0.3f);
 		
 		color = lerp(mainTex, color, blend.r);
-		return color;
+		return color;//mainTex;//half4(1.0, 0.0, 0.0 ,1.0);
 	}
 	
 	ENDCG

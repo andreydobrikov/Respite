@@ -59,8 +59,9 @@ Shader "Custom/Sprite"
 				
 				float4 val = tex2D (_SpriteTex0, i.uv0) * _Color;
 				float4 valAlt = tex2D (_SpriteTex1, i.uv1) * _Color;
+				val = lerp(val, valAlt, _BlendFrameLerp);
 				val *= i.color;
-				return lerp(val, valAlt, _BlendFrameLerp);
+				return val;
 			}
 			
 			ENDCG

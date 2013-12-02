@@ -70,6 +70,7 @@ Shader "Custom/TexBlendDetail"
 				
 				float4 detail = length(detailTex) * _DetailIntensity;
 				
+				
 				float4 val = tex2D(_MainTex, i.uv0) * (1.0f - length(detail)) * (1.0f - ((1.0f - baseDetailTex.r) * _BaseDetailIntensity));
 				
 				val *= i.color;

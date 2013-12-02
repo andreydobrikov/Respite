@@ -97,4 +97,7 @@ public class Room
 	
 	[SerializeField]
 	public bool ShowFoldout = false;
+
+	[SerializeField] 
+	public Material OverrideMaterial = null;
 }

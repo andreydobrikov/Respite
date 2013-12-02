@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterController2D : MonoBehaviour 
 {
+	public AnimationControl m_anim;
+	public Sprite m_targetSprite = null;
 	public float MoveSpeed = 200f;
 	public float SprintIncrease = 100.0f;
 	public float TurnSpeed = 10.0f;
@@ -63,8 +65,28 @@ public class CharacterController2D : MonoBehaviour
 				
 				if(diffAngle < MoveAngle)
 				{
-					m_controller.AddForce( (Vector3.forward * (Input.GetAxis("Vertical") * currentMoveSpeed)));
-					m_controller.AddForce( (Vector3.right * (Input.GetAxis("Horizontal") * currentMoveSpeed)));
+					Vector3 direction = (Vector3.forward * (Input.GetAxis("Vertical")));
+					direction += (Vector3.right * (Input.GetAxis("Horizontal")));
+
+					m_controller.AddForce( direction * currentMoveSpeed );
+					if(m_anim != null)
+					{
+						m_anim.speed = direction.magnitude;
+					}
+				}
+				else
+				{
+					if(m_targetSprite != null)
+					{
+						m_targetSprite.Play("turn_right");	
+					}
+				}
+			}
+			else
+			{
+				if(m_anim != null)
+				{
+					m_anim.speed = 0.0f;
 				}
 			}
 		}

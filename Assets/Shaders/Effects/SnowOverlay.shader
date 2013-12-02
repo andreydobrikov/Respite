@@ -69,6 +69,7 @@ Shader "Custom/SnowOverlay"
 				float4 mask = tex2D(_MaskTex, i.screenPos.xy);
 				val *= i.color;
 				val.a *= mask.r;
+				//val.rgb = mask.r;
 				return val;
 			}
 			
