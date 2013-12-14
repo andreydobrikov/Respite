@@ -38,6 +38,11 @@ public class Building : MonoBehaviour
 	
 	public void DisableLights()
 	{
+		if(m_lights == null)
+		{
+			return;
+		}
+
 		foreach(var light in m_lights)
 		{
 			if(light.renderer != null)
@@ -72,7 +77,7 @@ public class Building : MonoBehaviour
 	public static string s_ambient_id 			= "ambient";
 	public static string s_fog_id 				= "fog";
 	public static string s_weather_mask_id 		= "weather_mask";
-	public static string s_weather_mask_mat_id 	= "DepthMask";
+	public static string s_weather_mask_mat_id 	= "weather_mask";
 	
 #endif
 	

@@ -57,7 +57,7 @@ Shader "Custom/Light"
 				
 				float4 val = tex2D (_MainTex, i.uv) * _Color;
 				val *= i.color;
-				
+				//val = half4(i.uv.x, i.uv.y, 0.0, 1.0);
 				return val;
 			}
 			

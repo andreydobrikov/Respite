@@ -80,6 +80,66 @@ ModelImporter:
     100148: facility1_temp9_floor
     100150: garden_walls
     100152: island
+    100154: facility1_admin_office_ambient
+    100156: facility1_admin_office_floor
+    100158: facility1_back_rec_ambient
+    100160: facility1_back_rec_floor
+    100162: facility1_clean_ambient
+    100164: facility1_clean_floor
+    100166: facility1_conservatory_ambient
+    100168: facility1_conservatory_floor
+    100170: facility1_conservatory_shadow
+    100172: facility1_entrance_hall_ambient
+    100174: facility1_entrance_hall_floor
+    100176: facility1_front_e_hall_ambient
+    100178: facility1_front_e_hall_floor
+    100180: facility1_front_w_hall_ambient
+    100182: facility1_front_w_hall_floor
+    100184: facility1_laundry_ambient
+    100186: facility1_laundry_floor
+    100188: facility1_maintenance_ambient
+    100190: facility1_maintenance_floor
+    100192: facility1_medical_ambient
+    100194: facility1_medical_floor
+    100196: facility1_medical_store_ambient
+    100198: facility1_medical_store_floor
+    100200: facility1_mid_hall_ambient
+    100202: facility1_mid_hall_floor
+    100204: facility1_other_hall_ambient
+    100206: facility1_other_hall_floor
+    100208: facility1_staff_break_ambient
+    100210: facility1_staff_break_floor
+    100212: facility1_staff_cupboard_ambient
+    100214: facility1_staff_cupboard_floor
+    100216: facility1_staff_meeting_ambient
+    100218: facility1_staff_meeting_floor
+    100220: facility1_staff_post_ambient
+    100222: facility1_staff_post_floor
+    100224: facility1_staff_storage1_ambient
+    100226: facility1_staff_storage1_floor
+    100228: facility1_staff_storage2_ambient
+    100230: facility1_staff_storage2_floor
+    100232: facility1_staff_storage_ambient
+    100234: facility1_staff_storage_floor
+    100236: facility1_staff_study_ambient
+    100238: facility1_staff_study_floor
+    100240: facility1_staff_w_office_ambient
+    100242: facility1_staff_w_office_floor
+    100244: facility1_temp_floor
+    100246: facility1_west_bathroom_ambient
+    100248: facility1_west_bathroom_floor
+    100250: facility1_west_bedroom1_ambient
+    100252: facility1_west_bedroom1_floor
+    100254: facility1_west_class_ambient
+    100256: facility1_west_class_floor
+    100258: facility1_west_storage_ambient
+    100260: facility1_west_storage_floor
+    100262: facility1_test_floor
+    100264: facility1_test2_floor
+    100266: facility1_test3_floor
+    100268: facility1_conservatory_roof
+    100270: facility1_conservatory_roof_glass
+    100272: facility_conservatory_roof_beam
     400000: //RootNode
     400002: facility1_bathroom_ambient
     400004: facility1_bathroom_floor
@@ -157,6 +217,66 @@ ModelImporter:
     400148: facility1_temp9_floor
     400150: garden_walls
     400152: island
+    400154: facility1_admin_office_ambient
+    400156: facility1_admin_office_floor
+    400158: facility1_back_rec_ambient
+    400160: facility1_back_rec_floor
+    400162: facility1_clean_ambient
+    400164: facility1_clean_floor
+    400166: facility1_conservatory_ambient
+    400168: facility1_conservatory_floor
+    400170: facility1_conservatory_shadow
+    400172: facility1_entrance_hall_ambient
+    400174: facility1_entrance_hall_floor
+    400176: facility1_front_e_hall_ambient
+    400178: facility1_front_e_hall_floor
+    400180: facility1_front_w_hall_ambient
+    400182: facility1_front_w_hall_floor
+    400184: facility1_laundry_ambient
+    400186: facility1_laundry_floor
+    400188: facility1_maintenance_ambient
+    400190: facility1_maintenance_floor
+    400192: facility1_medical_ambient
+    400194: facility1_medical_floor
+    400196: facility1_medical_store_ambient
+    400198: facility1_medical_store_floor
+    400200: facility1_mid_hall_ambient
+    400202: facility1_mid_hall_floor
+    400204: facility1_other_hall_ambient
+    400206: facility1_other_hall_floor
+    400208: facility1_staff_break_ambient
+    400210: facility1_staff_break_floor
+    400212: facility1_staff_cupboard_ambient
+    400214: facility1_staff_cupboard_floor
+    400216: facility1_staff_meeting_ambient
+    400218: facility1_staff_meeting_floor
+    400220: facility1_staff_post_ambient
+    400222: facility1_staff_post_floor
+    400224: facility1_staff_storage1_ambient
+    400226: facility1_staff_storage1_floor
+    400228: facility1_staff_storage2_ambient
+    400230: facility1_staff_storage2_floor
+    400232: facility1_staff_storage_ambient
+    400234: facility1_staff_storage_floor
+    400236: facility1_staff_study_ambient
+    400238: facility1_staff_study_floor
+    400240: facility1_staff_w_office_ambient
+    400242: facility1_staff_w_office_floor
+    400244: facility1_temp_floor
+    400246: facility1_west_bathroom_ambient
+    400248: facility1_west_bathroom_floor
+    400250: facility1_west_bedroom1_ambient
+    400252: facility1_west_bedroom1_floor
+    400254: facility1_west_class_ambient
+    400256: facility1_west_class_floor
+    400258: facility1_west_storage_ambient
+    400260: facility1_west_storage_floor
+    400262: facility1_test_floor
+    400264: facility1_test2_floor
+    400266: facility1_test3_floor
+    400268: facility1_conservatory_roof
+    400270: facility1_conservatory_roof_glass
+    400272: facility_conservatory_roof_beam
     2300000: facility1_bathroom_ambient
     2300002: facility1_bathroom_floor
     2300004: facility1_bedroom_ambient
@@ -233,6 +353,66 @@ ModelImporter:
     2300146: facility1_temp9_floor
     2300148: garden_walls
     2300150: island
+    2300152: facility1_admin_office_ambient
+    2300154: facility1_admin_office_floor
+    2300156: facility1_back_rec_ambient
+    2300158: facility1_back_rec_floor
+    2300160: facility1_clean_ambient
+    2300162: facility1_clean_floor
+    2300164: facility1_conservatory_ambient
+    2300166: facility1_conservatory_floor
+    2300168: facility1_conservatory_shadow
+    2300170: facility1_entrance_hall_ambient
+    2300172: facility1_entrance_hall_floor
+    2300174: facility1_front_e_hall_ambient
+    2300176: facility1_front_e_hall_floor
+    2300178: facility1_front_w_hall_ambient
+    2300180: facility1_front_w_hall_floor
+    2300182: facility1_laundry_ambient
+    2300184: facility1_laundry_floor
+    2300186: facility1_maintenance_ambient
+    2300188: facility1_maintenance_floor
+    2300190: facility1_medical_ambient
+    2300192: facility1_medical_floor
+    2300194: facility1_medical_store_ambient
+    2300196: facility1_medical_store_floor
+    2300198: facility1_mid_hall_ambient
+    2300200: facility1_mid_hall_floor
+    2300202: facility1_other_hall_ambient
+    2300204: facility1_other_hall_floor
+    2300206: facility1_staff_break_ambient
+    2300208: facility1_staff_break_floor
+    2300210: facility1_staff_cupboard_ambient
+    2300212: facility1_staff_cupboard_floor
+    2300214: facility1_staff_meeting_ambient
+    2300216: facility1_staff_meeting_floor
+    2300218: facility1_staff_post_ambient
+    2300220: facility1_staff_post_floor
+    2300222: facility1_staff_storage1_ambient
+    2300224: facility1_staff_storage1_floor
+    2300226: facility1_staff_storage2_ambient
+    2300228: facility1_staff_storage2_floor
+    2300230: facility1_staff_storage_ambient
+    2300232: facility1_staff_storage_floor
+    2300234: facility1_staff_study_ambient
+    2300236: facility1_staff_study_floor
+    2300238: facility1_staff_w_office_ambient
+    2300240: facility1_staff_w_office_floor
+    2300242: facility1_temp_floor
+    2300244: facility1_west_bathroom_ambient
+    2300246: facility1_west_bathroom_floor
+    2300248: facility1_west_bedroom1_ambient
+    2300250: facility1_west_bedroom1_floor
+    2300252: facility1_west_class_ambient
+    2300254: facility1_west_class_floor
+    2300256: facility1_west_storage_ambient
+    2300258: facility1_west_storage_floor
+    2300260: facility1_test_floor
+    2300262: facility1_test2_floor
+    2300264: facility1_test3_floor
+    2300266: facility1_conservatory_roof
+    2300268: facility1_conservatory_roof_glass
+    2300270: facility_conservatory_roof_beam
     3300000: facility1_bathroom_ambient
     3300002: facility1_bathroom_floor
     3300004: facility1_bedroom_ambient
@@ -309,6 +489,66 @@ ModelImporter:
     3300146: facility1_temp9_floor
     3300148: garden_walls
     3300150: island
+    3300152: facility1_admin_office_ambient
+    3300154: facility1_admin_office_floor
+    3300156: facility1_back_rec_ambient
+    3300158: facility1_back_rec_floor
+    3300160: facility1_clean_ambient
+    3300162: facility1_clean_floor
+    3300164: facility1_conservatory_ambient
+    3300166: facility1_conservatory_floor
+    3300168: facility1_conservatory_shadow
+    3300170: facility1_entrance_hall_ambient
+    3300172: facility1_entrance_hall_floor
+    3300174: facility1_front_e_hall_ambient
+    3300176: facility1_front_e_hall_floor
+    3300178: facility1_front_w_hall_ambient
+    3300180: facility1_front_w_hall_floor
+    3300182: facility1_laundry_ambient
+    3300184: facility1_laundry_floor
+    3300186: facility1_maintenance_ambient
+    3300188: facility1_maintenance_floor
+    3300190: facility1_medical_ambient
+    3300192: facility1_medical_floor
+    3300194: facility1_medical_store_ambient
+    3300196: facility1_medical_store_floor
+    3300198: facility1_mid_hall_ambient
+    3300200: facility1_mid_hall_floor
+    3300202: facility1_other_hall_ambient
+    3300204: facility1_other_hall_floor
+    3300206: facility1_staff_break_ambient
+    3300208: facility1_staff_break_floor
+    3300210: facility1_staff_cupboard_ambient
+    3300212: facility1_staff_cupboard_floor
+    3300214: facility1_staff_meeting_ambient
+    3300216: facility1_staff_meeting_floor
+    3300218: facility1_staff_post_ambient
+    3300220: facility1_staff_post_floor
+    3300222: facility1_staff_storage1_ambient
+    3300224: facility1_staff_storage1_floor
+    3300226: facility1_staff_storage2_ambient
+    3300228: facility1_staff_storage2_floor
+    3300230: facility1_staff_storage_ambient
+    3300232: facility1_staff_storage_floor
+    3300234: facility1_staff_study_ambient
+    3300236: facility1_staff_study_floor
+    3300238: facility1_staff_w_office_ambient
+    3300240: facility1_staff_w_office_floor
+    3300242: facility1_temp_floor
+    3300244: facility1_west_bathroom_ambient
+    3300246: facility1_west_bathroom_floor
+    3300248: facility1_west_bedroom1_ambient
+    3300250: facility1_west_bedroom1_floor
+    3300252: facility1_west_class_ambient
+    3300254: facility1_west_class_floor
+    3300256: facility1_west_storage_ambient
+    3300258: facility1_west_storage_floor
+    3300260: facility1_test_floor
+    3300262: facility1_test2_floor
+    3300264: facility1_test3_floor
+    3300266: facility1_conservatory_roof
+    3300268: facility1_conservatory_roof_glass
+    3300270: facility_conservatory_roof_beam
     4300000: facility1_bedroom_floor
     4300002: facility1_walls
     4300004: facility1_bedroom_ambient
@@ -385,6 +625,66 @@ ModelImporter:
     4300146: facility1_f_study_ambient
     4300148: facility1_kitchen_ambient
     4300150: facility1_backhall_ambient
+    4300152: facility1_clean_floor
+    4300154: facility1_clean_ambient
+    4300156: facility1_staff_study_floor
+    4300158: facility1_staff_cupboard_floor
+    4300160: facility1_staff_w_office_floor
+    4300162: facility1_staff_storage_floor
+    4300164: facility1_staff_storage1_floor
+    4300166: facility1_laundry_floor
+    4300168: facility1_staff_storage2_floor
+    4300170: facility1_temp_floor
+    4300172: facility1_maintenance_floor
+    4300174: facility1_medical_floor
+    4300176: facility1_medical_store_floor
+    4300178: facility1_staff_break_floor
+    4300180: facility1_staff_meeting_floor
+    4300182: facility1_admin_office_floor
+    4300184: facility1_staff_post_floor
+    4300186: facility1_entrance_hall_floor
+    4300188: facility1_front_w_hall_floor
+    4300190: facility1_front_e_hall_floor
+    4300192: facility1_other_hall_floor
+    4300194: facility1_mid_hall_floor
+    4300196: facility1_entrance_hall_ambient
+    4300198: facility1_front_w_hall_ambient
+    4300200: facility1_front_e_hall_ambient
+    4300202: facility1_other_hall_ambient
+    4300204: facility1_mid_hall_ambient
+    4300206: facility1_staff_study_ambient
+    4300208: facility1_staff_cupboard_ambient
+    4300210: facility1_staff_w_office_ambient
+    4300212: facility1_staff_storage_ambient
+    4300214: facility1_staff_storage1_ambient
+    4300216: facility1_laundry_ambient
+    4300218: facility1_staff_storage2_ambient
+    4300220: facility1_maintenance_ambient
+    4300222: facility1_medical_ambient
+    4300224: facility1_medical_store_ambient
+    4300226: facility1_staff_break_ambient
+    4300228: facility1_staff_meeting_ambient
+    4300230: facility1_admin_office_ambient
+    4300232: facility1_staff_post_ambient
+    4300234: facility1_back_rec_floor
+    4300236: facility1_back_rec_ambient
+    4300238: facility1_conservatory_floor
+    4300240: facility1_conservatory_shadow
+    4300242: facility1_conservatory_ambient
+    4300244: facility1_west_bathroom_floor
+    4300246: facility1_west_bedroom1_floor
+    4300248: facility1_west_class_floor
+    4300250: facility1_west_storage_floor
+    4300252: facility1_west_bathroom_ambient
+    4300254: facility1_west_bedroom1_ambient
+    4300256: facility1_west_class_ambient
+    4300258: facility1_west_storage_ambient
+    4300260: facility1_test_floor
+    4300262: facility1_test2_floor
+    4300264: facility1_test3_floor
+    4300266: facility1_conservatory_roof
+    4300268: facility_conservatory_roof_beam
+    4300270: facility1_conservatory_roof_glass
     9500000: //RootNode
   materials:
     importMaterials: 0
@@ -393,11 +693,13 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    optimizeGameObjects: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
     animationScaleError: .5
     animationWrapMode: 0
+    extraExposedTransformPaths: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -425,7 +727,6 @@ ModelImporter:
   humanDescription:
     human: []
     skeleton: []
-    handles: []
     armTwist: .5
     foreArmTwist: .5
     upperLegTwist: .5
@@ -435,6 +736,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  additionalBone: 1
   animationType: 0
   userData: 

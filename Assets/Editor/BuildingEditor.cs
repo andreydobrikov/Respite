@@ -91,6 +91,8 @@ public class BuildingEditor :  Editor
 		
 		if(GUILayout.Button("Rebuild"))
 		{
+			AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ImportRecursive);
+
 			RebuildWalls();
 			RebuildRooms();
 			BuildWeatherMask();
@@ -383,7 +385,7 @@ public class BuildingEditor :  Editor
 		float.TryParse(maskHeightSetting, out maskHeight);
 		
 		weatherObject.transform.localPosition 	= new Vector3(0.0f, maskHeight, 0.0f);	
-		weatherObject.layer						= LayerMask.NameToLayer("Weather");
+		weatherObject.layer						= LayerMask.NameToLayer("WeatherMask");
 		
 		MeshFilter filter 		= weatherObject.GetComponent<MeshFilter>();
 		MeshRenderer renderer 	= weatherObject.GetComponent<MeshRenderer>();

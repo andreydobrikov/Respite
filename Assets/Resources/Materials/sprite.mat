@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: sprite
-  m_Shader: {fileID: 4800000, guid: 15e079f1be4853b48808674ece5333fa, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9e70343d10a5eed4c910fdd0ae2f12b3, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -18,6 +18,13 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 2800000, guid: f9c26d93a9c78404eae1a0f34077aeca, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _HighlightTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 91a6c3b0c529b374cbff7c623b2ab29b, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:

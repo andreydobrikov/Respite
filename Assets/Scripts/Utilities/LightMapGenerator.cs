@@ -190,7 +190,8 @@ public class LightMapGenerator
 						currentPixel.x += spreadX;
 						currentPixel.z += spreadY;
 						
-						currentPixel.x = (float)mipWidth - currentPixel.x;
+						//currentPixel.x = (float)mipWidth - currentPixel.x;
+						//currentPixel.z = (float)mipHeight  -currentPixel.z;
 						
 						if(currentPixel.x > 0.0f && currentPixel.z > 0.0f && currentPixel.x < mipWidth && currentPixel.z < mipHeight)
 						{

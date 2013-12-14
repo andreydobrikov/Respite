@@ -135,7 +135,6 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 			
 			Handles.Label(node.position + new Vector3(1.0f, 0.0f, -1.0f), builder.ToString(), (GUIStyle)("Box"));
 			
-			//Handles.DrawSolidDisc(new Vector3(node.position.x, -1.0f, node.position.y), Vector3.up, 3.0f);
 			controlIndex++;
 		}
 	}

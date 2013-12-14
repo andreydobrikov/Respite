@@ -12,6 +12,7 @@ public class FollowPlayer : MonoBehaviour {
 	void Start () 
 	{
 		m_player = GameObject.FindWithTag("Player");
+		transform.position = m_player.transform.position + offset;
 	}
 	
 	// Update is called once per frame
@@ -24,6 +25,7 @@ public class FollowPlayer : MonoBehaviour {
 		else
 		{
 			transform.position =  Vector3.Lerp(transform.position, new Vector3(m_player.transform.position.x,  m_player.transform.position.y, m_player.transform.position.z) + offset, LerpRate);
+			transform.position = new Vector3(transform.position.x, m_player.transform.position.y + offset.y, transform.position.z);
 		}
 	}
 

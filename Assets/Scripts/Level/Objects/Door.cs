@@ -9,6 +9,7 @@ public class Door : InteractiveObject
 	public float openRate = 0.02f;
 	public float maxRotation = -65.0f;
 	public bool Locked = false;
+	public NavMeshObstacle ObstacleObject = null;
 	
 	public enum DoorState
 	{
@@ -27,6 +28,7 @@ public class Door : InteractiveObject
 		
 		m_interactions.Add(m_openInteraction);
 		m_interactions.Add(m_closeInteraction);
+
 		
 	}
 	
@@ -37,6 +39,12 @@ public class Door : InteractiveObject
 		if(Locked)
 		{
 			Lock();
+		}
+
+		
+		if(ObstacleObject != null)
+		{
+			ObstacleObject.enabled = false;
 		}
 	}
 	
@@ -61,14 +69,18 @@ public class Door : InteractiveObject
 		
 		if(Mathf.Abs(m_lerpProgress) == 1.0f)
 		{
+
+			if(ObstacleObject != null) ObstacleObject.enabled = true;
 			m_doorState = DoorState.Open;	
 		}
 		else if(m_lerpProgress == 0.0f)
 		{
+			if(ObstacleObject != null) ObstacleObject.enabled = false;
 			m_doorState = DoorState.Closed;	
 		}
 		else if(m_lerpDirection > 0.0f)
 		{
+			if(ObstacleObject != null) ObstacleObject.enabled = true;
 			m_doorState = DoorState.Opening;	
 		}
 		else

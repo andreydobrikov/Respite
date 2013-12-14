@@ -59,6 +59,8 @@ Shader "Custom/LightDetail"
 				
 				val *= i.color;
 				val *= _Color;
+				
+				//val = half4(i.uv1.x, i.uv1.y, 0.0, 1.0);
 				return val;
 			}
 			

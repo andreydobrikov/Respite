@@ -8,8 +8,8 @@ public class TODLight : MonoBehaviour
 	
 	public float MaxLightAlpha = 0.8f;
 	public float MinDetailAlpha = 0.3f;
-	
-	// Use this for initialization
+
+		// Use this for initialization
 	void Start () 
 	{
 		m_timeOfDay = FindObjectOfType(typeof(TimeOfDay)) as TimeOfDay;

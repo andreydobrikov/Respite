@@ -23,7 +23,9 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	public override void Start()
 	{
 		m_agent = GetObject().GetComponent<NavMeshAgent>();
-		
+
+	//	string extraOutputSetting = Settings.Instance.GetSetting("ai_navigation_extra_output");
+		//m_showDebugOutput = extraOutputSetting != null ? (extraOutputSetting == "true") : false;
 		
 		if(m_agent == null)
 		{
@@ -52,6 +54,11 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 			{
 				if(m_agent.pathPending == true)
 				{
+					if(m_showDebugOutput)
+					{
+						Debug.Log(this.Name + ": Path Pending");
+					}
+
 					break;	
 				}
 			
@@ -97,37 +104,17 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 				}
 				else if(m_door.State == Door.DoorState.Open)
 				{
-					Door door = RayCastDoor();
-					// if the player still wants to go through the door once it's open, point them to the door's end
-					if(door != null && door == m_door)
-					{
-						Vector3 pivot = m_door.PivotPosition;
-						Vector3 direction = m_door.DoorDirection;
-						
-						m_agent.destination = pivot + (direction * 1.8f);
-	
-						m_activeState = AINavigationState.RoutingAroundDoor;
-					}
-					else
-					{
+					
+					
 						// Otherwise, return them to their route
 						m_agent.destination = m_cachedTarget;
 						m_activeState = AINavigationState.Routing;
-					}
+					
 				}
 				//m_activeState = PatrolState.Routing;
 				break;
 			}
 
-			case AINavigationState.RoutingAroundDoor:
-			{
-				if (m_agent.remainingDistance == 0.0f)
-				{
-					m_agent.destination = m_requestedRoute;
-					m_activeState = AINavigationState.Routing;
-				}
-				break;			
-			}
 		}
 		
 		transition |= NavUpdate();
@@ -147,7 +134,7 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 		
 		if(m_activeState == AINavigationState.Routing)
 		{
-			m_agent.SetDestination(m_requestedRoute);
+			m_agent.destination = m_requestedRoute;
 		}
 	}
 	
@@ -184,14 +171,18 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	public abstract void NavStart();
 	public abstract bool NavUpdate();
 	public abstract void NavEnd();
+
+	protected const float m_doorOpenHoldingTime					= 0.2f; // How long to wait before re-pathing once a door is opened.
 	
 	protected DestinationReachedHandler m_destinationReached 	= null;
 	
 	private NavMeshAgent m_agent 								= null;
 	private AINavigationState m_activeState 					= AINavigationState.Routing;
 	private Vector3 m_cachedTarget 								= Vector3.zero;
-	private Door m_door 										= null;
 	private Vector3 m_requestedRoute							= Vector3.zero;
+	private Door m_door 										= null;
+	private bool m_showDebugOutput								= false;
+	private float m_doorOpenHoldTimer							= 0.0f;
 }
 
 public enum AINavigationState

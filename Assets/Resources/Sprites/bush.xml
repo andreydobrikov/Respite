@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<spritemap>
+	<animation name="idle" debug_colour="1.0,0.0,0.0">
+		<frame x="0.0" y="0.0" width="0.5" height="0.5"/>
+		<frame x="0.5" y="0.0" width="0.5" height="0.5"/>
+		<frame x="0.0" y="0.5" width="0.5" height="0.5"/>
+               <frame x="0.5" y="0.5" width="0.5" height="0.5"/>
+       </animation>
+</spritemap>
