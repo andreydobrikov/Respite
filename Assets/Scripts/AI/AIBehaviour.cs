@@ -59,6 +59,16 @@ public abstract class AIBehaviour : ScriptableObject
 	{
 		get { return m_supportTransitions;	}
 	}
+
+	protected void UpdateSupportsTransitions(bool supportsTransitions)
+	{
+		m_supportTransitions = supportsTransitions;
+
+		if(!supportsTransitions)
+		{
+			m_targetTransition = null;
+		}
+	}
 	
 	[SerializeField]
 	protected string m_name = String.Empty;

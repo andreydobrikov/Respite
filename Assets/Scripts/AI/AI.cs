@@ -121,6 +121,7 @@ public class AI : MonoBehaviour
 #if UNITY_EDITOR
 	
 	public AIBehaviour m_dragStart = null;
+	public bool m_debugEditor = true;
 	
 #endif
 	

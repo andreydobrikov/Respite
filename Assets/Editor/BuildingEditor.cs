@@ -347,7 +347,6 @@ public class BuildingEditor :  Editor
 			Debug.Log("Mesh Missing: " + floorMeshName);	
 		}
 		
-		string fullPath = Application.dataPath;
 		if(floorMaterial != null)
 		{
 			renderer.material = floorMaterial as Material;

@@ -71,7 +71,7 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 	
 	public override void OnInspectorGUI()
 	{
-		GUILayout.BeginVertical((GUIStyle)("Box"));
+		GUILayout.BeginVertical((GUIStyle)("Box"), GUILayout.Width(300));
 			
 		if(m_selectedNode < m_nodes.Count)
 		{
@@ -89,8 +89,8 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 		}
 		
 		m_loop = GUILayout.Toggle(m_loop, "Loop");
-		
-		m_supportTransitions = !m_loop;
+
+		UpdateSupportsTransitions(!m_loop);
 		
 		GUILayout.EndVertical();
 	}

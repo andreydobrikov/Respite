@@ -20,7 +20,7 @@ public class FollowCameraXY : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		m_camera = Camera.mainCamera;
+		m_camera = Camera.main;
 	}
 	
 	void LateUpdate () 

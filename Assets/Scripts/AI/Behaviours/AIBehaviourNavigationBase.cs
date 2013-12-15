@@ -97,12 +97,15 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 			
 			case AINavigationState.DoorFound:
 			{
+				m_doorOpenHoldTimer -= Time.deltaTime;
 				if(m_door.State == Door.DoorState.Closed)
 				{
 					m_door.Open(GetObject());
+					m_doorOpenHoldTimer = m_doorOpenHoldingTime;
+					m_agent.destination = m_agent.transform.position;
 				
 				}
-				else if(m_door.State == Door.DoorState.Open)
+				else if (m_doorOpenHoldTimer <= 0.0f && m_door.State == Door.DoorState.Open)
 				{
 					
 					
@@ -172,7 +175,7 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	public abstract bool NavUpdate();
 	public abstract void NavEnd();
 
-	protected const float m_doorOpenHoldingTime					= 0.2f; // How long to wait before re-pathing once a door is opened.
+	protected const float m_doorOpenHoldingTime					= 1.0f; // How long to wait before re-pathing once a door is opened. TODO: Attach this to the door open speed?
 	
 	protected DestinationReachedHandler m_destinationReached 	= null;
 	

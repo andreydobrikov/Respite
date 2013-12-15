@@ -48,7 +48,7 @@ public class GameObjectHelper
 		while(current != null)
 		{
 			// Search breadth then go up.
-			int childCount = current.transform.GetChildCount();
+			int childCount = current.transform.childCount;
 			Component searchComponent = null;
 			
 			for(int i = 0; i < childCount; ++i)

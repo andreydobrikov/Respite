@@ -152,18 +152,16 @@ public class InventoryMenu : MonoBehaviour, ISerialisable
 			GUILayout.EndArea();
 			
 			GUI.skin 			= skin;
-			index 				= 0;
 			GUIStyle current 	= GUI.skin.GetStyle("Button");
-			
-			foreach(var item in Inventory.Contents)
+
+			for (int i = 0; i < Inventory.Contents.Count; ++i)
 			{
-				if(index == m_selectedIndex)
+				if (i == m_selectedIndex)
 				{
-					GUILayout.BeginArea(new Rect(m_lastOrigin.x - 100 , m_lastOrigin.y, 100, m_lastRect.height));
+					GUILayout.BeginArea(new Rect(m_lastOrigin.x - 100, m_lastOrigin.y, 100, m_lastRect.height));
 					GUILayout.Label("test", current);
 					GUILayout.EndArea();
 				}
-				index++;
 			}
 		}
 		else

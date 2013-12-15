@@ -16,7 +16,6 @@ public class PostProcessManager : MonoBehaviour
 	void Start () 
 	{
 		GameObject lightmapCamera 		= GameObject.FindGameObjectWithTag("LightMapCamera");
-		GameObject targetCamera 		= GameObject.FindGameObjectWithTag("WeatherCamera");
 		GameObject postCamera			= GameObject.FindGameObjectWithTag("PostCamera");
 		GameObject viewCamera			= GameObject.FindGameObjectWithTag("ViewRegionCamera");
 		GameObject weatherMaskCamera	= GameObject.FindGameObjectWithTag("WeatherMaskCamera");
@@ -30,15 +29,15 @@ public class PostProcessManager : MonoBehaviour
 		
 		// Fiddle with these to use a smaller render-texture for the light-pass.
 		// Note: Too small a target can cause light bleeding when the overlay is interpolated.
-		int pixelWidth 	= (int)Camera.mainCamera.pixelWidth;
-		int pixelHeight = (int)Camera.mainCamera.pixelHeight;
+		int pixelWidth 	= (int)Camera.main.pixelWidth;
+		int pixelHeight = (int)Camera.main.pixelHeight;
 		
 		if(weatherMaskCamera != null && snowOverlay != null)
 		{
 			int maskWidth = pixelWidth / 4;
 			int maskHeight = pixelHeight / 4;
-			
-			weatherMaskCamera.GetComponent<Camera>().aspect 					= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+
+			weatherMaskCamera.GetComponent<Camera>().aspect						= (Camera.main.pixelWidth / Camera.main.pixelHeight);
 			weatherMaskCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(maskWidth, maskHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 			weatherMaskCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo = false;		
 			
@@ -51,13 +50,10 @@ public class PostProcessManager : MonoBehaviour
 		
 		if(lightmapCamera != null && postCamera != null )
 		{
-			
-			
-			
 			// If this is run-in-editor, the camera's aspect ratio will not yet have been updated.
 			// This in turn will crap up the aspect ratio of the attached RenderTexture, so manually set the aspect
 			// - ratio before creating the texture.
-			lightmapCamera.GetComponent<Camera>().aspect 						= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+			lightmapCamera.GetComponent<Camera>().aspect						= (Camera.main.pixelWidth / Camera.main.pixelHeight);
 			lightmapCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 			lightmapCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 			postCamera.GetComponent<LightMapEffect>().lightMapTexture 			= lightmapCamera.GetComponent<Camera>().targetTexture;
@@ -66,8 +62,8 @@ public class PostProcessManager : MonoBehaviour
 			{
 				if(viewCamera != null && postCamera != null)
 				{
-					
-					viewCamera.GetComponent<Camera>().aspect 						= (Camera.mainCamera.pixelWidth / Camera.mainCamera.pixelHeight);
+
+					viewCamera.GetComponent<Camera>().aspect						= (Camera.main.pixelWidth / Camera.main.pixelHeight);
 					viewCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth / 4, pixelHeight / 4, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
 					viewCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 					

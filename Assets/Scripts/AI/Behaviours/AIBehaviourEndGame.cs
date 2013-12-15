@@ -15,10 +15,15 @@ using System.Collections.Generic;
 
 public class AIBehaviourEndGame : AIBehaviour 
 {
-	public override void Start()
+	public AIBehaviourEndGame()
 	{
 		m_name = "End Game";
 		m_supportTransitions = false;
+	}
+
+	public override void Start()
+	{
+
 		GameFlow.Instance.GameOver();	
 	}
 	

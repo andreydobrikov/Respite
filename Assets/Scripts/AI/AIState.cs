@@ -96,9 +96,21 @@ public class AIState : ScriptableObject
 	
 	[SerializeField]
 	public Rect m_editorPosition = new Rect(10, 10, 200, 20);
+
+	[SerializeField]
+	public Vector2 m_renderDimensions = Vector2.zero;
+
+	[SerializeField]
+	public Rect m_behaviourRenderRect;
+
+	[SerializeField]
+	public float m_windowWidth;
 	
 	[SerializeField]
 	public bool m_showFoldout = false;
+
+	[SerializeField]
+	public bool m_showBehavioursFoldout = false;
 	
 	[SerializeField]
 	public int m_behaviourToAdd = 0;

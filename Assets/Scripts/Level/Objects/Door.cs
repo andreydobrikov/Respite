@@ -28,8 +28,6 @@ public class Door : InteractiveObject
 		
 		m_interactions.Add(m_openInteraction);
 		m_interactions.Add(m_closeInteraction);
-
-		
 	}
 	
 	public void Start()
@@ -40,7 +38,6 @@ public class Door : InteractiveObject
 		{
 			Lock();
 		}
-
 		
 		if(ObstacleObject != null)
 		{
@@ -51,16 +48,16 @@ public class Door : InteractiveObject
 	public void FixedUpdate()
 	{
 		m_lerpProgress += (m_lerpDirection * openRate);
-		
+
 		if(m_lerpDirection > 0.0f)
 		{
-			m_lerpProgress = Mathf.Max(m_lerpProgress, 0.0f);
+			m_lerpProgress = Mathf.Max(m_lerpProgress, m_sourceValue);
 			m_lerpProgress = Mathf.Min(m_lerpProgress, m_targetValue);
 		}
 		else
 		{
 			m_lerpProgress = Mathf.Max(m_lerpProgress, m_targetValue);
-			m_lerpProgress = Mathf.Min(m_lerpProgress, 1.0f);
+			m_lerpProgress = Mathf.Min(m_lerpProgress, m_sourceValue);
 		}
 		
 		m_currentRotation = (maxRotation * Mathf.Sin(m_lerpProgress * Mathf.PI / 2.0f)) ;
@@ -69,7 +66,6 @@ public class Door : InteractiveObject
 		
 		if(Mathf.Abs(m_lerpProgress) == 1.0f)
 		{
-
 			if(ObstacleObject != null) ObstacleObject.enabled = true;
 			m_doorState = DoorState.Open;	
 		}
@@ -105,6 +101,7 @@ public class Door : InteractiveObject
 		m_closeInteraction.Enabled = true;
 		
 		m_targetValue = -sign;
+		m_sourceValue = 0.0f;
 		
 		AudioSource source = GetComponent<AudioSource>() as AudioSource;
 		
@@ -149,11 +146,12 @@ public class Door : InteractiveObject
 			noiseRipple.transform.position = transform.position;
 		}
 		
-		m_lerpDirection = -1.0f;
+		m_lerpDirection = -m_lerpDirection;
 		
 		m_closeInteraction.Enabled 	= false;
 		m_openInteraction.Enabled 	= true;
-		
+
+		m_sourceValue = m_targetValue;
 		m_targetValue = 0.0f;
 		
 		AudioSource source = GetComponent<AudioSource>() as AudioSource;
@@ -220,6 +218,7 @@ public class Door : InteractiveObject
 	private float m_lerpProgress = 0.0f;
 	private float m_lerpDirection = -1.0f;
 	private float m_targetValue = 0.0f;
+	private float m_sourceValue = 0.0f;
 	private Quaternion m_initialRotation = Quaternion.identity;
 	private DoorState m_doorState = DoorState.Closed;
 }

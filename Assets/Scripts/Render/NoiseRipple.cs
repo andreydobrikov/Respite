@@ -21,7 +21,6 @@ public class NoiseRipple : PoolableObject
 	
 	void Start ()
 	{
-		m_rippleMaterial = renderer.material;
 		m_initialScale = transform.localScale;
 	}
 
@@ -39,6 +38,5 @@ public class NoiseRipple : PoolableObject
 		renderer.material.SetFloat("_RippleIntensity", 1.0f - (transform.localScale.x / maxScale));
 	}
 	
-	Material m_rippleMaterial;
 	Vector3 m_initialScale;
 }

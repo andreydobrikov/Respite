@@ -36,11 +36,6 @@ public class SpriteData
 		return false;
 	}
 	
-	public void SetTexture(Texture2D texture)
-	{
-		m_texture = texture;	
-	}
-	
 	public float GetAnimationSpeed()
 	{
 		return speed;
@@ -51,8 +46,6 @@ public class SpriteData
 		get { return m_currentAnimation; }
 		set { m_currentAnimation = value; }
 	}
-	
-	Texture2D m_texture; 
 	
 	float speed = 0.38f; 
 	

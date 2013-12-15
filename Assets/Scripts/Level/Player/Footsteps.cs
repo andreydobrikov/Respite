@@ -27,7 +27,6 @@ public class Footsteps : MonoBehaviour
 	void Start ()
 	{
 		m_target = walkFrequency;
-		m_footprintTarget = walkFrequency / 2.0f;
 	}
 
 	void Update ()
@@ -103,7 +102,6 @@ public class Footsteps : MonoBehaviour
 	private float m_target = 0.0f;
 	private float m_countDownTimer = 0.0f;
 	
-	private float m_footprintTarget = 0.0f;
 	private float m_footprintTimer = 0.0f;
 	private bool m_leftFoot = false;
 }
