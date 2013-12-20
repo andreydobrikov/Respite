@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameFlowWrapper : MonoBehaviour 
 {
 	public GameObject LevelObject;
+	public float GameDuration = 20.0f;
 	
 #if UNITY_EDITOR
 	public bool ShowFoldout = false;
@@ -12,9 +13,11 @@ public class GameFlowWrapper : MonoBehaviour
 	
 	void Start()
 	{
+
 		GameObject.DontDestroyOnLoad(this);
 		GameFlow instance = GameFlow.Instance;
-		
+
+		instance.GameDuration = GameDuration;
 		instance.SaveFadeDuration = m_saveFadeDuration;
 		m_started = true;
 		
@@ -37,6 +40,8 @@ public class GameFlowWrapper : MonoBehaviour
 	{
 		GUILayout.BeginArea(new Rect(10.0f, Screen.height - 120.0f, 300.0f, 100.0f));
 		GUILayout.BeginVertical();
+
+		GUILayout.Label("Game Time: " + (GameFlow.Instance.GameDuration -  GameFlow.Instance.GameTimerProgress).ToString("0.0"));
 		
 		GUILayout.Label(System.Enum.GetName(typeof(GameFlow.ControlContext), GameFlow.Instance.CurrentControlContext));
 		
@@ -53,7 +58,7 @@ public class GameFlowWrapper : MonoBehaviour
 		}
 		
 		GUILayout.EndHorizontal();
-		
+
 		
 		Serialiser.Instance.OutputDebugInfo = GUILayout.Toggle(Serialiser.Instance.OutputDebugInfo, "Debug Info");
 		

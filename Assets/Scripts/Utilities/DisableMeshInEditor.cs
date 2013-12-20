@@ -23,6 +23,8 @@ public class DisableMeshInEditor : MonoBehaviour
 			renderer.enabled = true;
 		}
 		
+#else
+		renderer.enabled = true;
 #endif
 		
 	}

@@ -27,9 +27,16 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 	
 	public override void NavStart() 
 	{
+		if(m_nodes.Count <= 0)
+		{
+			m_targetIndex = -1;
+			Debug.LogWarning("No waypoints set");
+			return;
+		}
+
 		m_nodes.Sort(NodeComparison);
-		
-		m_target = m_nodes[1];
+
+		m_target = m_nodes[0];
 		
 		m_targetIndex = 0;
 		
@@ -45,6 +52,11 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 	
 	protected bool WaypointReached()
 	{
+		if(m_targetIndex == -1)
+		{
+			return false;
+		}
+
 		m_targetIndex++;
 		
 		if(m_targetIndex >= m_nodes.Count)
@@ -78,7 +90,40 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 			m_nodes[m_selectedNode].position = EditorGUILayout.Vector3Field("Selected Waypoint", m_nodes[m_selectedNode].position);
 			m_nodes[m_selectedNode].sequenceIndex = EditorGUILayout.IntField("Index", m_nodes[m_selectedNode].sequenceIndex);
 		}
-		
+
+		List<WaypointNode> toDelete = new List<WaypointNode>();
+
+		int i = 0;
+		foreach(var node in m_nodes)
+		{
+			GUILayout.BeginHorizontal();
+
+			node.sequenceIndex = EditorGUILayout.IntField("Index", node.sequenceIndex);
+
+			if(GUILayout.Button("goto", GUILayout.Width(40)))
+			{
+				SceneView.lastActiveSceneView.pivot = new Vector3(node.position.x, node.position.y + 3.0f, node.position.z);
+				SceneView.lastActiveSceneView.Repaint();
+				m_selectedNode = i;
+			}
+
+			if(GUILayout.Button("x", GUILayout.Width(20)))
+			{
+				if(EditorUtility.DisplayDialog("Delete Node?", "Delete node?", "ok", "cancel"))
+				{
+					toDelete.Add(node);
+				}
+			}
+
+			GUILayout.EndHorizontal();
+			i++;
+		}
+
+		foreach(var node in toDelete)
+		{
+			m_nodes.Remove(node);
+		}
+
 		if(GUILayout.Button("Add Waypoint"))
 		{
 			WaypointNode newNode = ScriptableObject.CreateInstance<WaypointNode>();

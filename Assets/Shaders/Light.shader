@@ -47,11 +47,13 @@ Shader "Custom/Light"
            		o.uv = mul ( test, _Rotation ).xy;
            		
            		o.uv += 0.5f;
+           		
+           		o.uv = TRANSFORM_TEX (o.uv, _MainTex);
 		        
 		        return o;
 			}
 			
-			fixed4 frag (v2f i) : COLOR0 
+			float4 frag (v2f i) : COLOR0 
 			{ 
 				
 				

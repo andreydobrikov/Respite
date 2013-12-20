@@ -38,7 +38,7 @@ Shader "Custom/TexTransparentTint"
 		        o.color = v.color;
 		         
 		        
-		        //o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
+		        o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
 		        
 		        half4 test = v.texcoord - half4(0.5f, 0.5f, 0.0f, 0.0f);
 
@@ -61,6 +61,9 @@ Shader "Custom/TexTransparentTint"
 				
 				float4 val = tex2D (_MainTex, i.uv) * _Color;
 				val *= i.color;
+				//val.r = abs(i.uv.x);
+				//val.g = abs(i.uv.y);
+				//val.b = 0.0;
 				return val;
 			}
 			

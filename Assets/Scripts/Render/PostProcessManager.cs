@@ -54,7 +54,7 @@ public class PostProcessManager : MonoBehaviour
 			// This in turn will crap up the aspect ratio of the attached RenderTexture, so manually set the aspect
 			// - ratio before creating the texture.
 			lightmapCamera.GetComponent<Camera>().aspect						= (Camera.main.pixelWidth / Camera.main.pixelHeight);
-			lightmapCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
+			lightmapCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth, pixelHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
 			lightmapCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 			postCamera.GetComponent<LightMapEffect>().lightMapTexture 			= lightmapCamera.GetComponent<Camera>().targetTexture;
 		

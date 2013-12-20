@@ -1,0 +1,105 @@
+Initialize engine version: 4.3.0f4 (e01000627d60)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 9.18.13.1422]
+    Renderer: NVIDIA GeForce GTX 650 Ti 
+    Vendor:   NVIDIA
+    VRAM:     1994 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Unity\Respite\build_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Unity\Respite\build_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Unity\Respite\build_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Unity\Respite\build_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Unity\Respite\build_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Unity\Respite\build_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Unity\Respite\build_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Unity\Respite\build_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Unity\Respite\build_Data\Managed\Newtonsoft.Json.dll (this message is harmless)
+Loading C:\Unity\Respite\build_Data\Managed\Newtonsoft.Json.dll into Unity Child Domain
+- Completed reload, in  0.808 seconds
+desktop: 1680x1050 60Hz; virtual: 3360x1050 at -1680,0
+<RI> Initializing input.
+<RI> Input initialized.
+Platform assembly: C:\Unity\Respite\build_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Unity\Respite\build_Data\Managed\System.Core.dll (this message is harmless)
+Fade requested
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Fade not needed, calling handler...
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Platform assembly: C:\Unity\Respite\build_Data\Managed\Boo.Lang.dll (this message is harmless)
+Fade requested
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Fade complete, calling handler...
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Fade requested
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Fade complete, calling handler...
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+The referenced script on this Behaviour is missing!
+ 
+(Filename:  Line: 1699)
+
+UnloadTime: 75.617706 ms
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 7287.
+Total: 32.905701 ms (FindLiveObjects: 0.658420 ms CreateObjectMapping: 0.180828 ms MarkObjects: 31.014292 ms  DeleteObjects: 0.130152 ms)
+
+Fade requested
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Level loaded
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Controller (XBOX 360 For Windows)
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Scene::raycastClosestShape: The maximum distance must be greater than zero!
+ 
+(Filename: ..\..\Physics\src\NpScene.cpp Line: 2538)
+
+Scene::raycastClosestShape: The maximum distance must be greater than zero!
+ 
+(Filename: ..\..\Physics\src\NpScene.cpp Line: 2538)
+
+Scene::raycastClosestShape: The maximum distance must be greater than zero!
+ 
+(Filename: ..\..\Physics\src\NpScene.cpp Line: 2538)
+
+Fade complete, calling handler...
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Fade requested
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Weather.TimePaused () [0x00000] in <filename unknown>:0 
+  at (wrapper delegate-invoke) System.Action:invoke_void__this__ ()
+  at GameTime.set_Paused (Boolean value) [0x00000] in <filename unknown>:0 
+  at GameFlow.RequestMenu () [0x00000] in <filename unknown>:0 
+  at GameMenu.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+Fade complete, calling handler...
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+

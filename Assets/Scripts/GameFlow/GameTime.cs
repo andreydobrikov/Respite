@@ -63,7 +63,7 @@ public class GameTime
 			
 			if(paused != m_paused)
 			{
-				m_paused = paused; //LHS
+				m_paused = paused; 
 				
 				if(m_paused && TimePaused != null)
 				{

@@ -12,16 +12,6 @@ public class TimeOfDayEditor : Editor
 		if(!Application.isPlaying)
 		{
 			EditorGUILayout.BeginVertical();
-			EditorGUILayout.BeginHorizontal();
-			
-			GUILayout.Label("Start Time", GUILayout.Width(80));
-			
-			float newStartTime = GUILayout.HorizontalSlider(timeOfDay.StartTime, 0.0f, 1.0f);
-			newStartTime = EditorGUILayout.FloatField(newStartTime, GUILayout.Width(80));
-			
-			timeOfDay.StartTime = newStartTime;
-			
-			EditorGUILayout.EndHorizontal();
 		
 			EditorGUILayout.BeginHorizontal();
 			

@@ -30,6 +30,7 @@ public class GameFlow
 	}
 	
 	public float SaveFadeDuration = 3.0f;
+	public float GameDuration = 0.0f;
 	
 	private static GameFlow m_instance = null;	
 	
@@ -48,21 +49,37 @@ public class GameFlow
 	
 	public void LevelLoaded()
 	{
-		m_cameraFade.StartFade(Color.black, 0.0f, null);
-		
+		m_gameTimer = 0.0f;
+		m_context.Clear();
+
+		// When starting the level, always give control to the player
+		m_context.Push(ControlContext.World);
+
+		m_cameraFade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), 0.5f, null);
 		m_postManager	= GameObject.FindObjectOfType(typeof(PostProcessManager)) as PostProcessManager;
 		m_timeOfDay 	= GameObject.FindObjectOfType(typeof(TimeOfDay)) as TimeOfDay;
 		m_cameraFade 	= GameObject.FindObjectOfType(typeof(CameraFade)) as CameraFade;	
-		
 		m_gameTime 		= GameTime.Instance;
+
 		Time.timeScale = 1.0f;
 	}
-	
+
 	public void Update()
 	{
 		GameTime.Instance.Update();
-		
-		
+
+		m_gameTimer += GameTime.Instance.m_deltaTime;
+
+		// Don't check for game-over if the game is over!
+		if(m_context.Peek() != ControlContext.GameOver)
+		{
+			if(m_gameTimer >= GameDuration)
+			{
+				GameOver();
+			}
+		}
+
+
 		// Check to see if the level is still reloading
 		if(m_loadOperation != null)
 		{
@@ -180,6 +197,8 @@ public class GameFlow
 	}
 	
 	public float LoadProgress { get { return m_loadOperation != null ? m_loadOperation.progress : 1.0f; } }
+
+	public float GameTimerProgress { get { return m_gameTimer; } }
 	
 	public void ResetLevel()
 	{
@@ -237,6 +256,7 @@ public class GameFlow
 	private CameraFade 			m_cameraFade 	= null;
 	private float				m_advanceTime 	= 0.0f;
 	private AsyncOperation		m_loadOperation = null;
+	private float 				m_gameTimer 	= 0.0f;
 	
 	private Stack<ControlContext> m_context = new Stack<ControlContext>();
 }

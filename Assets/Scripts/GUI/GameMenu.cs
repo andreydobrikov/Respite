@@ -20,9 +20,9 @@ public class GameMenu : MonoBehaviour
 		
 		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.GameOver)
 		{
-			if(Input.GetButtonDown("escape"))
+			if(Input.GetButtonDown("escape") || Input.GetButtonDown("select"))
 			{
-				m_gameFlow.ResetLevel();
+				Application.LoadLevel("respite_main_menu");
 				
 			}
 			return;
@@ -54,7 +54,10 @@ public class GameMenu : MonoBehaviour
 		{
 			GUI.Label(new Rect(Screen.width / 2.0f - 50.0f, Screen.height / 2.0f - 50.0f, 100, 100), "MENU, INNIT");	
 
-			//if(GUI.Button
+			if(GUI.Button(new Rect(Screen.width / 2.0f - 50.0f, Screen.height / 2.0f - 20.0f, 100, 100), "Quit Game"))
+			{
+				Application.Quit();
+			}
 		}
 		
 		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.GameOver)

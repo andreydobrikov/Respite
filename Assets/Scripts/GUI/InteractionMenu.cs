@@ -193,13 +193,16 @@ public class InteractionMenu : MonoBehaviour
 			{
 				Debug.DrawLine(transform.position + new Vector3(0.0f, -1.0f, 0.0f), transform.position + new Vector3(0.0f, -1.0f, 0.0f) + currentDirection, Color.red);
 			}
-			if(Physics.Raycast(transform.position, currentDirection, out hitInfo, 1.0f, collisionLayer))
+
+			RaycastHit[] hits = Physics.RaycastAll(transform.position, currentDirection, 1.0f, collisionLayer);
+			foreach(var currentHit in hits)
 			{
-				InteractiveObject interactiveObject = hitInfo.collider.gameObject.GetComponent<InteractiveObject>();
+				InteractiveObject interactiveObject = currentHit.collider.gameObject.GetComponent<InteractiveObject>();
 				if(interactiveObject != null && !m_objectsInView.Contains(interactiveObject) && interactiveObject.GetInteractions(ContextFlag.World).Count > 0)
 				{
 					m_objectsInView.Add(interactiveObject);
 					interactiveObject.SetHighlightActive(true);
+					Debug.Log("Found object: " + interactiveObject.name);
 				}
 			}
 		}

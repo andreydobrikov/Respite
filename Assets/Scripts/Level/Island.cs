@@ -187,7 +187,7 @@ public class Island : MonoBehaviour
 		Color[] clearColors = new Color[TexWidth * TexHeight];
 		for(int i = 0; i < TexWidth * TexHeight; i++)
 		{
-			clearColors[i] = new Color(1.0f, 0.0f, 0.0f, 0.0f);	
+			clearColors[i] = new Color(0.9f, 0.1f, 0.0f, 0.3f);	
 		}
 		
 		for(int i = 0; i < m_editTextures.Length; i++)

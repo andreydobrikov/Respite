@@ -19,9 +19,11 @@ public class GameFlowWrapperEditor : Editor
 		EditorGUILayout.BeginVertical((GUIStyle)("Box"));
 		
 		wrapper.ShowFoldout = EditorGUILayout.Foldout(wrapper.ShowFoldout, "Parameters");
+
 		
 		if(wrapper.ShowFoldout)
 		{
+			wrapper.GameDuration = EditorGUILayout.FloatField("Game Duration (seconds)", wrapper.GameDuration);
 			wrapper.SaveFadeDuration = EditorGUILayout.FloatField("Save Fade Duration", wrapper.SaveFadeDuration);
 		}
 		

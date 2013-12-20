@@ -10,9 +10,7 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class TimeOfDay : MonoBehaviour 
 {
-	public float CycleTime 				= 1000.0f;
 	public float ActiveTime 			= 0.0f;
-	public float StartTime 				= 0.4f;
 	public bool PauseUpdate 			= false;
 	public float CloudCoverPercentage 	= 0.0f;
 	public Vector4 TODColor 			= Vector4.one;
@@ -25,8 +23,10 @@ public class TimeOfDay : MonoBehaviour
 	
 	void Start()
 	{
+		m_cycleTime = GameFlow.Instance.GameDuration;
 		Reset ();
-		PauseUpdate = true;
+
+		PauseUpdate = false;
 	}
 	
 	private void Reset()
@@ -38,14 +38,7 @@ public class TimeOfDay : MonoBehaviour
 			m_lightMapCamera = cameraObject.GetComponent<Camera>();
 		}
 		
-		string startTimeSetting = Settings.Instance.GetSetting("start_time");
-		
-		if(startTimeSetting != null)
-		{
-			float.TryParse(startTimeSetting, out StartTime);	
-		}
-		
-		ActiveTime 			= StartTime;
+		ActiveTime 			= 0.0f;
 		m_currentFrameIndex = 0;
 		
 		TODKeyFrame frame1 = new TODKeyFrame();
@@ -74,15 +67,12 @@ public class TimeOfDay : MonoBehaviour
 			ActiveTime += Time.deltaTime; 
 		}
 		
-		//Debug.Log("Width: " + (int)Camera.mainCamera.pixelWidth);	
-		//Debug.Log("Height: " + (int)Camera.mainCamera.pixelHeight);	
-		
 		UpdateTime(false);
 	}
 	
 	public void UpdateTime(bool recalculateFrame)
 	{
-		float adjustedTime = ActiveTime / CycleTime;
+		float adjustedTime = ActiveTime / m_cycleTime;
 		
 		if(recalculateFrame)
 		{
@@ -105,7 +95,7 @@ public class TimeOfDay : MonoBehaviour
 			AdvanceFrame();	
 		}
 		
-		if(ActiveTime > CycleTime)
+		if(ActiveTime > m_cycleTime)
 		{
 			ActiveTime = 0.0f;	
 		}
@@ -180,7 +170,6 @@ public class TimeOfDay : MonoBehaviour
 			if(m_showFoldout)
 			{
 				GUILayout.BeginVertical((GUIStyle)("Box"));
-				PauseUpdate = GUILayout.Toggle(PauseUpdate, "Pause");
 				
 				GUILayout.BeginHorizontal();
 				
@@ -188,18 +177,6 @@ public class TimeOfDay : MonoBehaviour
 				AdjustedTime = GUILayout.HorizontalSlider(AdjustedTime, 0.0f, 1.0f);
 				GUILayout.Label((time.Hours.ToString("00") + ":" + time.Minutes.ToString("00")), GUILayout.Width(40));
 				
-				GUILayout.EndHorizontal();
-				
-				GUILayout.BeginHorizontal();
-				
-				GUILayout.Label("Cycle Time", GUILayout.Width(40));
-				string newCycleTimeString = GUILayout.TextField(CycleTime.ToString("0.00"));
-				
-				float newCycleTime = CycleTime;
-				if(float.TryParse(newCycleTimeString, out newCycleTime) && newCycleTime > 0.0f)
-				{
-					CycleTime = newCycleTime;
-				}
 				GUILayout.EndHorizontal();
 				
 				GUILayout.EndVertical();
@@ -222,8 +199,8 @@ public class TimeOfDay : MonoBehaviour
 	
 	public float AdjustedTime
 	{
-		get { return ActiveTime / CycleTime; }
-		set { ActiveTime = (value * CycleTime); }
+		get { return ActiveTime / m_cycleTime; }
+		set { ActiveTime = (value * m_cycleTime); }
 	}
 	
 	void SaveSerialise(List<SavePair> pairs)
@@ -252,6 +229,7 @@ public class TimeOfDay : MonoBehaviour
 	private Camera 				m_lightMapCamera = null;
 	
 	private string 				m_updateString = string.Empty;
+	private float				m_cycleTime = 10.0f;
 	
 #if UNITY_EDITOR
 	private bool m_showFoldout = false;

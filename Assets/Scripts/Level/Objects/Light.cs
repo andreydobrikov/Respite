@@ -24,12 +24,18 @@ public class Light : ToggleableObject
 
 	public override void ToggleOn() 
 	{
-		m_renderer.enabled = true;
+		if(m_renderer != null)
+		{
+			m_renderer.enabled = true;
+		}
 	}
 	
 	public override void ToggleOff() 
 	{
-		m_renderer.enabled = false;
+		if(m_renderer != null)
+		{
+			m_renderer.enabled = false;
+		}
 	}
 	
 	private MeshRenderer m_renderer = null;

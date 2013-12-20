@@ -56,6 +56,10 @@ public class Building : MonoBehaviour
 	
 	public void EnableLights()
 	{
+		if(m_lights == null)
+		{
+			return;
+		}
 		foreach(var light in m_lights)
 		{
 			if(light.renderer != null)

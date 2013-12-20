@@ -22,11 +22,9 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	
 	public override void Start()
 	{
-		m_agent = GetObject().GetComponent<NavMeshAgent>();
+		m_animator 	= m_parentState.Parent.GetComponentInChildren<Animator>();
+		m_agent 	= GetObject().GetComponent<NavMeshAgent>();
 
-	//	string extraOutputSetting = Settings.Instance.GetSetting("ai_navigation_extra_output");
-		//m_showDebugOutput = extraOutputSetting != null ? (extraOutputSetting == "true") : false;
-		
 		if(m_agent == null)
 		{
 			Debug.LogError("AIBehaviourPatrol requires NavMeshAgent component");
@@ -60,6 +58,11 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 					}
 
 					break;	
+				}
+
+				if(m_animator != null)
+				{
+					m_animator.SetFloat("speed", m_agent.speed);
 				}
 			
 				Door door = RayCastDoor();
@@ -186,6 +189,7 @@ public abstract class AIBehaviourNavigationBase : AIBehaviour
 	private Door m_door 										= null;
 	private bool m_showDebugOutput								= false;
 	private float m_doorOpenHoldTimer							= 0.0f;
+	private Animator m_animator									= null;
 }
 
 public enum AINavigationState

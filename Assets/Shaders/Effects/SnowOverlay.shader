@@ -10,8 +10,11 @@ Shader "Custom/SnowOverlay"
 	SubShader 
 	{
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
+			Blend SrcAlpha One
+	AlphaTest Greater .01
+	ColorMask RGB
 		LOD 200
-		Blend SrcAlpha OneMinusSrcAlpha
+		//Blend SrcAlpha OneMinusSrcAlpha
 		
 		Pass
 		{
@@ -65,7 +68,8 @@ Shader "Custom/SnowOverlay"
 				//val.rgb += rim * _FresnelIntensity;//i.norm;
 				//val.rgb = float3(1.0f, 0.0f, 0.0f);
 				
-				float4 val = tex2D (_MainTex, i.uv) * _Color;
+				float4 val = tex2D (_MainTex, i.uv); 
+				val.a *= _Color.a;
 				float4 mask = tex2D(_MaskTex, i.screenPos.xy);
 				val *= i.color;
 				val.a *= mask.r;
