@@ -17,7 +17,7 @@ public class PostProcessManager : MonoBehaviour
 	{
 		GameObject lightmapCamera 		= GameObject.FindGameObjectWithTag("LightMapCamera");
 		GameObject postCamera			= GameObject.FindGameObjectWithTag("PostCamera");
-		GameObject viewCamera			= GameObject.FindGameObjectWithTag("ViewRegionCamera");
+	//	GameObject viewCamera			= GameObject.FindGameObjectWithTag("ViewRegionCamera");
 		GameObject weatherMaskCamera	= GameObject.FindGameObjectWithTag("WeatherMaskCamera");
 		
 		if(postCamera != null)
@@ -45,6 +45,8 @@ public class PostProcessManager : MonoBehaviour
 			{
 				overlay.renderer.sharedMaterial.SetTexture("_MaskTex", weatherMaskCamera.GetComponent<Camera>().targetTexture);	
 			}
+
+			postCamera.GetComponent<ViewRegionEffect>().mask 	= weatherMaskCamera.GetComponent<Camera>().targetTexture;
 			
 		}
 		
@@ -58,24 +60,7 @@ public class PostProcessManager : MonoBehaviour
 			lightmapCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 			postCamera.GetComponent<LightMapEffect>().lightMapTexture 			= lightmapCamera.GetComponent<Camera>().targetTexture;
 		
-			if(ViewRegionEnabled)
-			{
-				if(viewCamera != null && postCamera != null)
-				{
 
-					viewCamera.GetComponent<Camera>().aspect						= (Camera.main.pixelWidth / Camera.main.pixelHeight);
-					viewCamera.GetComponent<Camera>().targetTexture 				= new RenderTexture(pixelWidth / 4, pixelHeight / 4, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.sRGB);
-					viewCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
-					
-					postCamera.GetComponent<ViewRegionEffect>().mask 	= viewCamera.GetComponent<Camera>().targetTexture;
-					//viewCamera.GetComponent<BlurEffect>().mask = viewCamera.GetComponent<Camera>().targetTexture;
-					
-				}
-				else
-				{
-					Debug.Log("View or Post cameras not enabled");	
-				}
-			}
 		}
 	}
 	

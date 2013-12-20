@@ -6,6 +6,8 @@ Shader "Custom/ViewWrite"
  
  		cull off
 		ZWrite Off
+		BlendOp Add
+		Blend One One
  
 		Pass 
 		{
@@ -29,7 +31,7 @@ Shader "Custom/ViewWrite"
 			
 			half4 frag (v2f i) : COLOR
 			{
-			    return half4(0.0f, 0.0f, 0.0f, 0.0f);
+			    return half4(0.0f, 1.0f, 0.0f, 1.0f);
 			}
 			ENDCG
 		}
