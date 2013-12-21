@@ -60,6 +60,12 @@ public abstract class AIBehaviour : ScriptableObject
 		get { return m_supportTransitions;	}
 	}
 
+	public bool Enabled 
+	{ 
+		get { return m_enabled; }
+		set { m_enabled = value; }
+	}
+
 	protected void UpdateSupportsTransitions(bool supportsTransitions)
 	{
 		m_supportTransitions = supportsTransitions;
@@ -82,9 +88,11 @@ public abstract class AIBehaviour : ScriptableObject
 	[SerializeField]
 	public AIState m_targetTransition = null;
 	
-	
 	[SerializeField]
 	public Rect m_lastBounds;
+
+	[SerializeField]
+	public bool m_enabled;
 	
 #if UNITY_EDITOR
 	

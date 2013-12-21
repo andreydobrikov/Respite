@@ -26,7 +26,10 @@ public class AIState : ScriptableObject
 	{
 		foreach(var behaviour in m_behaviours)
 		{
-			behaviour.Start();	
+			if(behaviour.Enabled)
+			{
+				behaviour.Start();	
+			}
 		}
 		
 		Running = true;
@@ -36,6 +39,11 @@ public class AIState : ScriptableObject
 	{
 		for(int i = 0; i < m_behaviours.Count; i++)
 		{
+			if(!m_behaviours[i].Enabled)
+			{
+				continue;
+			}
+
 			if(m_behaviours[i].Update())
 			{
 				if(m_behaviours[i].TransitionTarget == null)
@@ -57,7 +65,10 @@ public class AIState : ScriptableObject
 	{
 		foreach(var behaviour in m_behaviours)
 		{
-			behaviour.End();	
+			if(behaviour.Enabled)
+			{
+				behaviour.End();	
+			}
 		}
 		
 		Running = false;

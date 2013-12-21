@@ -2,11 +2,11 @@
 // 
 // AIBehaviourWatchForPlayer.cs
 //
-// What it does: 
+// What it does: Responds to the player entering the AI's perception range
 //
 // Notes:
 // 
-// To-do:
+// To-do: 
 //
 ///////////////////////////////////////////////////////////
 
@@ -76,7 +76,9 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 			float sweepDelta = (targetColliderOffset * 2.0f) / (float)sweepValues;
 			
 			RaycastHit hitInfo;
-			
+
+			bool spotted = false;
+
 			float distanceMultiplier = 1.0f - Mathf.Sin((distanceToPlayer/ perceptionRange) * (Mathf.PI / 2.0f));
 			for(int i = 0; i < sweepValues; ++i)
 			{
@@ -92,10 +94,22 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 					if(!Physics.Raycast(position, rayDirection, out hitInfo, distanceToPlayer, 1 << LayerMask.NameToLayer("LevelGeo")))
 					{
 						m_spotProgress += ((m_spotRate * Time.deltaTime) * distanceMultiplier);
-						
+						spotted = true;
 					} 
 				}
 			}
+
+			if(spotted && m_headObject != null)
+			{
+				Quaternion current = m_headObject.transform.rotation;
+				Quaternion target = Quaternion.Euler(current.eulerAngles.x, (angle * Mathf.Rad2Deg), current.eulerAngles.z );
+
+				Quaternion newRotation = Quaternion.Lerp(current, target, 0.5f);
+				Debug.Log(target.eulerAngles.y);
+				m_headObject.transform.rotation = target;
+			}
+
+
 		}
 		
 		if(m_progressBar != null)
@@ -114,7 +128,7 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 		
 		return false;
 	}
-	
+	float test = 0.0f;
 	public override void End() { }
 	
 #if UNITY_EDITOR
@@ -125,6 +139,7 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 		m_spotDecay 		= EditorGUILayout.FloatField("Spot Decay", m_spotDecay);
 		m_spotRate 			= EditorGUILayout.FloatField("Spot Rate", m_spotRate);
 		m_progressBar 		= EditorGUILayout.ObjectField("Progress Bar", m_progressBar, typeof(ProgressBar), true) as ProgressBar;
+		m_headObject		= EditorGUILayout.ObjectField("Character Head", m_headObject, typeof(GameObject), true) as GameObject;
 		
 		GUI.enabled = false;
 		EditorGUILayout.FloatField("Spot Progress", m_spotProgress);
@@ -134,6 +149,9 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 	
 	private GameObject m_player 		= null;
 	private float m_spotProgress 		= 0.0f;
+
+	[SerializeField]
+	private GameObject m_headObject 	= null;
 	
 	[SerializeField]
 	private ProgressBar m_progressBar 	= null;

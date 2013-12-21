@@ -323,7 +323,14 @@ public class AIEditor :  EditorWindow
 				{
 					GUILayout.BeginVertical((GUIStyle)("Box"));
 
+					GUILayout.BeginHorizontal();
+
 					behaviour.m_showFoldout = EditorGUILayout.Foldout(behaviour.m_showFoldout, behaviour.Name);
+					behaviour.Enabled = EditorGUILayout.Toggle(behaviour.Enabled, GUILayout.Width(30));
+
+					GUILayout.EndHorizontal();
+
+					GUI.enabled = behaviour.Enabled;
 
 					if (behaviour.m_showFoldout)
 					{
@@ -340,6 +347,8 @@ public class AIEditor :  EditorWindow
 							m_toDelete.Add(behaviour);
 						}
 					}
+
+					GUI.enabled = true;
 
 					GUILayout.EndVertical();
 					if (Event.current.type == EventType.Repaint)

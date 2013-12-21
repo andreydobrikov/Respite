@@ -14,6 +14,7 @@ Shader "Custom/SnowOverlay"
 	AlphaTest Greater .01
 	ColorMask RGB
 		LOD 200
+		ZTest Always
 		//Blend SrcAlpha OneMinusSrcAlpha
 		
 		Pass
