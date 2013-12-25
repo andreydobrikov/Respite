@@ -11,6 +11,6 @@ using System.Collections;
 
 public class AIBlackboard 
 {
-	//public float 
+	public float HeadTrackSpeed = 0.05f;
 
 }

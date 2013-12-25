@@ -17,9 +17,10 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SphereCollider))]
 public class AI : MonoBehaviour 
 {
-
 	void Start ()
 	{
+		m_blackboard = new AIBlackboard();
+
 		m_collider = GetComponent<SphereCollider>();
 		
 		// TODO: This has to be done because AI behaviours were sharing a parent when copied, rather than re-assigning
@@ -102,7 +103,12 @@ public class AI : MonoBehaviour
 	{
 		get	{ return m_collider.radius; }
 	}
-	
+
+	public AIBlackboard Blackboard
+	{
+		get { return m_blackboard; }
+	}
+
 	public int SelectedState { get; set; }
 	
 	public bool PlayerInPerceptionRange = false;
@@ -117,6 +123,7 @@ public class AI : MonoBehaviour
 	private AIState m_currentState = null;
 	
 	private SphereCollider m_collider = null;
+	private AIBlackboard m_blackboard = null;
 	
 #if UNITY_EDITOR
 	

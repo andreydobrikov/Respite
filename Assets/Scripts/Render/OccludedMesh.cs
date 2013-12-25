@@ -80,12 +80,14 @@ public class OccludedMesh : MonoBehaviour
 	{
 		m_filter 		= GetComponent<MeshFilter>();
 		
-		
 		if(m_filter.mesh == null)
 		{
 			m_filter.mesh = new Mesh();	
 		}
-		
+
+		// TODO: For fuck's sake. I've even forgotten what this is supposed to do.
+		// I suppose it's to ensure that all calculations take place on the y-zero plane, but that should surely the be
+		// position, rather than localposition, no?
 		CalculativeOffset = -transform.localPosition.y;
 		
 		enabled = false;	
@@ -95,7 +97,7 @@ public class OccludedMesh : MonoBehaviour
 	
 	void OnBecameVisible()
 	{
-		enabled = true;	
+		enabled = true;
 		if(Dynamic)
 		{
 			m_activeMeshes++;
@@ -105,7 +107,7 @@ public class OccludedMesh : MonoBehaviour
 	
 	void OnBecameInvisible()
 	{
-		enabled = false;	
+		enabled = false;
 		if(Dynamic)
 		{
 			m_activeMeshes--;

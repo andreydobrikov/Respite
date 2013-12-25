@@ -225,7 +225,7 @@ public class IslandEditor : Editor
 							Mesh mesh = meshes[x, y];
 							mesh.Optimize();
 							
-							GameObject newObject = new GameObject("blah");
+							GameObject newObject = new GameObject("island_section_" + x + "_" + y);
 							
 						//	if(mesh.triangles.Length > 0)
 							{

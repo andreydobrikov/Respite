@@ -78,17 +78,19 @@ public class SliceEditor : Editor
 				Mesh[,] meshes = MeshSlice.Slice(island.IslandSourceMesh, island.SectionsX, island.SectionsY, true, true);
 					
 				GameObject meshesObject = GameObjectHelper.FindChild(island.gameObject, "meshes", true);
-				
+
+				int i = 0;
 				foreach(var mesh in meshes)
 				{
 					mesh.Optimize();
-					GameObject newObject = new GameObject("blah");
+					GameObject newObject = new GameObject("island_slice_" + i);
 					newObject.transform.parent = meshesObject.transform;
 					newObject.transform.localPosition = Vector3.zero;
 					newObject.AddComponent<MeshRenderer>();
 					
 					MeshFilter filter = newObject.AddComponent<MeshFilter>();
 					filter.mesh = mesh;
+					i++;
 				}
 			}
 		}

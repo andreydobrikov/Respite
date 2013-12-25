@@ -23,12 +23,14 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 	{
 		m_name = "Watch For Player";	
 		m_supportTransitions = true;
+
 	}
 	
 	public override void Start() 
 	{
-		m_player = GameObject.FindGameObjectWithTag("Player");
-		m_spotProgress = 0.0f;
+		m_blackboard 	= State.Parent.Blackboard;
+		m_player		= GameObject.FindGameObjectWithTag("Player");
+		m_spotProgress 	= 0.0f;
 	}
 	
 	public override bool Update() 
@@ -42,7 +44,7 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 		m_spotProgress = Mathf.Max(m_spotProgress, 0.0f);
 		
 		// TODO: Oh dear. Sort this parent name business
-		if(Parent.Parent.PlayerInPerceptionRange)
+		if(State.Parent.PlayerInPerceptionRange)
 		{
 			Quaternion orientation = GetObject().transform.rotation;
 			float aiAngle = orientation.eulerAngles.y;
@@ -51,7 +53,7 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 			Vector3 direction = m_player.transform.position - position;
 			
 			float distanceToPlayer = direction.magnitude;
-			float perceptionRange = Parent.Parent.PerceptionRange;
+			float perceptionRange = State.Parent.PerceptionRange;
 			
 			float angle = Mathf.Atan2(direction.x, direction.z);
 			
@@ -104,9 +106,8 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 				Quaternion current = m_headObject.transform.rotation;
 				Quaternion target = Quaternion.Euler(current.eulerAngles.x, (angle * Mathf.Rad2Deg), current.eulerAngles.z );
 
-				Quaternion newRotation = Quaternion.Lerp(current, target, 0.5f);
-				Debug.Log(target.eulerAngles.y);
-				m_headObject.transform.rotation = target;
+				Quaternion newRotation = Quaternion.Lerp(current, target, m_blackboard.HeadTrackSpeed);
+				m_headObject.transform.rotation = newRotation;
 			}
 
 
@@ -149,6 +150,7 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 	
 	private GameObject m_player 		= null;
 	private float m_spotProgress 		= 0.0f;
+	private AIBlackboard m_blackboard	= null;
 
 	[SerializeField]
 	private GameObject m_headObject 	= null;

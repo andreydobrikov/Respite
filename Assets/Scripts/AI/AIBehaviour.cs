@@ -38,7 +38,7 @@ public abstract class AIBehaviour : ScriptableObject
 	
 #endif 
 	
-	public AIState Parent
+	public AIState State
 	{
 		get { return m_parentState; }
 		set { m_parentState = value; }

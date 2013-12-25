@@ -38,6 +38,11 @@ public class MainMenu : MonoBehaviour {
 
 	void Update()
 	{
+		if(Input.GetButtonDown("select"))
+		{
+			m_advance = true;
+		}
+
 		if(m_fadeUp)
 		{
 			m_fade.StartFade(new Color(0.0f, 0.0f, 0.0f, 0.0f), 0.8f, null);
