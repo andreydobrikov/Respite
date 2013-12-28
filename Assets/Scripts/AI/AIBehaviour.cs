@@ -26,7 +26,7 @@ public abstract class AIBehaviour : ScriptableObject
 	public abstract bool Update();
 	public abstract void End();
 	
-	protected GameObject GetObject()
+	protected GameObject GetGameObject()
 	{
 		return m_parentState.Parent.gameObject;
 	}

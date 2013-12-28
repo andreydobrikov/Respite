@@ -19,6 +19,7 @@ public class OccludedMeshEditor : Editor
 		view.ShowSucceededRays = GUILayout.Toggle(view.ShowSucceededRays, "Succeeded Rays");
 		view.ShowExtrusionRays = GUILayout.Toggle(view.ShowExtrusionRays, "Extrusion Rays");
 		view.ShowFailedRays = GUILayout.Toggle(view.ShowFailedRays, "Failed Rays");
+		view.m_outputColliders = GUILayout.Toggle(view.m_outputColliders, "Output Colliders");
 		view.collisionLayer = EditorGUILayout.LayerField("Collision Layer", view.collisionLayer);
 		GUILayout.EndVertical();
 		

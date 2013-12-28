@@ -46,10 +46,10 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 		// TODO: Oh dear. Sort this parent name business
 		if(State.Parent.PlayerInPerceptionRange)
 		{
-			Quaternion orientation = GetObject().transform.rotation;
+			Quaternion orientation = GetGameObject().transform.rotation;
 			float aiAngle = orientation.eulerAngles.y;
 			
-			Vector3 position = GetObject().transform.position;
+			Vector3 position = GetGameObject().transform.position;
 			Vector3 direction = m_player.transform.position - position;
 			
 			float distanceToPlayer = direction.magnitude;
@@ -129,7 +129,6 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 		
 		return false;
 	}
-	float test = 0.0f;
 	public override void End() { }
 	
 #if UNITY_EDITOR

@@ -164,13 +164,13 @@ public class BuildingEditor :  Editor
 			Material newMaterial = new Material(flatShader);
 			newMaterial.color = Color.green;
 			
-			string directory = System.IO.Path.GetDirectoryName(Application.dataPath + "/Resources/Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat");
+			string directory = System.IO.Path.GetDirectoryName(Application.dataPath + "/Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat");
 			
 			if(!System.IO.Directory.Exists(directory))
 			{
 				System.IO.Directory.CreateDirectory(directory);	
 			}
-			string path = "Assets/Resources/Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat";
+			string path = "Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat";
 			
 			
 			AssetDatabase.CreateAsset(newMaterial, path);
@@ -253,7 +253,7 @@ public class BuildingEditor :  Editor
 		string ambientMeshName 		= building.BuildingName + "_" + room.Name + "_" + Building.s_ambient_id;
 		
 		UnityEngine.Object ambientMesh 		= AssetHelper.Instance.FindAsset<Mesh>(ambientMeshName);
-		UnityEngine.Object ambientMaterial 	= AssetHelper.Instance.GetAsset<Material>("Materials/Ambient.mat");
+		UnityEngine.Object ambientMaterial 	= AssetHelper.Instance.GetAsset<Material>("Assets/Materials/Ambient.mat");
 		UnityEngine.Object ambientTexture	= AssetHelper.Instance.FindAsset<Texture>(ambientMeshName);
 
 		if(room.OverrideMaterial != null)
@@ -303,7 +303,7 @@ public class BuildingEditor :  Editor
 		string fogMeshName 		= building.BuildingName + "_" + room.Name + "_" + Building.s_ambient_id;
 		
 		UnityEngine.Object fogMesh 			= AssetHelper.Instance.FindAsset<Mesh>(fogMeshName);
-		UnityEngine.Object fogMaterial 		= AssetHelper.Instance.GetAsset<Material>("Materials/Fog.mat");
+		UnityEngine.Object fogMaterial 		= AssetHelper.Instance.GetAsset<Material>("Assets/Materials/Fog.mat");
 		
 		if(fogMesh != null)
 		{
@@ -320,7 +320,7 @@ public class BuildingEditor :  Editor
 		}
 		else
 		{
-			Debug.Log("Material Missing: Materials/Fog.mat");
+			Debug.Log("Material Missing: Assets/Materials/Fog.mat");
 		}
 	}
 	
@@ -358,13 +358,13 @@ public class BuildingEditor :  Editor
 			Material newMaterial = new Material(flatShader);
 			newMaterial.color = Color.red;
 			
-			string directory = System.IO.Path.GetDirectoryName(Application.dataPath + "/Resources/Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat");
+			string directory = System.IO.Path.GetDirectoryName(Application.dataPath + "/Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat");
 			
 			if(!System.IO.Directory.Exists(directory))
 			{
 				System.IO.Directory.CreateDirectory(directory);	
 			}
-			string path = "Assets/Resources/Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat";
+			string path = "Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat";
 			
 			
 			AssetDatabase.CreateAsset(newMaterial, path);
@@ -423,7 +423,7 @@ public class BuildingEditor :  Editor
 	{
 		Building building = (Building)target;
 		
-		string outputPath = Application.dataPath + "/Resources/Textures/Structures/" + building.BuildingName + "/" + building.BuildingName + "_" + room.Name + "_" + Building.s_ambient_id + ".png";
+		string outputPath = Application.dataPath + "/Textures/Structures/" + building.BuildingName + "/" + building.BuildingName + "_" + room.Name + "_" + Building.s_ambient_id + ".png";
 		Debug.Log("Saving to outputPath: " + outputPath);
 		
 		LightMapGenerator.GenerateLightmap(building, room, outputPath, 2, true);

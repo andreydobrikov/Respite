@@ -58,14 +58,18 @@ for ambient  in ambientObjects do
 	-- Select all the faces
 	ambient.Unwrap_UVW.unwrap2.selectFaces faces
 		
-	-- Use "best-fit" projection. Not vital in 2D	
-	ambient.Unwrap_UVW.unwrap.setProjectionType 4
+	
 	
 	-- I think this may be useless, but I dare not remove it
 	ambient.Unwrap_UVW.unwrap.planarMap()
 		
 	-- This does the actual mapping. Mode 1 is planar-mapping	
 	ambient.Unwrap_UVW.unwrap5.mappingMode 1	
+		
+		-- Use "best-fit" projection. Not vital in 2D	
+	ambient.Unwrap_UVW.unwrap.setProjectionType 2
+		
+		ambient.Unwrap_UVW.unwrap5.mappingAlign 1
 		
 	-- Collapse that modifiers stack, sir
 	maxOps.CollapseNode ambient false

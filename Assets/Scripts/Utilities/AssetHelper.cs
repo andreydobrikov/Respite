@@ -12,12 +12,18 @@ public class AssetHelper
 	public UnityEngine.Object GetAsset<T>(string assetPath)
 	{
 		assetPath = StripResourcePath(assetPath);
-		
-		string extension = System.IO.Path.GetExtension(assetPath);
-		assetPath = assetPath.Substring(0, assetPath.Length - extension.Length);
-		
-		UnityEngine.Object asset = Resources.Load(assetPath);
-		
+
+		UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(T));
+
+		if(asset == null)
+		{
+			string extension = System.IO.Path.GetExtension(assetPath);
+			assetPath = assetPath.Substring(0, assetPath.Length - extension.Length);
+			
+			asset = Resources.Load(assetPath);
+		}
+
+
 		if(asset == null)
 		{
 			Debug.LogError("Failed to load asset: " + assetPath);	

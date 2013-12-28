@@ -7,7 +7,7 @@ public class CharacterController2D : MonoBehaviour
 	public AnimationControl m_anim;
 	public Sprite m_targetSprite = null;
 	public float MoveSpeed = 200f;
-	public float SprintIncrease = 100.0f;
+	public float SprintMultiplier = 0.5f;
 	public float TurnSpeed = 10.0f;
 	public float MoveAngle = 50.0f;	// The proximity of the player's direction to their target direction required before they can move. (degrees)
 	
@@ -38,9 +38,11 @@ public class CharacterController2D : MonoBehaviour
 		if(m_gameFlow.CurrentControlContext == GameFlow.ControlContext.World)
 		{
 			Vector3 targetDirection = (Vector3.forward * (Input.GetAxis("Vertical"))) + (Vector3.right * (Input.GetAxis("Horizontal")));
-			float sprintMultiplier = Input.GetAxis("sprint_analogue");
+			float sprintFactor = Input.GetAxis("sprint_analogue") * SprintMultiplier;
+
+			float moveMultiplier = targetDirection.magnitude + sprintFactor;
 			
-			float currentMoveSpeed = MoveSpeed + (Mathf.Sin(sprintMultiplier * Mathf.PI / 2.0f) * SprintIncrease);
+			float currentMoveSpeed = MoveSpeed + (MoveSpeed * sprintFactor);
 			
 			if(targetDirection.magnitude > 0.01f)
 			{
@@ -71,7 +73,7 @@ public class CharacterController2D : MonoBehaviour
 					m_controller.AddForce( direction * currentMoveSpeed );
 					if(m_anim != null)
 					{
-						m_anim.speed = direction.magnitude;
+						m_anim.speed = moveMultiplier;
 					}
 				}
 				else

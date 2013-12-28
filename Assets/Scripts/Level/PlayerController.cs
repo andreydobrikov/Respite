@@ -17,14 +17,12 @@ public class PlayerController : MonoBehaviour
 {
 	void Start ()
 	{
-		m_anim = GetComponent<Animator>();
+	//	m_anim = GetComponent<Animator>();
 	}
 
 	void Update ()
 	{
 		Quaternion rotation = transform.localRotation;
-		
-		float sprintMultiplier = Input.GetAxis("sprint_analogue");
 		
 		float x = Input.GetAxis("Horizontal");
 		float y = Input.GetAxis("Vertical");
@@ -37,14 +35,14 @@ public class PlayerController : MonoBehaviour
 		vals = newRot * new Vector3(x, y, 0.0f);
 			
 		
-		m_anim.SetFloat("Direction", vals.x);
-		m_anim.SetFloat("Speed", vals.y);
-		m_anim.SetFloat("Sprint", sprintMultiplier);
+		//m_anim.SetFloat("Direction", vals.x);
+		//m_anim.SetFloat("Speed", vals.y);
+		////m_anim.SetFloat("Sprint", sprintMultiplier);
 		
 		
 		Debug.DrawLine(transform.position, transform.position + (Vector3)vals, Color.red);
 		
 	}
 	
-	private Animator m_anim = null;
+	//private Animator m_anim = null;
 }

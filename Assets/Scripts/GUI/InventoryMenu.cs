@@ -17,6 +17,11 @@ public class InventoryMenu : MonoBehaviour, ISerialisable
 {
 	public GUISkin skin;
 	public float delay = 0.2f;
+
+	void OnLevelWasLoaded()
+	{
+
+	}
 	
 	void Update()
 	{

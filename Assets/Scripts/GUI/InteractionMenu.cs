@@ -21,6 +21,10 @@ public class InteractionMenu : MonoBehaviour
 		m_gameFlow 			= GameFlow.Instance;
 		
 		m_view 				= GameObject.FindObjectOfType(typeof(PlayerView)) as PlayerView;
+
+		m_worldCollisionLayerID = LayerMask.NameToLayer("WorldCollision");
+
+		m_layerMask = collisionLayer | (1 << m_worldCollisionLayerID);
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -168,7 +172,6 @@ public class InteractionMenu : MonoBehaviour
 				}	
 			}
 		}
-		
 				
 		for(int i = 0; i < m_objectsInView.Count; i++)
 		{
@@ -183,8 +186,6 @@ public class InteractionMenu : MonoBehaviour
 		
 		float sweepDelta = (InspectionFocusAngle * 2.0f) / iterationCount;
 		
-		RaycastHit hitInfo;
-		
 		for(int sweepCount = 0; sweepCount < iterationCount; ++sweepCount)
 		{
 			float progress = minAngle + (sweepCount * sweepDelta);
@@ -194,18 +195,41 @@ public class InteractionMenu : MonoBehaviour
 				Debug.DrawLine(transform.position + new Vector3(0.0f, -1.0f, 0.0f), transform.position + new Vector3(0.0f, -1.0f, 0.0f) + currentDirection, Color.red);
 			}
 
-			RaycastHit[] hits = Physics.RaycastAll(transform.position, currentDirection, 1.0f, collisionLayer);
-			foreach(var currentHit in hits)
+			RaycastHit[] hits = Physics.RaycastAll(transform.position, currentDirection, 1.0f, m_layerMask);
+
+			System.Array.Sort(hits, CompareHits);
+			if(hits.Length > 0 && (hits[0].collider.gameObject.layer & m_worldCollisionLayerID) != 0)
 			{
-				InteractiveObject interactiveObject = currentHit.collider.gameObject.GetComponent<InteractiveObject>();
-				if(interactiveObject != null && !m_objectsInView.Contains(interactiveObject) && interactiveObject.GetInteractions(ContextFlag.World).Count > 0)
+				Debug.Log("Wall hit");
+				continue;
+			}
+			else
+			{
+				foreach(var currentHit in hits)
 				{
-					m_objectsInView.Add(interactiveObject);
-					interactiveObject.SetHighlightActive(true);
-					Debug.Log("Found object: " + interactiveObject.name);
+					InteractiveObject interactiveObject = currentHit.collider.gameObject.GetComponent<InteractiveObject>();
+					if(interactiveObject != null && !m_objectsInView.Contains(interactiveObject) && interactiveObject.GetInteractions(ContextFlag.World).Count > 0)
+					{
+						m_objectsInView.Add(interactiveObject);
+						interactiveObject.SetHighlightActive(true);
+					}
 				}
 			}
 		}
+	}
+
+	private static int CompareHits(RaycastHit hit0, RaycastHit hit1)
+	{
+		if(hit0.distance > hit1.distance)
+		{
+			return 1;
+		}
+		else if( hit0.distance < hit1.distance)
+		{
+			return -1;
+		}
+
+		return 0;
 	}
 	
 	List<InteractiveObject> m_objectsInRange 	= new List<InteractiveObject>();
@@ -216,4 +240,7 @@ public class InteractionMenu : MonoBehaviour
 	
 	private GameFlow m_gameFlow = null;
 	private PlayerView m_view = null;
+
+	private int m_worldCollisionLayerID = 0;
+	private int m_layerMask = 0;
 }

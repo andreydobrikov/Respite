@@ -44,7 +44,8 @@ public class OccludedMesh : MonoBehaviour
 		m_viewCollider 	= GetComponent<BoxCollider>();
 		
 		//validVerts.Capacity = m_maxOccluderVerts;
-		
+		extentsVals.Clear();
+
 		// Bung four values into the extents to set the initial capacity
 		extentsVals.Add(Vector3.zero);
 		extentsVals.Add(Vector3.zero);
@@ -91,8 +92,6 @@ public class OccludedMesh : MonoBehaviour
 		CalculativeOffset = -transform.localPosition.y;
 		
 		enabled = false;	
-		
-		
 	}
 	
 	void OnBecameVisible()
@@ -160,7 +159,6 @@ public class OccludedMesh : MonoBehaviour
 				newVertices.vertices.Add(new Vector3( newCollider.size.x / 2.0f, 0.0f, newCollider.size.z / 2.0f));
 				
 				m_colliderVertices.Add(other, newVertices);
-			//	RebuildMesh();
 			}
 			
 			// If this is a static light, rebuild meshes immediately as there will be no Update
@@ -184,10 +182,26 @@ public class OccludedMesh : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		m_activeMeshes = 0;
 		if(Dynamic)
 		{
 			RebuildMesh();
 		}
+
+		if(m_outputColliders)
+		{
+			m_outputColliders = false;
+			Debug.Log("Outputting colliders...\n-------------------------");
+			foreach(var collider in m_colliderVertices)
+			{
+				Debug.Log(collider.Key.name);
+			}
+		}
+	}
+
+	void LateUpdate()
+	{
+		m_activeMeshes++;
 	}
 	
 	/// <summary>
@@ -210,10 +224,11 @@ public class OccludedMesh : MonoBehaviour
 		Quaternion rotationInverse = Quaternion.Inverse(transform.rotation);
 		
 		float extentsVal = Mathf.Abs(m_viewCollider.size.x * 0.7f * Mathf.Cos(Mathf.PI / 4));
+		Vector3 position = transform.position;
 		
 		for(int vertID = 0; vertID < m_occluderCount && vertID < m_maxOccluderVerts - 1; vertID++)
 		{
-			Vector3 localPosition 	= m_occluders[vertID].vec - transform.position;
+			Vector3 localPosition 	= m_occluders[vertID].vec - position;
 			
 			//Debug.DrawLine(transform.position, transform.position + localPosition, Color.red);
 			localPosition.y = 0.0f;
@@ -254,15 +269,16 @@ public class OccludedMesh : MonoBehaviour
 	/// </returns>
 	private void GetOccluders()
 	{
+		RaycastHit hitInfo;
+
 		m_cachedPosition = transform.position;
 		
 		Vector3 objectPosition = m_cachedPosition;
 		objectPosition.y += CalculativeOffset;
 		
-		RaycastHit hitInfo;
-		
-		// TODO: Don't instantiate these every frame
 		validVerts.Clear();
+
+		// Update the four extents values now that m_cachedPosition is updated
 		UpdateExtents();
 		
 		// Loop through each collider and add its vertices to the list
@@ -272,7 +288,8 @@ public class OccludedMesh : MonoBehaviour
 			if(colliderPair.Key is CapsuleCollider)
 			{
 				CapsuleCollider collider = colliderPair.Key as CapsuleCollider;
-				
+
+
 				Vector3 diff = colliderPair.Key.transform.position - objectPosition;
 				
 				Vector3 normal = Vector3.Cross(diff, Vector3.up);
@@ -285,13 +302,15 @@ public class OccludedMesh : MonoBehaviour
 				
 				colliderPair.Value.vertices[0] = p0;
 				colliderPair.Value.vertices[1] = p1;
-				
+
+				// Check the edges of the capsule.
+
 				for(int vertID = 0; vertID < colliderPair.Value.vertices.Count; vertID++)
 				{
 					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID]);
 					Vector3 direction = worldPos - objectPosition;
 					
-					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, direction.magnitude, 1 <<  collisionLayer))
+					if(Physics.Raycast(objectPosition, direction, out hitInfo, 1.0f, 1 <<  collisionLayer))
 					{
 						if(ShowExtrusionRays) { Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
 						
@@ -304,23 +323,21 @@ public class OccludedMesh : MonoBehaviour
 						validVerts.Add(worldPos);	
 					}
 				}
-				
-				
+
 				for(int vertID = 0; vertID < colliderPair.Value.vertices.Count; vertID++)
 				{
-					// Find the transformed position of the vertex scaled by the mysterious expansion factor that
+					// Find the transformed position of the vertex scaled by the mysterious expansion factor 
 					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID] * m_sphereExpansion);
 					
 					
 					Vector3 direction = worldPos - objectPosition;
-					
-				
 					
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.size.x, 1 <<  collisionLayer))
 					{
 						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
 						
 						validVerts.Add(hitInfo.point);
+
 					}
 					else
 					{
@@ -409,6 +426,9 @@ public class OccludedMesh : MonoBehaviour
 				validVerts.Add(objectPosition + direction);	
 			}
 		}
+
+		m_occluderHeap.Reset();
+
 		
 		// Output all results
 		for(int vertID = 0; vertID < validVerts.Count && vertID < m_maxOccluderVerts; vertID++)
@@ -422,6 +442,8 @@ public class OccludedMesh : MonoBehaviour
 			double angle = Math.Atan2((double)normalDirection.x, (double)normalDirection.z);
 					
 			m_occluders[vertID].angle = angle;
+
+			m_occluderHeap.Insert(validVerts[vertID], (float)angle);
 		}
 		
 		m_occluderCount = validVerts.Count;
@@ -435,9 +457,21 @@ public class OccludedMesh : MonoBehaviour
 			Debug.LogError("Number of occluder-verts has exceeded pre-allocated buffers. Mesh will be malformed");	
 		}
 #endif
-		
-		Array.Sort(m_occluders, 0, occluderCount);
-		
+		//Debug.Log("LOGGING\n==============");
+		//m_occluderHeap.OutputGraph(false);
+	//Array.Sort(m_occluders, 0, occluderCount);
+	
+
+		for(int i = 0; i < m_occluderCount; i++)
+		{
+		//	float metric = m_occluderHeap.GetTopMetric();
+
+			m_occluders[i].vec = m_occluderHeap.RemoveTop();
+
+		//	Debug.Log(metric);
+		}
+
+
 		if(ShowSucceededRays)
 		{
 			for(int i = 0; i < m_occluderCount; i++)
@@ -524,7 +558,8 @@ public class OccludedMesh : MonoBehaviour
 	Vector3[] 	normals 	= new Vector3[m_maxOccluderVerts];
 	Color[] 	colors 		= new Color[m_maxOccluderVerts];
 	Vector2[] 	uvs 		= new Vector2[m_maxOccluderVerts];
-	
+
+	private BinaryHeap<Vector3> m_occluderHeap = new BinaryHeap<Vector3>(m_maxOccluderVerts);
 	private OccluderVector[] m_occluders = new OccluderVector[m_maxOccluderVerts + 1];
 	
 	private int m_occluderCount = 0;
@@ -532,5 +567,5 @@ public class OccludedMesh : MonoBehaviour
 	private Vector3 m_cachedPosition = Vector3.zero;
 	public static int m_activeMeshes = 0;
 	public static List<OccludedMesh> m_meshes = new List<OccludedMesh>();
-	
+	public bool m_outputColliders = false;
 }

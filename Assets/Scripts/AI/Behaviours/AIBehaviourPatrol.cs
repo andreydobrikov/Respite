@@ -128,7 +128,7 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 		{
 			WaypointNode newNode = ScriptableObject.CreateInstance<WaypointNode>();
 			m_nodes.Add(newNode);	
-			newNode.position = GetObject().transform.position;
+			newNode.position = GetGameObject().transform.position;
 			newNode.position.x += 2.0f;
 			newNode.position.y = 0.3f;
 		}

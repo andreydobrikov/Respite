@@ -11,6 +11,8 @@ using System.Collections;
 
 public class AIBlackboard 
 {
-	public float HeadTrackSpeed = 0.05f;
+	public float HeadTrackSpeed 		= 0.05f;
+	public Vector3 HeadTrackTarget 		= Vector3.zero;
+	public GameObject HeadTrackObject 	= null;
 
 }
