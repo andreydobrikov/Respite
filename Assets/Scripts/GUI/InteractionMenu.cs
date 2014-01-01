@@ -200,7 +200,6 @@ public class InteractionMenu : MonoBehaviour
 			System.Array.Sort(hits, CompareHits);
 			if(hits.Length > 0 && (hits[0].collider.gameObject.layer & m_worldCollisionLayerID) != 0)
 			{
-				Debug.Log("Wall hit");
 				continue;
 			}
 			else

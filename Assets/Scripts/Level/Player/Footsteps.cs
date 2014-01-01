@@ -44,7 +44,7 @@ public class Footsteps : AnimationEventResponder
 			
 			if(ripple != null)
 			{
-				ripple.maxScale = 8.0f * speed;
+				ripple.maxScale =  speed;
 			}
 			
 			if(footprint != null)

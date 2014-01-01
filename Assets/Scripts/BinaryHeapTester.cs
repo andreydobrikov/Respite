@@ -33,7 +33,6 @@ public class BinaryHeapTester : MonoBehaviour {
 			m_heap.OutputGraph(false);
 			float lastMetric = float.NegativeInfinity;
 
-			string lastHeap = string.Empty;
 			while(m_heap.HasItems())
 			{
 				float top = m_heap.GetTopMetric();

@@ -72,12 +72,9 @@ Shader "Custom/DistortFramebuffer"
 				i.grabUV.xy = offset + i.grabUV.xy;
 				float4 frameBuffer = tex2D(_FrameBuffer, i.grabUV.xy);
 				
-				//frameBuffer = half4(abs(normal.x), abs(normal.y), 0.0f, 1.0f);
-				//frameBuffer = half4(abs(offset.x), abs(offset.y), 0.0f, 1.0f);
-				//float4 frameBuffer = half4(abs(i.grabUV.x), abs(i.grabUV.y), 0.0f, 1.0f);
-			//	frameBuffer = tex2D (_MainTex, i.uv);
 			frameBuffer.rgb += length(normal) * _RippleIntensity * _TintIntensity;
-			frameBuffer.a = length(normal);
+			frameBuffer.a = length(normal) * _RippleIntensity;
+			//frameBuffer.r = 1.0;
 				//frameBuffer = half4(_RippleIntensity, 0.0f, 0.0f, 0.5f);
 				return frameBuffer;
 			}

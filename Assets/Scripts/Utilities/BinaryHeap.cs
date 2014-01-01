@@ -160,7 +160,6 @@ public class BinaryHeap<T>
 	
 	private BinaryHeapEntry<T>[] m_heapEntries;
 	private int m_maxIndex = 0;
-	bool shitWentDown = false;
 }
 
 public struct BinaryHeapEntry<T>

@@ -449,8 +449,6 @@ public class OccludedMesh : MonoBehaviour
 		m_occluderCount = validVerts.Count;
 		m_lastRayCount = m_occluderCount;
 		
-		int occluderCount = Mathf.Min(validVerts.Count, m_maxOccluderVerts);
-		
 #if UNITY_EDITOR
 		if(m_occluderCount >= m_maxOccluderVerts)
 		{

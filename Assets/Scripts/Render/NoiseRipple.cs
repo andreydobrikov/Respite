@@ -26,7 +26,7 @@ public class NoiseRipple : PoolableObject
 
 	void Update ()
 	{
-		float delta = (maxScale / duration) * Time.deltaTime;
+		float delta = ((maxScale - m_initialScale.x) / duration) * Time.deltaTime;
 		transform.rotation = Quaternion.identity;
 		transform.localScale += new Vector3(delta, delta, delta);
 		
