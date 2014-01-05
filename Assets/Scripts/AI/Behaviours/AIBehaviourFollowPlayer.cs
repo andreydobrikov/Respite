@@ -12,7 +12,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-
+/*
 public class AIBehaviourFollowPlayer : AIBehaviourNavigationBase 
 {
 	public AIBehaviourFollowPlayer()
@@ -47,3 +47,4 @@ public class AIBehaviourFollowPlayer : AIBehaviourNavigationBase
 	
 	private GameObject m_player = null;
 }
+*/

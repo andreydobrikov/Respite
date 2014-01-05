@@ -16,7 +16,7 @@ using UnityEditor;
 
 using UnityEngine;
 using System.Collections.Generic;
-
+/*
 public class AIBehaviourWatchForPlayer : AIBehaviour 
 {
 	public AIBehaviourWatchForPlayer()
@@ -31,6 +31,8 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 		m_blackboard 	= State.Parent.Blackboard;
 		m_player		= GameObject.FindGameObjectWithTag("Player");
 		m_spotProgress 	= 0.0f;
+
+		m_bbHeadTrackID = m_blackboard.AddEntry<float>("HeadTrackSpeed", 0.0f);
 	}
 	
 	public override bool Update() 
@@ -106,7 +108,10 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 				Quaternion current = m_headObject.transform.rotation;
 				Quaternion target = Quaternion.Euler(current.eulerAngles.x, (angle * Mathf.Rad2Deg), current.eulerAngles.z );
 
-				Quaternion newRotation = Quaternion.Lerp(current, target, m_blackboard.HeadTrackSpeed);
+				float headTrackSpeed = 0.0f;
+				m_blackboard.GetEntry<float>(m_bbHeadTrackID, ref headTrackSpeed);
+
+				Quaternion newRotation = Quaternion.Lerp(current, target, headTrackSpeed);
 				m_headObject.transform.rotation = newRotation;
 			}
 
@@ -150,6 +155,7 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 	private GameObject m_player 		= null;
 	private float m_spotProgress 		= 0.0f;
 	private AIBlackboard m_blackboard	= null;
+	private int m_bbHeadTrackID			= 0;
 
 	[SerializeField]
 	private GameObject m_headObject 	= null;
@@ -169,3 +175,4 @@ public class AIBehaviourWatchForPlayer : AIBehaviour
 	[SerializeField]
 	private float m_spotRate = 0.5f;
 }
+*/

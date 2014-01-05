@@ -1,0 +1,21 @@
+{
+  "name": "patrol_task",
+  "actions": [
+    {
+      "action_type": "AIActionNavigate, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "id": 0,
+      "input_data": [
+        {
+          "blackboard_id": "test_blackboard_id",
+          "action_id": "action_input",
+          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+        },
+        {
+          "blackboard_id": "test_blackboard_id1",
+          "action_id": "action_input1",
+          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+        }
+      ],
+    }
+  ]
+}

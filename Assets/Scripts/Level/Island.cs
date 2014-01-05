@@ -184,6 +184,7 @@ public class Island : MonoBehaviour
 	
 	public void ClearSplatMap()
 	{
+		string test;
 		Color[] clearColors = new Color[TexWidth * TexHeight];
 		for(int i = 0; i < TexWidth * TexHeight; i++)
 		{

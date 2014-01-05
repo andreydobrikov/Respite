@@ -17,6 +17,41 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
+public class AIBehaviourPatrol : AIBehaviour
+{
+	public AIBehaviourPatrol()
+	{
+		m_name = "Patrol";
+		m_requiredTaskPaths.Add("patrol_task");
+	}
+
+	public override void Start()
+	{
+		AITask patrolTask = null;
+		if(m_tasks.TryGetValue("patrol_task", out patrolTask))
+		{
+			if(patrolTask.Result == AITaskResult.Idle)
+			{
+				m_parentAI.PushTask(patrolTask);
+			}
+		}
+	}
+
+	public override void Update()
+	{
+	
+	}
+
+	public override void Shutdown()
+	{
+		
+	}
+
+	private AITask m_patrolTask = null;
+
+}
+
+/*
 public class AIBehaviourPatrol : AIBehaviourNavigationBase 
 {
 	public AIBehaviourPatrol() 
@@ -217,3 +252,4 @@ public class AIBehaviourPatrol : AIBehaviourNavigationBase
 		Holding
 	}
 }
+*/

@@ -4,8 +4,11 @@
 //
 // What it does: The basic Monobehaviour controlling a given NPC's AI
 //
-// Notes: Contains a number of AIStates, each of which runs a set of behaviours.
-//		  
+// Notes: 	The AI has a number of behaviours that control the entity's actions.
+//			These behaviours can issue tasks to be performed. Each task is in turn comprised of individual actions,
+//			each of which is an atomic operation such as navigation, interaction with an object, animation, etc.
+//		 
+//			AI is currently the most complex element of the game to serialise, so shit.
 // 
 // To-do:
 //
@@ -15,115 +18,103 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(SphereCollider))]
-public class AI : MonoBehaviour 
+public class AI : MonoBehaviour, ISerialisable
 {
-	void Start ()
+
+#region Public methods
+
+	public void Start ()
 	{
 		m_blackboard = new AIBlackboard();
 
-		m_collider = GetComponent<SphereCollider>();
-		
+		// TODO: These should be from the editor!
+		m_behaviours.Add(ScriptableObject.CreateInstance(typeof(AIBehaviourTest)) as AIBehaviourTest);
+		m_behaviours.Add(ScriptableObject.CreateInstance(typeof(AIBehaviourPatrol)) as AIBehaviourPatrol);
+
 		// TODO: This has to be done because AI behaviours were sharing a parent when copied, rather than re-assigning
-		foreach(var state in m_states)
+		foreach(var behaviour in m_behaviours)
 		{
-			state.Parent = this;
+			behaviour.LoadTasks();
+			behaviour.m_parentAI = this;
+			behaviour.Start();
 		}	
-		
-		if(m_states.Count > 0)
+	}
+
+	public void Update ()
+	{
+		foreach(var behaviour in m_behaviours)
 		{
-			m_currentState = m_states[m_startStateIndex];
-			m_currentState.Start();
+			behaviour.Update();
+		}
+
+		m_taskList.Sort();
+
+		// If any tasks are queued, ensure the highest priority is running
+		if(m_taskList.Count > 0)
+		{
+			if(m_runningTask != m_taskList[0])
+			{
+				if(m_runningTask != null)
+				{
+					m_runningTask.Suspend(AITaskSuspendPriority.Normal);
+				}
+
+				m_runningTask = m_taskList[0];
+				m_runningTask.Start();
+			}
+		}
+
+		// Update the current task
+		if(m_runningTask != null)
+		{
+			m_runningTask.Update();
+
+			// If the task is complete, chuck it out.
+			if(m_runningTask.Result == AITaskResult.Complete)
+			{
+				m_taskList.Remove(m_runningTask);
+				m_runningTask.Reset();
+				m_runningTask = null;
+			}
 		}
 	}
 
-	void Update ()
+	public void SaveSerialise(List<SavePair> pairs)
 	{
-		if(m_currentState == null)
-		{
-			return;	
-		}
-		
-		AIState nextState = m_currentState.Update();
-		
-		if(nextState != null)
-		{
-			m_currentState.End();
-			m_currentState = nextState;
-			m_currentState.Start();
-		}
-	}
-	
-	public void DeleteState(AIState state)
-	{
-		foreach(var currentState in m_states)
-		{
-			foreach(var behaviour in currentState.Behaviours)
-			{
-				if(behaviour.TransitionTarget == state)
-				{
-					behaviour.TransitionTarget = null;	
-				}
-			}
-		}
-		
-		SelectedState = -1;	
-		
-		m_states.Remove(state);
-	}
-	
-	public List<AIState> States
-	{
-		get { return m_states; }	
-	}
-	
-	void OnTriggerEnter(Collider other)
-	{
-		if(other.gameObject.tag	== "Player")
-		{
-			PlayerInPerceptionRange = true;	
-		}
 		
 	}
 	
-	void OnTriggerExit(Collider other)
+	public void SaveDeserialise(List<SavePair> pairs)
 	{
-		if(other.gameObject.tag	== "Player")
-		{
-			PlayerInPerceptionRange = false;	
-		}	
+		
 	}
-	
-	public int StartStateIndex
-	{
-		get { return m_startStateIndex; }
-		set { m_startStateIndex = value; }
-	}
-	
-	public float PerceptionRange
-	{
-		get	{ return m_collider.radius; }
-	}
+
+#endregion
+
+#region Properties
 
 	public AIBlackboard Blackboard
 	{
 		get { return m_blackboard; }
 	}
 
-	public int SelectedState { get; set; }
-	
-	public bool PlayerInPerceptionRange = false;
-	
+	public void PushTask(AITask task)
+	{
+		m_taskList.Add(task);
+	}
+
+#endregion
+
+#region Private fields
+
 	[SerializeField]
-	private List<AIState> m_states = new List<AIState>();
+	private List<AIBehaviour> m_behaviours = new List<AIBehaviour>();
 	
-	[SerializeField]
-	private int m_startStateIndex = 0;
-	
-	[SerializeField]
-	private AIState m_currentState = null;
-	
-	private SphereCollider m_collider = null;
-	private AIBlackboard m_blackboard = null;
+	private AIBlackboard m_blackboard 	= null;					// AI blackboard containing all AI data
+	private AITask m_runningTask 		= null;					// The currently running AI task
+	private List<AITask> m_taskList 	= new List<AITask>();	// All tasks queued
+
+#endregion
 	
 #if UNITY_EDITOR
 	

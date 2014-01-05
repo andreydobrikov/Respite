@@ -13,7 +13,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-
+/*
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class AIBehaviourNavigationBase : AIBehaviour 
 {
@@ -257,3 +257,4 @@ public enum AINavigationState
 	DoorFound,
 	Turning,
 }
+*/

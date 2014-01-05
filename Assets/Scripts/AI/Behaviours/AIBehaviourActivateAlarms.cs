@@ -16,7 +16,7 @@ using UnityEditor;
 
 using UnityEngine;
 using System.Collections.Generic;
-
+/*
 public class AIBehaviourActivateAlarms : AIBehaviour 
 {
 	public AIBehaviourActivateAlarms()
@@ -71,3 +71,4 @@ public class AIBehaviourActivateAlarms : AIBehaviour
 	private AlarmSystem m_alarms = null;
 	private float m_countdown = 0.0f;
 }
+*/

@@ -63,6 +63,7 @@ Shader "Custom/Light"
 				val *= i.color;
 				
 				//val = half4(i.uv.x, i.uv.y, 0.0, 1.0);
+				val.rgb *= 2.0;
 				return val;
 			}
 			

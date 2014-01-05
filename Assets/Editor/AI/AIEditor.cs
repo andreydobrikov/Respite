@@ -19,7 +19,15 @@ public class AIEditor :  EditorWindow
 	[MenuItem ("Respite/AI Editor")]
 	static void ShowWindow () 
 	{
+	//	EditorWindow.GetWindow(typeof(AIEditor));
+		AIManager.s_instance.DoSerialise();
+	}
+
+	[MenuItem ("Respite/AI Manager Deserialise")]
+	static void TestDeserialise () 
+	{
 		EditorWindow.GetWindow(typeof(AIEditor));
+		AIManager.s_instance.DoDeserialise();
 	}
 	
 	void OnGUI () 
@@ -40,7 +48,12 @@ public class AIEditor :  EditorWindow
 		{
 			return;	
 		}
-		
+
+		if(GUILayout.Button("DO THING"))
+		{
+			AIManager.s_instance.DoSerialise();
+		}
+		/*
 		// Scrolling
 		if(Event.current.type == EventType.mouseDown && Event.current.button == 2)
 		{
@@ -433,4 +446,7 @@ public class AIEditor :  EditorWindow
 
 	private float m_lastWidth = 200.0f;
 	private float m_lastHeight = 200.0f;
+
+*/
+	}
 }

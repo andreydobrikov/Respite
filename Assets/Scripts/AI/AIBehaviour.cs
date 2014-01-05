@@ -2,7 +2,9 @@
 // 
 // AIBehaviour.cs
 //
-// What it does: Runs a specific AI action, such as movement
+// What it does: An AI behaviour monitors an individual aspect of the AI, such as 
+//				 following a task schedule, socialising, responding to environmental stimuli, etc.
+//				 These behaviours can issue task requests to direct the entity itself.
 //
 // Notes:
 // 
@@ -21,15 +23,29 @@ public abstract class AIBehaviour : ScriptableObject
 	{
 		m_lastBounds = new Rect(0.0f, 0.0f, 100.0f, 100.0f);	
 	}
-	
-	public abstract void Start();
-	public abstract bool Update();
-	public abstract void End();
-	
-	protected GameObject GetGameObject()
+
+	public void LoadTasks()
 	{
-		return m_parentState.Parent.gameObject;
+		Debug.Log("Loading <b>" + m_requiredTaskPaths.Count + "</b> tasks for behaviour <b>" + m_name + "</b>");
+		foreach(var task in m_requiredTaskPaths)
+		{
+			AITask newTask = AITask.LoadTask(task);
+
+			if(newTask != null)
+			{
+				newTask.Behaviour = this;
+				m_tasks.Add(task, newTask);
+			}
+			else
+			{
+				Debug.LogError("Failed to load task: " + task);
+			}
+		}
 	}
+
+	public abstract void Start();
+	public abstract void Update();
+	public abstract void Shutdown();
 	
 #if UNITY_EDITOR
 	
@@ -38,61 +54,31 @@ public abstract class AIBehaviour : ScriptableObject
 	
 #endif 
 	
-	public AIState State
-	{
-		get { return m_parentState; }
-		set { m_parentState = value; }
-	}
-	
 	public string Name
 	{
 		get { return m_name; }
 	}
 	
-	public AIState TransitionTarget
-	{
-		get { return m_targetTransition; }
-		set { m_targetTransition = value; }
-	}
-	
-	public bool SupportsTransitions
-	{
-		get { return m_supportTransitions;	}
-	}
-
 	public bool Enabled 
 	{ 
 		get { return m_enabled; }
 		set { m_enabled = value; }
 	}
 
-	protected void UpdateSupportsTransitions(bool supportsTransitions)
-	{
-		m_supportTransitions = supportsTransitions;
-
-		if(!supportsTransitions)
-		{
-			m_targetTransition = null;
-		}
-	}
-	
 	[SerializeField]
 	protected string m_name = String.Empty;
-	
-	[SerializeField]
-	protected bool m_supportTransitions = false;
-	
-	[SerializeField]
-	public AIState m_parentState = null;
-	
-	[SerializeField]
-	public AIState m_targetTransition = null;
 	
 	[SerializeField]
 	public Rect m_lastBounds;
 
 	[SerializeField]
 	public bool m_enabled;
+
+	[SerializeField]
+	public AI m_parentAI;
+
+	protected List<string> m_requiredTaskPaths = new List<string>();
+	protected Dictionary<string, AITask> m_tasks = new Dictionary<string, AITask>();
 	
 #if UNITY_EDITOR
 	

@@ -19,6 +19,7 @@ public class AISceneEditor : Editor
 {
 	void OnSceneGUI()
 	{
+		/*
 		Handles.DrawLine(Vector3.zero, Vector3.one);
 		
 		AI activeAI = (AI)target;
@@ -36,6 +37,7 @@ public class AISceneEditor : Editor
 			
 			Repaint();
 		}
+		*/
 		
 	}
 }
