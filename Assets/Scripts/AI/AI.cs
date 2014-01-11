@@ -27,10 +27,6 @@ public class AI : MonoBehaviour, ISerialisable
 	{
 		m_blackboard = new AIBlackboard();
 
-		// TODO: These should be from the editor!
-		m_behaviours.Add(ScriptableObject.CreateInstance(typeof(AIBehaviourTest)) as AIBehaviourTest);
-		m_behaviours.Add(ScriptableObject.CreateInstance(typeof(AIBehaviourPatrol)) as AIBehaviourPatrol);
-
 		// TODO: This has to be done because AI behaviours were sharing a parent when copied, rather than re-assigning
 		foreach(var behaviour in m_behaviours)
 		{
@@ -89,6 +85,20 @@ public class AI : MonoBehaviour, ISerialisable
 		
 	}
 
+	public void PushTask(AITask task)
+	{
+		task.Result = AITaskResult.Pending;
+		m_taskList.Add(task);
+	}
+
+	public void OnGUI()
+	{
+		foreach(var behaviour in m_behaviours)
+		{
+			behaviour.OnSceneGUI();
+		}
+	}
+
 #endregion
 
 #region Properties
@@ -98,9 +108,9 @@ public class AI : MonoBehaviour, ISerialisable
 		get { return m_blackboard; }
 	}
 
-	public void PushTask(AITask task)
+	public List<AIBehaviour> Behaviours
 	{
-		m_taskList.Add(task);
+		get { return m_behaviours; }
 	}
 
 #endregion
@@ -117,7 +127,8 @@ public class AI : MonoBehaviour, ISerialisable
 #endregion
 	
 #if UNITY_EDITOR
-	
+
+	public int m_selectedBehaviourIndex = 0;
 	public AIBehaviour m_dragStart = null;
 	public bool m_debugEditor = true;
 	

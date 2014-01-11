@@ -36,19 +36,45 @@ public abstract partial class AIAction
 
 		writer.WriteEndArray();
 
+		writer.WritePropertyName("output_data");
+		writer.WriteStartArray();
+
+		foreach (var input in m_outputData)
+		{
+			writer.WriteStartObject();
+
+			writer.WritePropertyName("blackboard_id");
+			writer.WriteValue(input.BlackBoardID);
+
+			writer.WritePropertyName("action_id");
+			writer.WriteValue(input.ActionID);
+
+			writer.WritePropertyName("data_type");
+			writer.WriteValue(input.DataType.AssemblyQualifiedName);
+
+			writer.WriteEndObject();
+		}
+
+		writer.WriteEndArray();
+
 		// Links
 		writer.WritePropertyName("links");
 		writer.WriteStartArray();
 
-		foreach(var link in m_links)
+		for (int i = 0; i < m_links.Count; i++ )
 		{
+			if (m_links[i] == null)
+			{
+				continue;
+			}
+
 			writer.WriteStartObject();
 
 			writer.WritePropertyName("link_name");
-			writer.WriteValue(link.Key);
+			writer.WriteValue(m_outputs[i]);
 
 			writer.WritePropertyName("link_id");
-			writer.WriteValue(link.Value.SerialisationID);
+			writer.WriteValue(m_links[i].SerialisationID);
 
 			writer.WriteEndObject();
 		}
@@ -65,6 +91,15 @@ public abstract partial class AIAction
 			if(reader.TokenType == JsonToken.PropertyName)
 			{
 				Debug.Log("<color=green>" + reader.Value.ToString() + "</color>");
+
+				if(reader.Value.ToString() == "id")
+				{
+					reader.Read();
+					int id = -1;
+					int.TryParse(reader.Value.ToString(), out id);
+					SerialisationID = id;
+				}
+
 				if(reader.Value.ToString() == "input_data")
 				{
 					reader.Read();
@@ -74,7 +109,7 @@ public abstract partial class AIAction
 				else if(reader.Value.ToString() == "output_data")
 				{
 					reader.Read();
-					Debug.Log("\t\tDeserialising input data");
+					Debug.Log("\t\tDeserialising output data");
 					DeserialiseData(reader, m_outputData);
 				}
 				else if(reader.Value.ToString() == "links")
@@ -169,10 +204,16 @@ public abstract partial class AIAction
 			}
 			reader.Read();
 		}
+		Debug.Log("<color=blue> Deserialised " + m_linkSerialisationMap.Count + " Links</color>");
 	}
 
 	public void PostDeserialise()
 	{
+		foreach(var whatever in m_outputs)
+		{
+			m_links.Add(null);
+		}
+
 		foreach(var link in m_linkSerialisationMap)
 		{
 			AIAction linkAction = Task.GetActionFromSerialisationID(link.Value);
@@ -180,9 +221,26 @@ public abstract partial class AIAction
 			if(linkAction != null)
 			{
 				Debug.Log("\t\tAdding link to <b>" + linkAction.Name + "</b> from <b>" + Name + "</b>");
-				m_links.Add(link.Key, linkAction);
+				for (int i = 0; i < m_outputs.Count; i++)
+				{
+					if (m_outputs[i] == link.Key)
+					{
+						// TODO: Review this. I am so tired
+						while(m_links.Count < i + 1)
+						{
+							m_links.Add(null);
+						}
+						
+						m_links[i] = linkAction;
+					}
+				}
 			}
+			Debug.Log("<color=purple> Complete " + m_links.Count + " links</color>");
 		}
+
+		foreach (var inputData in m_inputData)	{ m_inputDataRects.Add(new Rect());	}
+		foreach (var outputData in m_outputData) { m_outputDataRects.Add(new Rect()); }
+		foreach (var output in m_outputs) { m_outputRects.Add(new Rect()); }
 	}
 
 	public Dictionary<string, int> m_linkSerialisationMap = new Dictionary<string, int>();

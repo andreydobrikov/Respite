@@ -12,9 +12,15 @@ public class AIActionNavigate : AIAction
 
 	public AIActionNavigate()
 	{
-		m_name = "test action";
+		m_name = "Navigate";
 
 		m_outputs.Add("nav_complete");
+		m_outputs.Add("nav_complete0");
+		m_outputs.Add("nav_complete1");
+		m_outputs.Add("nav_complete2");
+		m_outputs.Add("nav_complete3");
+		m_outputs.Add("nav_complete4");
+		m_outputs.Add("nav_complete5");
 		
 		AIActionData data0 	= new AIActionData();
 		AIActionData data1 	= new AIActionData();

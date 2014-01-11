@@ -12,22 +12,91 @@
 
 using UnityEditor;
 using UnityEngine;
+using System;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 
-public class AIEditor :  EditorWindow 
+[CustomEditor(typeof(AI))] 
+public class AIEditor : Editor
+{
+	public override void OnInspectorGUI()
+	{
+		AI ai = (AI)target;
+
+
+		System.Type targetType = typeof(AIBehaviour);
+		List<System.Type> types = new List<System.Type>(targetType.Assembly.GetTypes().Where(x => x.IsSubclassOf(targetType)));
+
+		List<System.Type> aiTypes = new List<System.Type>();
+		foreach(var aiType in ai.Behaviours)
+		{
+			aiTypes.Add(aiType.GetType());
+		}
+
+		types = new List<System.Type>(types.Where(x => !aiTypes.Contains(x)));
+
+		string[] typeStrings = new string[types.Count];
+
+		int index = 0;
+		foreach(var currentType in types)
+		{
+			typeStrings[index] = currentType.Name;
+			index++;
+		}
+
+		GUILayout.BeginHorizontal();
+
+		if(types.Count == 0)
+		{
+			GUI.enabled = false;
+		}
+
+		ai.m_selectedBehaviourIndex = Mathf.Min(EditorGUILayout.Popup(ai.m_selectedBehaviourIndex, typeStrings), Mathf.Max(0, types.Count - 1));
+
+		if(GUILayout.Button("Add", GUILayout.Width(50)))
+		{
+			ai.Behaviours.Add(ScriptableObject.CreateInstance(types[ai.m_selectedBehaviourIndex]) as AIBehaviour);
+		}
+
+		GUI.enabled = true;
+
+		GUILayout.EndHorizontal();
+		List<AIBehaviour> toDelete = new List<AIBehaviour>();
+
+		foreach(var behaviour in ai.Behaviours)
+		{
+			GUILayout.BeginHorizontal();
+
+			GUILayout.Label(behaviour.Name);
+
+			if(GUILayout.Button("Delete"))
+			{
+				toDelete.Add(behaviour);
+			}
+
+			GUILayout.EndHorizontal();
+		}
+
+		foreach(var deletedBehaviour in toDelete)
+		{
+			ai.Behaviours.Remove(deletedBehaviour);
+		}
+	}
+}
+
+public class AIEditorWindow :  EditorWindow 
 {
 	[MenuItem ("Respite/AI Editor")]
 	static void ShowWindow () 
 	{
-	//	EditorWindow.GetWindow(typeof(AIEditor));
-		AIManager.s_instance.DoSerialise();
+		EditorWindow.GetWindow(typeof(AIEditorWindow));
 	}
 
 	[MenuItem ("Respite/AI Manager Deserialise")]
 	static void TestDeserialise () 
 	{
-		EditorWindow.GetWindow(typeof(AIEditor));
-		AIManager.s_instance.DoDeserialise();
+		EditorWindow.GetWindow(typeof(AIEditorWindow));
 	}
 	
 	void OnGUI () 
@@ -35,35 +104,84 @@ public class AIEditor :  EditorWindow
 		// Tells the EditorWindow to listen for MouseMove events
 		wantsMouseMove = true;
 
-		// Only run if an object is selected
-		if(Selection.activeGameObject == null)
-		{
-			return;	
-		}
-		
-		AI activeAI = Selection.activeGameObject.GetComponent(typeof(AI)) as AI;
-		
-		// Only run if the object has AI
-		if(activeAI == null)
-		{
-			return;	
-		}
+		DrawUnzoomedArea();
+		DrawZoomArea();
 
-		if(GUILayout.Button("DO THING"))
+
+	}
+
+	public void DrawUnzoomedArea()
+	{
+		AIManager manager = AIManager.s_instance;
+
+		EditorGUILayout.BeginHorizontal();
+	
+		string[] taskNames = AIManager.s_instance.m_taskNames.ToArray();
+
+		AIManager.s_instance.selectedTaskIndex = EditorGUILayout.Popup(AIManager.s_instance.selectedTaskIndex, taskNames);
+
+		if (GUILayout.Button("Save all tasks", GUILayout.Width(150)))
 		{
 			AIManager.s_instance.DoSerialise();
 		}
-		/*
+
+		if (GUILayout.Button("Reload all tasks", GUILayout.Width((150))))
+		{
+			AIManager.s_instance.ReloadTasks();
+		}
+
+		if (GUILayout.Button("Reset View", GUILayout.Width(80)))
+		{
+			if (manager.selectedTaskIndex != -1 && manager.m_tasks[manager.selectedTaskIndex].Actions.Count > 0)
+			{
+				var action = manager.m_tasks[manager.selectedTaskIndex].Actions[0];
+				m_scrollOffset = new Vector2(action.m_editorPosition.x, action.m_editorPosition.y);
+			}
+			else
+			{
+				m_scrollOffset = Vector2.zero;
+			}
+		}
+
+		EditorGUILayout.EndHorizontal();
+
+		var LastRect = GUILayoutUtility.GetLastRect();
+		manager.m_buttonBarHeight = LastRect.height;
+	}
+
+	public void DrawZoomArea()
+	{
+		AIManager manager = AIManager.s_instance;
+
+		EditorZoomArea.Begin(manager.m_zoom, new Rect(0.0f, manager.m_buttonBarHeight, position.width, position.height));
+
+
 		// Scrolling
-		if(Event.current.type == EventType.mouseDown && Event.current.button == 2)
+		if (Event.current.type == EventType.mouseDown && Event.current.button == 2)
 		{
 			m_scrollStart = Event.current.mousePosition;
 		}
 
 		GUILayout.BeginHorizontal();
 
-		// Button for adding a new state
-		if(GUILayout.Button("Add State", GUILayout.Width(80)))
+		if (manager.selectedTaskIndex == -1)
+		{
+			return;
+		}
+
+		// This can happen during twiddling
+		if (manager.selectedTaskIndex >= manager.m_tasks.Count)
+		{
+			//	return;
+		}
+
+		AITask currentTask = manager.m_tasks[manager.selectedTaskIndex];
+
+
+
+		// Button for adding a new action
+		/*
+		if(GUILayout.Button("Add Action", GUILayout.Width(80)))
 		{
 			AIState newState = ScriptableObject.CreateInstance<AIState>();
 			
@@ -74,189 +192,173 @@ public class AIEditor :  EditorWindow
 			newState.m_editorPosition.y = Screen.height / 2;
 			
 			activeAI.States.Add(newState);	
-		}
-		
-		// Button for flushing all states
-		if(GUILayout.Button("Clear", GUILayout.Width(50)))
-		{
-			activeAI.States.Clear(); 
-		}
+		}*/
 
-		if(GUILayout.Button("Reset View", GUILayout.Width(80)))
-		{
-			m_scrollOffset = Vector2.zero;
-		}
 
-		activeAI.m_debugEditor = GUILayout.Toggle(activeAI.m_debugEditor, "Debug", GUILayout.Width(80));
+
 
 		GUILayout.EndHorizontal();
-		
+		//return;
 		// Draw the temporary line when the user is making links
-		if(activeAI.m_dragStart != null)
+		/*
+		if(manager.m_dragStart != null)
 		{
-			AIBehaviour source = activeAI.m_dragStart;
+			AIAction source = manager.m_dragStart;
 
-			Vector2 start = new Vector2(source.m_parentState.m_editorPosition.x + source.m_parentState.m_windowWidth + stateHandleSize.x / 2.0f + m_scrollOffset.x, source.m_parentState.m_editorPosition.y + source.m_lastBounds.y + m_scrollOffset.y + stateHandleSize.y / 2.0f);
+			Vector2 start = new Vector2(source.m_editorPosition.x + source.m_windowWidth + stateHandleSize.x / 2.0f + m_scrollOffset.x, source.m_editorPosition.y + source.m_lastBounds.y + m_scrollOffset.y + stateHandleSize.y / 2.0f);
 			Vector2 end = Event.current.mousePosition;
 
 			Drawing.bezierLine(start, start + (Vector2.right * lineCurveScale), end, end + (new Vector2(-1.0f, 0.0f) * lineCurveScale), Color.red, 1.0f, true, 20);
 		}
-
+		*/
 		// TODO: Loads of these loops can be removed with decent layering
 		// TODO: Only redraw when moved or connections changed!
 		// Draw connections
-		foreach(var state in activeAI.States)
-		{
-			foreach(var behaviour in state.Behaviours)
-			{
-				if(behaviour.TransitionTarget != null)
-				{
-					if(state.m_showBehavioursFoldout)
-					{
 
-						Vector2 start = new Vector2(state.m_editorPosition.x + state.m_windowWidth + stateHandleSize.x / 2.0f, state.m_editorPosition.y + behaviour.m_lastBounds.y + stateHandleSize.y / 2.0f);
-						Vector2 end = new Vector2(behaviour.TransitionTarget.m_editorPosition.x - stateHandleSize.x / 2.0f, behaviour.TransitionTarget.m_editorPosition.y + behaviour.TransitionTarget.m_renderDimensions.y / 2.0f + stateHandleSize.y / 2.0f);
-						
-						start.x += m_scrollOffset.x;
-						start.y += m_scrollOffset.y;
-						
-						end.x += m_scrollOffset.x;
-						end.y += m_scrollOffset.y;
-						
-						Drawing.bezierLine(start, start + (Vector2.right * lineCurveScale), end, end + (new Vector2(-1.0f, 0.0f) * lineCurveScale), Color.yellow, 1.0f, true, 20);
-					
+		Color red = Color.red;
+		red.a = 0.4f;
+		foreach (var action in currentTask.Actions)
+		{
+			float delta = 1.0f / action.Outputs.Count;
+			float currentVal = 0.0f;
+			float expansion = 30.0f;
+			for (int index = 0; index < action.Outputs.Count; index++)
+			{
+				AIAction linkedAction = action.GetOutput(index);
+				if (linkedAction != null)
+				{
+					Vector2 start = new Vector2(action.m_editorPosition.x + action.m_outputRects[index].x + action.m_outputRects[index].width + 10, action.m_editorPosition.y + action.m_outputRects[index].y + 10);
+					Vector2 end = new Vector2(linkedAction.m_editorPosition.x - 5, linkedAction.m_editorPosition.y + linkedAction.m_lastBounds.height / 2.0f);
+
+					start.x += m_scrollOffset.x;
+					start.y += m_scrollOffset.y;
+
+					end.x += m_scrollOffset.x;
+					end.y += m_scrollOffset.y;
+
+					if (action == linkedAction)
+					{
+						Vector2 right = start + (new Vector2(10.0f + (expansion * currentVal), 0.0f));
+						Vector2 rightTop = right;
+						rightTop.y = action.m_editorPosition.y + m_scrollOffset.y - 50 - (expansion * currentVal);
+
+						Vector2 leftTop = rightTop;
+						leftTop.x = end.x - 10.0f - (expansion * currentVal);
+
+						Vector2 left = leftTop;
+						left.y = end.y;// -(50.0f * currentVal) + (expansion * currentVal);
+
+						Drawing.DrawLine(start, right, red, 1.0f, true);
+						Drawing.DrawLine(right, rightTop, red, 1.0f, true);
+						Drawing.DrawLine(rightTop, leftTop, red, 1.0f, true);
+						Drawing.DrawLine(leftTop, left, red, 1.0f, true);
+						Drawing.DrawLine(left, end, red, 1.0f, true);
+
+						//Drawing.bezierLine(start, wrapStart, end, wrapEnd, new Color(currentColor, 1.0f, 0.0f, 1.0f), 1.0f, true, 20);
 					}
 					else
 					{
-						Vector2 start = new Vector2(state.m_editorPosition.x + state.m_editorPosition.width + stateHandleSize.x / 2.0f, state.m_editorPosition.y + state.m_behaviourRenderRect.y + (state.m_behaviourRenderRect.height / 2)  );
-						Vector2 end = new Vector2(behaviour.TransitionTarget.m_editorPosition.x - stateHandleSize.x / 2.0f, behaviour.TransitionTarget.m_editorPosition.y + behaviour.TransitionTarget.m_renderDimensions.y / 2.0f + stateHandleSize.y / 2.0f);
-						
-						start.x += m_scrollOffset.x;
-						start.y += m_scrollOffset.y;
-						
-						end.x += m_scrollOffset.x;
-						end.y += m_scrollOffset.y;
-						
-						Drawing.bezierLine(start, start + (Vector2.right * lineCurveScale), end, end + (new Vector2(-1.0f, 0.0f) * lineCurveScale), Color.yellow, 1.0f, true, 20);
-
-
+						Drawing.DrawBezierLine(start, start + (Vector2.right * lineCurveScale), end, end + (new Vector2(-1.0f, 0.0f) * lineCurveScale), Color.yellow, 1.0f, true, 20);
 					}
 				}
+				currentVal += delta;
 			}
 		}
-		
+
+
+
 		// input button checks
-		foreach(var state in activeAI.States)
+		foreach (var action in currentTask.Actions)
 		{
-			if(GUI.Button(new Rect(state.m_editorPosition.x - 10 + m_scrollOffset.x , state.m_editorPosition.y + state.m_renderDimensions.y / 2.0f + m_scrollOffset.y, 10, 10), "x"))
+			if (GUI.Button(new Rect(action.m_editorPosition.x - 10 + m_scrollOffset.x, action.m_editorPosition.y + action.m_lastBounds.height / 2.0f + m_scrollOffset.y - 5, 10, 10), "x"))
 			{
-				if(activeAI.m_dragStart != null && !state.Behaviours.Contains(activeAI.m_dragStart))
+				if (manager.m_dragAction != null)
 				{
-					activeAI.m_dragStart.TransitionTarget = state;
-					activeAI.m_dragStart = null;
+					manager.m_dragAction.SetOutput(manager.m_dragAction.Outputs[manager.m_dragActionOutput], action);
+					currentTask.m_actiontest = "BLAH";
 				}
 			}
 		}
-		
+		//Debug.Log(currentTask.m_actiontest);
 		// Clear drag events on left-mouse click
-		if(Event.current.type == EventType.MouseDown && Event.current.button == 0)
+		if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
 		{
-			if(activeAI.m_dragStart != null)
-			{
-				activeAI.m_dragStart.TransitionTarget = null;
-			}
-			
-			activeAI.m_dragStart = null;	
+			manager.m_dragAction = null;
 		}
-		
+
 		// Show behaviour link output buttons
-		foreach(var state in activeAI.States)
+		foreach (var action in currentTask.Actions)
 		{
-			if (state.m_showBehavioursFoldout)
+			int index = 0;
+			foreach (var output in action.Outputs)
 			{
-				foreach (var behaviour in state.Behaviours)
+				GUI.depth = -1;
+				if (GUI.Button(new Rect(action.m_editorPosition.x + action.m_outputRects[index].x + action.m_outputRects[index].width + m_scrollOffset.x + 5, action.m_editorPosition.y + action.m_outputRects[index].y + m_scrollOffset.y + 5, 10, 10), "x"))
 				{
-					if (behaviour.SupportsTransitions)
-					{
-						if (GUI.Button(new Rect(state.m_editorPosition.x + state.m_windowWidth + m_scrollOffset.x, state.m_editorPosition.y + behaviour.m_lastBounds.y + m_scrollOffset.y, 10, 10), "x"))
-						{
-							behaviour.TransitionTarget = null;
-							activeAI.m_dragStart = behaviour;
-						}
-					}
+					action.SetOutput(output, null);
+					manager.m_dragAction = action;
+					manager.m_dragActionOutput = index;
 				}
+				index++;
 			}
-			else if(state.Behaviours.Count > 0)
-			{
-				bool supportTransitions = false;
 
-				foreach (var behaviour in state.Behaviours)
-				{
-					if (behaviour.SupportsTransitions)
-					{
-						supportTransitions = true;
-						break;
-					}
-				}
+		}
 
-				if(supportTransitions)
-				{
-					GUI.enabled = false;
-					GUI.Button(new Rect(state.m_editorPosition.x + state.m_editorPosition.width + m_scrollOffset.x, state.m_editorPosition.y + state.m_behaviourRenderRect.y + (state.m_behaviourRenderRect.height / 2) - (stateHandleSize.y / 2.0f) + m_scrollOffset.y, 10, 10), "x");
-					GUI.enabled = true;
-				}
-
-			}
-		}   
-
+		GUI.depth = 1;
 		BeginWindows();
-		
-		for(int i = 0; i < activeAI.States.Count; i++)
-		{	
-			Rect position = activeAI.States[i].m_editorPosition;
-			position.x += m_scrollOffset.x;
-			position.y += m_scrollOffset.y;
 
-			string name = activeAI.States[i].Name;
+		for (int i = 0; i < currentTask.Actions.Count; i++)
+		{
+			Rect currentPos = currentTask.Actions[i].m_editorPosition;
+			currentPos.x += m_scrollOffset.x;
+			currentPos.y += m_scrollOffset.y;
 
-			if(activeAI.m_debugEditor)
+			string name = currentTask.Actions[i].Name;
+
+			Rect thing = GUILayout.Window(i, currentPos, DrawActionWindow, name);
+
+			currentTask.Actions[i].m_editorPosition = thing;
+
+			currentTask.Actions[i].m_editorPosition.x -= m_scrollOffset.x;
+			currentTask.Actions[i].m_editorPosition.y -= m_scrollOffset.y;
+
+			if (Event.current.type == EventType.repaint)
 			{
-				name += " (" + activeAI.States[i].m_editorPosition.x.ToString("0.00") + ", " + activeAI.States[i].m_editorPosition.y.ToString("0.00") + ")";
-			}
-
-			Rect thing = GUILayout.Window(i, position, DrawWindow1, name + (i == activeAI.StartStateIndex ? " (Default)" : ""));
-
-				activeAI.States[i].m_editorPosition = thing;
-				
-				activeAI.States[i].m_editorPosition.x -= m_scrollOffset.x;
-				activeAI.States[i].m_editorPosition.y -= m_scrollOffset.y; 
-
-			if(Event.current.type == EventType.repaint )
-			{
-				activeAI.States[i].m_windowWidth = thing.width;
+				currentTask.Actions[i].m_windowWidth = thing.width;
+				currentTask.Actions[i].m_lastBounds = thing;
 			}
 		}
-		
+
 		EndWindows();
-		
-		if(Event.current.type == EventType.mouseDown )
+
+		if (Event.current.type == EventType.mouseDown)
 		{
-			activeAI.SelectedState = -1;
+			//	activeAI.SelectedState = -1;
 		}
 
 		// I have no idea why, but this nukes drag-scrolling if it's near the top of the function
-		if(Event.current.type == EventType.mouseDrag)
+		if (Event.current.type == EventType.mouseDrag)
 		{
-			if(Event.current.button == 2)
+			if (Event.current.button == 2)
 			{
-				m_scrollOffset += Event.current.mousePosition - m_scrollStart;
+				m_scrollOffset += (Event.current.mousePosition - m_scrollStart) / 2.0f;
 				m_scrollStart = Event.current.mousePosition;
 			}
+		}
+
+		if (Event.current.type == EventType.ScrollWheel)
+		{
+			manager.m_zoom -= ((float)Event.current.delta.y * 0.01f);
+
+			manager.m_zoom = Mathf.Max(0.5f, manager.m_zoom);
+			manager.m_zoom = Mathf.Min(1.0f, manager.m_zoom);
 		}
 
 		// This is pretty shonky, but keeps things smooth.
 		// Disable if performance gets choppy and work out something better
 		Repaint();
+
+		EditorZoomArea.End();
 	}
 	
 	public void OnInspectorUpdate()
@@ -265,26 +367,44 @@ public class AIEditor :  EditorWindow
 	}
 			
 	// Draw an editor window
-	void DrawWindow1(int id)
+	void DrawActionWindow(int id)
 	{
 
-		m_toDelete.Clear();
-		
-		AI activeAI = Selection.activeGameObject.GetComponent(typeof(AI)) as AI;
-		
-		if(Event.current.type == EventType.mouseDown)
-		{
-			activeAI.SelectedState = id;
-		}
-		
-		AIState currentState = activeAI.States[id];
-		m_lastWidth = currentState.m_editorPosition.width;
+		AIAction currentAction = AIManager.s_instance.m_tasks[AIManager.s_instance.selectedTaskIndex].Actions[id];
+		GUIStyle rightStyle = new GUIStyle((GUIStyle)("label"));
+		rightStyle.alignment = TextAnchor.MiddleRight;
 
-		if(Event.current.type == EventType.repaint)
+		GUIStyle leftStyle = new GUIStyle((GUIStyle)("label"));
+		leftStyle.alignment = TextAnchor.MiddleLeft;
+
+		GUILayout.BeginVertical();
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("test", leftStyle);
+
+		GUILayout.BeginVertical();
+
+		int index = 0;
+		foreach (var output in currentAction.Outputs)
+		{
+			GUILayout.Label(output, rightStyle);
+			if(Event.current.type == EventType.repaint)
+			currentAction.m_outputRects[index] = GUILayoutUtility.GetLastRect();
+			index++;
+		}
+
+		GUILayout.EndVertical();
+
+		m_lastWidth = currentAction.m_editorPosition.width;
+
+		if (Event.current.type == EventType.repaint)
 		{
 			m_lastHeight = 0.0f;
-			m_lastWidth = currentState.Behaviours.Count > 0 ? 200.0f : currentState.m_editorPosition.width;
+			m_lastWidth = currentAction.Outputs.Count > 0 ? 200.0f : currentAction.m_editorPosition.width;
 		}
+
+		GUILayout.EndHorizontal();
+		GUILayout.EndVertical();
+		/*
 
 		GUILayout.BeginVertical((GUIStyle)("Box"));
 		currentState.m_showFoldout = EditorGUILayout.Foldout(currentState.m_showFoldout, "State Settings"); 
@@ -426,13 +546,16 @@ public class AIEditor :  EditorWindow
 			GUILayout.Label("State Running");	
 		}
 
+	
+		*/
+
 		if (Event.current.type == EventType.repaint)
 		{
-			currentState.m_editorPosition.height = m_lastHeight;
-			currentState.m_editorPosition.width = m_lastWidth;
+			currentAction.m_editorPosition.height = m_lastHeight;
+			currentAction.m_editorPosition.width = m_lastWidth;
 
-			currentState.m_renderDimensions.x = m_lastWidth;
-			currentState.m_renderDimensions.y = m_lastHeight;
+			currentAction.m_renderDimensions.x = m_lastWidth;
+			currentAction.m_renderDimensions.y = m_lastHeight;
 		}
 
 		GUI.DragWindow();	
@@ -447,6 +570,4 @@ public class AIEditor :  EditorWindow
 	private float m_lastWidth = 200.0f;
 	private float m_lastHeight = 200.0f;
 
-*/
-	}
 }

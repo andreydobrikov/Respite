@@ -4,7 +4,7 @@ using System.Collections;
 
 public class ScriptEditor: EditorWindow{
 
-
+	/*
     [MenuItem("Window/ScriptEditor")]
     static void init()
     {
@@ -43,4 +43,5 @@ public class ScriptEditor: EditorWindow{
         wr3 = GUI.Window(2, wr3, doWindow, "!");
         EndWindows();
     }
+	 * */
 }

@@ -5,7 +5,7 @@ public class AIActionTest : AIAction
 {
 	public AIActionTest()
 	{
-		m_name = "test action";
+		m_name = "DEBUG";
 
 		AIActionData data0 	= new AIActionData();
 		AIActionData data1 	= new AIActionData();
@@ -19,7 +19,21 @@ public class AIActionTest : AIAction
 
 		m_inputData.Add(data0);
 		m_inputData.Add(data1);
+		m_outputData.Add(data1);
+
+		m_outputs.Add("thing");
+		m_outputs.Add("thing0");
+		m_outputs.Add("thing1");
+		m_outputs.Add("thing2");
+		m_outputs.Add("thing3");
+		m_outputs.Add("thing4");
+		m_outputs.Add("thing5");
+		m_outputs.Add("thing6");
+		m_outputs.Add("thing7");
+		m_outputs.Add("thing8");
+
 	}
+
 
 	public override void Start()
 	{

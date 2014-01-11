@@ -44,7 +44,27 @@ public class AIBehaviourPatrol : AIBehaviour
 
 	public override void Shutdown()
 	{
-		
+			
+	}
+
+	public override void OnSceneGUI()
+	{
+		AITask patrolTask = null;
+		if(m_tasks.TryGetValue("patrol_task", out patrolTask))
+		{
+			if(patrolTask.Result != AITaskResult.Idle)
+			{
+				GUI.enabled = false;
+			}
+
+			if(GUI.Button(new Rect(10, Screen.height / 2 - 20, 100, 40), "Run Patrol"))
+			{
+				m_parentAI.PushTask(patrolTask);
+			}
+			GUI.enabled = true;
+		}
+
+
 	}
 
 	private AITask m_patrolTask = null;

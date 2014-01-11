@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 
-public abstract partial class AIAction
+[Serializable]
+public abstract partial class AIAction : ScriptableObject
 {
 	public abstract void Start();
 	public abstract void Update();
@@ -9,15 +11,33 @@ public abstract partial class AIAction
 
 	public void SetOutput(string outputName, AIAction target)
 	{
-		if(m_outputs.Contains(outputName))
+		for (int index = 0; index < m_outputs.Count; index++)
 		{
-			m_links.Remove(outputName);
-			m_links.Add(outputName, target);
+			if (m_outputs[index] == outputName)
+			{
+				m_links[index] = target;
+				return;
+			}
 		}
-		else
+		Debug.LogError("Action <b>" + m_name + "</b> has no output \"" + outputName + "\"");
+	}
+
+	public AIAction GetOutput(string outputName)
+	{
+		for (int index = 0; index < m_outputs.Count; index++)
 		{
-			Debug.LogError("Action <b>" + m_name + "</b> has no output \"" + outputName + "\"");
+			if (m_outputs[index] == outputName)
+			{
+				return m_links[index];
+			}
 		}
+
+		return null;
+	}
+
+	public AIAction GetOutput(int outputIndex)
+	{
+		return GetOutput(Outputs[outputIndex]);
 	}
 
 	public int SerialisationID		{ get; set; }
@@ -28,10 +48,15 @@ public abstract partial class AIAction
 	public AIAction LinkedAction	
 	{ 
 		get 
-		{ 
-			AIAction linkedAction = null;
-			m_links.TryGetValue(m_targetLink, out linkedAction);
-			return linkedAction;
+		{
+			for (int index = 0; index < m_outputs.Count; index++)
+			{
+				if (m_outputs[index] == m_targetLink)
+				{
+					return m_links[index];
+				}
+			}
+			return null;
 		}
 	}
 
@@ -45,17 +70,46 @@ public abstract partial class AIAction
 	protected string m_targetLink		= string.Empty;	// The link to follow upon completion; 
 	protected AIActionResult m_result 	= AIActionResult.Idle;
 
-	protected List<string> m_outputs				= new List<string>();
+	[SerializeField]
+	protected List<string> m_outputs				= new List<string>(); 
+	[SerializeField]
 	protected List<AIActionData> m_inputData 		= new List<AIActionData>();
+	[SerializeField]
 	protected List<AIActionData> m_outputData 		= new List<AIActionData>();
-	protected Dictionary<string, AIAction> m_links 	= new Dictionary<string, AIAction>();
+	[SerializeField]
+	protected List<AIAction> m_links 	= new List<AIAction>();
+
+#if UNITY_EDITOR
+	public Rect m_renderDimensions;
+
+	[SerializeField]
+	public List<Rect> m_outputRects = new List<Rect>();
+	[SerializeField]
+	public List<Rect> m_inputDataRects = new List<Rect>();
+	[SerializeField]
+	public List<Rect> m_outputDataRects = new List<Rect>();
+
+	[SerializeField]
+	public Rect m_lastBounds;
+	[SerializeField]
+	public Rect m_editorPosition	= new Rect(100, 100, 100, 100);
+	[SerializeField]
+	public float m_windowWidth		= 100; 
+	
+#endif
 }
 
+[Serializable]
 public struct AIActionData
 {
+	[SerializeField]
 	public string BlackBoardID;
+
+	[SerializeField]
 	public string ActionID;
-	public System.Type DataType;
+
+	[SerializeField]
+	public System.Type DataType; 
 }
 
 public enum AIActionResult

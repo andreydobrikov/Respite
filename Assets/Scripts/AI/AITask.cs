@@ -10,7 +10,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed partial class AITask : IComparable 
+[Serializable]
+public sealed partial class AITask : ScriptableObject, IComparable 
 {
 
 #region Public methods
@@ -25,6 +26,8 @@ public sealed partial class AITask : IComparable
 
 	public void Start()
 	{
+		Result = AITaskResult.Running;
+
 		if(m_actions.Count > 0)
 		{
 			m_currentAction = m_actions[0];
@@ -34,7 +37,7 @@ public sealed partial class AITask : IComparable
 
 	public void Suspend(AITaskSuspendPriority priority)
 	{
-		m_result = AITaskResult.Suspended;
+		Result = AITaskResult.Suspended;
 	}
 
 	public void Update()
@@ -56,7 +59,7 @@ public sealed partial class AITask : IComparable
 				}
 				else
 				{
-					m_result = AITaskResult.Complete;
+					Result = AITaskResult.Complete;
 				}
 			}
 		}
@@ -69,7 +72,7 @@ public sealed partial class AITask : IComparable
 
 	public void Reset()
 	{
-		m_result = AITaskResult.Idle;
+		Result = AITaskResult.Idle;
 	}
 
 	public void AddAction(AIAction newAction)
@@ -102,22 +105,28 @@ public sealed partial class AITask : IComparable
 
 #endregion
 
+#if UNITY_EDITOR
+	public bool Dirty = false;
+#endif
+
 #region Properties
 
-
 	public AIBehaviour 		Behaviour { get; set; }
-	public AIAction			EntryPoint { get; set; }
+	public AIAction			EntryPoint { get; set; } 
 	public AITaskPriority 	Priority { get; set; }
 	public string 			Name { get; set; }
-	public AITaskResult		Result { get { return m_result; } }
-	public List<AIAction> 	Actions { get { return m_actions; } }
+	public AITaskResult		Result { get; set; }
+	public List<AIAction> 	Actions { get { return m_actions; } } 
 
 #endregion
 
 #region Private fields
 
-	private AITaskResult m_result 		= AITaskResult.Idle;
+	[SerializeField]
 	private List<AIAction> m_actions 	= new List<AIAction>();
+
+	[SerializeField]
+	public string m_actiontest = "";
 	private AIAction m_currentAction	= null;
 
 #endregion

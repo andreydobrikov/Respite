@@ -50,7 +50,7 @@ public sealed partial class AITask : IComparable
 	{
 		m_actions.Clear();
 
-		using(TextReader tr = File.OpenText(path))
+		using(TextReader tr = File.OpenText(path + ".json"))
 		{
 			using(JsonReader reader = new JsonTextReader(tr))
 			{
@@ -58,6 +58,12 @@ public sealed partial class AITask : IComparable
 				{
 					if(reader.TokenType == JsonToken.PropertyName)
 					{
+						if(reader.Value.ToString() == "name")
+						{
+							reader.Read();
+							Name = reader.Value.ToString();
+						}
+
 						if(reader.Value.ToString() == "actions")
 						{
 
@@ -83,7 +89,7 @@ public sealed partial class AITask : IComparable
 				reader.Read();
 
 				Type actionType = Type.GetType(reader.Value.ToString());
-				AIAction newAction = Activator.CreateInstance(actionType) as AIAction;
+				AIAction newAction = ScriptableObject.CreateInstance(actionType) as AIAction;
 				newAction.Task = this;
 
 				if(newAction == null)
