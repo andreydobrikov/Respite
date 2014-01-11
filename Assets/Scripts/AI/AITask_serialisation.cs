@@ -46,8 +46,13 @@ public sealed partial class AITask : IComparable
 		}
 	}
 
-	public void Deserialise(string path)
+	public bool Deserialise(string path)
 	{
+		if(string.IsNullOrEmpty(path))
+		{
+			return false;
+		}
+
 		m_actions.Clear();
 
 		using(TextReader tr = File.OpenText(path + ".json"))
@@ -73,6 +78,8 @@ public sealed partial class AITask : IComparable
 				}
 			}
 		}
+
+		return true;
 	}
 
 	private void DeserialiseActions(JsonReader reader)
@@ -99,6 +106,7 @@ public sealed partial class AITask : IComparable
 				else
 				{
 					Debug.Log("\t\tCreated action: <b>" + newAction.GetType().Name + "</b>");
+					newAction.Init();
 					newAction.Deserialise(reader);
 					m_actions.Add(newAction);
 				}

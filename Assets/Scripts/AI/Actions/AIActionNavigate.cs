@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class AIActionNavigate : AIAction 
@@ -14,23 +14,25 @@ public class AIActionNavigate : AIAction
 	{
 		m_name = "Navigate";
 
-		m_outputs.Add("nav_complete");
-		m_outputs.Add("nav_complete0");
-		m_outputs.Add("nav_complete1");
-		m_outputs.Add("nav_complete2");
-		m_outputs.Add("nav_complete3");
-		m_outputs.Add("nav_complete4");
-		m_outputs.Add("nav_complete5");
+	
+	}
+
+	public override void Init()
+	{
+		AIActionLink completelink = ScriptableObject.CreateInstance(typeof(AIActionLink)) as AIActionLink;
+		completelink.linkName = "nav_complete";
 		
-		AIActionData data0 	= new AIActionData();
-		AIActionData data1 	= new AIActionData();
-		data0.ActionID 		= "action_input";
-		data0.BlackBoardID 	= "test_blackboard_id";
-		data0.DataType 		= typeof(float);
+		m_outputLinks.Add(completelink);
 		
-		data1.ActionID 		= "action_input1";
-		data1.BlackBoardID 	= "test_blackboard_id1";
-		data1.DataType 		= typeof(float);
+		AIActionData data0 	= ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;
+		AIActionData data1 	= ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;
+		data0.DataID 				= "action_input";
+		data0.BlackboardSourceID	= "test_blackboard_id";
+		data0.DataType 				= typeof(float).AssemblyQualifiedName;
+		
+		data1.DataID				= "action_input1";
+		data1.BlackboardSourceID	= "test_blackboard_id1";
+		data1.DataType 				= typeof(float).AssemblyQualifiedName;
 		
 		m_inputData.Add(data0);
 		m_inputData.Add(data1);
@@ -90,6 +92,8 @@ public class AIActionNavigate : AIAction
 			// If the destination is reached, inform the derived behaviour
 			if(m_agent.remainingDistance == 0.0f)
 			{
+				m_targetLink = "nav_complete";
+
 				// TODO: Handle actions completing!
 				m_result = AIActionResult.Complete;
 				return;

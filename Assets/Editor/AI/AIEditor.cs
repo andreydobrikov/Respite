@@ -24,7 +24,6 @@ public class AIEditor : Editor
 	{
 		AI ai = (AI)target;
 
-
 		System.Type targetType = typeof(AIBehaviour);
 		List<System.Type> types = new List<System.Type>(targetType.Assembly.GetTypes().Where(x => x.IsSubclassOf(targetType)));
 
@@ -106,20 +105,21 @@ public class AIEditorWindow :  EditorWindow
 
 		DrawUnzoomedArea();
 		DrawZoomArea();
-
-
 	}
 
 	public void DrawUnzoomedArea()
 	{
 		AIManager manager = AIManager.s_instance;
 
+		EditorGUILayout.BeginVertical();
+
 		EditorGUILayout.BeginHorizontal();
 	
 		string[] taskNames = AIManager.s_instance.m_taskNames.ToArray();
+		string[] actionNames = AIManager.s_instance.m_actionNames.ToArray();
 
 		AIManager.s_instance.selectedTaskIndex = EditorGUILayout.Popup(AIManager.s_instance.selectedTaskIndex, taskNames);
-
+		
 		if (GUILayout.Button("Save all tasks", GUILayout.Width(150)))
 		{
 			AIManager.s_instance.DoSerialise();
@@ -144,6 +144,30 @@ public class AIEditorWindow :  EditorWindow
 		}
 
 		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.BeginHorizontal();
+
+		if (manager.m_actionNames.Count == 0)
+		{
+			GUI.enabled = false;
+		}
+
+		manager.selectedActionIndex = EditorGUILayout.Popup(manager.selectedActionIndex, actionNames);
+
+		if (GUILayout.Button("Add Action"))
+		{
+			if (manager.selectedTaskIndex != -1)
+			{
+				AIAction newAction = ScriptableObject.CreateInstance(manager.m_actionTypes[manager.selectedActionIndex]) as AIAction;
+				manager.m_tasks[manager.selectedTaskIndex].AddAction(newAction);
+			}
+		}
+
+		GUI.enabled = true;
+
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.EndVertical();
 
 		var LastRect = GUILayoutUtility.GetLastRect();
 		manager.m_buttonBarHeight = LastRect.height;
@@ -172,7 +196,7 @@ public class AIEditorWindow :  EditorWindow
 		// This can happen during twiddling
 		if (manager.selectedTaskIndex >= manager.m_tasks.Count)
 		{
-			//	return;
+				return;
 		}
 
 		AITask currentTask = manager.m_tasks[manager.selectedTaskIndex];
@@ -227,7 +251,7 @@ public class AIEditorWindow :  EditorWindow
 				AIAction linkedAction = action.GetOutput(index);
 				if (linkedAction != null)
 				{
-					Vector2 start = new Vector2(action.m_editorPosition.x + action.m_outputRects[index].x + action.m_outputRects[index].width + 10, action.m_editorPosition.y + action.m_outputRects[index].y + 10);
+					Vector2 start = new Vector2(action.m_editorPosition.x + action.Outputs[index].outputRect.x + action.Outputs[index].outputRect.width + 10, action.m_editorPosition.y + action.Outputs[index].outputRect.y + 10);
 					Vector2 end = new Vector2(linkedAction.m_editorPosition.x - 5, linkedAction.m_editorPosition.y + linkedAction.m_lastBounds.height / 2.0f);
 
 					start.x += m_scrollOffset.x;
@@ -246,15 +270,13 @@ public class AIEditorWindow :  EditorWindow
 						leftTop.x = end.x - 10.0f - (expansion * currentVal);
 
 						Vector2 left = leftTop;
-						left.y = end.y;// -(50.0f * currentVal) + (expansion * currentVal);
+						left.y = end.y;
 
 						Drawing.DrawLine(start, right, red, 1.0f, true);
 						Drawing.DrawLine(right, rightTop, red, 1.0f, true);
 						Drawing.DrawLine(rightTop, leftTop, red, 1.0f, true);
 						Drawing.DrawLine(leftTop, left, red, 1.0f, true);
 						Drawing.DrawLine(left, end, red, 1.0f, true);
-
-						//Drawing.bezierLine(start, wrapStart, end, wrapEnd, new Color(currentColor, 1.0f, 0.0f, 1.0f), 1.0f, true, 20);
 					}
 					else
 					{
@@ -265,8 +287,6 @@ public class AIEditorWindow :  EditorWindow
 			}
 		}
 
-
-
 		// input button checks
 		foreach (var action in currentTask.Actions)
 		{
@@ -274,8 +294,7 @@ public class AIEditorWindow :  EditorWindow
 			{
 				if (manager.m_dragAction != null)
 				{
-					manager.m_dragAction.SetOutput(manager.m_dragAction.Outputs[manager.m_dragActionOutput], action);
-					currentTask.m_actiontest = "BLAH";
+					manager.m_dragAction.SetOutput(manager.m_dragAction.Outputs[manager.m_dragActionOutput].linkName, action);
 				}
 			}
 		}
@@ -293,9 +312,10 @@ public class AIEditorWindow :  EditorWindow
 			foreach (var output in action.Outputs)
 			{
 				GUI.depth = -1;
-				if (GUI.Button(new Rect(action.m_editorPosition.x + action.m_outputRects[index].x + action.m_outputRects[index].width + m_scrollOffset.x + 5, action.m_editorPosition.y + action.m_outputRects[index].y + m_scrollOffset.y + 5, 10, 10), "x"))
+				if (GUI.Button(new Rect(action.m_editorPosition.x + action.Outputs[index].outputRect.x + action.Outputs[index].outputRect.width + m_scrollOffset.x + 5, action.m_editorPosition.y + action.Outputs[index].outputRect.y + m_scrollOffset.y + 5, 10, 10), "x"))
 				{
-					action.SetOutput(output, null);
+
+					action.SetOutput(output.linkName, null);
 					manager.m_dragAction = action;
 					manager.m_dragActionOutput = index;
 				}
@@ -369,7 +389,6 @@ public class AIEditorWindow :  EditorWindow
 	// Draw an editor window
 	void DrawActionWindow(int id)
 	{
-
 		AIAction currentAction = AIManager.s_instance.m_tasks[AIManager.s_instance.selectedTaskIndex].Actions[id];
 		GUIStyle rightStyle = new GUIStyle((GUIStyle)("label"));
 		rightStyle.alignment = TextAnchor.MiddleRight;
@@ -386,11 +405,35 @@ public class AIEditorWindow :  EditorWindow
 		int index = 0;
 		foreach (var output in currentAction.Outputs)
 		{
-			GUILayout.Label(output, rightStyle);
-			if(Event.current.type == EventType.repaint)
-			currentAction.m_outputRects[index] = GUILayoutUtility.GetLastRect();
+			GUILayout.Label(output.linkName, rightStyle);
+			if (Event.current.type == EventType.repaint)
+			{
+				var link = currentAction.Outputs[index];
+				link.outputRect = GUILayoutUtility.GetLastRect();
+				currentAction.Outputs[index] = link;
+			}
+			
 			index++;
 		}
+
+		currentAction.m_showInputDataFoldout = EditorGUILayout.Foldout(currentAction.m_showInputDataFoldout, "Input Data");
+
+		if(currentAction.m_showInputDataFoldout)
+		{
+			for(int i = 0; i < currentAction.m_inputData.Count; i++)
+			{
+				var actionData = currentAction.m_inputData[i];
+				GUILayout.BeginHorizontal();
+
+				GUILayout.Label(actionData.DataID, leftStyle);
+				actionData.BlackboardSourceID = GUILayout.TextField(actionData.BlackboardSourceID != null ? actionData.BlackboardSourceID : "", GUILayout.Width(100));
+
+				currentAction.m_inputData[i] = actionData;
+
+				GUILayout.EndHorizontal();
+			}
+		}
+
 
 		GUILayout.EndVertical();
 

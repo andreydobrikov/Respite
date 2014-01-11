@@ -19,7 +19,9 @@ public sealed partial class AITask : ScriptableObject, IComparable
 	public static AITask LoadTask(string taskName)
 	{
 		AITask newTask = new AITask();
-		newTask.Deserialise(Application.dataPath + "/ai_tasks/" + taskName + ".json");
+		newTask.Deserialise(Application.dataPath + "/ai_tasks/" + taskName );
+
+		newTask.Name = taskName;
 
 		return newTask;
 	}

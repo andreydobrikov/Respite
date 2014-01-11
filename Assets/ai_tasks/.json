@@ -1,0 +1,77 @@
+{
+  "name": null,
+  "actions": [
+    {
+      "action_type": "AIActionTest, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "id": 0,
+      "input_data": [
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        },
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        }
+      ],
+      "output_data": [
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        }
+      ],
+      "links": []
+    },
+    {
+      "action_type": "AIActionTest, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "id": 1,
+      "input_data": [
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        },
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        }
+      ],
+      "output_data": [
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        }
+      ],
+      "links": []
+    },
+    {
+      "action_type": "AIActionTest, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "id": 2,
+      "input_data": [
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        },
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        }
+      ],
+      "output_data": [
+        {
+          "action_id": null,
+          "blackboard_id": "",
+          "data_type": null
+        }
+      ],
+      "links": []
+    }
+  ]
+}

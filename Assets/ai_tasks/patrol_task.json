@@ -6,58 +6,41 @@
       "id": 0,
       "input_data": [
         {
-          "blackboard_id": "test_blackboard_id",
           "action_id": "action_input",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         },
         {
-          "blackboard_id": "test_blackboard_id1",
           "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
           "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         }
       ],
       "output_data": [],
-      "links": []
+      "links": [
+        {
+          "link_name": "nav_complete",
+          "link_id": 1
+        }
+      ]
+    },
+    {
+      "action_type": "AIActionIdle, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "id": 1,
+      "input_data": [
+        {
+          "action_id": "input_idle_time",
+          "blackboard_id": "nav_idle_time",
+          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+        }
+      ],
+      "output_data": [],
+      "links": [
+        {
+          "link_name": "idle_complete",
+          "link_id": 0
+        }
+      ]
     }
   ]
 }

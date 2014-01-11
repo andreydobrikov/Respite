@@ -16,6 +16,7 @@ using UnityEditor;
 
 using UnityEngine;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 [ExecuteInEditMode]
@@ -26,8 +27,9 @@ public class AIManager : MonoBehaviour
 	
 	void OnEnable()
 	{
-	//	DoDeserialise();
+		RebuildActionList();
 		s_instance = this;
+		DoDeserialise();
 	}
 
 	public void DoSerialise()
@@ -51,18 +53,41 @@ public class AIManager : MonoBehaviour
 		foreach(var task in info.GetFiles())
 		{
 			Debug.Log("Checking " + task);
-			if(task.Extension == ".json")
+			string fileName = System.IO.Path.GetFileNameWithoutExtension(task.Name);
+			if(task.Extension == ".json" && !string.IsNullOrEmpty(fileName))
 			{
 				Debug.Log("Deserialising " + task.FullName);
 				AITask newTask = ScriptableObject.CreateInstance(typeof(AITask)) as AITask;
 
-				newTask.Deserialise(System.IO.Path.ChangeExtension(task.FullName, null));
+				bool succeeded = newTask.Deserialise(System.IO.Path.ChangeExtension(task.FullName, null));
 
-				m_tasks.Add(newTask);
-				m_taskNames.Add(newTask.Name);
+				if(succeeded)
+				{
+					m_tasks.Add(newTask);
+					m_taskNames.Add(newTask.Name);
+				}
+				else
+				{
+					Debug.LogError("Failed to load " + task.FullName);
+				}
 			}
 		}
 		Debug.Log("Deserialisation complete");
+	}
+
+	public void RebuildActionList()
+	{
+		System.Type targetType = typeof(AIAction);
+		List<System.Type> types = new List<System.Type>(targetType.Assembly.GetTypes().Where(x => x.IsSubclassOf(targetType)));
+
+		m_actionNames.Clear();
+		m_actionTypes.Clear();
+
+		foreach (var actionType in types)
+		{
+			m_actionNames.Add(actionType.Name);
+			m_actionTypes.Add(actionType);
+		}
 	}
 
 #if UNITY_EDITOR
@@ -86,7 +111,10 @@ public class AIManager : MonoBehaviour
 	}
 
 	public int selectedTaskIndex = 0;
+	public int selectedActionIndex = 0;
 	public List<string> m_taskNames = new List<string>();
+	public List<string> m_actionNames = new List<string>();
+	public List<System.Type> m_actionTypes = new List<System.Type>();
 	public AIAction m_dragAction = null;
 	public int m_dragActionOutput = -1;
 	public bool m_debugEditor = true;

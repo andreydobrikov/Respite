@@ -57,6 +57,7 @@ public class AI : MonoBehaviour, ISerialisable
 
 				m_runningTask = m_taskList[0];
 				m_runningTask.Start();
+				Debug.Log("Starting AI task \"" + m_runningTask.name + "\"");
 			}
 		}
 

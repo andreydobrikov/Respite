@@ -6,153 +6,44 @@
       "id": 0,
       "input_data": [
         {
-          "blackboard_id": "test_blackboard_id",
           "action_id": "action_input",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         },
         {
-          "blackboard_id": "test_blackboard_id1",
           "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         }
       ],
       "output_data": [
         {
-          "blackboard_id": "test_blackboard_id1",
           "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         }
       ],
-      "links": [
-        {
-          "link_name": "thing",
-          "link_id": 1
-        },
-        {
-          "link_name": "thing8",
-          "link_id": 1
-        }
-      ]
+      "links": []
     },
     {
       "action_type": "AIActionTest, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "id": 1,
       "input_data": [
         {
-          "blackboard_id": "test_blackboard_id",
           "action_id": "action_input",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         },
         {
-          "blackboard_id": "test_blackboard_id1",
           "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         }
       ],
       "output_data": [
         {
-          "blackboard_id": "test_blackboard_id1",
           "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         }
       ],
@@ -163,99 +54,24 @@
       "id": 2,
       "input_data": [
         {
-          "blackboard_id": "test_blackboard_id",
           "action_id": "action_input",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         },
         {
-          "blackboard_id": "test_blackboard_id1",
           "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id",
-          "action_id": "action_input",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         }
       ],
       "output_data": [
         {
-          "blackboard_id": "test_blackboard_id1",
           "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
-          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        },
-        {
-          "blackboard_id": "test_blackboard_id1",
-          "action_id": "action_input1",
+          "blackboard_id": "blackboard_id",
           "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
         }
       ],
-      "links": [
-        {
-          "link_name": "thing",
-          "link_id": 1
-        },
-        {
-          "link_name": "thing0",
-          "link_id": 1
-        },
-        {
-          "link_name": "thing1",
-          "link_id": 1
-        },
-        {
-          "link_name": "thing6",
-          "link_id": 1
-        },
-        {
-          "link_name": "thing7",
-          "link_id": 1
-        },
-        {
-          "link_name": "thing8",
-          "link_id": 1
-        }
-      ]
+      "links": []
     }
   ]
 }

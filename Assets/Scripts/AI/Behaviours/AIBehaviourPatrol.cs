@@ -27,12 +27,14 @@ public class AIBehaviourPatrol : AIBehaviour
 
 	public override void Start()
 	{
+		m_parentAI.Blackboard.AddEntry<float>("nav_idle_time", 3.0f); 
+
 		AITask patrolTask = null;
 		if(m_tasks.TryGetValue("patrol_task", out patrolTask))
 		{
 			if(patrolTask.Result == AITaskResult.Idle)
 			{
-				m_parentAI.PushTask(patrolTask);
+				m_parentAI.PushTask(patrolTask); 
 			}
 		}
 	}

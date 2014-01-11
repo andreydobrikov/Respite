@@ -7,33 +7,42 @@ public class AIActionTest : AIAction
 	{
 		m_name = "DEBUG";
 
-		AIActionData data0 	= new AIActionData();
-		AIActionData data1 	= new AIActionData();
-		data0.ActionID 		= "action_input";
-		data0.BlackBoardID 	= "test_blackboard_id";
-		data0.DataType 		= typeof(float);
+	}
 
-		data1.ActionID 		= "action_input1";
-		data1.BlackBoardID 	= "test_blackboard_id1";
-		data1.DataType 		= typeof(float);
-
+	public override void Init()
+	{
+		
+		AIActionData data0 	= ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;
+		AIActionData data1 	= ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;
+		data0.DataID 		= "action_input";
+		data0.BlackboardSourceID 	= "test_blackboard_id";
+		data0.DataType 		= typeof(float).AssemblyQualifiedName;
+		
+		data1.DataID 		= "action_input1";
+		data1.BlackboardSourceID 	= "test_blackboard_id1";
+		data1.DataType 		= typeof(float).AssemblyQualifiedName;
+		
 		m_inputData.Add(data0);
 		m_inputData.Add(data1);
 		m_outputData.Add(data1);
-
-		m_outputs.Add("thing");
-		m_outputs.Add("thing0");
-		m_outputs.Add("thing1");
-		m_outputs.Add("thing2");
-		m_outputs.Add("thing3");
-		m_outputs.Add("thing4");
-		m_outputs.Add("thing5");
-		m_outputs.Add("thing6");
-		m_outputs.Add("thing7");
-		m_outputs.Add("thing8");
-
+		
+		AIActionLink link = ScriptableObject.CreateInstance(typeof(AIActionLink)) as AIActionLink;
+		link.linkName = "complete";
+		
+		m_outputLinks.Add(link);
+		/*
+		m_outputLinks.Add("thing");
+		m_outputLinks.Add("thing0");
+		m_outputLinks.Add("thing1");
+		m_outputLinks.Add("thing2");
+		m_outputLinks.Add("thing3"); 
+		m_outputLinks.Add("thing4");
+		m_outputLinks.Add("thing5");
+		m_outputLinks.Add("thing6");
+		m_outputLinks.Add("thing7");
+		m_outputLinks.Add("thing8");
+		*/
 	}
-
 
 	public override void Start()
 	{

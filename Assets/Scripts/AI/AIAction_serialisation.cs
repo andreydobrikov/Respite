@@ -22,14 +22,14 @@ public abstract partial class AIAction
 		{
 			writer.WriteStartObject();
 
-			writer.WritePropertyName("blackboard_id");
-			writer.WriteValue(input.BlackBoardID);
-
 			writer.WritePropertyName("action_id");
-			writer.WriteValue(input.ActionID);
+			writer.WriteValue(input.DataID);
+
+			writer.WritePropertyName("blackboard_id");
+			writer.WriteValue(input.BlackboardSourceID == null ? "" : input.BlackboardSourceID);
 
 			writer.WritePropertyName("data_type");
-			writer.WriteValue(input.DataType.AssemblyQualifiedName);
+			writer.WriteValue(input.DataType);
 
 			writer.WriteEndObject();
 		}
@@ -43,14 +43,14 @@ public abstract partial class AIAction
 		{
 			writer.WriteStartObject();
 
-			writer.WritePropertyName("blackboard_id");
-			writer.WriteValue(input.BlackBoardID);
-
 			writer.WritePropertyName("action_id");
-			writer.WriteValue(input.ActionID);
+			writer.WriteValue(input.DataID);
+
+			writer.WritePropertyName("blackboard_id");
+			writer.WriteValue(input.BlackboardSourceID == null ? "" : input.BlackboardSourceID);
 
 			writer.WritePropertyName("data_type");
-			writer.WriteValue(input.DataType.AssemblyQualifiedName);
+			writer.WriteValue(input.DataType);
 
 			writer.WriteEndObject();
 		}
@@ -61,22 +61,20 @@ public abstract partial class AIAction
 		writer.WritePropertyName("links");
 		writer.WriteStartArray();
 
-		for (int i = 0; i < m_links.Count; i++ )
+		for (int i = 0; i < m_outputLinks.Count; i++ )
 		{
-			if (m_links[i] == null)
+			if(m_outputLinks[i].linkAction != null)
 			{
-				continue;
+				writer.WriteStartObject();
+
+				writer.WritePropertyName("link_name");
+				writer.WriteValue(m_outputLinks[i].linkName);
+
+				writer.WritePropertyName("link_id");
+				writer.WriteValue(m_outputLinks[i].linkAction.SerialisationID);
+
+				writer.WriteEndObject();
 			}
-
-			writer.WriteStartObject();
-
-			writer.WritePropertyName("link_name");
-			writer.WriteValue(m_outputs[i]);
-
-			writer.WritePropertyName("link_id");
-			writer.WriteValue(m_links[i].SerialisationID);
-
-			writer.WriteEndObject();
 		}
 
 		writer.WriteEndArray();
@@ -118,19 +116,32 @@ public abstract partial class AIAction
 					Debug.Log("\t\tDeserialising links");
 					DeserialiseLinks(reader);
 				}
-
+				else
+				{
+					reader.Read();
+				}
 			}
-			reader.Read();
+			else
+			{
+				reader.Read();
+			}
+
 		}
 	}
 
 	private void DeserialiseData(JsonReader reader, List<AIActionData> dataList)
 	{
+		int previousDepth = reader.Depth;
 		reader.Read();
 		int depth = reader.Depth;
 
+		if(depth == previousDepth)
+		{
+			return;
+		}
+
 		bool dataFound = false;
-		AIActionData currentData = new AIActionData();
+		string currentDataID = string.Empty;
 		
 		while(reader.Depth >= depth)
 		{
@@ -138,40 +149,30 @@ public abstract partial class AIAction
 			{
 				if(reader.Value.ToString() == "blackboard_id")
 				{
-					if(dataFound)
-					{
-						Debug.Log("\t\t\tAdding data with blackboard_id: <b>" + currentData.BlackBoardID + "</b>");
-						dataList.Add(currentData);
-					}
-
 					reader.Read();
-
-					currentData = new AIActionData();
-					currentData.BlackBoardID = reader.Value.ToString();
-
-					dataFound = true;
+					bool found = false;
+					for(int i = 0; i < dataList.Count; i++)
+					{
+						if(dataList[i].DataID == currentDataID)
+						{
+							var data = dataList[i];
+							data.BlackboardSourceID = reader.Value == null ? "" : reader.Value.ToString();
+							dataList[i] = data;
+							found = true;
+						}
+					}
+					if(!found)
+					{
+						Debug.Break();
+					}
 				}
 				else if(reader.Value.ToString() == "action_id")
 				{
 					reader.Read();
-					currentData.ActionID = reader.Value.ToString();
+					currentDataID = reader.Value.ToString();
 				}
-				else if(reader.Value.ToString() == "data_type")
-				{
-					reader.Read();
-
-					Type newType = Type.GetType(reader.Value.ToString());
-					currentData.DataType = newType;
-				}
-
 			}
 			reader.Read();
-		}
-
-		if(dataFound)
-		{
-			Debug.Log("\t\t\tAdding data with blackboard_id: <b>" + currentData.BlackBoardID + "</b>");
-			dataList.Add(currentData);
 		}
 	}
 
@@ -209,11 +210,6 @@ public abstract partial class AIAction
 
 	public void PostDeserialise()
 	{
-		foreach(var whatever in m_outputs)
-		{
-			m_links.Add(null);
-		}
-
 		foreach(var link in m_linkSerialisationMap)
 		{
 			AIAction linkAction = Task.GetActionFromSerialisationID(link.Value);
@@ -221,26 +217,22 @@ public abstract partial class AIAction
 			if(linkAction != null)
 			{
 				Debug.Log("\t\tAdding link to <b>" + linkAction.Name + "</b> from <b>" + Name + "</b>");
-				for (int i = 0; i < m_outputs.Count; i++)
+
+				for (int index = 0; index < m_outputLinks.Count; index++ )
 				{
-					if (m_outputs[i] == link.Key)
+					if (m_outputLinks[index].linkName == link.Key)
 					{
-						// TODO: Review this. I am so tired
-						while(m_links.Count < i + 1)
-						{
-							m_links.Add(null);
-						}
-						
-						m_links[i] = linkAction;
+						var targetLink = m_outputLinks[index];
+						targetLink.linkAction = linkAction;
+						m_outputLinks[index] = targetLink;
 					}
 				}
 			}
-			Debug.Log("<color=purple> Complete " + m_links.Count + " links</color>");
+			Debug.Log("<color=purple> Complete " + m_outputLinks.Count + " links</color>");
 		}
 
 		foreach (var inputData in m_inputData)	{ m_inputDataRects.Add(new Rect());	}
 		foreach (var outputData in m_outputData) { m_outputDataRects.Add(new Rect()); }
-		foreach (var output in m_outputs) { m_outputRects.Add(new Rect()); }
 	}
 
 	public Dictionary<string, int> m_linkSerialisationMap = new Dictionary<string, int>();
