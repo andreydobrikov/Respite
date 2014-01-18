@@ -13,8 +13,6 @@ public class AIActionNavigate : AIAction
 	public AIActionNavigate()
 	{
 		m_name = "Navigate";
-
-	
 	}
 
 	public override void Init()
@@ -23,19 +21,15 @@ public class AIActionNavigate : AIAction
 		completelink.linkName = "nav_complete";
 		
 		m_outputLinks.Add(completelink);
-		
-		AIActionData data0 	= ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;
-		AIActionData data1 	= ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;
-		data0.DataID 				= "action_input";
-		data0.BlackboardSourceID	= "test_blackboard_id";
-		data0.DataType 				= typeof(float).AssemblyQualifiedName;
-		
-		data1.DataID				= "action_input1";
-		data1.BlackboardSourceID	= "test_blackboard_id1";
-		data1.DataType 				= typeof(float).AssemblyQualifiedName;
-		
-		m_inputData.Add(data0);
-		m_inputData.Add(data1);
+
+		// Required input-data
+		AIActionData navTargetData = ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;
+
+		navTargetData.DataID = "nav_target";
+		navTargetData.DataType = typeof(Vector3).AssemblyQualifiedName;
+
+		// Add data
+		m_inputData.Add(navTargetData);
 	}
 	
 	public override void Start()
@@ -53,7 +47,12 @@ public class AIActionNavigate : AIAction
 
 		m_activeState = AINavigationState.Routing;
 
-		m_agent.SetDestination(GameObject.FindObjectOfType<Player>().transform.position);
+		if(GetBlackboardData("nav_target_position", ref m_destination))
+		{
+			m_agent.SetDestination(m_destination);
+		}
+
+
 		m_result = AIActionResult.Running;
 	}
 	
@@ -138,7 +137,6 @@ public class AIActionNavigate : AIAction
 				if(Mathf.Abs(delta) < 50.0f)
 				{
 					m_activeState = AINavigationState.Routing;
-					m_agent.SetDestination(m_destination);
 				}
 				
 				Quaternion targetRotation = Quaternion.Euler(0.0f, newRotation, 0.0f);					

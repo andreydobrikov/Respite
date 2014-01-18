@@ -10,7 +10,7 @@ using Newtonsoft.Json.Serialization;
 public sealed partial class AITask : IComparable 
 {
 	public void Serialise(string directory)
-	{
+	{ 
 		int ID = 0;
 		AssignSerialisationIDs(ref ID);
 
@@ -34,7 +34,7 @@ public sealed partial class AITask : IComparable
 
 				writer.WritePropertyName("actions");
 				writer.WriteStartArray();
-				foreach(var action in m_actions)
+				foreach(var action in m_actions) 
 				{
 					writer.WriteStartObject();
 					action.Serialise(writer);
@@ -46,45 +46,48 @@ public sealed partial class AITask : IComparable
 		}
 	}
 
-	public bool Deserialise(string path)
+	public bool Deserialise(string jsonSource)
 	{
-		if(string.IsNullOrEmpty(path))
-		{
-			return false;
-		}
-
 		m_actions.Clear();
 
-		using(TextReader tr = File.OpenText(path + ".json"))
+		try
 		{
-			using(JsonReader reader = new JsonTextReader(tr))
+			using(TextReader tr = new StringReader(jsonSource))  
 			{
-				while(reader.Read())
+				using(JsonReader reader = new JsonTextReader(tr)) 
 				{
-					if(reader.TokenType == JsonToken.PropertyName)
+					while(reader.Read())
 					{
-						if(reader.Value.ToString() == "name")
+						if(reader.TokenType == JsonToken.PropertyName)
 						{
-							reader.Read();
-							Name = reader.Value.ToString();
-						}
-
-						if(reader.Value.ToString() == "actions")
-						{
-
-							DeserialiseActions(reader);
+							if(reader.Value.ToString() == "name")
+							{
+								reader.Read();
+								Name = reader.Value.ToString();
+							}
+							
+							if(reader.Value.ToString() == "actions")
+							{
+								
+								DeserialiseActions(reader);
+							}
 						}
 					}
 				}
 			}
 		}
+		catch( Exception e)
+		{
+			Debug.LogError("Failed to load JSON:\n" + jsonSource);
+			return false;
+		}
+
 
 		return true;
 	}
 
 	private void DeserialiseActions(JsonReader reader)
 	{
-		Debug.Log("\t<b>Deserialising actions...</b>");
 		reader.Read();
 		int depth = reader.Depth;
 
@@ -105,7 +108,6 @@ public sealed partial class AITask : IComparable
 				}
 				else
 				{
-					Debug.Log("\t\tCreated action: <b>" + newAction.GetType().Name + "</b>");
 					newAction.Init();
 					newAction.Deserialise(reader);
 					m_actions.Add(newAction);

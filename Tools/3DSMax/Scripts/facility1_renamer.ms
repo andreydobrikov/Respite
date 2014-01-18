@@ -4,6 +4,6 @@ for OBJ in Geometry do
 	if matchPattern OBJ.name pattern:(pattern + "?*") do
 	(
 		objectName = substring OBJ.name pattern.count OBJ.name.count
-		OBJ.name = ("facility1" + objectName)
+		OBJ.name = ("facility_basement" + objectName)
 	)
 )

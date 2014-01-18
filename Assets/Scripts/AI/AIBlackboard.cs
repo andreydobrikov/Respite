@@ -75,6 +75,7 @@ public class AIBlackboard
 			}
 #endif
 			outputEntry.EntryObject = newValue;
+			m_blackboardEntries[entryHash] = outputEntry;
 			return true;
 		}
 

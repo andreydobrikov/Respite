@@ -88,8 +88,6 @@ public abstract partial class AIAction
 		{
 			if(reader.TokenType == JsonToken.PropertyName)
 			{
-				Debug.Log("<color=green>" + reader.Value.ToString() + "</color>");
-
 				if(reader.Value.ToString() == "id")
 				{
 					reader.Read();
@@ -101,19 +99,16 @@ public abstract partial class AIAction
 				if(reader.Value.ToString() == "input_data")
 				{
 					reader.Read();
-					Debug.Log("\t\tDeserialising input data");
 					DeserialiseData(reader, m_inputData);
 				}
 				else if(reader.Value.ToString() == "output_data")
 				{
 					reader.Read();
-					Debug.Log("\t\tDeserialising output data");
 					DeserialiseData(reader, m_outputData);
 				}
 				else if(reader.Value.ToString() == "links")
 				{
 					reader.Read();
-					Debug.Log("\t\tDeserialising links");
 					DeserialiseLinks(reader);
 				}
 				else
@@ -198,14 +193,12 @@ public abstract partial class AIAction
 					reader.Read();
 					if(int.TryParse(reader.Value.ToString(), out linkID))
 					{
-						Debug.Log("\t\tLink found");
 						m_linkSerialisationMap.Add(linkName, linkID);
 					}
 				}
 			}
 			reader.Read();
 		}
-		Debug.Log("<color=blue> Deserialised " + m_linkSerialisationMap.Count + " Links</color>");
 	}
 
 	public void PostDeserialise()
@@ -216,8 +209,6 @@ public abstract partial class AIAction
 
 			if(linkAction != null)
 			{
-				Debug.Log("\t\tAdding link to <b>" + linkAction.Name + "</b> from <b>" + Name + "</b>");
-
 				for (int index = 0; index < m_outputLinks.Count; index++ )
 				{
 					if (m_outputLinks[index].linkName == link.Key)
@@ -228,11 +219,12 @@ public abstract partial class AIAction
 					}
 				}
 			}
-			Debug.Log("<color=purple> Complete " + m_outputLinks.Count + " links</color>");
 		}
 
+#if UNITY_EDITOR
 		foreach (var inputData in m_inputData)	{ m_inputDataRects.Add(new Rect());	}
 		foreach (var outputData in m_outputData) { m_outputDataRects.Add(new Rect()); }
+#endif
 	}
 
 	public Dictionary<string, int> m_linkSerialisationMap = new Dictionary<string, int>();

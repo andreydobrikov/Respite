@@ -18,8 +18,15 @@ public sealed partial class AITask : ScriptableObject, IComparable
 
 	public static AITask LoadTask(string taskName)
 	{
-		AITask newTask = new AITask();
-		newTask.Deserialise(Application.dataPath + "/ai_tasks/" + taskName );
+		var asset = Resources.Load("ai_tasks" + taskName);
+
+		AITask newTask = ScriptableObject.CreateInstance(typeof(AITask)) as AITask;
+
+		TextAsset taskAsset = asset as TextAsset;
+		if(taskAsset != null)
+		{
+			newTask.Deserialise(taskAsset.text);
+		}
 
 		newTask.Name = taskName;
 
@@ -30,7 +37,7 @@ public sealed partial class AITask : ScriptableObject, IComparable
 	{
 		Result = AITaskResult.Running;
 
-		if(m_actions.Count > 0)
+		if(m_actions.Count > 0) 
 		{
 			m_currentAction = m_actions[0];
 			m_currentAction.Start();

@@ -1,0 +1,36 @@
+{
+  "name": "patrol_task",
+  "actions": [
+    {
+      "action_type": "AIActionNavigate, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "id": 0,
+      "input_data": [
+        {
+          "action_id": "nav_target",
+          "blackboard_id": "nav_target_position",
+          "data_type": "UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+        }
+      ],
+      "output_data": [],
+      "links": [
+        {
+          "link_name": "nav_complete",
+          "link_id": 1
+        }
+      ]
+    },
+    {
+      "action_type": "AIActionIdle, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "id": 1,
+      "input_data": [
+        {
+          "action_id": "input_idle_time",
+          "blackboard_id": "nav_idle_time",
+          "data_type": "System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+        }
+      ],
+      "output_data": [],
+      "links": []
+    }
+  ]
+}

@@ -308,9 +308,13 @@ public class OccludedMesh : MonoBehaviour
 				for(int vertID = 0; vertID < colliderPair.Value.vertices.Count; vertID++)
 				{
 					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID]);
+					worldPos.y = objectPosition.y;
 					Vector3 direction = worldPos - objectPosition;
+					direction.y = 0.0f;
+
+					Debug.DrawLine(objectPosition, objectPosition + direction, Color.blue);
 					
-					if(Physics.Raycast(objectPosition, direction, out hitInfo, 1.0f, 1 <<  collisionLayer))
+					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.size.x, 1 <<  collisionLayer))
 					{
 						if(ShowExtrusionRays) { Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
 						
@@ -328,9 +332,10 @@ public class OccludedMesh : MonoBehaviour
 				{
 					// Find the transformed position of the vertex scaled by the mysterious expansion factor 
 					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID] * m_sphereExpansion);
-					
+					worldPos.y = objectPosition.y;
 					
 					Vector3 direction = worldPos - objectPosition;
+					direction.y = 0.0f;
 					
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.size.x, 1 <<  collisionLayer))
 					{

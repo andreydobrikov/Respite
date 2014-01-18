@@ -82,6 +82,16 @@ public abstract partial class AIAction : ScriptableObject
 		return null;
 	}
 
+	protected bool GetBlackboardData<T>(string dataID, ref T outData)
+	{
+		if (!Task.Behaviour.m_parentAI.Blackboard.GetEntry<T>(dataID.GetHashCode(), ref outData))
+		{
+			Debug.LogWarning("Behaviour expects blackboard data \"" + dataID + "\". Data not found.");
+			return false;
+		}
+		return true;
+	}
+
 	protected string m_name 			= string.Empty;
 	protected string m_ID 				= string.Empty; // This is used as the ID during serialisation, so be wary of altering it!.
 	protected string m_targetLink		= string.Empty;	// The link to follow upon completion; 

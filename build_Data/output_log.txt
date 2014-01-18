@@ -17,89 +17,207 @@ Platform assembly: C:\Unity\Respite\build_Data\Managed\Assembly-UnityScript-firs
 Loading C:\Unity\Respite\build_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
 Platform assembly: C:\Unity\Respite\build_Data\Managed\Newtonsoft.Json.dll (this message is harmless)
 Loading C:\Unity\Respite\build_Data\Managed\Newtonsoft.Json.dll into Unity Child Domain
-- Completed reload, in  0.808 seconds
+- Completed reload, in  0.065 seconds
 desktop: 1680x1050 60Hz; virtual: 3360x1050 at -1680,0
 <RI> Initializing input.
 <RI> Input initialized.
 Platform assembly: C:\Unity\Respite\build_Data\Managed\System.dll (this message is harmless)
 Platform assembly: C:\Unity\Respite\build_Data\Managed\System.Core.dll (this message is harmless)
 Fade requested
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
+MainMenu:Start() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:35)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Fade not needed, calling handler...
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:98)
+MainMenu:Start() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:35)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Platform assembly: C:\Unity\Respite\build_Data\Managed\Boo.Lang.dll (this message is harmless)
 Fade requested
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
+MainMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:48)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Fade complete, calling handler...
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Fade requested
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
+MainMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:57)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Fade complete, calling handler...
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 The referenced script on this Behaviour is missing!
  
-(Filename:  Line: 1699)
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/Runtime/Mono/MonoBehaviour.cpp Line: 1699)
 
-UnloadTime: 75.617706 ms
+The referenced script on this Behaviour is missing!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/Runtime/Mono/MonoBehaviour.cpp Line: 1699)
+
+UnloadTime: 0.771435 ms
+<color=green>(AI)Deserialising Tasks</color>
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:49)
+AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
+ 
+(Filename: C Line: 0)
+
+DirectoryNotFoundException: Directory 'C:\Unity\Respite\build_Data\resources\ai_tasks' not found.
+  at System.IO.Directory.GetFileSystemEntries (System.String path, System.String searchPattern, FileAttributes mask, FileAttributes attrs) [0x000f7] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/Directory.cs:514 
+  at System.IO.Directory.GetFiles (System.String path, System.String searchPattern) [0x00000] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/Directory.cs:308 
+  at System.IO.DirectoryInfo.GetFiles (System.String searchPattern) [0x00011] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/DirectoryInfo.cs:165 
+  at System.IO.DirectoryInfo.GetFiles () [0x00000] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/DirectoryInfo.cs:157 
+  at (wrapper remoting-invoke-with-check) System.IO.DirectoryInfo:GetFiles ()
+  at AIManager.DoDeserialise () [0x0002a] in C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:55 
+  at AIManager.OnEnable () [0x0000c] in C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33 
+ 
+(Filename: C Line: 0)
+
+System memory in use before: 107.2 MB.
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+System memory in use after: 107.3 MB.
 
-Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 7287.
-Total: 32.905701 ms (FindLiveObjects: 0.658420 ms CreateObjectMapping: 0.180828 ms MarkObjects: 31.014292 ms  DeleteObjects: 0.130152 ms)
+Unloading 42 unused Assets to reduce memory usage. Loaded Objects now: 10215.
+Total: 168.457993 ms (FindLiveObjects: 0.493995 ms CreateObjectMapping: 0.098434 ms MarkObjects: 1.981086 ms  DeleteObjects: 0.139266 ms)
 
 Fade requested
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
+GameFlow:LevelLoaded() (at C:\Unity\Respite\Assets\Scripts\GameFlow\GameFlow.cs:58)
+GameFlowWrapper:OnLevelWasLoaded() (at C:\Unity\Respite\Assets\Scripts\Level\GameFlowWrapper.cs:92)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Level loaded
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+StatsTracker:OnLevelWasLoaded() (at C:\Unity\Respite\Assets\Scripts\Utilities\StatsTracker.cs:20)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Controller (XBOX 360 For Windows)
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+GameFlowWrapper:Start() (at C:\Unity\Respite\Assets\Scripts\Level\GameFlowWrapper.cs:28)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
+
+Platform assembly: C:\Unity\Respite\build_Data\Managed\System.Xml.dll (this message is harmless)
+Loading <b>1</b> tasks for behaviour <b>Patrol</b>
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+AIBehaviour:LoadTasks() (at C:\Unity\Respite\Assets\Scripts\AI\AIBehaviour.cs:29)
+AI:Start() (at C:\Unity\Respite\Assets\Scripts\AI\AI.cs:33)
+ 
+(Filename: C Line: 0)
 
 Scene::raycastClosestShape: The maximum distance must be greater than zero!
- 
-(Filename: ..\..\Physics\src\NpScene.cpp Line: 2538)
+UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
+OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
+OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
+
+[..\..\Physics\src\NpScene.cpp line 2538] 
+(Filename: C Line: 0)
 
 Scene::raycastClosestShape: The maximum distance must be greater than zero!
- 
-(Filename: ..\..\Physics\src\NpScene.cpp Line: 2538)
+UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
+OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
+OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
+
+[..\..\Physics\src\NpScene.cpp line 2538] 
+(Filename: C Line: 0)
 
 Scene::raycastClosestShape: The maximum distance must be greater than zero!
+UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
+OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
+OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
+
+[..\..\Physics\src\NpScene.cpp line 2538] 
+(Filename: C Line: 0)
+
+Scene::raycastClosestShape: The maximum distance must be greater than zero!
+UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
+OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
+OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
+OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
+
+[..\..\Physics\src\NpScene.cpp line 2538] 
+(Filename: C Line: 0)
+
+Starting AI task ""
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+AI:Update() (at C:\Unity\Respite\Assets\Scripts\AI\AI.cs:60)
  
-(Filename: ..\..\Physics\src\NpScene.cpp Line: 2538)
+(Filename: C Line: 0)
 
 Fade complete, calling handler...
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 Fade requested
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
+GameFlow:RequestMenu() (at C:\Unity\Respite\Assets\Scripts\GameFlow\GameFlow.cs:162)
+GameMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\GameMenu.cs:35)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
 NullReferenceException: Object reference not set to an instance of an object
-  at Weather.TimePaused () [0x00000] in <filename unknown>:0 
+  at Weather.TimePaused () [0x00000] in C:\Unity\Respite\Assets\Scripts\Level\Weather.cs:216 
   at (wrapper delegate-invoke) System.Action:invoke_void__this__ ()
-  at GameTime.set_Paused (Boolean value) [0x00000] in <filename unknown>:0 
-  at GameFlow.RequestMenu () [0x00000] in <filename unknown>:0 
-  at GameMenu.Update () [0x00000] in <filename unknown>:0 
+  at GameTime.set_Paused (Boolean value) [0x0002b] in C:\Unity\Respite\Assets\Scripts\GameFlow\GameTime.cs:70 
+  at GameFlow.RequestMenu () [0x00046] in C:\Unity\Respite\Assets\Scripts\GameFlow\GameFlow.cs:165 
+  at GameMenu.Update () [0x00070] in C:\Unity\Respite\Assets\Scripts\GUI\GameMenu.cs:35 
  
-(Filename:  Line: -1)
+(Filename: C Line: 0)
 
 Fade complete, calling handler...
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
  
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+(Filename: C Line: 0)
 
+Waiting for finish

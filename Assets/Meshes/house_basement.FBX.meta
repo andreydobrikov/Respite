@@ -20,6 +20,9 @@ ModelImporter:
     100028: house_basement_hidden_floor
     100030: house_basement_storage_ambient
     100032: house_basement_storage_floor
+    100034: facility_basement_f_ambient
+    100036: facility_basement_f_floor
+    100038: facility_basement_walls
     400000: //RootNode
     400002: house_basement_bathroom_ambient
     400004: house_basement_bathroom_floor
@@ -37,6 +40,9 @@ ModelImporter:
     400028: house_basement_hidden_floor
     400030: house_basement_storage_ambient
     400032: house_basement_storage_floor
+    400034: facility_basement_f_ambient
+    400036: facility_basement_f_floor
+    400038: facility_basement_walls
     2300000: house_basement_bathroom_ambient
     2300002: house_basement_bathroom_floor
     2300004: house_basement_bedroom_ambient
@@ -53,6 +59,9 @@ ModelImporter:
     2300026: house_basement_hidden_floor
     2300028: house_basement_storage_ambient
     2300030: house_basement_storage_floor
+    2300032: facility_basement_f_ambient
+    2300034: facility_basement_f_floor
+    2300036: facility_basement_walls
     3300000: house_basement_bathroom_ambient
     3300002: house_basement_bathroom_floor
     3300004: house_basement_bedroom_ambient
@@ -69,6 +78,9 @@ ModelImporter:
     3300026: house_basement_hidden_floor
     3300028: house_basement_storage_ambient
     3300030: house_basement_storage_floor
+    3300032: facility_basement_f_ambient
+    3300034: facility_basement_f_floor
+    3300036: facility_basement_walls
     4300000: house_basement_walls
     4300002: house_basement_bedroom_floor
     4300004: house_basement_bathroom_floor
@@ -85,6 +97,9 @@ ModelImporter:
     4300026: house_basement_hall
     4300028: house_basement_storage_ambient
     4300030: house_basement_hidden_ambient
+    4300032: facility_basement_walls
+    4300034: facility_basement_f_floor
+    4300036: facility_basement_f_ambient
     9500000: //RootNode
   materials:
     importMaterials: 0
@@ -93,11 +108,13 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    optimizeGameObjects: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
     animationScaleError: .5
     animationWrapMode: 0
+    extraExposedTransformPaths: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -125,7 +142,6 @@ ModelImporter:
   humanDescription:
     human: []
     skeleton: []
-    handles: []
     armTwist: .5
     foreArmTwist: .5
     upperLegTwist: .5
@@ -135,6 +151,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  additionalBone: 1
   animationType: 0
   userData: 

@@ -28,12 +28,16 @@ public class AIBehaviourPatrol : AIBehaviour
 	public override void Start()
 	{
 		m_parentAI.Blackboard.AddEntry<float>("nav_idle_time", 3.0f); 
+		m_navTargetHash = m_parentAI.Blackboard.AddEntry<Vector3>("nav_target_position", Vector3.one); 
 
 		AITask patrolTask = null;
 		if(m_tasks.TryGetValue("patrol_task", out patrolTask))
 		{
 			if(patrolTask.Result == AITaskResult.Idle)
 			{
+				// Update the destination
+				m_parentAI.Blackboard.SetEntry<Vector3>(m_navTargetHash, GameObject.FindGameObjectWithTag("Player").transform.position);
+
 				m_parentAI.PushTask(patrolTask); 
 			}
 		}
@@ -49,6 +53,7 @@ public class AIBehaviourPatrol : AIBehaviour
 			
 	}
 
+#if UNITY_EDITOR
 	public override void OnSceneGUI()
 	{
 		AITask patrolTask = null;
@@ -61,6 +66,9 @@ public class AIBehaviourPatrol : AIBehaviour
 
 			if(GUI.Button(new Rect(10, Screen.height / 2 - 20, 100, 40), "Run Patrol"))
 			{
+				// Update the destination
+				m_parentAI.Blackboard.SetEntry<Vector3>(m_navTargetHash, GameObject.FindGameObjectWithTag("Player").transform.position);
+
 				m_parentAI.PushTask(patrolTask);
 			}
 			GUI.enabled = true;
@@ -68,8 +76,11 @@ public class AIBehaviourPatrol : AIBehaviour
 
 
 	}
+#endif
 
 	private AITask m_patrolTask = null;
+
+	private int m_navTargetHash = 0;
 
 }
 

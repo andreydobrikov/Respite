@@ -13,7 +13,11 @@ public class AssetHelper
 	{
 		assetPath = StripResourcePath(assetPath);
 
-		UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(T));
+		UnityEngine.Object asset = null;
+
+#if UNITY_EDITOR
+		 asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(T));
+#endif
 
 		if(asset == null)
 		{
@@ -43,8 +47,55 @@ public class AssetHelper
 				return current;
 			}
 		}
+
+		T[] allAssets = GetAssetsAtPath<T>("");
+
+		foreach(var asset in allAssets)
+		{
+			Object assetObject = asset as Object;
+			if(assetObject.name.Contains(partialName))
+			{
+				return asset as UnityEngine.Object;
+			}
+		}
 		
 		return null;
+	}
+
+	public static T[] GetAssetsAtPath<T> (string path) 
+	{
+		ArrayList al = new ArrayList();
+		
+		string [] fileEntries = Directory.GetFiles(Application.dataPath+"/"+path);
+		
+		foreach(string fileName in fileEntries)
+		{
+			int index = fileName.LastIndexOf("/");
+			
+			string localPath = "Assets/" + path;
+			
+			if (index > 0)
+			{
+				localPath += fileName.Substring(index);
+			}
+			
+			Object t = Resources.LoadAssetAtPath(localPath, typeof(T));
+			
+			if(t != null)
+			{
+				al.Add(t);
+			}
+			
+		}
+		
+		T[] result = new T[al.Count];
+		
+		for(int i=0;i<al.Count;i++)
+		{
+			result[i] = (T)al[i];
+		}
+		
+		return result;
 	}
 	
 	public static AssetHelper Instance

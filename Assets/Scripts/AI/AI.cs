@@ -94,10 +94,12 @@ public class AI : MonoBehaviour, ISerialisable
 
 	public void OnGUI()
 	{
+#if UNITY_EDITOR
 		foreach(var behaviour in m_behaviours)
 		{
 			behaviour.OnSceneGUI();
 		}
+#endif
 	}
 
 #endregion

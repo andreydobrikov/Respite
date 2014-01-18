@@ -170,7 +170,7 @@ public class BuildingEditor :  Editor
 			{
 				System.IO.Directory.CreateDirectory(directory);	
 			}
-			string path = "Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat";
+			string path = "Assets/Materials/structures/" + building.BuildingName + "/" + wallAssetName + ".mat";
 			
 			
 			AssetDatabase.CreateAsset(newMaterial, path);
@@ -364,10 +364,18 @@ public class BuildingEditor :  Editor
 			{
 				System.IO.Directory.CreateDirectory(directory);	
 			}
-			string path = "Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat";
-			
+			string path = "Assets/Materials/structures/" + building.BuildingName + "/" + floorMeshName + ".mat";
+
+			try
+			{
 			
 			AssetDatabase.CreateAsset(newMaterial, path);
+
+			}
+			catch(UnityException e)
+			{
+				Debug.LogError(e.ToString());
+			}
 			
 			renderer.material = newMaterial as Material;
 			

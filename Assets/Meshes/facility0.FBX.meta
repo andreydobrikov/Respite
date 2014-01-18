@@ -177,6 +177,15 @@ ModelImporter:
     100342: house0_shadow
     100344: house0_walls
     100346: house0_weather_mask
+    100348: facility0_kitchen_stairs_floor
+    100350: facility0_f_basement_stairs_floor
+    100352: facility0_kitchen_cleaning_floor
+    100354: facility0_pantry_floor
+    100356: facility0_f_basement_stairs_ambient
+    100358: facility0_kitchen_cleaning_ambient
+    100360: facility0_kitchen_stairs_ambient
+    100362: facility0_pantry_ambient
+    100364: facility0_temp_ambient
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -351,6 +360,15 @@ ModelImporter:
     400342: house0_shadow
     400344: house0_walls
     400346: house0_weather_mask
+    400348: facility0_kitchen_stairs_floor
+    400350: facility0_f_basement_stairs_floor
+    400352: facility0_kitchen_cleaning_floor
+    400354: facility0_pantry_floor
+    400356: facility0_f_basement_stairs_ambient
+    400358: facility0_kitchen_cleaning_ambient
+    400360: facility0_kitchen_stairs_ambient
+    400362: facility0_pantry_ambient
+    400364: facility0_temp_ambient
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -524,6 +542,15 @@ ModelImporter:
     2300340: house0_shadow
     2300342: house0_walls
     2300344: house0_weather_mask
+    2300346: facility0_kitchen_stairs_floor
+    2300348: facility0_f_basement_stairs_floor
+    2300350: facility0_kitchen_cleaning_floor
+    2300352: facility0_pantry_floor
+    2300354: facility0_f_basement_stairs_ambient
+    2300356: facility0_kitchen_cleaning_ambient
+    2300358: facility0_kitchen_stairs_ambient
+    2300360: facility0_pantry_ambient
+    2300362: facility0_temp_ambient
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -697,6 +724,15 @@ ModelImporter:
     3300340: house0_shadow
     3300342: house0_walls
     3300344: house0_weather_mask
+    3300346: facility0_kitchen_stairs_floor
+    3300348: facility0_f_basement_stairs_floor
+    3300350: facility0_kitchen_cleaning_floor
+    3300352: facility0_pantry_floor
+    3300354: facility0_f_basement_stairs_ambient
+    3300356: facility0_kitchen_cleaning_ambient
+    3300358: facility0_kitchen_stairs_ambient
+    3300360: facility0_pantry_ambient
+    3300362: facility0_temp_ambient
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -870,6 +906,15 @@ ModelImporter:
     4300340: house0_shadow
     4300342: house0_kitchen_ambient
     4300344: house0_hall_ambient
+    4300346: facility0_kitchen_stairs_floor
+    4300348: facility0_f_basement_stairs_floor
+    4300350: facility0_kitchen_cleaning_floor
+    4300352: facility0_pantry_floor
+    4300354: facility0_kitchen_cleaning_ambient
+    4300356: facility0_pantry_ambient
+    4300358: facility0_kitchen_stairs_ambient
+    4300360: facility0_f_basement_stairs_ambient
+    4300362: facility0_temp_ambient
     9500000: //RootNode
   materials:
     importMaterials: 0
@@ -878,11 +923,13 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    optimizeGameObjects: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
     animationScaleError: .5
     animationWrapMode: 0
+    extraExposedTransformPaths: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -910,7 +957,6 @@ ModelImporter:
   humanDescription:
     human: []
     skeleton: []
-    handles: []
     armTwist: .5
     foreArmTwist: .5
     upperLegTwist: .5
@@ -920,6 +966,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  additionalBone: 1
   animationType: 0
   userData: 

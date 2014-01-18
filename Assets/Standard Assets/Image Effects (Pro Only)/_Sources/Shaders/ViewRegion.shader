@@ -56,13 +56,12 @@ Shader "Hidden/ViewRegion" {
 		float lerpFactor = ( blend.g);
 		
 		float intensity =  0.3f * color.r + 0.59f * color.g + 0.11f * color.b;
+		intensity *= 0.8f;
 		//intensity *= 0.15f;
 		color = lerp(half4(intensity, intensity, intensity, 1.0 ), color , lerpFactor * 0.3f);
 		
 		color = lerp(color, mainTex, lerpFactor);
-		float4 test;
-		test.rgb = 1.0 - lerpFactor;
-		test.a = 1.0;
+		
 		return color;//mainTex;//half4(1.0, 0.0, 0.0 ,1.0);
 	}
 	

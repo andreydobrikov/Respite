@@ -12,6 +12,8 @@ public class PostProcessManager : MonoBehaviour
 	public Shader ShowLightmapShader = null;
 	
 	public GameObject[] snowOverlay;
+
+	private RenderBuffer[] m_renderBuffers = new RenderBuffer[2];
 	
 	void Start () 
 	{
@@ -19,6 +21,8 @@ public class PostProcessManager : MonoBehaviour
 		GameObject postCamera			= GameObject.FindGameObjectWithTag("PostCamera");
 	//	GameObject viewCamera			= GameObject.FindGameObjectWithTag("ViewRegionCamera");
 		GameObject weatherMaskCamera	= GameObject.FindGameObjectWithTag("WeatherMaskCamera");
+		GameObject maincamera			= GameObject.FindGameObjectWithTag("MainCamera");
+
 		
 		if(postCamera != null)
 		{
@@ -31,6 +35,8 @@ public class PostProcessManager : MonoBehaviour
 		// Note: Too small a target can cause light bleeding when the overlay is interpolated.
 		int pixelWidth 	= (int)Camera.main.pixelWidth;
 		int pixelHeight = (int)Camera.main.pixelHeight;
+
+
 		
 		if(weatherMaskCamera != null && snowOverlay != null)
 		{
@@ -62,6 +68,7 @@ public class PostProcessManager : MonoBehaviour
 		
 
 		}
+
 	}
 	
 	void Update()

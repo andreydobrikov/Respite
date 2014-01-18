@@ -29,50 +29,57 @@ public class AIManager : MonoBehaviour
 	{
 		RebuildActionList();
 		s_instance = this;
+
 		DoDeserialise();
 	}
 
 	public void DoSerialise()
 	{
-		Debug.Log("Serialising tasks...");
+		Debug.Log("<color=green>(AI)Serialising tasks...</color>");
 		foreach(var task in m_tasks)
 		{
 			Debug.Log("\t<b>" + task.Name + "</b>");
-			task.Serialise(Application.dataPath + "/ai_tasks");
+			task.Serialise(Application.dataPath + "/resources/ai_tasks");
 		}
 		Debug.Log("Complete");
 	}
 
 	public void DoDeserialise()
 	{
-		Debug.Log("Deserialising tasks...");
+		Debug.Log("<color=green>(AI)Deserialising Tasks</color>");
+
 		m_tasks.Clear();
+		var tasks = Resources.LoadAll("ai_tasks");
 
-		DirectoryInfo info = new DirectoryInfo(Application.dataPath + "/ai_tasks"); 
 
-		foreach(var task in info.GetFiles())
+		foreach(var task in tasks)  
 		{
-			Debug.Log("Checking " + task);
-			string fileName = System.IO.Path.GetFileNameWithoutExtension(task.Name);
-			if(task.Extension == ".json" && !string.IsNullOrEmpty(fileName))
+			TextAsset asset = task as TextAsset;
+
+			if(asset == null)
 			{
-				Debug.Log("Deserialising " + task.FullName);
-				AITask newTask = ScriptableObject.CreateInstance(typeof(AITask)) as AITask;
-
-				bool succeeded = newTask.Deserialise(System.IO.Path.ChangeExtension(task.FullName, null));
-
-				if(succeeded)
-				{
-					m_tasks.Add(newTask);
-					m_taskNames.Add(newTask.Name);
-				}
-				else
-				{
-					Debug.LogError("Failed to load " + task.FullName);
-				}
+				continue;
 			}
+			Debug.Log (asset.name); 
+
+			AITask newTask = ScriptableObject.CreateInstance(typeof(AITask)) as AITask;
+
+			bool succeeded = newTask.Deserialise(asset.text);
+
+			if(succeeded)
+			{
+				m_tasks.Add(newTask); 
+				 
+#if UNITY_EDITOR
+				m_taskNames.Add(newTask.Name);
+#endif
+			}
+			else
+			{
+				Debug.LogError("Failed to load " + asset.name);
+			}
+
 		}
-		Debug.Log("Deserialisation complete");
 	}
 
 	public void RebuildActionList()
@@ -80,6 +87,7 @@ public class AIManager : MonoBehaviour
 		System.Type targetType = typeof(AIAction);
 		List<System.Type> types = new List<System.Type>(targetType.Assembly.GetTypes().Where(x => x.IsSubclassOf(targetType)));
 
+#if UNITY_EDITOR
 		m_actionNames.Clear();
 		m_actionTypes.Clear();
 
@@ -88,6 +96,7 @@ public class AIManager : MonoBehaviour
 			m_actionNames.Add(actionType.Name);
 			m_actionTypes.Add(actionType);
 		}
+#endif
 	}
 
 #if UNITY_EDITOR
