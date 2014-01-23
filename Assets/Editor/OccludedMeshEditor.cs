@@ -44,7 +44,7 @@ public class OccludedMeshEditor : Editor
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Sphere Expansion", GUILayout.Width(100));
 		GUILayout.Label(view.m_sphereExpansion.ToString("0.00"), GUILayout.Width(40));
-		view.m_sphereExpansion = GUILayout.HorizontalSlider(view.m_sphereExpansion, 1.0f, 2.5f);
+		view.m_sphereExpansion = GUILayout.HorizontalSlider(view.m_sphereExpansion, 1.0f, 10.5f);
 		GUILayout.EndHorizontal();
 	}
 }

@@ -57,9 +57,9 @@ public class Forest : Painter
 			Debug.LogWarning("No tree-prefab set. No tree instances will be created");
 		}
 		
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 		DimensionBodger.ForceLightOffsets();
-#endif
+//#endif
 	}
 	
 	public override void Paint(Island island)

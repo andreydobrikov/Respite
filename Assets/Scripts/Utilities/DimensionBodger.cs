@@ -34,8 +34,10 @@ public class DimensionBodger : MonoBehaviour
 		}
 		
 	}
-	
+
+
 	[MenuItem ("Respite/Bodge/Force Light offsets")]
+	#endif
 	public static void ForceLightOffsets()
 	{
 		List<GameObject> lights = new List<GameObject>();
@@ -75,5 +77,5 @@ public class DimensionBodger : MonoBehaviour
 		
 	}
 	
-	#endif
+	//#endif
 }

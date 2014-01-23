@@ -15,9 +15,19 @@ using System.Collections.Generic;
 
 public class AIBlackboard 
 {
+	public AIBlackboard()
+	{
+		Initialised = false;
+	}
+
 	// Adds a new blackboard entry and returns its key for later retrieval
 	public int AddEntry<T>(string entryName, T entryObject)
 	{
+		if (Initialised)
+		{
+			Debug.LogWarning("Registering entry \"" + entryName + "\" after initialisation is complete!");
+		}
+
 		int nameHash = entryName.GetHashCode();
 
 		if(!m_blackboardEntries.ContainsKey(nameHash))
@@ -86,8 +96,9 @@ public class AIBlackboard
 		return false;
 	}
 
-	private Dictionary<int, BlackBoardEntry> m_blackboardEntries = new Dictionary<int, BlackBoardEntry>();
+	public bool Initialised { get; set; }
 
+	private Dictionary<int, BlackBoardEntry> m_blackboardEntries = new Dictionary<int, BlackBoardEntry>();
 }
 
 public struct BlackBoardEntry

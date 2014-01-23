@@ -63,6 +63,14 @@ MainMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:57)
  
 (Filename: C Line: 0)
 
+Fade requested
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
+MainMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:57)
+ 
+(Filename: C Line: 0)
+
 Fade complete, calling handler...
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
@@ -70,15 +78,7 @@ CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
  
 (Filename: C Line: 0)
 
-The referenced script on this Behaviour is missing!
- 
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/Runtime/Mono/MonoBehaviour.cpp Line: 1699)
-
-The referenced script on this Behaviour is missing!
- 
-(Filename: C:/BuildAgent/work/d3d49558e4d408f4/Runtime/Mono/MonoBehaviour.cpp Line: 1699)
-
-UnloadTime: 0.771435 ms
+UnloadTime: 0.707999 ms
 <color=green>(AI)Deserialising Tasks</color>
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
@@ -87,23 +87,36 @@ AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
  
 (Filename: C Line: 0)
 
-DirectoryNotFoundException: Directory 'C:\Unity\Respite\build_Data\resources\ai_tasks' not found.
-  at System.IO.Directory.GetFileSystemEntries (System.String path, System.String searchPattern, FileAttributes mask, FileAttributes attrs) [0x000f7] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/Directory.cs:514 
-  at System.IO.Directory.GetFiles (System.String path, System.String searchPattern) [0x00000] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/Directory.cs:308 
-  at System.IO.DirectoryInfo.GetFiles (System.String searchPattern) [0x00011] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/DirectoryInfo.cs:165 
-  at System.IO.DirectoryInfo.GetFiles () [0x00000] in /Users/builduser/buildslave/monoAndRuntimeClassLibs/build/mcs/class/corlib/System.IO/DirectoryInfo.cs:157 
-  at (wrapper remoting-invoke-with-check) System.IO.DirectoryInfo:GetFiles ()
-  at AIManager.DoDeserialise () [0x0002a] in C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:55 
-  at AIManager.OnEnable () [0x0000c] in C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33 
+patrol_task
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:63)
+AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
  
 (Filename: C Line: 0)
 
-System memory in use before: 107.2 MB.
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
-System memory in use after: 107.3 MB.
+Test Task
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:63)
+AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
+ 
+(Filename: C Line: 0)
 
-Unloading 42 unused Assets to reduce memory usage. Loaded Objects now: 10215.
-Total: 168.457993 ms (FindLiveObjects: 0.493995 ms CreateObjectMapping: 0.098434 ms MarkObjects: 1.981086 ms  DeleteObjects: 0.139266 ms)
+test_task
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:63)
+AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
+ 
+(Filename: C Line: 0)
+
+System memory in use before: 106.4 MB.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+System memory in use after: 106.4 MB.
+
+Unloading 45 unused Assets to reduce memory usage. Loaded Objects now: 10537.
+Total: 3.639526 ms (FindLiveObjects: 0.467746 ms CreateObjectMapping: 0.225305 ms MarkObjects: 2.125092 ms  DeleteObjects: 0.114111 ms)
 
 Fade requested
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
@@ -135,50 +148,6 @@ UnityEngine.Debug:Log(Object)
 AIBehaviour:LoadTasks() (at C:\Unity\Respite\Assets\Scripts\AI\AIBehaviour.cs:29)
 AI:Start() (at C:\Unity\Respite\Assets\Scripts\AI\AI.cs:33)
  
-(Filename: C Line: 0)
-
-Scene::raycastClosestShape: The maximum distance must be greater than zero!
-UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
-OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
-OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
-
-[..\..\Physics\src\NpScene.cpp line 2538] 
-(Filename: C Line: 0)
-
-Scene::raycastClosestShape: The maximum distance must be greater than zero!
-UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
-OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
-OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
-
-[..\..\Physics\src\NpScene.cpp line 2538] 
-(Filename: C Line: 0)
-
-Scene::raycastClosestShape: The maximum distance must be greater than zero!
-UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
-OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
-OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
-
-[..\..\Physics\src\NpScene.cpp line 2538] 
-(Filename: C Line: 0)
-
-Scene::raycastClosestShape: The maximum distance must be greater than zero!
-UnityEngine.Physics:INTERNAL_CALL_Internal_Raycast(Vector3&, Vector3&, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Internal_Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-UnityEngine.Physics:Raycast(Vector3, Vector3, RaycastHit&, Single, Int32)
-OccludedMesh:GetOccluders() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:368)
-OccludedMesh:RebuildMesh() (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:212)
-OccludedMesh:OnTriggerEnter(Collider) (at C:\Unity\Respite\Assets\Scripts\Render\OccludedMesh.cs:167)
-
-[..\..\Physics\src\NpScene.cpp line 2538] 
 (Filename: C Line: 0)
 
 Starting AI task ""

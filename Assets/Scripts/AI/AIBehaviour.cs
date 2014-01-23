@@ -43,6 +43,8 @@ public abstract class AIBehaviour : ScriptableObject
 		}
 	}
 
+	public virtual void RegisterBlackboardEntries() {}
+
 	public abstract void Start();
 	public abstract void Update();
 	public abstract void Shutdown();

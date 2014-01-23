@@ -30,7 +30,7 @@ public class PlayerView : MonoBehaviour
 		// Get a vector representing the player's current rotation
 		Vector3 playerDirection = transform.localRotation * Vector3.forward;
 		
-		// Find the angle between the player and the input directin
+		// Find the angle between the player and the input direction
 		float diff 				= Mathf.Acos(Vector3.Dot(playerDirection, inputDirection)) * Mathf.Rad2Deg;
 		
 		// To find out the sign of that angle the first step is to get a perpendicular.
@@ -53,10 +53,15 @@ public class PlayerView : MonoBehaviour
 		}
 		
 		m_target = playerDirection;
-		
-		if(inputMagnitude > 0.2f)
+
+		if (inputMagnitude > 0.2f)
 		{
 			m_target = Quaternion.Euler(0.0f, diff, 0.0f) * playerDirection;
+			m_viewDirected = true;
+		}
+		else
+		{
+			m_viewDirected = false;
 		}
 		
 		float targetAngle 	= Mathf.Atan2(m_target.x, m_target.z)  * Mathf.Rad2Deg;
@@ -87,13 +92,15 @@ public class PlayerView : MonoBehaviour
 		get { return m_lastDirection; }	
 	}
 	
-	public float DirectionAngle
+	public float DirectionAngleDeg
 	{
 		get { return m_lastDirectionAngle; }	
 	}
+
+	public bool ViewDirected { get { return m_viewDirected; } }
 	
 	private Vector3 m_lastDirection = Vector3.zero;
 	private float m_lastDirectionAngle = 0.0f;
 	private Vector3 m_target = Vector3.forward;
-	
+	private bool m_viewDirected = false;			// Tracks whether the current view is due to player input or just defaulting.
 }

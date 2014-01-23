@@ -25,11 +25,14 @@ public class AIBehaviourPatrol : AIBehaviour
 		m_requiredTaskPaths.Add("patrol_task");
 	}
 
+	public override void RegisterBlackboardEntries()
+	{
+		m_parentAI.Blackboard.AddEntry<float>("nav_idle_time", 3.0f);
+		m_navTargetHash = m_parentAI.Blackboard.AddEntry<Vector3>("nav_target_position", Vector3.one); 
+	}
+
 	public override void Start()
 	{
-		m_parentAI.Blackboard.AddEntry<float>("nav_idle_time", 3.0f); 
-		m_navTargetHash = m_parentAI.Blackboard.AddEntry<Vector3>("nav_target_position", Vector3.one); 
-
 		AITask patrolTask = null;
 		if(m_tasks.TryGetValue("patrol_task", out patrolTask))
 		{

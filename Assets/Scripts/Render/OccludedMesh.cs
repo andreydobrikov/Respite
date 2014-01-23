@@ -284,6 +284,7 @@ public class OccludedMesh : MonoBehaviour
 		// Loop through each collider and add its vertices to the list
 		foreach(var colliderPair in m_colliderVertices)
 		{
+			// TODO: given that all the maths here concerns circles, perhaps just ignore rotations, yeah?
 			// Process SphereColliders
 			if(colliderPair.Key is CapsuleCollider)
 			{
@@ -293,10 +294,12 @@ public class OccludedMesh : MonoBehaviour
 				Vector3 diff = colliderPair.Key.transform.position - objectPosition;
 				
 				Vector3 normal = Vector3.Cross(diff, Vector3.up);
+				float normalMagnitude = normal.magnitude;
 				
-				Vector3 p0 = (normal.normalized * collider.radius);
+				Vector3 p0 = (normal.normalized * collider.radius * 0.99f);
 				Vector3 p1 = -p0;
-				
+
+								
 				p0 = Quaternion.Inverse(colliderPair.Key.transform.rotation) * (Vector3)p0;
 				p1 = Quaternion.Inverse(colliderPair.Key.transform.rotation) * (Vector3)p1;
 				
@@ -312,17 +315,17 @@ public class OccludedMesh : MonoBehaviour
 					Vector3 direction = worldPos - objectPosition;
 					direction.y = 0.0f;
 
-					Debug.DrawLine(objectPosition, objectPosition + direction, Color.blue);
+				//	Debug.DrawLine(objectPosition, objectPosition + direction, Color.blue);
 					
-					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.size.x, 1 <<  collisionLayer))
+					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, direction.magnitude, 1 <<  collisionLayer))
 					{
 						if(ShowExtrusionRays) { Debug.DrawLine(objectPosition, hitInfo.point, Color.green); }
 						
 						validVerts.Add(hitInfo.point);
-					}
+					} 
 					else
 					{
-						if(ShowExtrusionRays) { Debug.DrawLine(objectPosition, worldPos, Color.red); }
+						if(ShowExtrusionRays) { Debug.DrawLine(objectPosition, worldPos, Color.magenta); }
 						
 						validVerts.Add(worldPos);	
 					}
@@ -330,12 +333,15 @@ public class OccludedMesh : MonoBehaviour
 
 				for(int vertID = 0; vertID < colliderPair.Value.vertices.Count; vertID++)
 				{
-					// Find the transformed position of the vertex scaled by the mysterious expansion factor 
-					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID] * m_sphereExpansion);
+					// TODO: The 0.3f here is to expand the side rays away from the collider when the player gets close to the occluder.
+					// The value is arbitrary and needs to be fed with something more sensible.
+					Vector3 worldPos = colliderPair.Key.transform.TransformPoint(colliderPair.Value.vertices[vertID] * (m_sphereExpansion + 0.3f / normalMagnitude));
 					worldPos.y = objectPosition.y;
 					
 					Vector3 direction = worldPos - objectPosition;
 					direction.y = 0.0f;
+
+					//Debug.DrawLine(objectPosition, objectPosition + direction, Color.red);
 					
 					if(Physics.Raycast(objectPosition, direction.normalized, out hitInfo, m_viewCollider.size.x, 1 <<  collisionLayer))
 					{
@@ -346,7 +352,7 @@ public class OccludedMesh : MonoBehaviour
 					}
 					else
 					{
-						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * m_viewCollider.size.x), Color.red); }
+						if(ShowExtrusionRays) {	Debug.DrawLine(objectPosition, objectPosition + (direction.normalized * m_viewCollider.size.x), Color.magenta); }
 						
 						validVerts.Add(objectPosition + (direction.normalized * m_viewCollider.size.x));	
 					}

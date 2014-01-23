@@ -180,7 +180,7 @@ public class InteractionMenu : MonoBehaviour
 		
 		m_objectsInView.Clear();
 		
-		float minAngle = m_view.DirectionAngle - InspectionFocusAngle;
+		float minAngle = m_view.DirectionAngleDeg - InspectionFocusAngle;
 		
 		const float iterationCount = 10.0f;
 		

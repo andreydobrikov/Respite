@@ -13,7 +13,7 @@ for OBJ in Geometry do
 (
 	suffixPosition = findString OBJ.name "_floor"
 	
-	if suffixPosition != undefined do
+	if suffixPosition != undefined then
 	(
 		objectName = substring OBJ.name 1 (suffixPosition - 1)
 		print objectName
@@ -21,9 +21,19 @@ for OBJ in Geometry do
 		ambientExists = false
 		for ambient  in ambientObjects do
 		(
-			if (findString ambient.name objectName ) != undefined do
+			-- Find the ambient name and make sure it's an exact match for the object name, otherwise odd issues occur,
+			-- such as kitchen being matched with kitchen_cleaning_ambient instead of kitchen_ambient
+			ambientSuffixPosition = findstring ambient.name "_ambient"
+			ambientName = substring ambient.name 1 (ambientSuffixPosition - 1)
+			
+			if (ambientName ==  objectName ) then
 			(
 				ambientExists = true
+				print ("Found ambient for " + objectName + " at " + ambient.name)
+			)
+			else
+			(
+				
 			)
 		)
 		
@@ -34,6 +44,10 @@ for OBJ in Geometry do
 			newObj.name = objectName + "_ambient"
 			append ambientObjects newObj
 		)
+	)
+	else
+	(
+		print ("Ignoring " + OBJ.name)
 	)
 )
 		

@@ -30,10 +30,13 @@ public class AI : MonoBehaviour, ISerialisable
 		// TODO: This has to be done because AI behaviours were sharing a parent when copied, rather than re-assigning
 		foreach(var behaviour in m_behaviours)
 		{
+			behaviour.RegisterBlackboardEntries();
 			behaviour.LoadTasks();
 			behaviour.m_parentAI = this;
 			behaviour.Start();
-		}	
+		}
+
+		m_blackboard.Initialised = true;
 	}
 
 	public void Update ()
