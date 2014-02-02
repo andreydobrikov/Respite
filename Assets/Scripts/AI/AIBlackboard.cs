@@ -15,13 +15,15 @@ using System.Collections.Generic;
 
 public class AIBlackboard 
 {
+    // Structs 
+
 	public AIBlackboard()
 	{
 		Initialised = false;
 	}
 
 	// Adds a new blackboard entry and returns its key for later retrieval
-	public int AddEntry<T>(string entryName, T entryObject)
+	public AIBlackBoardEntry AddEntry<T>(string entryName, T entryObject)
 	{
 		if (Initialised)
 		{
@@ -29,15 +31,12 @@ public class AIBlackboard
 		}
 
 		int nameHash = entryName.GetHashCode();
+        AIBlackBoardEntry entry = null;
 
-		if(!m_blackboardEntries.ContainsKey(nameHash))
+		if(!m_blackboardEntries.TryGetValue(nameHash, out entry))
 		{
-			BlackBoardEntry newEntry = new BlackBoardEntry();
-
-			newEntry.EntryName 		= entryName;
-			newEntry.EntryObject 	= (System.Object)entryObject;
-
-			m_blackboardEntries.Add(nameHash, newEntry);
+            entry = new AIBlackBoardEntry(entryName, (System.Object)entryObject);
+            m_blackboardEntries.Add(nameHash, entry);
 		}
 #if AI_OUTPUT
 		else
@@ -46,7 +45,7 @@ public class AIBlackboard
 		}
 #endif
 
-		return nameHash;
+        return entry;
 	}
 
 	/// <summary>
@@ -54,11 +53,11 @@ public class AIBlackboard
 	/// </summary>
 	public bool GetEntry<T>(int entryHash, ref T outVal)
 	{
-		BlackBoardEntry outputEntry;
+        AIBlackBoardEntry outputEntry;
 
 		if(m_blackboardEntries.TryGetValue(entryHash, out outputEntry))
 		{
-			outVal = (T)(outputEntry.EntryObject);
+			outVal = outputEntry.GetObject<T>();
 			return true;
 		}
 
@@ -74,17 +73,17 @@ public class AIBlackboard
 	/// </summary>
 	public bool SetEntry<T>(int entryHash, T newValue)
 	{
-		BlackBoardEntry outputEntry;
+        AIBlackBoardEntry outputEntry;
 		
 		if(m_blackboardEntries.TryGetValue(entryHash, out outputEntry))
 		{
 #if AI_DEBUG
-			if(newValue.GetType() != outputEntry.EntryObject.GetType())
+			if(newValue.GetType() != outputEntry.GetObject<System.Object>().GetType())
 			{
 				Debug.LogError("Assigning mis-matched type for entry \"" + outputEntry.EntryName + "\"!\nCurrent type is \"" + outputEntry.EntryObject.GetType().Name + "\". New type is \"" + newValue.GetType().Name + "\"");
 			}
 #endif
-			outputEntry.EntryObject = newValue;
+			outputEntry.SetObject<T>(newValue);
 			m_blackboardEntries[entryHash] = outputEntry;
 			return true;
 		}
@@ -98,11 +97,8 @@ public class AIBlackboard
 
 	public bool Initialised { get; set; }
 
-	private Dictionary<int, BlackBoardEntry> m_blackboardEntries = new Dictionary<int, BlackBoardEntry>();
+    private Dictionary<int, AIBlackBoardEntry> m_blackboardEntries = new Dictionary<int, AIBlackBoardEntry>();
+
+
 }
 
-public struct BlackBoardEntry
-{
-	public string EntryName;
-	public System.Object EntryObject;
-}

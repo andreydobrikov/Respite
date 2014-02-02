@@ -44,10 +44,10 @@ public class Path : Painter
 				EditorUtility.DisplayProgressBar("Painting blobs", "Paint blob: " + i + "\\" + blobCount, (float)i / (float)blobCount);
 			}
 			
-			m_brush.m_brushSize = (int)island.WorldSizeToTexel(m_spline.GetWidth(delta * i) * (m_meshWidth * 2.0f));
+			m_brush.m_brushSizeX = (int)island.WorldSizeToTexel(m_spline.GetWidth(delta * i) * (m_meshWidth * 2.0f));
 			m_brush.Update();
 			
-			m_detailBrush.m_brushSize = m_brush.m_brushSize;
+			m_detailBrush.m_brushSizeX = m_brush.m_brushSizeX;
 			m_detailBrush.Update();
 			
 			Vector2 position = m_spline.GetPosition(delta * i);

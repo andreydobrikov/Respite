@@ -28,7 +28,7 @@ public class AIBehaviourPatrol : AIBehaviour
 	public override void RegisterBlackboardEntries()
 	{
 		m_parentAI.Blackboard.AddEntry<float>("nav_idle_time", 3.0f);
-		m_navTargetHash = m_parentAI.Blackboard.AddEntry<Vector3>("nav_target_position", Vector3.one); 
+        m_navTargetEntry = m_parentAI.Blackboard.AddEntry<Vector3>("nav_target_position", Vector3.one); 
 	}
 
 	public override void Start()
@@ -39,7 +39,7 @@ public class AIBehaviourPatrol : AIBehaviour
 			if(patrolTask.Result == AITaskResult.Idle)
 			{
 				// Update the destination
-				m_parentAI.Blackboard.SetEntry<Vector3>(m_navTargetHash, GameObject.FindGameObjectWithTag("Player").transform.position);
+                m_navTargetEntry.SetObject<Vector3>(GameObject.FindGameObjectWithTag("Player").transform.position);
 
 				m_parentAI.PushTask(patrolTask); 
 			}
@@ -70,7 +70,7 @@ public class AIBehaviourPatrol : AIBehaviour
 			if(GUI.Button(new Rect(10, Screen.height / 2 - 20, 100, 40), "Run Patrol"))
 			{
 				// Update the destination
-				m_parentAI.Blackboard.SetEntry<Vector3>(m_navTargetHash, GameObject.FindGameObjectWithTag("Player").transform.position);
+                m_navTargetEntry.SetObject<Vector3>(GameObject.FindGameObjectWithTag("Player").transform.position);
 
 				m_parentAI.PushTask(patrolTask);
 			}
@@ -81,9 +81,9 @@ public class AIBehaviourPatrol : AIBehaviour
 	}
 #endif
 
-	private AITask m_patrolTask = null;
+	//private AITask m_patrolTask = null;
 
-	private int m_navTargetHash = 0;
+	private AIBlackBoardEntry m_navTargetEntry = null;
 
 }
 

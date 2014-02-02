@@ -135,7 +135,6 @@ public abstract partial class AIAction
 			return;
 		}
 
-		bool dataFound = false;
 		string currentDataID = string.Empty;
 		
 		while(reader.Depth >= depth)
@@ -201,7 +200,7 @@ public abstract partial class AIAction
 		}
 	}
 
-	public void PostDeserialise()
+	public void PostDeserialise() 
 	{
 		foreach(var link in m_linkSerialisationMap)
 		{
@@ -222,8 +221,8 @@ public abstract partial class AIAction
 		}
 
 #if UNITY_EDITOR
-		foreach (var inputData in m_inputData)	{ m_inputDataRects.Add(new Rect());	}
-		foreach (var outputData in m_outputData) { m_outputDataRects.Add(new Rect()); }
+		for(int i = 0; i < m_inputData.Count; i++) { m_inputDataRects.Add(new Rect());	}
+		for(int i = 0; i < m_inputData.Count; i++) { m_outputDataRects.Add(new Rect()); }
 #endif
 	}
 

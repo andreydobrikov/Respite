@@ -370,7 +370,11 @@ public class OccludedMesh : MonoBehaviour
 					float val = magnitude -  m_nudgeMagnitude / magnitude;
 					
 					direction *= m_nudgeMagnitude;
-						
+
+#if OCCLUDED_MESH_EXCEPTIONS
+					try
+					{
+#endif
 					if(Physics.Raycast(objectPosition, direction / magnitude, out hitInfo, val, 1 <<  collisionLayer))
 					{
 						if(ShowFailedRays) { Debug.DrawLine(objectPosition, direction, Color.green); }
@@ -417,6 +421,13 @@ public class OccludedMesh : MonoBehaviour
 							validVerts.Add(worldPos);	
 						}
 					}
+#if OCCLUDED_MESH_EXCEPTIONS
+					}
+					catch(Exception e)
+					{
+						Debug.LogError(GameObjectHelper.LogHierarchy(gameObject));
+					}
+#endif
 				}
 			}
 		}

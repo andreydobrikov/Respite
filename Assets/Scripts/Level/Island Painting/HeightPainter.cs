@@ -31,7 +31,7 @@ public class HeightPainter : Painter
 		
 		texelSize = texelSize / 4.0f;
 		 
-		m_brush.m_brushSize = res;
+		m_brush.m_brushSizeX = res;
 		m_brush.Update();
 		
 		RaycastHit hitInfo;

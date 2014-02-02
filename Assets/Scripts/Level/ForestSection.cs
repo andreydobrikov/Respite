@@ -52,6 +52,7 @@ public class ForestSection
 		m_brush.m_solidBrush = false;
 		m_brush.m_color = new Color(0.5f, 0.5f, 0.0f, 1.0f);
 		m_brush.m_opacity = 1.0f;
+        m_brush.m_fadeOutPercentage = 0.5f;
 		
 		m_detailBrush.m_detailBrush = true;
 		m_detailBrush.m_solidBrush = false;
@@ -60,10 +61,10 @@ public class ForestSection
 		
 		for(int i = 0; i < m_instancePositions.Count; ++i)
 		{
-			m_brush.m_brushSize = (int)island.WorldSizeToTexel(m_instanceSizes[i]);
+			m_brush.m_brushSizeX = (int)island.WorldSizeToTexel(m_instanceSizes[i]);
 			m_brush.Update();
 			
-			m_detailBrush.m_brushSize = (int)island.WorldSizeToTexel(m_instanceSizes[i] * 1.8f);
+			m_detailBrush.m_brushSizeX = (int)island.WorldSizeToTexel(m_instanceSizes[i] * 1.8f);
 			m_detailBrush.Update();
 			
 			island.PaintPixel(m_instancePositions[i].x, m_instancePositions[i].z, m_brush);

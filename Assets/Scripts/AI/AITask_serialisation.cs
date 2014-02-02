@@ -78,7 +78,7 @@ public sealed partial class AITask : IComparable
 		}
 		catch( Exception e)
 		{
-			Debug.LogError("Failed to load JSON:\n" + jsonSource);
+			Debug.LogError("Failed to load JSON:\n" + jsonSource + "\n" + e.ToString());
 			return false;
 		}
 

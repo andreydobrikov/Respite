@@ -17,7 +17,7 @@ Platform assembly: C:\Unity\Respite\build_Data\Managed\Assembly-UnityScript-firs
 Loading C:\Unity\Respite\build_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
 Platform assembly: C:\Unity\Respite\build_Data\Managed\Newtonsoft.Json.dll (this message is harmless)
 Loading C:\Unity\Respite\build_Data\Managed\Newtonsoft.Json.dll into Unity Child Domain
-- Completed reload, in  0.065 seconds
+- Completed reload, in  0.079 seconds
 desktop: 1680x1050 60Hz; virtual: 3360x1050 at -1680,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -63,14 +63,6 @@ MainMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:57)
  
 (Filename: C Line: 0)
 
-Fade requested
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
-MainMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\MainMenu.cs:57)
- 
-(Filename: C Line: 0)
-
 Fade complete, calling handler...
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
@@ -78,45 +70,20 @@ CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
  
 (Filename: C Line: 0)
 
-UnloadTime: 0.707999 ms
-<color=green>(AI)Deserialising Tasks</color>
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:49)
-AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
- 
-(Filename: C Line: 0)
-
-patrol_task
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:63)
-AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
- 
-(Filename: C Line: 0)
-
-Test Task
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:63)
-AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
- 
-(Filename: C Line: 0)
-
-test_task
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-AIManager:DoDeserialise() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:63)
-AIManager:OnEnable() (at C:\Unity\Respite\Assets\Scripts\AI\AIManager.cs:33)
- 
-(Filename: C Line: 0)
-
-System memory in use before: 106.4 MB.
+UnloadTime: 1.003313 ms
+System memory in use before: 107.8 MB.
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
-System memory in use after: 106.4 MB.
+System memory in use after: 107.8 MB.
 
-Unloading 45 unused Assets to reduce memory usage. Loaded Objects now: 10537.
-Total: 3.639526 ms (FindLiveObjects: 0.467746 ms CreateObjectMapping: 0.225305 ms MarkObjects: 2.125092 ms  DeleteObjects: 0.114111 ms)
+Unloading 45 unused Assets to reduce memory usage. Loaded Objects now: 10682.
+Total: 6.089153 ms (FindLiveObjects: 1.835277 ms CreateObjectMapping: 0.196871 ms MarkObjects: 2.974942 ms  DeleteObjects: 0.198694 ms)
+
+Level loaded
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+StatsTracker:OnLevelWasLoaded() (at C:\Unity\Respite\Assets\Scripts\Utilities\StatsTracker.cs:20)
+ 
+(Filename: C Line: 0)
 
 Fade requested
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
@@ -127,13 +94,6 @@ GameFlowWrapper:OnLevelWasLoaded() (at C:\Unity\Respite\Assets\Scripts\Level\Gam
  
 (Filename: C Line: 0)
 
-Level loaded
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-StatsTracker:OnLevelWasLoaded() (at C:\Unity\Respite\Assets\Scripts\Utilities\StatsTracker.cs:20)
- 
-(Filename: C Line: 0)
-
 Controller (XBOX 360 For Windows)
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
@@ -141,22 +101,6 @@ GameFlowWrapper:Start() (at C:\Unity\Respite\Assets\Scripts\Level\GameFlowWrappe
  
 (Filename: C Line: 0)
 
-Platform assembly: C:\Unity\Respite\build_Data\Managed\System.Xml.dll (this message is harmless)
-Loading <b>1</b> tasks for behaviour <b>Patrol</b>
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-AIBehaviour:LoadTasks() (at C:\Unity\Respite\Assets\Scripts\AI\AIBehaviour.cs:29)
-AI:Start() (at C:\Unity\Respite\Assets\Scripts\AI\AI.cs:33)
- 
-(Filename: C Line: 0)
-
-Starting AI task ""
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-AI:Update() (at C:\Unity\Respite\Assets\Scripts\AI\AI.cs:60)
- 
-(Filename: C Line: 0)
-
 Fade complete, calling handler...
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
@@ -164,28 +108,123 @@ CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
  
 (Filename: C Line: 0)
 
-Fade requested
+Time since last footstep: 3.006909
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
-CameraFade:StartFade(Color, Single, Action) (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:90)
-GameFlow:RequestMenu() (at C:\Unity\Respite\Assets\Scripts\GameFlow\GameFlow.cs:162)
-GameMenu:Update() (at C:\Unity\Respite\Assets\Scripts\GUI\GameMenu.cs:35)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
  
 (Filename: C Line: 0)
 
-NullReferenceException: Object reference not set to an instance of an object
-  at Weather.TimePaused () [0x00000] in C:\Unity\Respite\Assets\Scripts\Level\Weather.cs:216 
-  at (wrapper delegate-invoke) System.Action:invoke_void__this__ ()
-  at GameTime.set_Paused (Boolean value) [0x0002b] in C:\Unity\Respite\Assets\Scripts\GameFlow\GameTime.cs:70 
-  at GameFlow.RequestMenu () [0x00046] in C:\Unity\Respite\Assets\Scripts\GameFlow\GameFlow.cs:165 
-  at GameMenu.Update () [0x00070] in C:\Unity\Respite\Assets\Scripts\GUI\GameMenu.cs:35 
+Time since last footstep: 0
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
  
 (Filename: C Line: 0)
 
-Fade complete, calling handler...
+Time since last footstep: 0.04106712
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
-CameraFade:OnGUI() (at C:\Unity\Respite\Assets\Scripts\Render\CameraFade.cs:58)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0.3226428
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0.305346
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0.3362646
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0.3458743
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0.3127775
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0.03566551
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
+ 
+(Filename: C Line: 0)
+
+Time since last footstep: 0.3493924
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+Footsteps:HandleEvent() (at C:\Unity\Respite\Assets\Scripts\Level\Player\Footsteps.cs:32)
+AnimationEventTrigger:IssueEvent() (at C:\Unity\Respite\Assets\Scripts\Render\Animation\AnimationEventTrigger.cs:12)
  
 (Filename: C Line: 0)
 

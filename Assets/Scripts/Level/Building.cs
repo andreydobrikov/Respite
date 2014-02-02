@@ -109,4 +109,7 @@ public class Room
 
 	[SerializeField] 
 	public Material OverrideMaterial = null;
+
+    [SerializeField]
+    public AudioSource FloorAudioSource = null;
 }

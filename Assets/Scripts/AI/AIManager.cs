@@ -35,18 +35,26 @@ public class AIManager : MonoBehaviour
 
 	public void DoSerialise()
 	{
+#if AI_LOGGING
 		Debug.Log("<color=green>(AI)Serialising tasks...</color>");
+#endif
 		foreach(var task in m_tasks)
 		{
+#if AI_LOGGING
 			Debug.Log("\t<b>" + task.Name + "</b>");
+#endif
 			task.Serialise(Application.dataPath + "/resources/ai_tasks");
 		}
+#if AI_LOGGING
 		Debug.Log("Complete");
+#endif
 	}
 
 	public void DoDeserialise()
 	{
+#if AI_LOGGING
 		Debug.Log("<color=green>(AI)Deserialising Tasks</color>");
+#endif
 
 		m_tasks.Clear();
 		var tasks = Resources.LoadAll("ai_tasks");
@@ -60,7 +68,9 @@ public class AIManager : MonoBehaviour
 			{
 				continue;
 			}
+#if AI_LOGGING
 			Debug.Log (asset.name); 
+#endif
 
 			AITask newTask = ScriptableObject.CreateInstance(typeof(AITask)) as AITask;
 

@@ -214,26 +214,16 @@ public class BuildingEditor :  Editor
 		floorObject.transform.parent 			= roomObject.transform;
 		floorObject.transform.localPosition		= new Vector3(0.0f, -0.9f, 0.0f);
 		floorObject.transform.localRotation		= Quaternion.identity;
-		
+
 		GameObject ambientObject				= new GameObject(Building.s_ambient_id);
 		ambientObject.layer						= LayerMask.NameToLayer("Shadow");
 		ambientObject.transform.parent 			= roomObject.transform;
 		ambientObject.transform.localPosition	= new Vector3(0.0f, 1.0f, 0.0f);
 		ambientObject.transform.localRotation	= Quaternion.identity;
 		
-		GameObject fogObject					= new GameObject(Building.s_fog_id);
-		fogObject.layer							= LayerMask.NameToLayer("Overlay");
-		fogObject.transform.parent 				= roomObject.transform;
-		fogObject.transform.localPosition		= new Vector3(0.0f, 0.0f, 0.0f);
-		fogObject.transform.localRotation		= Quaternion.identity;
-		
 		BuildFloor(room, floorObject);
 		BuildAmbient(room, ambientObject);
 		
-		if(building.BuildFog)
-		{
-			BuildFog(room, fogObject);
-		}
 		
 		return roomObject;
 	}
@@ -332,6 +322,19 @@ public class BuildingEditor :  Editor
 		
 		MeshRenderer renderer 	= floorObject.AddComponent<MeshRenderer>();
 		MeshFilter filter		= floorObject.AddComponent<MeshFilter>();
+
+        GameObject colliderObject = new GameObject("collider");
+        MeshCollider collider     = colliderObject.AddComponent<MeshCollider>();
+
+        FloorFootstepSurface surface = colliderObject.AddComponent<FloorFootstepSurface>();
+        surface.SurfaceAudioSource = room.FloorAudioSource;
+
+        colliderObject.layer = LayerMask.NameToLayer("Floor");
+        colliderObject.transform.parent = floorObject.transform;
+
+        colliderObject.transform.localPosition  = Vector3.zero;
+        colliderObject.transform.localRotation  = Quaternion.identity;
+        colliderObject.transform.localScale     = Vector3.one;
 		
 		string floorMeshName 	= building.BuildingName + "_" + room.Name + "_" + Building.s_floor_id;
 		
@@ -341,6 +344,7 @@ public class BuildingEditor :  Editor
 		if(floorMesh != null)
 		{
 			filter.mesh = floorMesh as Mesh;	
+            collider.sharedMesh = floorMesh as Mesh;
 		}
 		else
 		{

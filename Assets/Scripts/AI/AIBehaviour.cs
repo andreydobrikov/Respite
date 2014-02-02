@@ -26,7 +26,9 @@ public abstract class AIBehaviour : ScriptableObject
 
 	public void LoadTasks()
 	{
+#if AI_LOGGING
 		Debug.Log("Loading <b>" + m_requiredTaskPaths.Count + "</b> tasks for behaviour <b>" + m_name + "</b>");
+#endif
 		foreach(var task in m_requiredTaskPaths)
 		{
 			AITask newTask = AITask.LoadTask(task);

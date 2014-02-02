@@ -58,8 +58,6 @@ public class AIActionNavigate : AIAction
 	
 	public override void Update()
 	{
-		bool transition = false;
-		
 		if(m_door != null)
 		{
 			Debug.DrawLine(GetGameObject().transform.position, m_door.transform.position + new Vector3(0.0f, 1.0f, 0.0f), Color.magenta);	

@@ -27,12 +27,11 @@ public class AI : MonoBehaviour, ISerialisable
 	{
 		m_blackboard = new AIBlackboard();
 
-		// TODO: This has to be done because AI behaviours were sharing a parent when copied, rather than re-assigning
 		foreach(var behaviour in m_behaviours)
 		{
-			behaviour.RegisterBlackboardEntries();
 			behaviour.LoadTasks();
 			behaviour.m_parentAI = this;
+			behaviour.RegisterBlackboardEntries();
 			behaviour.Start();
 		}
 
@@ -60,7 +59,10 @@ public class AI : MonoBehaviour, ISerialisable
 
 				m_runningTask = m_taskList[0];
 				m_runningTask.Start();
+
+#if AI_LOGGING
 				Debug.Log("Starting AI task \"" + m_runningTask.name + "\"");
+#endif
 			}
 		}
 
@@ -79,11 +81,13 @@ public class AI : MonoBehaviour, ISerialisable
 		}
 	}
 
+	// TODO: Save the AI!
 	public void SaveSerialise(List<SavePair> pairs)
 	{
 		
 	}
-	
+
+	// TODO: Load the AI!
 	public void SaveDeserialise(List<SavePair> pairs)
 	{
 		

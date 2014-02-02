@@ -63,19 +63,28 @@ public class AIEditor : Editor
 		GUILayout.EndHorizontal();
 		List<AIBehaviour> toDelete = new List<AIBehaviour>();
 
+        EditorGUILayout.BeginVertical((GUIStyle)("Box"));
+
 		foreach(var behaviour in ai.Behaviours)
 		{
-			GUILayout.BeginHorizontal();
+			//GUILayout.BeginHorizontal();
 
-			GUILayout.Label(behaviour.Name);
+			behaviour.m_showFoldout = EditorGUILayout.Foldout(behaviour.m_showFoldout, behaviour.Name);
 
-			if(GUILayout.Button("Delete"))
+            if(behaviour.m_showFoldout)
+            {
+                behaviour.OnInspectorGUI();
+            }
+
+			//if(GUILayout.Button("Delete"))
 			{
-				toDelete.Add(behaviour);
+			//	toDelete.Add(behaviour);
 			}
 
-			GUILayout.EndHorizontal();
+			//GUILayout.EndHorizontal();
 		}
+
+        EditorGUILayout.EndVertical();
 
 		foreach(var deletedBehaviour in toDelete)
 		{
@@ -564,8 +573,6 @@ public class AIEditorWindow :  EditorWindow
 				}
 
 				EditorGUILayout.EndHorizontal();
-
-
 			}
 		}
 
@@ -604,11 +611,9 @@ public class AIEditorWindow :  EditorWindow
 		GUI.DragWindow();	
 	}
 	
-	private static List<AIBehaviour> m_toDelete = new List<AIBehaviour>();
 	private static Vector2 m_scrollOffset = Vector2.zero;
 	private static Vector2 m_scrollStart = Vector2.zero;
 	private static float lineCurveScale = 70.0f;
-	private static Vector2 stateHandleSize = new Vector2(10.0f, 10.0f);
 
 	private float m_lastWidth = 200.0f;
 	private float m_lastHeight = 200.0f;

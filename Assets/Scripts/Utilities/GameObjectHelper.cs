@@ -124,4 +124,37 @@ public class GameObjectHelper
 	{
 		Debug.Log("Quaternion: " + quaternion.eulerAngles.x + ", " + quaternion.eulerAngles.y + ", " + quaternion.eulerAngles.z);
 	}
+
+	public static string LogHierarchy(GameObject gameObject)
+	{
+		List<string> strings = new List<string>();
+
+		while(gameObject != null)
+		{
+			strings.Add(gameObject.name);
+			gameObject = gameObject.transform.parent.gameObject;
+		}
+
+		string output = string.Empty;
+
+		int indent = 0;
+		foreach(var name in strings)
+		{
+			if(indent > 0)
+			{
+				output += "\n";
+			}
+
+			for(int i = 0; i < indent; i++)
+			{
+				output += "\t";
+			}
+
+			output += name;
+
+			indent++;
+		}
+
+		return output;
+	}
 }

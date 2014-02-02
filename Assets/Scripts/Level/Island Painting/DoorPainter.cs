@@ -33,10 +33,10 @@ public class DoorPainter : Painter
 		
 		
 		
-			brush.m_brushSize = (int)island.WorldSizeToTexel(transform.localScale.x) * 2;
+			brush.m_brushSizeX = (int)island.WorldSizeToTexel(transform.localScale.x) * 2;
 			brush.Update();
 			
-			detailBrush.m_brushSize = 40;//(int)island.WorldSizeToTexel(transform.localScale.x);
+			detailBrush.m_brushSizeX = 40;//(int)island.WorldSizeToTexel(transform.localScale.x);
 			detailBrush.Update();
 			
 			island.PaintPixel(transform.position.x, transform.position.z, brush);

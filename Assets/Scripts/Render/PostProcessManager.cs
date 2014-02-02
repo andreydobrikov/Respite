@@ -13,16 +13,11 @@ public class PostProcessManager : MonoBehaviour
 	
 	public GameObject[] snowOverlay;
 
-	private RenderBuffer[] m_renderBuffers = new RenderBuffer[2];
-	
 	void Start () 
 	{
 		GameObject lightmapCamera 		= GameObject.FindGameObjectWithTag("LightMapCamera");
 		GameObject postCamera			= GameObject.FindGameObjectWithTag("PostCamera");
-	//	GameObject viewCamera			= GameObject.FindGameObjectWithTag("ViewRegionCamera");
 		GameObject weatherMaskCamera	= GameObject.FindGameObjectWithTag("WeatherMaskCamera");
-		GameObject maincamera			= GameObject.FindGameObjectWithTag("MainCamera");
-
 		
 		if(postCamera != null)
 		{
@@ -36,8 +31,6 @@ public class PostProcessManager : MonoBehaviour
 		int pixelWidth 	= (int)Camera.main.pixelWidth;
 		int pixelHeight = (int)Camera.main.pixelHeight;
 
-
-		
 		if(weatherMaskCamera != null && snowOverlay != null)
 		{
 			int maskWidth = pixelWidth / 4;
@@ -66,9 +59,7 @@ public class PostProcessManager : MonoBehaviour
 			lightmapCamera.GetComponent<Camera>().targetTexture.isPowerOfTwo 	= false;
 			postCamera.GetComponent<LightMapEffect>().lightMapTexture 			= lightmapCamera.GetComponent<Camera>().targetTexture;
 		
-
 		}
-
 	}
 	
 	void Update()

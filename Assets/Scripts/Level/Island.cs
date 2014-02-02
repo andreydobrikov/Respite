@@ -93,11 +93,11 @@ public class Island : MonoBehaviour
 			SectionPixelPair pair = GetPair(x, y);
 
 					
-			int xStart = pair.pixelX - brush.m_brushSize / 2;
-			int xEnd = pair.pixelX + brush.m_brushSize / 2;
+			int xStart = pair.pixelX - brush.m_brushSizeX / 2;
+			int xEnd = pair.pixelX + brush.m_brushSizeX / 2;
 					
-			int yStart = pair.pixelY - brush.m_brushSize / 2;
-			int yEnd = pair.pixelY + brush.m_brushSize / 2;
+			int yStart = pair.pixelY - brush.m_brushSizeX / 2;
+			int yEnd = pair.pixelY + brush.m_brushSizeX / 2;
 			
 			for(int currentX = xStart; currentX < xEnd; currentX++)
 			{
@@ -137,7 +137,7 @@ public class Island : MonoBehaviour
 						continue;	
 					}
 					
-					int index = (currentY - yStart) * brush.m_brushSize + (currentX - xStart);
+					int index = (currentY - yStart) * brush.m_brushSizeX + (currentX - xStart);
 					
 					Color current = m_editTextures[sectionY * SectionsX + sectionX].colors[pixelY * 512 + pixelX];
 					
@@ -184,7 +184,6 @@ public class Island : MonoBehaviour
 	
 	public void ClearSplatMap()
 	{
-		string test;
 		Color[] clearColors = new Color[TexWidth * TexHeight];
 		for(int i = 0; i < TexWidth * TexHeight; i++)
 		{
@@ -232,6 +231,15 @@ public class Island : MonoBehaviour
 		
 		return texelSize;
 	}
+
+    // Gets the radius of a brush given its size.
+    public float GetBrushRadius(int brushSize)
+    {
+        float sectionSize = (MaxBounds.x - MinBounds.x) / (float)SectionsX;
+        float radius = (sectionSize / (float)TexWidth) * brushSize / 2.0f;
+
+        return radius;
+    }
 	
 	private SectionPixelPair GetPair(float x, float y)
 	{

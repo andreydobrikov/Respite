@@ -181,7 +181,7 @@ public class IslandEditor : Editor
 			{
 				for(int y = 0; y < island.SectionsY; y++)
 				{
-					string path = "Assets/Resources/Textures/Terrain Maps/splat_" + x + "_" + y + ".png";
+					string path = "Assets/Textures/Terrain Maps/splat_" + x + "_" + y + ".png";
 					
 					AssetDatabase.ImportAsset( path, ImportAssetOptions.ForceSynchronousImport );
 				}
@@ -240,7 +240,7 @@ public class IslandEditor : Editor
 							Material newMaterial = new Material(island.IslandBaseMaterial);
 							
 							
-							string path = "Assets/Resources/Textures/Terrain Maps/splat_" + x + "_" + y + ".png";
+							string path = "Assets/Textures/Terrain Maps/splat_" + x + "_" + y + ".png";
 							
 							TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
 							
@@ -297,7 +297,7 @@ public class IslandEditor : Editor
 		
 		return;
 	}
-	
+    	
 	[MenuItem ("Respite/Misc/Flush Progress Bar")]
 	public static void FlushProgressBar()
 	{
