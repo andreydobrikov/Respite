@@ -4,6 +4,8 @@
     {
       "action_type": "AIActionTest, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "id": 0,
+      "editor_x": 100.0,
+      "editor_y": 100.0,
       "input_data": [
         {
           "action_id": "action_input",
@@ -28,6 +30,8 @@
     {
       "action_type": "AIActionTest, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "id": 1,
+      "editor_x": 100.0,
+      "editor_y": 100.0,
       "input_data": [
         {
           "action_id": "action_input",
@@ -52,6 +56,8 @@
     {
       "action_type": "AIActionTest, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "id": 2,
+      "editor_x": 100.0,
+      "editor_y": 100.0,
       "input_data": [
         {
           "action_id": "action_input",

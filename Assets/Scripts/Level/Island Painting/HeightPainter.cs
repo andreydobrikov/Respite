@@ -31,6 +31,7 @@ public class HeightPainter : Painter
 		
 		texelSize = texelSize / 4.0f;
 		 
+        m_brush.m_fadeOutPercentage = 0.05f;
 		m_brush.m_brushSizeX = res;
 		m_brush.Update();
 		

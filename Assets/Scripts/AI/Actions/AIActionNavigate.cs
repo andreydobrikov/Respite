@@ -17,10 +17,7 @@ public class AIActionNavigate : AIAction
 
 	public override void Init()
 	{
-		AIActionLink completelink = ScriptableObject.CreateInstance(typeof(AIActionLink)) as AIActionLink;
-		completelink.linkName = "nav_complete";
-		
-		m_outputLinks.Add(completelink);
+        AddOutputLink("nav_complete");
 
 		// Required input-data
 		AIActionData navTargetData = ScriptableObject.CreateInstance(typeof(AIActionData)) as AIActionData;

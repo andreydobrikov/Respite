@@ -4,6 +4,8 @@
     {
       "action_type": "AIActionNavigate, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "id": 0,
+      "editor_x": 115.0,
+      "editor_y": 327.0,
       "input_data": [
         {
           "action_id": "nav_target",
@@ -22,6 +24,8 @@
     {
       "action_type": "AIActionIdle, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "id": 1,
+      "editor_x": 289.0,
+      "editor_y": 63.0,
       "input_data": [
         {
           "action_id": "input_idle_time",

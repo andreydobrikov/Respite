@@ -63,7 +63,7 @@ public class IslandBrush
                         val = Mathf.Clamp01(val);
                         
                         // TODO: This is bullshit
-                        if(m_solidBrush && val > m_fadeOutPercentage)
+                        if(m_solidBrush || val > m_fadeOutPercentage)
                         {
                             val = 1.0f; 
                         }

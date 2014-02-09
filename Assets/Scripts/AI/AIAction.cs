@@ -92,6 +92,18 @@ public abstract partial class AIAction : ScriptableObject
 		return true;
 	}
 
+    // Helpers to prevent action source files becoming bloated
+    protected AIActionLink AddOutputLink(string name)
+    {
+        AIActionLink newLink = ScriptableObject.CreateInstance(typeof(AIActionLink)) as AIActionLink;
+        newLink.linkName = name;
+        
+        m_outputLinks.Add(newLink);
+
+        return newLink;
+    }
+
+
 	protected string m_name 			= string.Empty;
 	protected string m_ID 				= string.Empty; // This is used as the ID during serialisation, so be wary of altering it!.
 	protected string m_targetLink		= string.Empty;	// The link to follow upon completion; 

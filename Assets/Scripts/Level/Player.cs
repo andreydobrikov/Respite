@@ -9,12 +9,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Player : MonoBehaviour, ISerialisable
+public class Player : Entity, ISerialisable
 {
 	public float CooldownRate = 0.0001f;
 	
-	void Start () 
+    public override float GetVisibilityRadius()
+    {
+        return 0.6f;
+    }
+
+	protected override void EntityStart() 
 	{
+        m_entityName = "Player";
+
 		Warmth = 1.0f;
 		Energy = 1.0f;
 		

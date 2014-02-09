@@ -14,6 +14,12 @@ public abstract partial class AIAction
 		writer.WritePropertyName("id");
 		writer.WriteValue(SerialisationID);
 
+        writer.WritePropertyName("editor_x");
+        writer.WriteValue(m_editorPosition.x);
+
+        writer.WritePropertyName("editor_y");
+        writer.WriteValue(m_editorPosition.y);
+
 		// Output Data
 		writer.WritePropertyName("input_data");
 		writer.WriteStartArray();
@@ -96,6 +102,22 @@ public abstract partial class AIAction
 					SerialisationID = id;
 				}
 
+                if(reader.Value.ToString() == "editor_x")
+                {
+                    reader.Read();
+                    float editorX = 0.0f;
+                    float.TryParse(reader.Value.ToString(), out editorX);
+                    m_editorPosition.x = editorX;
+                }
+
+                if(reader.Value.ToString() == "editor_y")
+                {
+                    reader.Read();
+                    float editorY = 0.0f;
+                    float.TryParse(reader.Value.ToString(), out editorY);
+                    m_editorPosition.y = editorY;
+                }
+                 
 				if(reader.Value.ToString() == "input_data")
 				{
 					reader.Read();

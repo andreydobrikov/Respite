@@ -186,6 +186,8 @@ ModelImporter:
     100360: facility0_kitchen_stairs_ambient
     100362: facility0_pantry_ambient
     100364: facility0_temp_ambient
+    100366: facility0_backhall_toilet_ambient
+    100368: facility0_backhall_toilet_floor
     400000: //RootNode
     400002: facility0_bathroom_ambient
     400004: facility0_bathroom_floor
@@ -369,6 +371,8 @@ ModelImporter:
     400360: facility0_kitchen_stairs_ambient
     400362: facility0_pantry_ambient
     400364: facility0_temp_ambient
+    400366: facility0_backhall_toilet_ambient
+    400368: facility0_backhall_toilet_floor
     2300000: facility0_bathroom_ambient
     2300002: facility0_bathroom_floor
     2300004: facility0_bedroom_ambient
@@ -551,6 +555,8 @@ ModelImporter:
     2300358: facility0_kitchen_stairs_ambient
     2300360: facility0_pantry_ambient
     2300362: facility0_temp_ambient
+    2300364: facility0_backhall_toilet_ambient
+    2300366: facility0_backhall_toilet_floor
     3300000: facility0_bathroom_ambient
     3300002: facility0_bathroom_floor
     3300004: facility0_bedroom_ambient
@@ -733,6 +739,8 @@ ModelImporter:
     3300358: facility0_kitchen_stairs_ambient
     3300360: facility0_pantry_ambient
     3300362: facility0_temp_ambient
+    3300364: facility0_backhall_toilet_ambient
+    3300366: facility0_backhall_toilet_floor
     4300000: facility0_bedroom_floor
     4300002: facility0_walls
     4300004: facility0_bedroom_ambient
@@ -915,6 +923,8 @@ ModelImporter:
     4300358: facility0_kitchen_stairs_ambient
     4300360: facility0_f_basement_stairs_ambient
     4300362: facility0_temp_ambient
+    4300364: facility0_backhall_toilet_floor
+    4300366: facility0_backhall_toilet_ambient
     9500000: //RootNode
   materials:
     importMaterials: 0

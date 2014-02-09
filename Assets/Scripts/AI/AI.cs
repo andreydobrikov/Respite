@@ -17,14 +17,15 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Entity))]
 [RequireComponent(typeof(SphereCollider))]
 public class AI : MonoBehaviour, ISerialisable
 {
-
-#region Public methods
-
+    // Public Methods
 	public void Start ()
 	{
+        m_perceptionRangeCollider = GetComponent<SphereCollider>();
+
 		m_blackboard = new AIBlackboard();
 
 		foreach(var behaviour in m_behaviours)
@@ -82,22 +83,56 @@ public class AI : MonoBehaviour, ISerialisable
 	}
 
 	// TODO: Save the AI!
-	public void SaveSerialise(List<SavePair> pairs)
-	{
-		
-	}
+	public void SaveSerialise(List<SavePair> pairs){}
 
 	// TODO: Load the AI!
-	public void SaveDeserialise(List<SavePair> pairs)
-	{
-		
-	}
+	public void SaveDeserialise(List<SavePair> pairs){}
 
 	public void PushTask(AITask task)
 	{
 		task.Result = AITaskResult.Pending;
 		m_taskList.Add(task);
 	}
+
+    public void OnTriggerEnter(Collider other)
+    {
+        Entity entity = other.GetComponent<Entity>();
+        if(entity != null)
+        {
+            Debug.Log("Entity entered perception range: " + entity.EntityName);
+            m_entitiesInPerception.Add(entity);
+
+            foreach(var listener in m_perceptionListeners)
+            {
+                listener.EntityEnteredPerception(entity);
+            }
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        Entity entity = other.GetComponent<Entity>();
+        if(entity != null)
+        {
+            Debug.Log("Entity left perception range: " + entity.EntityName);
+            m_entitiesInPerception.Remove(entity);
+
+            foreach(var listener in m_perceptionListeners)
+            {
+                listener.EntityLeftPerception(entity);
+            }
+        }
+    }
+
+    public void RegisterPerceptionListener(IAiPerceptionListener listener)
+    {
+        m_perceptionListeners.Add(listener);
+    }
+
+    public void UnregisterPerceptionListener(IAiPerceptionListener listener)
+    {
+        m_perceptionListeners.Remove(listener);
+    }
 
 	public void OnGUI()
 	{
@@ -109,39 +144,24 @@ public class AI : MonoBehaviour, ISerialisable
 #endif
 	}
 
-#endregion
+    // Properties
+    public AIBlackboard Blackboard      { get { return m_blackboard; } }
+    public List<AIBehaviour> Behaviours { get { return m_behaviours; } }
+    public List<Entity> PerceivedEntitites { get { return m_entitiesInPerception; } }
 
-#region Properties
-
-	public AIBlackboard Blackboard
-	{
-		get { return m_blackboard; }
-	}
-
-	public List<AIBehaviour> Behaviours
-	{
-		get { return m_behaviours; }
-	}
-
-#endregion
-
-#region Private fields
-
+    // Private Fields
 	[SerializeField]
-	private List<AIBehaviour> m_behaviours = new List<AIBehaviour>();
-	
-	private AIBlackboard m_blackboard 	= null;					// AI blackboard containing all AI data
-	private AITask m_runningTask 		= null;					// The currently running AI task
-	private List<AITask> m_taskList 	= new List<AITask>();	// All tasks queued
-
-#endregion
+	private List<AIBehaviour> m_behaviours                      = new List<AIBehaviour>();          // Behaviours used by this AI
+	private AIBlackboard m_blackboard 	                        = null;					            // AI blackboard containing all AI data
+	private AITask m_runningTask 		                        = null;					            // The currently running AI task
+	private List<AITask> m_taskList 	                        = new List<AITask>();	            // All tasks queued
+    private SphereCollider m_perceptionRangeCollider            = null;                             // The collider to detect when an entity moves into the AI's perception-range
+    private List<Entity> m_entitiesInPerception                 = new List<Entity>();
+    private List<IAiPerceptionListener> m_perceptionListeners   = new List<IAiPerceptionListener>();
 	
 #if UNITY_EDITOR
-
-	public int m_selectedBehaviourIndex = 0;
-	public AIBehaviour m_dragStart = null;
-	public bool m_debugEditor = true;
-	
+	public int m_selectedBehaviourIndex = 0;    
+	public AIBehaviour m_dragStart      = null;
+	public bool m_debugEditor           = true;
 #endif
-	
 }

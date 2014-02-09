@@ -10,6 +10,8 @@
 //
 ///////////////////////////////////////////////////////////
 
+//#define AI_LOGGING
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -30,7 +32,7 @@ public class AIManager : MonoBehaviour
 		RebuildActionList();
 		s_instance = this;
 
-		DoDeserialise();
+	//	DoDeserialise();
 	}
 
 	public void DoSerialise()
@@ -45,6 +47,29 @@ public class AIManager : MonoBehaviour
 #endif
 			task.Serialise(Application.dataPath + "/resources/ai_tasks");
 		}
+
+        // Clear out any task files not registered with the manager
+#if UNITY_EDITOR
+
+        DirectoryInfo info = new DirectoryInfo(Application.dataPath + "/resources/ai_tasks");
+        foreach(var file in info.GetFiles())
+        {
+            if(file.Extension == ".json")
+            {
+                string filename = System.IO.Path.ChangeExtension(file.Name, null);
+                if(!m_taskNames.Contains(filename))
+                {
+                    Debug.Log("File " + filename + " is totes bogus. Flushing the sod.");
+                    File.Delete(file.FullName);
+                    string metaPath = System.IO.Path.ChangeExtension(file.FullName, ".meta");
+                    File.Delete(metaPath);
+                }
+
+            }
+        }
+
+#endif
+
 #if AI_LOGGING
 		Debug.Log("Complete");
 #endif
@@ -128,6 +153,25 @@ public class AIManager : MonoBehaviour
 
 		DoDeserialise();
 	}
+
+    public void AddNewTask()
+    {
+        AITask newTask = ScriptableObject.CreateInstance<AITask>();
+        newTask.name = "new task";
+        newTask.Name = "new task";
+        m_tasks.Add(newTask);
+        m_taskNames.Add("new task");
+    }
+
+    public void DeleteCurrentTask()
+    {
+        if(EditorUtility.DisplayDialog("Delete Task \"" + m_taskNames[selectedTaskIndex] + "\"?", "This will permanantly delete the task. Continue?", "OK", "Cancel"))
+        {
+            m_taskNames.RemoveAt(selectedTaskIndex);
+            m_tasks.RemoveAt(selectedTaskIndex);
+            selectedTaskIndex = 0;
+        }
+    }
 
 	public int selectedTaskIndex = 0;
 	public int selectedActionIndex = 0;

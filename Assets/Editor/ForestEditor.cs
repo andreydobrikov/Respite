@@ -170,7 +170,7 @@ public class ForestEditor : Editor
 				RaycastHit hitInfo;
 				if(Physics.Raycast(new Vector3(x, 1.0f, z), new Vector3(0.0f, -1.0f, 0.0f), out hitInfo, 50.0f, ~LayerMask.NameToLayer("WorldCollision")))
 				{
-					if(	hitInfo.point.y < -0.1f)
+					if(	hitInfo.point.y < -0.01f)
 					{
 						terrainValid = false;
 					}
