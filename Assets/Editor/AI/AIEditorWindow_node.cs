@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 // 
 // AIEditorWindow_node.cs
 //
@@ -78,149 +78,14 @@ public partial class AIEditorWindow :  EditorWindow
         }
         
         GUILayout.EndHorizontal();
-        GUILayout.EndVertical();
-        /*
 
-        GUILayout.BeginVertical((GUIStyle)("Box"));
-        currentState.m_showFoldout = EditorGUILayout.Foldout(currentState.m_showFoldout, "State Settings"); 
-        
-        if(currentState.m_showFoldout)
+        if(GUILayout.Button("Delete"))
         {
-            GUILayout.BeginHorizontal();
-            
-            currentState.Name = EditorGUILayout.TextField(currentState.Name);
-            
-            if(GUILayout.Button("X", GUILayout.Width(30)))
-            {
-                if(EditorUtility.DisplayDialog("Delete State?", "This will delete state \"" + currentState.Name + "\"", "delete", "cancel"))
-                {
-                    activeAI.DeleteState(currentState);
-                    return; 
-                }
-            }
-            
-            GUILayout.EndHorizontal();
-            
-            if(activeAI.StartStateIndex != id)
-            {
-                if(GUILayout.Toggle(false, "Default State"))
-                {
-                    activeAI.StartStateIndex = id;  
-                }
-            }
+            AIManager.s_instance.m_tasks[AIManager.s_instance.selectedTaskIndex].DeleteAction(currentAction);
         }
 
         GUILayout.EndVertical();
-
-        if(Event.current.type == EventType.repaint)
-        {
-            m_lastHeight += GUILayoutUtility.GetLastRect().height;
-        }
-
-        GUILayout.BeginVertical((GUIStyle)("Box"));
-
-        currentState.m_showBehavioursFoldout = EditorGUILayout.Foldout(currentState.m_showBehavioursFoldout, "Behaviours");
-
-        if (currentState.m_showBehavioursFoldout)
-        {
-            if (currentState.Behaviours.Count > 0)
-            {
-                GUILayout.BeginVertical((GUIStyle)("Box"));
-
-                foreach (var behaviour in currentState.Behaviours)
-                {
-                    GUILayout.BeginVertical((GUIStyle)("Box"));
-
-                    GUILayout.BeginHorizontal();
-
-                    behaviour.m_showFoldout = EditorGUILayout.Foldout(behaviour.m_showFoldout, behaviour.Name);
-                    behaviour.Enabled = EditorGUILayout.Toggle(behaviour.Enabled, GUILayout.Width(30));
-
-                    GUILayout.EndHorizontal();
-
-                    GUI.enabled = behaviour.Enabled;
-
-                    if (behaviour.m_showFoldout)
-                    {
-                        behaviour.OnInspectorGUI();
-
-                        if(Event.current.type == EventType.repaint)
-                        {
-                            Rect lastRect = GUILayoutUtility.GetLastRect();
-                            if (lastRect.width > m_lastWidth) m_lastWidth = lastRect.width;
-                        }
-
-                        if (GUILayout.Button("Delete"))
-                        {
-                            m_toDelete.Add(behaviour);
-                        }
-                    }
-
-                    GUI.enabled = true;
-
-                    GUILayout.EndVertical();
-                    if (Event.current.type == EventType.Repaint)
-                    {
-                        behaviour.m_lastBounds = GUILayoutUtility.GetLastRect();
-                    }
-
-                    if(Event.current.type == EventType.repaint)
-                    {
-                        Rect lastRect = GUILayoutUtility.GetLastRect();
-                        if (lastRect.width > m_lastWidth) m_lastWidth = lastRect.width;
-                    }
-                }
-
-                GUILayout.EndVertical();
-            }
-
-
-            foreach (var behaviour in m_toDelete)
-            {
-                currentState.Behaviours.Remove(behaviour);
-            }
-
-            if (AIManager.s_instance != null)
-            {
-
-                EditorGUILayout.BeginHorizontal();
-
-                currentState.m_behaviourToAdd = EditorGUILayout.Popup(currentState.m_behaviourToAdd, AIManager.s_instance.AvailableBehaviourNames.ToArray());
-
-                if (GUILayout.Button("Add"))
-                {
-                    AIBehaviour newBehaviour = ScriptableObject.CreateInstance(AIManager.s_instance.AvailableBehaviours[currentState.m_behaviourToAdd]) as AIBehaviour;
-                    newBehaviour.m_parentState = currentState;
-
-                    currentState.Behaviours.Add(newBehaviour);
-                }
-
-                EditorGUILayout.EndHorizontal();
-            }
-        }
-
-        GUILayout.EndVertical();
-
-        if(currentState.Behaviours.Count > 0)
-        {
-            float width = GUILayoutUtility.GetLastRect().width;
-            if(width > m_lastWidth) m_lastWidth = width;
-        }
-
-        if(Event.current.type == EventType.repaint)
-        {
-            currentState.m_behaviourRenderRect = GUILayoutUtility.GetLastRect();
-
-            m_lastHeight += GUILayoutUtility.GetLastRect().height;
-        }
-        
-        if(currentState.Running)
-        {
-            GUILayout.Label("State Running");   
-        }
-
-    
-        */
+   
         
         if (Event.current.type == EventType.repaint)
         {

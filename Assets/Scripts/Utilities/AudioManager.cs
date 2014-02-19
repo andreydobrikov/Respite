@@ -20,8 +20,16 @@ public class AudioManager : MonoBehaviour
 
 	void Start()
 	{
-		if(WeatherAudioSource == null) { Debug.LogWarning("<color=orange>AudioManager: WeatherAudioSource not set!</color>"); }
-        if(Player == null) { Debug.LogWarning("<color=orange>AudioManager: Player not set!</color>"); }
+		if(WeatherAudioSource == null) { Logger.LogWarning("AudioManager: WeatherAudioSource not set!", LogChannel.Audio); }
+        if(Player == null) { Logger.LogWarning("AudioManager: Player not set!", LogChannel.Audio); }
+
+		FloatSetting weatherLerpSpeedSetting = Settings.Instance.GetSetting<FloatSetting>("audio_weather_lerp_speed");
+
+		if (weatherLerpSpeedSetting != null) 
+		{
+			weatherLerpSpeedSetting.AddChangedCallback(WeatherLerpSpeedSettingChanged);
+			m_weatherLerpSpeed = weatherLerpSpeedSetting.Value; 
+		}
 	}
 
 	void Update()
@@ -29,7 +37,8 @@ public class AudioManager : MonoBehaviour
 		UpdateSettings(); 			// Update the audio-system according to user-settings.
 		UpdateWeatherTransitions();	// Update weather-audio settings according to occupied transition-zones.
 
-        WeatherAudioSource.pitch = Mathf.Lerp(WeatherAudioSource.pitch, m_targetWeatherPitch, 0.02f);
+		WeatherAudioSource.pitch = Mathf.Lerp(WeatherAudioSource.pitch, m_targetWeatherPitch, m_weatherLerpSpeed);
+		WeatherAudioSource.volume = Mathf.Lerp(WeatherAudioSource.volume, m_targetWeatherPitch, m_weatherLerpSpeed);
 	}
 
 	// Registers a transition-zone to determine weather-effect settings.
@@ -50,15 +59,15 @@ public class AudioManager : MonoBehaviour
 	private void UpdateSettings()
 	{
 		// Grab the setting and enabled or disable the audio-listener as appropriate.
-		string globalAudioToggle = Settings.Instance.GetSetting("audio_enabled");
+		BoolSetting audioEnabled = Settings.Instance.GetSetting<BoolSetting>("audio_enabled");
 		
-		if(	globalAudioToggle != null && globalAudioToggle == "false")
+		if(audioEnabled != null &&  audioEnabled.Value)
 		{	
-			AudioListener.pause = true;	
+			AudioListener.pause = false;	
 		}
-		else if(globalAudioToggle == "true")
+		else 
 		{
-			AudioListener.pause = false;
+			AudioListener.pause = true;
 		}
 	}
 
@@ -73,19 +82,41 @@ public class AudioManager : MonoBehaviour
 		}
 
         float newPitch = 0.0f;
+		float newVolume = 0.0f;
 
         // Calculate the new pitches and use the highest.
         foreach(var transitionZone in m_activeTransitionZones)
         {
-            newPitch = Mathf.Max(transitionZone.GetPitch(Player.transform.position), newPitch);
+			float zonePitch = 0.0f;
+			float zoneVolume = 0.0f;
+			
+			transitionZone.GetPitchAndVolume(Player.transform.position, out zonePitch, out zoneVolume);
+
+            newPitch	= Mathf.Max(zonePitch, newPitch);
+			newVolume	= Mathf.Max(zoneVolume, newVolume);
         }
 
         m_targetWeatherPitch = newPitch;
-        
+
+		Logger.Log("New pitch: " + newPitch, LogChannel.Audio);
+		Logger.Log("New volume: " + newVolume, LogChannel.Audio);
 	}
 
 	#endregion
 
+#if UNITY_EDITOR
+	public void WeatherLerpSpeedSettingChanged()
+	{
+		FloatSetting weatherLerpSpeedSetting = Settings.Instance.GetSetting<FloatSetting>("audio_weather_lerp_speed");
+		if (weatherLerpSpeedSetting != null) { m_weatherLerpSpeed = weatherLerpSpeedSetting.Value; }
+	}
+
+#endif
+
 	List<WeatherAudioTransitionZone> m_activeTransitionZones = new List<WeatherAudioTransitionZone>(); // List of transition zones to update.
+
     float m_targetWeatherPitch = 0.0f;
+	float m_targetWeatherVolume = 0.0f;
+
+	float m_weatherLerpSpeed = 0.2f;
 }

@@ -8,6 +8,7 @@ public abstract partial class AIAction
 {
 	public void Serialise(JsonWriter writer)
 	{
+
 		writer.WritePropertyName("action_type");
 		writer.WriteValue(GetType().AssemblyQualifiedName);
 

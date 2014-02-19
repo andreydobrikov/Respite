@@ -70,7 +70,7 @@ public class Footsteps : AnimationEventResponder
         RaycastHit hitInfo;
         if(Physics.Raycast(footPosition + Vector3.up, -Vector3.up, out hitInfo, 5.0f, RaycastFootstepMask))
         {
-            FloorFootstepSurface surface = hitInfo.collider.gameObject.GetComponent<FloorFootstepSurface>();
+			FloorFootstep surface = hitInfo.collider.gameObject.GetComponent<FloorFootstep>();
 
             if(surface != null)
             {

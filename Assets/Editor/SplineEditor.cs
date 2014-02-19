@@ -12,11 +12,16 @@ public class SplineEditor
 		{
 			BezierEditor.DrawEditor(spline.m_beziers[i], i > 0 ? spline.m_beziers[i-1] : null, i < (spline.m_beziers.Length - 1) ? spline.m_beziers[i+1] : null, pathOnly);	
 		}
-		
+
+		GUIStyle style = new GUIStyle();
+		style.normal.textColor = Color.red;
+
 		Handles.color = new Color(0.0f, 0.0f, 0.6f, 1.0f);
 		for(int i = 0; i < spline.m_beziers.Length + 1; ++i)
 		{
 			Vector2 normal;
+			
+
 			
 			if(i == spline.m_beziers.Length)
 			{
@@ -28,6 +33,8 @@ public class SplineEditor
 				
 				Handles.DrawLine(v1, v1 + (normal3D * spline.m_widthModifiers[i]));
 				Handles.DrawLine(v1, v1 - (normal3D * spline.m_widthModifiers[i]));
+
+				Handles.Label(v1 + new Vector3(0.0f, 0.0f, 4.0f), i.ToString(), style);
 			}
 			else
 			{
@@ -38,6 +45,8 @@ public class SplineEditor
 				
 				Handles.DrawLine(v0, v0 + (normal3D * spline.m_widthModifiers[i]));
 				Handles.DrawLine(v0, v0 - (normal3D * spline.m_widthModifiers[i]));
+
+				Handles.Label(v0 + new Vector3(0.0f, 0.0f, 4.0f), i.ToString(), style);
 			}
 			 
 			

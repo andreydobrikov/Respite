@@ -99,7 +99,6 @@ public class AI : MonoBehaviour, ISerialisable
         Entity entity = other.GetComponent<Entity>();
         if(entity != null)
         {
-            Debug.Log("Entity entered perception range: " + entity.EntityName);
             m_entitiesInPerception.Add(entity);
 
             foreach(var listener in m_perceptionListeners)
@@ -114,7 +113,6 @@ public class AI : MonoBehaviour, ISerialisable
         Entity entity = other.GetComponent<Entity>();
         if(entity != null)
         {
-            Debug.Log("Entity left perception range: " + entity.EntityName);
             m_entitiesInPerception.Remove(entity);
 
             foreach(var listener in m_perceptionListeners)

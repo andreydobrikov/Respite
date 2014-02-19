@@ -1,0 +1,66 @@
+{
+  "settings_list": [
+    {
+      "type": "BoolSetting, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "focus_transition",
+      "value": "false"
+    },
+    {
+      "type": "BoolSetting, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "audio_enabled",
+      "value": "true"
+    },
+    {
+      "type": "FloatSettingRange, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "storm_intensity",
+      "value": "4604280098944712704",
+      "min": "0",
+      "max": "4607182418800017408"
+    },
+    {
+      "type": "FloatSettingRange, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "weather_mask_height",
+      "value": "4614406943023300608",
+      "min": "0",
+      "max": "4617315517961601024"
+    },
+    {
+      "type": "FloatSettingRange, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "initial_time",
+      "value": "4602678819172646912",
+      "min": "0",
+      "max": "4607182418800017408"
+    },
+    {
+      "type": "FloatSettingRange, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "audio_outdoor_pitch",
+      "value": "4607182418800017408",
+      "min": "0",
+      "max": "4607182418800017408"
+    },
+    {
+      "type": "BoolSetting, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "debug_AI",
+      "value": "true"
+    },
+    {
+      "type": "BoolSetting, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "debug_Audio",
+      "value": "true"
+    },
+    {
+      "type": "FloatSettingRange, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "audio_outdoor_volume",
+      "value": "4607182418800017408",
+      "min": "0",
+      "max": "4607182418800017408"
+    },
+    {
+      "type": "FloatSettingRange, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "key": "audio_weather_lerp_speed",
+      "value": "4586328464939810816",
+      "min": "0",
+      "max": "4591870180174331904"
+    }
+  ]
+}

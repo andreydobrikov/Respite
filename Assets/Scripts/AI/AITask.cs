@@ -18,7 +18,7 @@ public sealed partial class AITask : ScriptableObject, IComparable
 
 	public static AITask LoadTask(string taskName)
 	{
-		var asset = Resources.Load("ai_tasks" + taskName);
+		var asset = Resources.Load<TextAsset>("ai_tasks/" + taskName);
 
 		AITask newTask = ScriptableObject.CreateInstance(typeof(AITask)) as AITask;
 
@@ -26,6 +26,10 @@ public sealed partial class AITask : ScriptableObject, IComparable
 		if(taskAsset != null)
 		{
 			newTask.Deserialise(taskAsset.text);
+		}
+		else
+		{
+			Debug.LogError("Failed to load task: " + taskName);
 		}
 
 		newTask.Name = taskName;
@@ -41,6 +45,11 @@ public sealed partial class AITask : ScriptableObject, IComparable
 		{
 			m_currentAction = m_actions[0];
 			m_currentAction.Start();
+		}
+		else
+		{
+			Debug.LogError("Task \"" + Name + "\" has no actions.");
+			Result = AITaskResult.Complete;
 		}
 	}
 
@@ -89,6 +98,21 @@ public sealed partial class AITask : ScriptableObject, IComparable
 		newAction.Task = this;
 		m_actions.Add(newAction);
 	}
+
+    public void DeleteAction(AIAction action)
+    {
+        foreach(var currentAction in m_actions)
+        {
+            foreach(var link in currentAction.m_outputLinks)
+            {
+                if(link.linkAction == action)
+                {
+                    link.linkAction = null;
+                }
+            }
+        }
+        m_actions.Remove(action);
+    }
 
 	public int CompareTo(object that)
 	{

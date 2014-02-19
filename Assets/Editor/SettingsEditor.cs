@@ -12,6 +12,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class SettingsEditor :  EditorWindow 
@@ -29,47 +30,80 @@ public class SettingsEditor :  EditorWindow
 		//s_style.normal.background = test as Texture2D;
 		//s_style.normal.textColor = Color.red;
 		
-		m_toDelete.Clear();
+		m_toDelete.Clear(); 
 		
 		GUILayout.BeginVertical();
-		
-		GUILayout.BeginVertical((GUIStyle)("Box"));
-		
-		foreach(var setting in Settings.Instance.Values)
+
+		var types = GetSettingTypes();
+
+		string[] typeStrings = new string[types.Count];
+
+		int index = 0;
+		foreach (var currentType in types)
 		{
-			GUILayout.BeginHorizontal();
-			
-			setting.key 	= EditorGUILayout.TextField(setting.key);
-			setting.value 	= EditorGUILayout.TextField(setting.value);
-			
-			if(GUILayout.Button("delete", GUILayout.Width(80)))
+			typeStrings[index] = currentType.Name;
+			index++;
+		}
+
+		EditorGUILayout.BeginVertical((GUIStyle)("Box"));
+
+		Settings.showAddSettingFoldout = EditorGUILayout.Foldout(Settings.showAddSettingFoldout, "Add Setting");
+
+		if (Settings.showAddSettingFoldout)
+		{
+			Settings.selectedSettingTypeIndex = EditorGUILayout.Popup(Settings.selectedSettingTypeIndex, typeStrings);
+
+			EditorGUILayout.BeginHorizontal();
+			Settings.newSettingName = EditorGUILayout.TextField(Settings.newSettingName);
+
+
+			if (string.IsNullOrEmpty(Settings.newSettingName) || Settings.Instance.Values.ContainsKey(Settings.newSettingName))
 			{
-				m_toDelete.Add(setting);
+				GUI.enabled = false;
 			}
-			
-			GUILayout.EndHorizontal();
+
+			if (GUILayout.Button("Add Setting", GUILayout.MaxWidth(100)))
+			{
+				Settings.Instance.AddSetting(types[Settings.selectedSettingTypeIndex], Settings.newSettingName);
+			}
+			GUI.enabled = true;
+
+			EditorGUILayout.EndHorizontal();
 		}
+
 		
-		foreach(var toDelete in m_toDelete)
+		EditorGUILayout.EndVertical();
+
+		if (Settings.Instance.Values.Count > 0)
 		{
-			Settings.Instance.DeleteSetting(toDelete);	
-		}
-		
-		GUILayout.EndVertical();
-		
-		if(GUILayout.Button("Add", GUILayout.Width(50)))
-		{
-			Settings.Instance.UpdateSetting("new_setting", "")	;
+			GUILayout.BeginVertical((GUIStyle)("Box"));
+
+			foreach (var setting in Settings.Instance.Values)
+			{
+				GUILayout.BeginHorizontal();
+
+				//	setting.key 	= EditorGUILayout.TextField(setting.key);
+				//	setting.value 	= EditorGUILayout.TextField(setting.value);
+				setting.Value.OnInspectorGUI();
+				if (GUILayout.Button("delete", GUILayout.Width(60)))
+				{
+					m_toDelete.Add(setting.Value);
+				}
+
+				GUILayout.EndHorizontal();
+			}
+
+			foreach (var toDelete in m_toDelete)
+			{
+				Settings.Instance.DeleteSetting(toDelete);
+			}
+
+			GUILayout.EndVertical();
 		}
 		
 		GUILayout.BeginHorizontal();
 		
-		if(GUILayout.Button("Save", GUILayout.Width(60)))
-		{
-			Settings.Instance.SaveSettings();	
-		}
-		
-		if(GUILayout.Button("Load", GUILayout.Width(60)))
+		if(GUILayout.Button("Reload", GUILayout.Width(60)))
 		{
 			Settings.Instance.LoadSettings();	
 		}
@@ -79,5 +113,13 @@ public class SettingsEditor :  EditorWindow
 		GUILayout.EndVertical();
     }
 	
-	private List<Settings.Setting> m_toDelete = new List<Settings.Setting>();
+	private List<Setting> m_toDelete = new List<Setting>();
+
+	private List<System.Type> GetSettingTypes()
+	{
+		System.Type targetType = typeof(Setting);
+		List<System.Type> types = new List<System.Type>(targetType.Assembly.GetTypes().Where(x => x.IsSubclassOf(targetType)));
+
+		return types;
+	}
 }

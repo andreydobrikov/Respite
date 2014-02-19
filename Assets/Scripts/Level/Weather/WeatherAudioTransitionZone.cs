@@ -13,6 +13,7 @@ public class WeatherAudioTransitionZone : MonoBehaviour
 {
     public Vector3 TransitionLocus  = Vector3.zero;
     public float TargetPitch        = 0.0f;
+	public float TargetVolume		= 0.0f;
     public float TransitionRadius   = 1.0f;
     public Door DoorModifier        = null;
 
@@ -21,11 +22,11 @@ public class WeatherAudioTransitionZone : MonoBehaviour
 	{
 		m_audioManager = FindObjectOfType<AudioManager>();
 
-        string pitchString = Settings.Instance.GetSetting("audio_outdoor_pitch");
-        if(pitchString != null)
-        {
-            float.TryParse(pitchString, out m_outdoorDefaultPitch);
-        }
+		FloatSetting pitchSetting = Settings.Instance.GetSetting<FloatSetting>("audio_outdoor_pitch");
+		FloatSetting volumeSetting = Settings.Instance.GetSetting<FloatSetting>("audio_outdoor_volume");
+        
+		if(pitchSetting != null)	{ m_outdoorDefaultPitch = pitchSetting.Value; }
+		if (volumeSetting != null)	{ m_outdoorDefaultVolume = volumeSetting.Value; }
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -46,7 +47,7 @@ public class WeatherAudioTransitionZone : MonoBehaviour
 		}
 	}
 
-    public float GetPitch(Vector3 targetPosition)
+    public void GetPitchAndVolume(Vector3 targetPosition, out float pitch, out float volume)
     {
         // TODO: Pre-square the range if this proves slow. I seriously doubt it will, though.
         float lerpFactor = ((TransitionLocus + transform.position) - targetPosition).magnitude;
@@ -62,13 +63,12 @@ public class WeatherAudioTransitionZone : MonoBehaviour
             }
         }
 
-        float pitch = Mathf.Lerp(m_outdoorDefaultPitch, TargetPitch, lerpFactor);
-
-        Debug.Log("New pitch: " + pitch);
-
-        return pitch;
+        pitch = Mathf.Lerp(m_outdoorDefaultPitch, TargetPitch, lerpFactor);
+		volume = Mathf.Lerp(m_outdoorDefaultVolume, TargetVolume, lerpFactor);
     }
 
 	private AudioManager m_audioManager = null;
-    private float m_outdoorDefaultPitch = 0.0f;
+
+    private float m_outdoorDefaultPitch		= 0.0f;
+	private float m_outdoorDefaultVolume	= 0.0f;
 }

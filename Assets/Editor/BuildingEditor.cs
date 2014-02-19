@@ -326,7 +326,7 @@ public class BuildingEditor :  Editor
         GameObject colliderObject = new GameObject("collider");
         MeshCollider collider     = colliderObject.AddComponent<MeshCollider>();
 
-        FloorFootstepSurface surface = colliderObject.AddComponent<FloorFootstepSurface>();
+        FloorFootstep surface = colliderObject.AddComponent<FloorFootstep>();
         surface.SurfaceAudioSource = room.FloorAudioSource;
 
         colliderObject.layer = LayerMask.NameToLayer("Floor");
@@ -384,13 +384,13 @@ public class BuildingEditor :  Editor
 			renderer.material = newMaterial as Material;
 			
 		}
-	}
+	} 
 	
 	private void BuildWeatherMask()
 	{
 		Building building 						= (Building)target;
 		GameObject weatherObject				= GameObjectHelper.FindChild(building.gameObject, Building.s_weather_mask_id, true);
-		string maskHeightSetting				= Settings.Instance.GetSetting("building_weather_mask_height");
+		string maskHeightSetting				= "0.0";//= Settings.Instance.GetSetting("building_weather_mask_height");
 		float maskHeight = 3.1f;
 		
 		float.TryParse(maskHeightSetting, out maskHeight);

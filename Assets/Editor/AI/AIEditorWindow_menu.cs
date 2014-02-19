@@ -97,6 +97,7 @@ public partial class AIEditorWindow :  EditorWindow
             if (manager.selectedTaskIndex != -1)
             {
                 AIAction newAction = ScriptableObject.CreateInstance(manager.m_actionTypes[manager.selectedActionIndex]) as AIAction;
+				newAction.Init();
                 manager.m_tasks[manager.selectedTaskIndex].AddAction(newAction);
             }
         }

@@ -13,7 +13,6 @@ public class GameFlowWrapper : MonoBehaviour
 	
 	void Start()
 	{
-
 		GameObject.DontDestroyOnLoad(this);
 		GameFlow instance = GameFlow.Instance;
 
@@ -27,7 +26,6 @@ public class GameFlowWrapper : MonoBehaviour
 		{
 			Debug.Log(name);	
 		}
-		
 	}
 	
 	// Update is called once per frame
@@ -80,7 +78,7 @@ public class GameFlowWrapper : MonoBehaviour
 	{
 		if(GameFlow.Instance.CurrentControlContext != GameFlow.ControlContext.Menu && !focus && m_started)
 		{
-			if(Settings.Instance.GetSetting("focus_transition_enabled") == "true")
+			if (Settings.Instance.GetSetting<BoolSetting>("focus_transition").Value)
 			{
 				GameFlow.Instance.RequestMenu();	
 			}
@@ -91,8 +89,7 @@ public class GameFlowWrapper : MonoBehaviour
 	{
 		GameFlow.Instance.LevelLoaded();
 	}
-	
-	
-	private bool m_started 				= false;
-	private float m_saveFadeDuration 	= 3.0f;
+
+	private bool m_started 					= false;
+	private float m_saveFadeDuration 		= 3.0f;
 }

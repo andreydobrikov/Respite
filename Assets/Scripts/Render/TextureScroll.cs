@@ -10,7 +10,7 @@ public class TextureScroll : MonoBehaviour
 	[ShaderPropertyNameAttribute(ShaderPropertyNameAttribute.PropertyType.TexEnv)]
 	public string TargetTexture = null;
 	
-	private MeshRenderer m_renderer = null;
+	protected MeshRenderer m_renderer = null;
 	private Vector2 m_uvScroll = new Vector2();
 	
 	// Use this for initialization

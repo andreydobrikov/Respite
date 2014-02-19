@@ -1,4 +1,4 @@
-﻿///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 // 
 // AIEditor_graph.cs
 //
@@ -147,6 +147,9 @@ public partial class AIEditorWindow :  EditorWindow
         }
         
         GUI.depth = 1;
+
+
+        // Draw nodes
         BeginWindows();
         
         for (int i = 0; i < currentTask.Actions.Count; i++)
@@ -172,12 +175,7 @@ public partial class AIEditorWindow :  EditorWindow
         }
         
         EndWindows();
-        
-        if (Event.current.type == EventType.mouseDown)
-        {
-            //  activeAI.SelectedState = -1;
-        }
-        
+
         // I have no idea why, but this nukes drag-scrolling if it's near the top of the function
         if (Event.current.type == EventType.mouseDrag)
         {

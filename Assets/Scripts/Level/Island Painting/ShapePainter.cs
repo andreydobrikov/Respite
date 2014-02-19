@@ -16,6 +16,8 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class ShapePainter : Painter 
 {
+
+
     public void OnEnable()
     {
         if(m_brush == null)
@@ -31,9 +33,11 @@ public class ShapePainter : Painter
     }
 
     public override void Paint(Island island)
-    {
-        island.PaintPixel(transform.position.x, transform.position.z, m_brush);
-    }
+	{
+#if UNITY_EDITOR
+		island.PaintPixel(transform.position.x, transform.position.z, m_brush);
+#endif
+	}
 
     public override string GetName()
     {
@@ -41,4 +45,5 @@ public class ShapePainter : Painter
     }
 
     public IslandBrush m_brush;
+
 }

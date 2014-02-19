@@ -24,8 +24,8 @@
     {
       "action_type": "AIActionIdle, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "id": 1,
-      "editor_x": 289.0,
-      "editor_y": 63.0,
+      "editor_x": 330.0,
+      "editor_y": 155.0,
       "input_data": [
         {
           "action_id": "input_idle_time",

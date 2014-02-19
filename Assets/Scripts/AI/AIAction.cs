@@ -116,7 +116,6 @@ public abstract partial class AIAction : ScriptableObject
 	[SerializeField]
 	public List<AIActionData> m_outputData 		= new List<AIActionData>();
 
-#if UNITY_EDITOR
 	public Rect m_renderDimensions;
 
 	[SerializeField]
@@ -137,7 +136,6 @@ public abstract partial class AIAction : ScriptableObject
 	[SerializeField]
 	public bool m_showOutputDataFoldout = false;
 	
-#endif
 }
 
 

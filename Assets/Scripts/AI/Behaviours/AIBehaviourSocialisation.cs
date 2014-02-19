@@ -3,19 +3,37 @@ using System.Collections.Generic;
 
 public class AIBehaviourSocialisation : AIBehaviour, IAiPerceptionListener
 {
+	// Task names
+	const string m_turnToFaceTargetTaskName = "turn_to_face_direction";
+
+	// Blackboard handles
+	AIBlackBoardEntry m_headTrackEntry = null;
+	AIBlackBoardEntry m_faceTarget = null;
+
+	// Tasks
+	AITask m_turnToFaceTargetTask = null;
+
+	// Memories
+	private Dictionary<int, AIEntityMemory> m_memories = new Dictionary<int, AIEntityMemory>();
+
     public AIBehaviourSocialisation()
     {
         m_name = "socialisation";
+
+		m_requiredTaskPaths.Add(m_turnToFaceTargetTaskName);
     }
 
     public override void RegisterBlackboardEntries() 
     {
-        m_headTrackEntry = m_parentAI.Blackboard.AddEntry<Vector3>("headtrack_target", Vector3.forward);
+        m_headTrackEntry	= m_parentAI.Blackboard.AddEntry<Vector3>("headtrack_target", Vector3.forward);
+		m_faceTarget		= m_parentAI.Blackboard.AddEntry<Vector3>("turn_target", Vector3.forward);
     }
     
     public override void Start()
     {
         m_parentAI.RegisterPerceptionListener(this);
+
+		m_tasks.TryGetValue(m_turnToFaceTargetTaskName, out m_turnToFaceTargetTask);
     }
 
     public override void Update()
@@ -54,20 +72,18 @@ public class AIBehaviourSocialisation : AIBehaviour, IAiPerceptionListener
                     currentMemory.state = EntityMemoryState.InPerception;
                 }
             }
-
+			/*
             switch(currentMemory.state)
             {
                 case EntityMemoryState.Idle:            { Debug.Log("Idle"); break; }
                 case EntityMemoryState.InPerception:    { Debug.Log("Perception"); break; }
                 case EntityMemoryState.InAwareness:     { Debug.Log("Awareness"); break; }
             }
+			 * */
         }
     }
 
-    public override void Shutdown()
-    {
-        m_parentAI.UnregisterPerceptionListener(this);
-    }
+    public override void Shutdown() { m_parentAI.UnregisterPerceptionListener(this); }
 
     public void EntityEnteredPerception(Entity addedEntity)
     {
@@ -99,7 +115,12 @@ public class AIBehaviourSocialisation : AIBehaviour, IAiPerceptionListener
 
     private void HandleGainedAwareness(Entity entity)
     {
+		m_faceTarget.SetObject<Vector3>(entity.transform.position);
 
+		if(m_turnToFaceTargetTask.Result == AITaskResult.Idle)
+		{
+			m_parentAI.PushTask(m_turnToFaceTargetTask);
+		}
     }
 
     private void HandleLostAwareness(Entity entity)
@@ -107,7 +128,4 @@ public class AIBehaviourSocialisation : AIBehaviour, IAiPerceptionListener
 
     }
 
-    // Blackboard handles
-    AIBlackBoardEntry m_headTrackEntry = null;
-    private Dictionary<int, AIEntityMemory> m_memories = new Dictionary<int, AIEntityMemory>();
 }
