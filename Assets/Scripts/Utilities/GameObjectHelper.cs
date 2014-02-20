@@ -79,6 +79,27 @@ public class GameObjectHelper
 		
 		return null;
 	}
+
+	public static T SearchParentsForComponent<T>(GameObject searchFocus) where T : Component
+	{
+		Transform current = searchFocus.transform;
+		T foundObject = null;
+
+		while (current != null)
+		{
+			foundObject = current.GetComponent<T>() as T;
+			if (foundObject != null)
+			{
+				return foundObject;
+			}
+			else
+			{
+				current = current.transform.parent;
+			}
+		}
+
+		return null;
+	}
 	
 	// Recursive bullshit
 	public static List<GameObject> FindAllChildrenWithTag(GameObject gameObject, string tag)
@@ -132,7 +153,15 @@ public class GameObjectHelper
 		while(gameObject != null)
 		{
 			strings.Add(gameObject.name);
-			gameObject = gameObject.transform.parent.gameObject;
+			if (gameObject.transform.parent != null)
+			{
+				gameObject = gameObject.transform.parent.gameObject;
+			}
+			else
+			{
+				gameObject = null;
+			}
+			
 		}
 
 		string output = string.Empty;

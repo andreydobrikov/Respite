@@ -116,6 +116,7 @@ public class OccludedMesh : MonoBehaviour
 	
 	public void OnTriggerEnter(Collider other)
 	{
+		
 		if(other.gameObject.layer == LayerMask.NameToLayer("LevelGeo"))
 		{
 			if(m_colliderVertices.ContainsKey(other))
@@ -141,7 +142,27 @@ public class OccludedMesh : MonoBehaviour
 				newVertices.vertices.Add(p1);
 				
 				m_colliderVertices.Add(other, newVertices);
-				
+
+				if (GameObjectHelper.SearchParentsForComponent<Rigidbody>(other.gameObject) != null && GameObjectHelper.SearchParentsForComponent<OcclusionMeshStatic>(other.gameObject) == null)
+				{
+					DynamicColliderPair newPair = new DynamicColliderPair();
+
+					newPair.collider = other;
+					newPair.lastPosition = other.transform.position;
+					newPair.lastRotation = other.transform.rotation;
+					newPair.lastScale = other.transform.lossyScale;
+
+					try
+					{
+						m_dynamicCollidersInView.Add(newPair);
+						m_dynamicPairMap.Add(other, newPair);
+					}
+					catch (Exception e)
+					{
+						Debug.LogWarning("Failed added collider: " + other.name);
+					}
+					
+				}
 				
 			}
 			
@@ -159,6 +180,26 @@ public class OccludedMesh : MonoBehaviour
 				newVertices.vertices.Add(new Vector3( newCollider.size.x / 2.0f, 0.0f, newCollider.size.z / 2.0f));
 				
 				m_colliderVertices.Add(other, newVertices);
+
+				if (GameObjectHelper.SearchParentsForComponent<Rigidbody>(other.gameObject) != null && GameObjectHelper.SearchParentsForComponent<OcclusionMeshStatic>(other.gameObject) == null)
+				{
+					DynamicColliderPair newPair = new DynamicColliderPair();
+
+					newPair.collider = other;
+					newPair.lastPosition = other.transform.position;
+					newPair.lastRotation = other.transform.rotation;
+					newPair.lastScale = other.transform.lossyScale;
+
+					try
+					{
+						m_dynamicCollidersInView.Add(newPair);
+						m_dynamicPairMap.Add(other, newPair);
+					}
+					catch (Exception e)
+					{
+						Debug.LogWarning("Failed added collider: " + other.name);
+					}
+				}
 			}
 			
 			// If this is a static light, rebuild meshes immediately as there will be no Update
@@ -177,6 +218,15 @@ public class OccludedMesh : MonoBehaviour
 	void OnTriggerExit(Collider other)
 	{
 		m_colliderVertices.Remove(other);
+
+		DynamicColliderPair targetPair = null;
+		if(m_dynamicPairMap.TryGetValue(other, out targetPair))
+		{
+			m_dynamicCollidersInView.RemoveAll(x => x.collider == other);
+			m_dynamicPairMap.Remove(other);
+		}
+
+		
 	}
 	
 	// Update is called once per frame
@@ -185,7 +235,44 @@ public class OccludedMesh : MonoBehaviour
 		m_activeMeshes = 0;
 		if(Dynamic)
 		{
-			RebuildMesh();
+			// Check dynamic colliders to see if they've changed before we recalculate everything.
+			bool changed = false;
+
+			Vector3 newPosition = Vector3.zero;
+			Quaternion newRotation = Quaternion.identity;
+			Vector3 newScale = Vector3.one;
+
+			foreach (var collider in m_dynamicCollidersInView)
+			{
+				newPosition = collider.collider.transform.position;
+				newRotation = collider.collider.transform.rotation;
+				newScale = collider.collider.transform.lossyScale;
+
+				if (collider.lastPosition != newPosition ||
+					collider.lastRotation != newRotation ||
+					collider.lastScale != newScale)
+				{
+					collider.lastPosition = newPosition;
+					collider.lastRotation = newRotation;
+					collider.lastScale = newScale;
+					//Debug.Log("Dynamic occluder changed!");
+					changed = true;
+				}
+			}
+
+			// See if the mesh itself has moved
+			if (transform.position != m_lastPosition || transform.rotation != m_lastRotation)
+			{
+				m_lastPosition = transform.position;
+				m_lastRotation = transform.rotation;
+				changed = true;
+			}
+
+			if (changed)
+			{
+				RebuildMesh();
+			}
+			
 		}
 
 		if(m_outputColliders)
@@ -564,6 +651,14 @@ public class OccludedMesh : MonoBehaviour
 		public Collider collider;
 		public List<Vector3> vertices = new List<Vector3>();	
 	}
+
+	private class DynamicColliderPair
+	{
+		public Collider collider;
+		public Vector3 lastPosition;
+		public Quaternion lastRotation;
+		public Vector3 lastScale;
+	}
 	
 	private int m_lastRayCount = 0;
 	private int m_sortedEntries = 0;
@@ -581,6 +676,8 @@ public class OccludedMesh : MonoBehaviour
 
 	private BinaryHeap<Vector3> m_occluderHeap = new BinaryHeap<Vector3>(m_maxOccluderVerts);
 	private OccluderVector[] m_occluders = new OccluderVector[m_maxOccluderVerts + 1];
+	private List<DynamicColliderPair> m_dynamicCollidersInView = new List<DynamicColliderPair>();
+	private Dictionary<Collider, DynamicColliderPair> m_dynamicPairMap = new Dictionary<Collider, DynamicColliderPair>();
 	
 	private int m_occluderCount = 0;
 	
@@ -588,4 +685,7 @@ public class OccludedMesh : MonoBehaviour
 	public static int m_activeMeshes = 0;
 	public static List<OccludedMesh> m_meshes = new List<OccludedMesh>();
 	public bool m_outputColliders = false;
+
+	private Vector3 m_lastPosition = Vector3.zero;
+	private Quaternion m_lastRotation = Quaternion.identity;
 }

@@ -38,6 +38,7 @@ public class ColliderTest : MonoBehaviour
 	
 	void Update()
 	{
+		GameObjectHelper.LogHierarchy(this.gameObject);
 		if(collided)
 		{
 			//Debug.DrawLine(m_collider.bounds.min, m_collider.bounds.max, Color.red);

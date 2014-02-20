@@ -46,7 +46,7 @@
     {
       "type": "BoolSetting, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
       "key": "debug_Audio",
-      "value": "true"
+      "value": "false"
     },
     {
       "type": "FloatSettingRange, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
